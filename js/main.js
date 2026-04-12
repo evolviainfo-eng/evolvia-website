@@ -13,9 +13,7 @@
   /* ─────────────────────────────────────────────────────────
    * 1. NAVIGATION
    * ───────────────────────────────────────────────────────── */
-  const nav        = document.getElementById('nav');
-  const hamburger  = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobile-menu');
+  const nav = document.getElementById('nav');
 
   // Scroll-based nav style
   function handleNavScroll() {
@@ -26,42 +24,6 @@
 
   window.addEventListener('scroll', handleNavScroll, { passive: true });
   handleNavScroll(); // run immediately in case page loads mid-scroll
-
-  // Mobile hamburger toggle
-  if (hamburger && mobileMenu) {
-    hamburger.addEventListener('click', function () {
-      const isOpen = nav.classList.toggle('nav--open');
-      hamburger.setAttribute('aria-expanded', String(isOpen));
-      if (isOpen) {
-        mobileMenu.removeAttribute('hidden');
-        document.body.style.overflow = 'hidden';
-      } else {
-        mobileMenu.setAttribute('hidden', '');
-        document.body.style.overflow = '';
-      }
-    });
-
-    // Close on Escape
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && nav.classList.contains('nav--open')) {
-        nav.classList.remove('nav--open');
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileMenu.setAttribute('hidden', '');
-        document.body.style.overflow = '';
-        hamburger.focus();
-      }
-    });
-
-    // Close when a mobile nav link is clicked
-    mobileMenu.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        nav.classList.remove('nav--open');
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileMenu.setAttribute('hidden', '');
-        document.body.style.overflow = '';
-      });
-    });
-  }
 
   /* ─────────────────────────────────────────────────────────
    * 2. SCROLL ANIMATIONS (Intersection Observer)
