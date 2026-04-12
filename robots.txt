@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /aciu.html
+
+Sitemap: https://evolvia.lt/sitemap.xml

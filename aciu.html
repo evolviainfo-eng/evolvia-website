@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- SEO: noindex — thank you page has no organic search value -->
+  <title>Ačiū — Evolvia</title>
+  <meta name="description" content="Jūsų užklausa sėkmingai gauta. Evolvia komanda susisieks su jumis per 24 valandas.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236366F1'/><text x='16' y='23' font-family='Inter,sans-serif' font-weight='700' font-size='18' fill='white' text-anchor='middle'>E</text></svg>">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <style>
+    /* Thank-you page specific overrides */
+    body {
+      background: var(--color-bg-dark);
+    }
+
+    /* Cal.com container dimensions */
+    #my-cal-inline {
+      width: 100%;
+      height: 680px;
+      overflow: hidden;
+      border-radius: var(--r-lg);
+    }
+
+    @media (max-width: 767px) {
+      #my-cal-inline {
+        height: 580px;
+        overflow-y: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
+  <header class="nav nav--scrolled" id="nav" role="banner">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="Evolvia — pradinis puslapis">Evolvia</a>
+
+      <nav role="navigation" aria-label="Pagrindinė navigacija">
+        <ul class="nav__links">
+          <li><a href="index.html#paslaugos">Paslaugos</a></li>
+          <li><a href="index.html#procesas">Procesas</a></li>
+          <li><a href="index.html#atsiliepimai">Atsiliepimai</a></li>
+          <li><a href="kontaktas.html">Kontaktai</a></li>
+        </ul>
+      </nav>
+
+      <a href="kontaktas.html" class="btn-primary nav__cta">Pradėti projektą</a>
+
+      <button class="nav__hamburger" id="hamburger" aria-label="Atidaryti meniu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <nav class="nav__mobile" id="mobile-menu" role="navigation" aria-label="Mobili navigacija" hidden>
+      <a href="index.html#paslaugos" class="nav__mobile-link">Paslaugos</a>
+      <a href="index.html#procesas" class="nav__mobile-link">Procesas</a>
+      <a href="index.html#atsiliepimai" class="nav__mobile-link">Atsiliepimai</a>
+      <a href="kontaktas.html" class="nav__mobile-link">Kontaktai</a>
+      <a href="kontaktas.html" class="btn-primary">Pradėti projektą</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ══ THANK YOU SECTION ══════════════════════════════════ -->
+    <section class="thank-you section--dark" aria-labelledby="ty-heading">
+      <div class="thank-you__bg" aria-hidden="true">
+        <div class="thank-you__blob"></div>
+      </div>
+
+      <div class="container">
+        <div class="thank-you__content">
+
+          <!-- Checkmark icon -->
+          <div class="thank-you__check fade-in" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+
+          <p class="text-label fade-in" data-delay="1">Sėkmė!</p>
+
+          <h1 id="ty-heading" class="thank-you__heading fade-in" data-delay="2">
+            Ačiū! Susisieksime<br>su jumis greitai.
+          </h1>
+
+          <p class="thank-you__sub fade-in" data-delay="3">
+            Jūsų užklausa sėkmingai gauta. Mūsų komanda peržiūrės
+            ją ir susisieks su jumis per <strong style="color:var(--color-text-on-dark);">24 valandas</strong>.
+          </p>
+
+          <!-- Cal.com calendar label -->
+          <div class="thank-you__cal-label fade-in" data-delay="4">
+            Norite paspartinti procesą? Užsirezervuokite laiką pokalbiui jau dabar:
+          </div>
+
+          <!-- Cal.com inline embed -->
+          <div class="cal-embed-wrapper fade-in" data-delay="5">
+            <div id="my-cal-inline"></div>
+          </div>
+
+          <!-- Back to home link -->
+          <div class="thank-you__actions fade-in" data-delay="5">
+            <a href="index.html" class="btn-secondary">
+              ← Grįžti į pradžią
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══ FOOTER ═════════════════════════════════════════════════ -->
+  <footer class="footer section--dark" role="contentinfo">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="index.html" class="footer__logo" aria-label="Evolvia pradinis puslapis">Evolvia</a>
+        <p class="footer__tagline">
+          AI automatizavimas ir svetainių kūrimas Lietuvoje.
+        </p>
+      </div>
+
+      <nav class="footer__nav-col" aria-label="Paslaugos">
+        <p class="footer__nav-title">Paslaugos</p>
+        <ul>
+          <li><a href="index.html#paslaugos">AI Automatizavimas</a></li>
+          <li><a href="index.html#paslaugos">Svetainių Kūrimas</a></li>
+          <li><a href="index.html#paslaugos">AI Konsultacijos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer__nav-col" aria-label="Įmonė">
+        <p class="footer__nav-title">Įmonė</p>
+        <ul>
+          <li><a href="index.html#procesas">Procesas</a></li>
+          <li><a href="kontaktas.html">Kontaktai</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer__nav-col" aria-label="Kontaktai">
+        <p class="footer__nav-title">Kontaktai</p>
+        <ul>
+          <li><a href="kontaktas.html">Rašykite mums</a></li>
+          <li><a href="https://linkedin.com/company/evolvia" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p class="footer__copy">© 2026 Evolvia. Visos teisės saugomos.</p>
+        <p class="footer__copy">Vilnius, Lietuva</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+
+  <!-- ══ Cal.com embed ══════════════════════════════════════════
+       Replace YOUR_CAL_USERNAME with your actual Cal.com username
+       e.g. "evolvia" → calLink: "evolvia/konsultacija"
+       ════════════════════════════════════════════════════════ -->
+  <script>
+    (function (C, A, L) {
+      var p = function (a, ar) { a.q.push(ar); };
+      var d = C.document;
+      C.Cal = C.Cal || function () {
+        var cal = C.Cal;
+        var ar = arguments;
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          var s = d.createElement('script');
+          s.src = A;
+          d.head.appendChild(s);
+          cal.loaded = true;
+        }
+        if (ar[0] === L) {
+          var api = function () { p(api, arguments); };
+          var namespace = ar[1];
+          api.q = api.q || [];
+          if (typeof namespace === 'string') {
+            cal.ns[namespace] = api;
+            p(api, ar);
+          } else {
+            p(cal, ar);
+          }
+          return;
+        }
+        p(cal, ar);
+      };
+    })(window, 'https://app.cal.com/embed/embed.js', 'init');
+
+    Cal('init', { origin: 'https://cal.com' });
+
+    Cal('inline', {
+      elementOrSelector: '#my-cal-inline',
+      calLink: 'evolvia-bhrgow/15min',
+      layout: 'month_view'
+    });
+
+    Cal('ui', {
+      theme: 'dark',
+      styles: {
+        branding: { brandColor: '#6366F1' }
+      },
+      hideEventTypeDetails: false
+    });
+  </script>
+
+</body>
+</html>

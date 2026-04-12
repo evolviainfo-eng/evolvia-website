@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Primary SEO -->
+  <title>Kontaktai — Evolvia</title>
+  <meta name="description" content="Susisiekite su Evolvia komanda. Užpildykite formą ir gaukite nemokamą AI automatizavimo arba svetainių kūrimo konsultaciją per 24 valandas.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://evolvia.lt/kontaktas.html">
+  <meta name="author" content="Evolvia">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://evolvia.lt/kontaktas.html">
+  <meta property="og:title" content="Kontaktai — Evolvia">
+  <meta property="og:description" content="Gaukite nemokamą konsultaciją. Evolvia AI automatizavimas ir svetainių kūrimas.">
+  <meta property="og:image" content="https://evolvia.lt/assets/og-image.jpg">
+  <meta property="og:locale" content="lt_LT">
+  <meta property="og:site_name" content="Evolvia">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kontaktai — Evolvia">
+  <meta name="twitter:description" content="Gaukite nemokamą konsultaciją. Evolvia AI automatizavimas ir svetainių kūrimas.">
+  <meta name="twitter:image" content="https://evolvia.lt/assets/og-image.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236366F1'/><text x='16' y='23' font-family='Inter,sans-serif' font-weight='700' font-size='18' fill='white' text-anchor='middle'>E</text></svg>">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
+  <header class="nav" id="nav" role="banner">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="Evolvia — pradinis puslapis">Evolvia</a>
+
+      <nav role="navigation" aria-label="Pagrindinė navigacija">
+        <ul class="nav__links">
+          <li><a href="index.html#paslaugos">Paslaugos</a></li>
+          <li><a href="index.html#procesas">Procesas</a></li>
+          <li><a href="index.html#atsiliepimai">Atsiliepimai</a></li>
+          <li><a href="kontaktas.html" aria-current="page">Kontaktai</a></li>
+        </ul>
+      </nav>
+
+      <a href="kontaktas.html" class="btn-primary nav__cta" aria-current="page">Pradėti projektą</a>
+
+      <button class="nav__hamburger" id="hamburger" aria-label="Atidaryti meniu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <nav class="nav__mobile" id="mobile-menu" role="navigation" aria-label="Mobili navigacija" hidden>
+      <a href="index.html#paslaugos" class="nav__mobile-link">Paslaugos</a>
+      <a href="index.html#procesas" class="nav__mobile-link">Procesas</a>
+      <a href="index.html#atsiliepimai" class="nav__mobile-link">Atsiliepimai</a>
+      <a href="kontaktas.html" class="nav__mobile-link" aria-current="page">Kontaktai</a>
+      <a href="kontaktas.html" class="btn-primary">Pradėti projektą</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ══ PAGE HERO ══════════════════════════════════════════ -->
+    <section class="section--dark page-hero" aria-labelledby="page-heading">
+      <div class="hero__bg" aria-hidden="true">
+        <div class="hero__blob-1" style="opacity:0.6;"></div>
+        <div class="hero__blob-2" style="opacity:0.4;"></div>
+        <div class="hero__grid"></div>
+      </div>
+
+      <div class="container" style="position:relative;z-index:1;">
+        <div class="page-hero__content">
+          <p class="text-label fade-in">Susisiekite</p>
+          <h1 id="page-heading" class="page-hero__heading fade-in" data-delay="1">
+            Pradėkime pokalbį
+          </h1>
+          <p class="page-hero__sub fade-in" data-delay="2">
+            Užpildykite formą ir mūsų komanda susisieks su jumis per
+            24 valandas. Konsultacija — nemokama ir neskausminga.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ CONTACT FORM ════════════════════════════════════════ -->
+    <section class="section section--light form-section" aria-labelledby="form-heading">
+      <div class="container form-container">
+        <h2 id="form-heading" class="sr-only">Kontaktinė forma</h2>
+
+        <form
+          id="contact-form"
+          class="contact-form"
+          novalidate
+          autocomplete="on"
+        >
+
+          <!-- Row 1: Vardas + Pavardė -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="vardas" class="form-label">
+                Vardas
+              </label>
+              <input
+                type="text"
+                id="vardas"
+                name="vardas"
+                class="form-input"
+                placeholder="Jūsų vardas"
+                required
+                autocomplete="given-name"
+                aria-required="true"
+              >
+              <span class="form-error" role="alert" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="pavarde" class="form-label">
+                Pavardė
+              </label>
+              <input
+                type="text"
+                id="pavarde"
+                name="pavarde"
+                class="form-input"
+                placeholder="Jūsų pavardė"
+                required
+                autocomplete="family-name"
+                aria-required="true"
+              >
+              <span class="form-error" role="alert" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <!-- Row 2: El. paštas + Tel. nr. -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="elpastas" class="form-label">
+                El. paštas
+              </label>
+              <input
+                type="email"
+                id="elpastas"
+                name="elpastas"
+                class="form-input"
+                placeholder="pvz@gmail.com"
+                required
+                autocomplete="email"
+                aria-required="true"
+              >
+              <span class="form-error" role="alert" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="telefonas" class="form-label">
+                Tel. nr. <span class="optional">(Nebūtina)</span>
+              </label>
+              <input
+                type="tel"
+                id="telefonas"
+                name="telefonas"
+                class="form-input"
+                placeholder="+370 000 000 00"
+                autocomplete="tel"
+              >
+            </div>
+          </div>
+
+          <!-- Svetainė (optional, full width) -->
+          <div class="form-group">
+            <label for="svetaine" class="form-label">
+              Svetainė <span class="optional">(Nebūtina)</span>
+            </label>
+            <input
+              type="url"
+              id="svetaine"
+              name="svetaine"
+              class="form-input"
+              placeholder="https://jūsųsvetainė.lt"
+              autocomplete="url"
+            >
+          </div>
+
+          <!-- Row 3: Įmonė + Dydis -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="imone" class="form-label">
+                Įmonės pavadinimas
+              </label>
+              <input
+                type="text"
+                id="imone"
+                name="imone"
+                class="form-input"
+                placeholder="Jūsų įmonė"
+                required
+                autocomplete="organization"
+                aria-required="true"
+              >
+              <span class="form-error" role="alert" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="dydis" class="form-label">
+                Įmonės dydis
+              </label>
+              <select
+                id="dydis"
+                name="dydis"
+                class="form-select form-input"
+                required
+                aria-required="true"
+              >
+                <option value="" disabled selected>Pasirinkite...</option>
+                <option value="1-10">1–10 darbuotojų</option>
+                <option value="11-50">11–50 darbuotojų</option>
+                <option value="51-200">51–200 darbuotojų</option>
+                <option value="200+">200+ darbuotojų</option>
+              </select>
+              <span class="form-error" role="alert" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <!-- Kuo galime padėti -->
+          <div class="form-group">
+            <label for="zinute" class="form-label">
+              Kuo galime padėti?
+            </label>
+            <textarea
+              id="zinute"
+              name="zinute"
+              class="form-textarea"
+              rows="5"
+              placeholder="Paaiškinkite, ko Jums reikia ir kaip mes galime padėti"
+              required
+              aria-required="true"
+            ></textarea>
+            <span class="form-error" role="alert" aria-live="polite"></span>
+          </div>
+
+          <!-- Honeypot anti-spam -->
+          <div class="form-group form-group--honeypot" aria-hidden="true">
+            <label for="website_url">Leave this empty</label>
+            <input
+              type="text"
+              id="website_url"
+              name="website_url"
+              tabindex="-1"
+              autocomplete="off"
+            >
+          </div>
+
+          <!-- Submit -->
+          <div class="form-submit-row">
+            <button
+              type="submit"
+              class="btn-submit"
+              id="submit-btn"
+              aria-label="Siųsti užklausą"
+            >
+              <span class="btn-text">Siųsti užklausą</span>
+              <span class="btn-spinner" hidden aria-hidden="true"></span>
+            </button>
+
+            <p class="form-privacy">
+              Pateikdami formą sutinkate su mūsų
+              <a href="#">privatumo politika</a>.
+              Jūsų duomenys niekada nebus parduoti tretiesiems asmenims.
+            </p>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══ FOOTER ═════════════════════════════════════════════════ -->
+  <footer class="footer section--dark" role="contentinfo">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="index.html" class="footer__logo" aria-label="Evolvia pradinis puslapis">Evolvia</a>
+        <p class="footer__tagline">
+          AI automatizavimas ir svetainių kūrimas Lietuvoje.
+          Dirbame, kad jūsų verslas augtų automatiškai.
+        </p>
+      </div>
+
+      <nav class="footer__nav-col" aria-label="Paslaugos">
+        <p class="footer__nav-title">Paslaugos</p>
+        <ul>
+          <li><a href="index.html#paslaugos">AI Automatizavimas</a></li>
+          <li><a href="index.html#paslaugos">Svetainių Kūrimas</a></li>
+          <li><a href="index.html#paslaugos">AI Konsultacijos</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer__nav-col" aria-label="Įmonė">
+        <p class="footer__nav-title">Įmonė</p>
+        <ul>
+          <li><a href="index.html#procesas">Procesas</a></li>
+          <li><a href="kontaktas.html">Kontaktai</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer__nav-col" aria-label="Kontaktai">
+        <p class="footer__nav-title">Kontaktai</p>
+        <ul>
+          <li><a href="kontaktas.html">Rašykite mums</a></li>
+          <li><a href="https://linkedin.com/company/evolvia" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p class="footer__copy">© 2026 Evolvia. Visos teisės saugomos.</p>
+        <p class="footer__copy">Vilnius, Lietuva</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+
+</body>
+</html>
