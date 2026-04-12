@@ -185,7 +185,7 @@ button, input, select, textarea {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #A78BFA 100%);
+  background: linear-gradient(125deg, #818CF8 0%, #6366F1 30%, #A78BFA 70%, #C4B5FD 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -280,10 +280,11 @@ button, input, select, textarea {
 }
 
 .nav--scrolled {
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(7, 7, 11, 0.82);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom-color: var(--color-border-dark);
+  border-bottom-color: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04);
 }
 
 .nav__inner {
@@ -371,24 +372,25 @@ button, input, select, textarea {
 .nav__mobile {
   position: fixed;
   inset: var(--nav-h) 0 0 0;
-  background: rgba(0, 0, 0, 0.97);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(4, 4, 8, 0.98);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
   padding: var(--sp-6) var(--sp-4);
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
-  transform: translateY(-100%);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform var(--t-slow), opacity var(--t-base);
   z-index: 99;
+  border-top: 1px solid rgba(255,255,255,0.06);
 }
 
+/* Opening animation — fires as soon as element is revealed and nav--open matches */
 .nav--open .nav__mobile {
-  transform: translateY(0);
-  opacity: 1;
-  pointer-events: all;
+  animation: mobile-menu-in 0.35s var(--ease-out) forwards;
+}
+
+@keyframes mobile-menu-in {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .nav__mobile a {
@@ -498,7 +500,7 @@ button, input, select, textarea {
   text-decoration: none;
 }
 
-.btn-ghost:hover { gap: 10px; opacity: 0.8; }
+.btn-ghost:hover { gap: 10px; opacity: 0.85; }
 
 /* ── Hero Section ──────────────────────────────────────────── */
 .hero {
@@ -576,6 +578,15 @@ button, input, select, textarea {
     linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
   background-size: 60px 60px;
   mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+/* Grain noise overlay */
+.hero__noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
 }
 
 .hero__content {
@@ -685,6 +696,7 @@ button, input, select, textarea {
   gap: var(--sp-3);
   position: relative;
   overflow: hidden;
+  cursor: pointer;
   transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base), background var(--t-base);
 }
 
@@ -695,17 +707,29 @@ button, input, select, textarea {
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--color-accent), #8B5CF6, transparent);
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--color-accent) 40%, #8B5CF6 60%, transparent 100%);
   opacity: 0;
   transition: opacity var(--t-base);
+}
+
+/* Subtle top-edge shine (always visible, very slight) */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  pointer-events: none;
 }
 
 .card:hover {
   transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.04);
-  box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 4px 12px rgba(99,102,241,0.1);
-  border-color: rgba(99,102,241,0.25);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.2), 0 4px 24px rgba(99,102,241,0.15);
+  border-color: rgba(99,102,241,0.3);
 }
 
 .card:hover::before {
@@ -850,6 +874,7 @@ button, input, select, textarea {
   border: 1px solid rgba(255, 255, 255, 0.07);
   position: relative;
   overflow: hidden;
+  cursor: default;
   transition: box-shadow var(--t-base), transform var(--t-base), border-color var(--t-base);
 }
 
@@ -1017,12 +1042,23 @@ button, input, select, textarea {
 .cta-section__content {
   position: relative;
   z-index: 1;
-  max-width: 640px;
+  max-width: 660px;
   margin-inline: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--sp-4);
+  padding: var(--sp-10) var(--sp-8);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: var(--r-xl);
+  box-shadow: 0 0 0 1px rgba(99,102,241,0.06), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+@media (max-width: 767px) {
+  .cta-section__content {
+    padding: var(--sp-8) var(--sp-4);
+  }
 }
 
 .cta-section__sub {
