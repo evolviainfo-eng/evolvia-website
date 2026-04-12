@@ -9,15 +9,17 @@
   <title>Kontaktai — Evolvia</title>
   <meta name="description" content="Susisiekite su Evolvia komanda. Užpildykite formą ir gaukite nemokamą AI automatizavimo arba svetainių kūrimo konsultaciją per 24 valandas.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://evolvia.lt/kontaktas.html">
+  <link rel="canonical" href="https://evolvia-tech.netlify.app/kontaktas.html">
   <meta name="author" content="Evolvia">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://evolvia.lt/kontaktas.html">
+  <meta property="og:url" content="https://evolvia-tech.netlify.app/kontaktas.html">
   <meta property="og:title" content="Kontaktai — Evolvia">
   <meta property="og:description" content="Gaukite nemokamą konsultaciją. Evolvia AI automatizavimas ir svetainių kūrimas.">
-  <meta property="og:image" content="https://evolvia.lt/assets/og-image.jpg">
+  <meta property="og:image" content="https://evolvia-tech.netlify.app/assets/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:locale" content="lt_LT">
   <meta property="og:site_name" content="Evolvia">
 
@@ -25,7 +27,16 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Kontaktai — Evolvia">
   <meta name="twitter:description" content="Gaukite nemokamą konsultaciją. Evolvia AI automatizavimas ir svetainių kūrimas.">
-  <meta name="twitter:image" content="https://evolvia.lt/assets/og-image.jpg">
+  <meta name="twitter:image" content="https://evolvia-tech.netlify.app/assets/og-image.svg">
+
+  <!-- Geo & Mobile -->
+  <meta name="geo.region" content="LT-VL">
+  <meta name="geo.placename" content="Vilnius, Lietuva">
+  <meta name="theme-color" content="#080707">
+
+  <!-- Hreflang -->
+  <link rel="alternate" hreflang="lt" href="https://evolvia-tech.netlify.app/kontaktas.html">
+  <link rel="alternate" hreflang="x-default" href="https://evolvia-tech.netlify.app/kontaktas.html">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23B8913A'/><text x='16' y='23' font-family='Inter,sans-serif' font-weight='700' font-size='18' fill='white' text-anchor='middle'>E</text></svg>">
@@ -320,6 +331,43 @@
 
   <script src="js/main.js" defer></script>
   <script src="js/chatbot.js" defer></script>
+
+  <!-- JSON-LD: BreadcrumbList + ContactPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Pradinis puslapis",
+        "item": "https://evolvia-tech.netlify.app/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Kontaktai",
+        "item": "https://evolvia-tech.netlify.app/kontaktas.html"
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Evolvia — Kontaktai",
+    "url": "https://evolvia-tech.netlify.app/kontaktas.html",
+    "description": "Susisiekite su Evolvia komanda. Gaukite nemokamą AI automatizavimo arba svetainių kūrimo konsultaciją per 24 valandas.",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Evolvia",
+      "url": "https://evolvia-tech.netlify.app"
+    }
+  }
+  </script>
 
 </body>
 </html>

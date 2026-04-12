@@ -13,15 +13,17 @@
   <meta name="description" content="Evolvia — Lietuvos AI automatizavimo ir svetainių kūrimo agentūra. Automatizuojame verslo procesus, kuriame modernias konvertuojančias svetaines. Gaukite nemokamą konsultaciją.">
   <meta name="keywords" content="AI automatizavimas, svetainių kūrimas, dirbtinis intelektas, verslo automatizavimas, Lietuva, Vilnius, web dizainas, n8n, make.com">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://evolvia.lt/">
+  <link rel="canonical" href="https://evolvia-tech.netlify.app/">
   <meta name="author" content="Evolvia">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://evolvia.lt/">
+  <meta property="og:url" content="https://evolvia-tech.netlify.app/">
   <meta property="og:title" content="Evolvia — AI Automatizavimas ir Svetainių Kūrimas">
   <meta property="og:description" content="Automatizuojame verslo procesus ir kuriame modernias svetaines. Dirbtinis intelektas jūsų verslui.">
-  <meta property="og:image" content="https://evolvia.lt/assets/og-image.jpg">
+  <meta property="og:image" content="https://evolvia-tech.netlify.app/assets/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:locale" content="lt_LT">
   <meta property="og:site_name" content="Evolvia">
 
@@ -29,7 +31,20 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Evolvia — AI Automatizavimas ir Svetainių Kūrimas">
   <meta name="twitter:description" content="Automatizuojame verslo procesus ir kuriame modernias svetaines Lietuvoje.">
-  <meta name="twitter:image" content="https://evolvia.lt/assets/og-image.jpg">
+  <meta name="twitter:image" content="https://evolvia-tech.netlify.app/assets/og-image.svg">
+
+  <!-- Geo & Mobile -->
+  <meta name="geo.region" content="LT-VL">
+  <meta name="geo.placename" content="Vilnius, Lietuva">
+  <meta name="theme-color" content="#080707">
+
+  <!-- Hreflang -->
+  <link rel="alternate" hreflang="lt" href="https://evolvia-tech.netlify.app/">
+  <link rel="alternate" hreflang="x-default" href="https://evolvia-tech.netlify.app/">
+
+  <!-- DNS Prefetch -->
+  <link rel="dns-prefetch" href="https://evolvia23324.app.n8n.cloud">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23B8913A'/><text x='16' y='23' font-family='Inter,sans-serif' font-weight='700' font-size='18' fill='white' text-anchor='middle'>E</text></svg>">
@@ -492,32 +507,38 @@
   <script src="js/main.js" defer></script>
   <script src="js/chatbot.js" defer></script>
 
-  <!-- JSON-LD Schema -->
+  <!-- JSON-LD: Organization + LocalBusiness -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": ["Organization", "LocalBusiness"],
+    "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
     "name": "Evolvia",
-    "url": "https://evolvia.lt",
-    "description": "Lietuvos AI automatizavimo ir svetainių kūrimo agentūra. Automatizuojame verslo procesus ir kuriame modernias svetaines.",
+    "url": "https://evolvia-tech.netlify.app",
+    "logo": "https://evolvia-tech.netlify.app/assets/og-image.svg",
+    "image": "https://evolvia-tech.netlify.app/assets/og-image.svg",
+    "description": "Lietuvos AI automatizavimo ir svetainių kūrimo agentūra. Automatizuojame verslo procesus, kuriame modernias konvertuojančias svetaines. Vilnius, Lietuva.",
+    "priceRange": "€€",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Vilnius",
+      "addressRegion": "Vilniaus apskritis",
       "addressCountry": "LT"
     },
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer service",
-      "url": "https://evolvia.lt/kontaktas.html",
-      "availableLanguage": "Lithuanian"
+      "url": "https://evolvia-tech.netlify.app/kontaktas.html",
+      "availableLanguage": ["Lithuanian", "English"],
+      "contactOption": "TollFree"
     },
     "sameAs": [
       "https://www.linkedin.com/company/evolvia"
     ],
-    "serviceArea": {
+    "areaServed": {
       "@type": "Country",
       "name": "Lithuania"
     },
+    "knowsLanguage": ["lt", "en"],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Evolvia paslaugos",
@@ -527,7 +548,8 @@
           "itemOffered": {
             "@type": "Service",
             "name": "AI Automatizavimas",
-            "description": "Verslo procesų automatizavimas naudojant dirbtinį intelektą"
+            "description": "Verslo procesų automatizavimas naudojant dirbtinį intelektą — el. laiškai, CRM, sąskaitos, ataskaitos. Sutaupykite 20+ valandų per savaitę.",
+            "provider": {"@type": "Organization", "name": "Evolvia"}
           }
         },
         {
@@ -535,11 +557,87 @@
           "itemOffered": {
             "@type": "Service",
             "name": "Svetainių Kūrimas",
-            "description": "Modernių, greitų ir konvertuojančių svetainių kūrimas"
+            "description": "Greitų, modernių ir konvertuojančių svetainių kūrimas. Dizainas, kuris pritraukia klientus ir skatina veikti 24/7.",
+            "provider": {"@type": "Organization", "name": "Evolvia"}
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "AI Konsultacijos",
+            "description": "Strateginė pagalba integruojant AI į verslo procesus. Nuo idėjos iki veikiančio sprendimo.",
+            "provider": {"@type": "Organization", "name": "Evolvia"}
           }
         }
       ]
     }
+  }
+  </script>
+
+  <!-- JSON-LD: WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Evolvia",
+    "url": "https://evolvia-tech.netlify.app",
+    "description": "AI automatizavimas ir svetainių kūrimas Lietuvoje",
+    "inLanguage": "lt",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Evolvia"
+    }
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Kiek kainuoja automatizavimas ar svetainė?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kaina priklauso nuo projekto apimties ir sudėtingumo. Po nemokamos konsultacijos gausite detalų, skaidrų pasiūlymą — be jokių paslėptų mokesčių ar netikėtumų. Nėra jokių įsipareigojimų prieš gaunant pasiūlymą."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Kiek laiko užtrunka projektas?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Paprastas automatizavimas — 1–2 savaitės. Sudėtingesni sprendimai ar svetainės — 3–4 savaitės. Tikslią trukmę įvertiname per pirmąjį susitikimą, kai suprantame jūsų konkrečius poreikius."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Ar mums reikia techninių žinių?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ne. Jūs pasakojate, ką norite pasiekti — mes rūpinamės visa technine puse. Po projekto pabaigos mokome jus valdyti sukurtą sistemą, kad nebebūtumėte priklausomi nuo mūsų kasdieniam darbui."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Kas nutinka po projekto pabaigos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kiekvienam projektui teikiame 30 dienų nemokamą palaikymą — klausimai, pataisymai, optimizacija. Tolesnę pagalbą galite gauti per lankstų aptarnavimo planą, mokant tik už tai, ko iš tikrųjų reikia."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Ar galiu atsisakyti prieš pradedant?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Taip, be jokių pasekmių. Pirmoji konsultacija visada nemokama. Jei po jos nuspręsite nebetęsti — nėra jokių sąskaitų, jokių formalumų. Mes dirbame tik tada, kai esate tikri, kad tai jums tinka."
+        }
+      }
+    ]
   }
   </script>
 

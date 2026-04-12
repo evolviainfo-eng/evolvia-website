@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="blob1" cx="30%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#B8913A" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#080707" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blob2" cx="80%" cy="70%" r="45%">
+      <stop offset="0%" stop-color="#B8913A" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#080707" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#DFC060"/>
+      <stop offset="100%" stop-color="#B8913A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#080707"/>
+
+  <!-- Blobs -->
+  <rect width="1200" height="630" fill="url(#blob1)"/>
+  <rect width="1200" height="630" fill="url(#blob2)"/>
+
+  <!-- Top accent line -->
+  <rect x="0" y="0" width="1200" height="2" fill="url(#textGrad)" opacity="0.6"/>
+
+  <!-- Logo mark -->
+  <rect x="80" y="80" width="52" height="52" rx="12" fill="#B8913A"/>
+  <text x="106" y="117" font-family="Georgia, serif" font-weight="700" font-size="30" fill="#080707" text-anchor="middle">E</text>
+
+  <!-- Brand name -->
+  <text x="148" y="116" font-family="Georgia, 'DM Serif Display', serif" font-weight="400" font-size="32" fill="#F2EDE4" letter-spacing="-0.5">Evolvia</text>
+
+  <!-- Main headline -->
+  <text x="80" y="290" font-family="Georgia, 'DM Serif Display', serif" font-weight="400" font-size="72" fill="#F2EDE4" letter-spacing="-2">Verslas, kuris dirba</text>
+  <text x="80" y="374" font-family="Georgia, 'DM Serif Display', serif" font-weight="400" font-size="72" fill="url(#textGrad)" letter-spacing="-2">automatiškai.</text>
+
+  <!-- Sub -->
+  <text x="80" y="440" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="400" font-size="26" fill="#9A9088">AI automatizavimas ir svetainių kūrimas Lietuvoje</text>
+
+  <!-- Pill badge -->
+  <rect x="80" y="495" width="280" height="46" rx="23" fill="#B8913A" fill-opacity="0.15" stroke="#B8913A" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="220" y="524" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="17" fill="#B8913A" text-anchor="middle" letter-spacing="0.5">AI-pirma agentūra · Vilnius</text>
+
+  <!-- URL -->
+  <text x="1120" y="570" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="400" font-size="18" fill="#5A524A" text-anchor="end">evolvia-tech.netlify.app</text>
+</svg>
