@@ -27,7 +27,7 @@
   var css = [
     '#ec-wrap,#ec-wrap * {',
     '  box-sizing:border-box; margin:0; padding:0;',
-    '  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;',
+    '  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;',
     '}',
 
     /* Toggle button */
