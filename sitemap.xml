@@ -20,4 +20,11 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://evolvia-tech.netlify.app/kontaktas.html"/>
   </url>
 
+  <url>
+    <loc>https://evolvia-tech.netlify.app/privatumas.html</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
 </urlset>
