@@ -104,7 +104,7 @@
         </div>
       </div>
 
-      <div class="container hero__container">
+      <div class="container">
         <div class="hero__content">
           <div class="hero__badge fade-in">AI-pirma agentūra</div>
 
@@ -143,104 +143,6 @@
               Kaunas, Lietuva
             </span>
           </div>
-        </div>
-
-        <!-- Hero illustration — desktop only -->
-        <div class="hero__visual" aria-hidden="true">
-          <svg class="hero__svg" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="hg" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#B8913A" stop-opacity="0.13"/>
-                <stop offset="100%" stop-color="#B8913A" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-
-            <!-- Background glow -->
-            <circle cx="240" cy="240" r="240" fill="url(#hg)"/>
-
-            <!-- Rings -->
-            <circle cx="240" cy="240" r="155" stroke="rgba(184,145,58,0.09)" stroke-width="1" stroke-dasharray="6 6"/>
-            <circle cx="240" cy="240" r="110" stroke="rgba(184,145,58,0.11)" stroke-width="1" stroke-dasharray="4 4"/>
-            <circle cx="240" cy="240" r="65"  stroke="rgba(184,145,58,0.15)" stroke-width="1"/>
-
-            <!-- Lines: center → outer nodes (animated dashes) -->
-            <line x1="240" y1="240" x2="240" y2="85"  stroke="rgba(184,145,58,0.22)" stroke-width="0.75" stroke-dasharray="4 5" class="hline-flow"/>
-            <line x1="240" y1="240" x2="374" y2="162" stroke="rgba(184,145,58,0.18)" stroke-width="0.75" stroke-dasharray="4 5" class="hline-flow" style="animation-delay:-1.2s"/>
-            <line x1="240" y1="240" x2="374" y2="318" stroke="rgba(184,145,58,0.15)" stroke-width="0.75" stroke-dasharray="4 5" class="hline-flow" style="animation-delay:-2.4s"/>
-            <line x1="240" y1="240" x2="240" y2="395" stroke="rgba(184,145,58,0.13)" stroke-width="0.75" stroke-dasharray="4 5" class="hline-flow" style="animation-delay:-0.8s"/>
-            <line x1="240" y1="240" x2="106" y2="318" stroke="rgba(184,145,58,0.15)" stroke-width="0.75" stroke-dasharray="4 5" class="hline-flow" style="animation-delay:-3s"/>
-            <line x1="240" y1="240" x2="106" y2="162" stroke="rgba(184,145,58,0.18)" stroke-width="0.75" stroke-dasharray="4 5" class="hline-flow" style="animation-delay:-1.8s"/>
-
-            <!-- Outer ring (connecting adjacent nodes) -->
-            <line x1="240" y1="85"  x2="374" y2="162" stroke="rgba(184,145,58,0.07)" stroke-width="0.75"/>
-            <line x1="374" y1="162" x2="374" y2="318" stroke="rgba(184,145,58,0.07)" stroke-width="0.75"/>
-            <line x1="374" y1="318" x2="240" y2="395" stroke="rgba(184,145,58,0.07)" stroke-width="0.75"/>
-            <line x1="240" y1="395" x2="106" y2="318" stroke="rgba(184,145,58,0.07)" stroke-width="0.75"/>
-            <line x1="106" y1="318" x2="106" y2="162" stroke="rgba(184,145,58,0.07)" stroke-width="0.75"/>
-            <line x1="106" y1="162" x2="240" y2="85"  stroke="rgba(184,145,58,0.07)" stroke-width="0.75"/>
-
-            <!-- Outer nodes -->
-            <circle cx="240" cy="85"  r="17" fill="rgba(184,145,58,0.07)" stroke="rgba(184,145,58,0.22)" stroke-width="1"/>
-            <circle cx="240" cy="85"  r="6"  fill="#B8913A" class="hnode-1"/>
-            <circle cx="374" cy="162" r="14" fill="rgba(184,145,58,0.06)" stroke="rgba(184,145,58,0.18)" stroke-width="1"/>
-            <circle cx="374" cy="162" r="5"  fill="#B8913A" class="hnode-2"/>
-            <circle cx="374" cy="318" r="12" fill="rgba(184,145,58,0.05)" stroke="rgba(184,145,58,0.15)" stroke-width="1"/>
-            <circle cx="374" cy="318" r="4"  fill="#B8913A" class="hnode-3"/>
-            <circle cx="240" cy="395" r="12" fill="rgba(184,145,58,0.05)" stroke="rgba(184,145,58,0.14)" stroke-width="1"/>
-            <circle cx="240" cy="395" r="4"  fill="#B8913A" class="hnode-3"/>
-            <circle cx="106" cy="318" r="12" fill="rgba(184,145,58,0.05)" stroke="rgba(184,145,58,0.15)" stroke-width="1"/>
-            <circle cx="106" cy="318" r="4"  fill="#B8913A" class="hnode-3"/>
-            <circle cx="106" cy="162" r="14" fill="rgba(184,145,58,0.06)" stroke="rgba(184,145,58,0.18)" stroke-width="1"/>
-            <circle cx="106" cy="162" r="5"  fill="#B8913A" class="hnode-2"/>
-
-            <!-- Mid-ring accent nodes -->
-            <circle cx="350" cy="240" r="8" fill="rgba(184,145,58,0.09)" stroke="rgba(184,145,58,0.2)"  stroke-width="1"/>
-            <circle cx="130" cy="240" r="8" fill="rgba(184,145,58,0.09)" stroke="rgba(184,145,58,0.2)"  stroke-width="1"/>
-            <circle cx="240" cy="130" r="7" fill="rgba(184,145,58,0.07)" stroke="rgba(184,145,58,0.17)" stroke-width="1"/>
-            <circle cx="240" cy="350" r="7" fill="rgba(184,145,58,0.07)" stroke="rgba(184,145,58,0.17)" stroke-width="1"/>
-
-            <!-- Central hexagon -->
-            <polygon points="273,220 240,202 207,220 207,258 240,276 273,258"
-              fill="rgba(184,145,58,0.10)" stroke="rgba(184,145,58,0.32)" stroke-width="1.5" class="hhex"/>
-            <polygon points="260,229 240,217 220,229 220,251 240,263 260,251"
-              fill="rgba(184,145,58,0.18)" stroke="rgba(184,145,58,0.45)" stroke-width="1"/>
-
-            <!-- Centre dot + expanding ring -->
-            <circle cx="240" cy="240" r="16" fill="none" stroke="rgba(184,145,58,0.28)" stroke-width="1" class="hcenter-ring"/>
-            <circle cx="240" cy="240" r="7"  fill="#DFC060" class="hcenter-dot"/>
-
-            <!-- Orbiting dot on outer ring -->
-            <circle cx="395" cy="240" r="3.5" fill="#DFC060" opacity="0.85" class="horbit"/>
-
-            <!-- Floating data cards -->
-            <g transform="translate(256,55)">
-              <rect width="54" height="23" rx="5" fill="rgba(8,7,7,0.85)" stroke="rgba(184,145,58,0.24)" stroke-width="0.75"/>
-              <line x1="9" y1="8"  x2="45" y2="8"  stroke="rgba(184,145,58,0.45)" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="9" y1="15" x2="33" y2="15" stroke="rgba(184,145,58,0.24)" stroke-width="1"   stroke-linecap="round"/>
-            </g>
-            <g transform="translate(386,140)">
-              <rect width="54" height="23" rx="5" fill="rgba(8,7,7,0.85)" stroke="rgba(184,145,58,0.20)" stroke-width="0.75"/>
-              <line x1="9" y1="8"  x2="45" y2="8"  stroke="rgba(184,145,58,0.38)" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="9" y1="15" x2="36" y2="15" stroke="rgba(184,145,58,0.20)" stroke-width="1"   stroke-linecap="round"/>
-            </g>
-            <g transform="translate(14,148)">
-              <rect width="54" height="23" rx="5" fill="rgba(8,7,7,0.85)" stroke="rgba(184,145,58,0.18)" stroke-width="0.75"/>
-              <line x1="9" y1="8"  x2="40" y2="8"  stroke="rgba(184,145,58,0.35)" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="9" y1="15" x2="28" y2="15" stroke="rgba(184,145,58,0.18)" stroke-width="1"   stroke-linecap="round"/>
-            </g>
-
-            <!-- Scatter particles -->
-            <circle cx="312" cy="104" r="1.5" fill="rgba(184,145,58,0.22)"/>
-            <circle cx="168" cy="376" r="1.5" fill="rgba(184,145,58,0.16)"/>
-            <circle cx="402" cy="272" r="1.5" fill="rgba(184,145,58,0.18)"/>
-            <circle cx="78"  cy="204" r="1.5" fill="rgba(184,145,58,0.16)"/>
-            <circle cx="322" cy="418" r="2"   fill="rgba(184,145,58,0.13)"/>
-            <circle cx="148" cy="78"  r="2"   fill="rgba(184,145,58,0.20)"/>
-            <circle cx="438" cy="188" r="1.5" fill="rgba(184,145,58,0.13)"/>
-            <circle cx="50"  cy="282" r="1.5" fill="rgba(184,145,58,0.14)"/>
-            <circle cx="200" cy="44"  r="1.5" fill="rgba(184,145,58,0.16)"/>
-            <circle cx="420" cy="360" r="1.5" fill="rgba(184,145,58,0.12)"/>
-          </svg>
         </div>
 
       </div>
