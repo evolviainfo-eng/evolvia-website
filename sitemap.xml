@@ -3,25 +3,25 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
   <url>
-    <loc>https://evolvia-tech.netlify.app/</loc>
+    <loc>https://evolvia.lt/</loc>
     <lastmod>2026-04-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="lt" href="https://evolvia-tech.netlify.app/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://evolvia-tech.netlify.app/"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://evolvia.lt/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://evolvia.lt/"/>
   </url>
 
   <url>
-    <loc>https://evolvia-tech.netlify.app/kontaktas.html</loc>
+    <loc>https://evolvia.lt/kontaktas.html</loc>
     <lastmod>2026-04-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="lt" href="https://evolvia-tech.netlify.app/kontaktas.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://evolvia-tech.netlify.app/kontaktas.html"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://evolvia.lt/kontaktas.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://evolvia.lt/kontaktas.html"/>
   </url>
 
   <url>
-    <loc>https://evolvia-tech.netlify.app/privatumas.html</loc>
+    <loc>https://evolvia.lt/privatumas.html</loc>
     <lastmod>2026-04-18</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
