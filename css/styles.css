@@ -11,10 +11,16 @@
   --color-bg-mid:         #0E0C0B;
   --color-bg-gray:        #0B0A09;
   --color-bg-light:       #100E0D;
-  --color-accent:         #B8913A;
-  --color-accent-dark:    #96712A;
-  --color-accent-glow:    rgba(184, 145, 58, 0.18);
-  --color-accent-subtle:  rgba(184, 145, 58, 0.1);
+  --color-accent:         #C49A38;
+  --color-accent-dark:    #9A7020;
+  --color-accent-glow:    rgba(180, 140, 44, 0.22);
+  --color-accent-subtle:  rgba(180, 140, 44, 0.1);
+  /* Metallic gold gradient — matches logo exactly */
+  --grad-gold: linear-gradient(125deg, #F2E080 0%, #D4A840 28%, #C49A38 52%, #9A7020 75%, #C8A040 100%);
+  /* Horizontal shimmer variant for borders / lines */
+  --grad-gold-h: linear-gradient(90deg, #9A7020 0%, #D4A840 30%, #F2E080 50%, #D4A840 70%, #9A7020 100%);
+  /* Button variant — slightly darker for contrast on dark bg */
+  --grad-gold-btn: linear-gradient(125deg, #DBC870 0%, #C49A38 40%, #B8902E 65%, #9A7020 100%);
   --color-btn-text:       #0A0807;
   --color-error:          #F87171;
   --color-error-bg:       rgba(248, 113, 113, 0.1);
@@ -32,8 +38,8 @@
   --color-border-gray:    rgba(255, 255, 255, 0.06);
 
   /* Typography */
-  --font:         'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display: 'DM Serif Display', Georgia, serif;
+  --font:         'Satoshi', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', sans-serif;
+  --font-display: 'Satoshi', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
   --fw-light:       300;
   --fw-regular:     400;
   --fw-medium:      500;
@@ -53,7 +59,7 @@
   --text-4xl:   clamp(2.5rem, 5vw, 3.75rem);
   --text-hero:  clamp(2.75rem, 6.5vw, 5.5rem);
 
-  /* Letter spacing — tuned for Plus Jakarta Sans */
+  /* Letter spacing — tuned for Satoshi */
   --ls-tight:   -0.025em;
   --ls-normal:  -0.01em;
   --ls-wide:    0.04em;
@@ -188,7 +194,7 @@ button, input, select, textarea {
 }
 
 .text-gradient {
-  background: linear-gradient(125deg, #DFC060 0%, #B8913A 35%, #CFA048 65%, #96712A 100%);
+  background: var(--grad-gold);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -299,15 +305,31 @@ button, input, select, textarea {
 }
 
 .nav__logo {
-  font-size: var(--text-xl);
-  font-weight: var(--fw-bold);
-  color: var(--color-white);
-  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 9px;
   flex-shrink: 0;
   transition: opacity var(--t-fast);
 }
 
 .nav__logo:hover { opacity: 0.8; }
+
+.nav__logomark {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+}
+
+.nav__wordmark {
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-size: clamp(13px, 1.4vw, 15px);
+  font-weight: 700;
+  color: var(--color-white);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
 
 /* Links — visible at all sizes */
 .nav__links {
@@ -381,26 +403,27 @@ button, input, select, textarea {
   justify-content: center;
   gap: var(--sp-1);
   padding: 0.75rem 1.625rem;
-  background: var(--color-accent);
-  color: var(--color-btn-text);
+  background: var(--grad-gold-btn);
+  color: #0A0807;
   font-size: var(--text-sm);
   font-weight: var(--fw-bold);
   letter-spacing: 0.01em;
   border-radius: var(--r-pill);
-  border: 1.5px solid transparent;
+  border: 1px solid rgba(242, 224, 128, 0.25);
   cursor: pointer;
-  transition: background var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+  transition: opacity var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
   white-space: nowrap;
   text-decoration: none;
+  box-shadow: 0 2px 16px rgba(196, 154, 56, 0.3), inset 0 1px 0 rgba(242, 224, 128, 0.3);
 }
 
 .btn-primary:hover {
-  background: var(--color-accent-dark);
+  opacity: 0.88;
   transform: translateY(-1px);
-  box-shadow: var(--shadow-accent);
+  box-shadow: 0 6px 28px rgba(196, 154, 56, 0.45), inset 0 1px 0 rgba(242, 224, 128, 0.3);
 }
 
-.btn-primary:active { transform: translateY(0); }
+.btn-primary:active { transform: translateY(0); opacity: 1; }
 
 .btn-primary--lg {
   padding: 0.9375rem 2.25rem;
@@ -476,54 +499,32 @@ button, input, select, textarea {
   overflow: hidden;
 }
 
-/* Animated ambient blobs */
-.hero__blob-1 {
+/* ── Brand Swoosh Decorations ──────────────────────────────── */
+
+/* Left curved dark panel — replicates brand banner left swoosh */
+.hero__swoosh-l {
   position: absolute;
-  width: clamp(300px, 50vw, 700px);
-  height: clamp(300px, 50vw, 700px);
-  background: radial-gradient(circle, rgba(184, 145, 58, 0.18) 0%, transparent 70%);
-  border-radius: 50%;
-  top: -15%;
-  right: 0%;
-  filter: blur(90px);
-  will-change: transform;
-  animation: blob-drift-1 14s ease-in-out infinite alternate;
+  left: -44%;
+  top: -8%;
+  width: 74%;
+  height: 116%;
+  background: linear-gradient(150deg, #161514 0%, #121110 55%, #100F0E 100%);
+  border-radius: 0 52% 52% 0;
+  border-right: 1.5px solid rgba(196, 154, 56, 0.72);
+  box-shadow:
+    3px 0 48px rgba(196, 154, 56, 0.28),
+    8px 0 120px rgba(196, 154, 56, 0.1);
 }
 
-.hero__blob-2 {
+/* Right layered arc panel — SVG positioned element */
+.hero__swoosh-r {
   position: absolute;
-  width: clamp(200px, 35vw, 500px);
-  height: clamp(200px, 35vw, 500px);
-  background: radial-gradient(circle, rgba(150, 113, 42, 0.12) 0%, transparent 70%);
-  border-radius: 50%;
-  bottom: 10%;
-  left: 2%;
-  filter: blur(80px);
-  will-change: transform;
-  animation: blob-drift-2 11s ease-in-out infinite alternate;
-}
-
-.hero__blob-3 {
-  position: absolute;
-  width: clamp(150px, 25vw, 350px);
-  height: clamp(150px, 25vw, 350px);
-  background: radial-gradient(circle, rgba(184, 145, 58, 0.08) 0%, transparent 70%);
-  border-radius: 50%;
-  top: 40%;
-  left: 40%;
-  filter: blur(60px);
-  will-change: transform;
-  animation: blob-drift-1 17s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes blob-drift-1 {
-  from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(60px, 40px) scale(1.12); }
-}
-
-@keyframes blob-drift-2 {
-  from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(-40px, -30px) scale(1.08); }
+  right: 0;
+  top: 0;
+  width: 52%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
 }
 
 /* Grid overlay texture */
@@ -531,10 +532,10 @@ button, input, select, textarea {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 70% at 30% 50%, black 20%, transparent 100%);
 }
 
 /* Grain noise overlay */
@@ -542,10 +543,11 @@ button, input, select, textarea {
   position: absolute;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  opacity: 0.04;
+  opacity: 0.035;
   pointer-events: none;
 }
 
+/* Hero content — single column, left aligned */
 .hero__content {
   position: relative;
   z-index: 1;
@@ -554,7 +556,7 @@ button, input, select, textarea {
   flex-direction: column;
   align-items: flex-start;
   gap: var(--sp-4);
-  max-width: 820px;
+  max-width: 700px;
 }
 
 .hero__badge {
@@ -588,11 +590,11 @@ button, input, select, textarea {
 }
 
 .hero__heading {
-  font-family: var(--font-display);
-  font-size: var(--text-hero);
-  font-weight: 400;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-size: clamp(3rem, 7.5vw, 6.5rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
   color: var(--color-text-on-dark);
 }
 
@@ -677,6 +679,14 @@ button, input, select, textarea {
   gap: var(--sp-4);
 }
 
+@media (min-width: 900px) {
+  .services__grid {
+    grid-template-columns: repeat(2, minmax(0, 480px));
+    gap: var(--sp-5);
+    justify-content: center;
+  }
+}
+
 .card {
   background: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(255, 255, 255, 0.07);
@@ -699,7 +709,7 @@ button, input, select, textarea {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--color-accent) 40%, #CFA048 60%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, #9A7020 15%, #D4A840 40%, #F2E080 50%, #D4A840 60%, #9A7020 85%, transparent 100%);
   opacity: 0;
   transition: opacity var(--t-base);
 }
@@ -876,7 +886,7 @@ button, input, select, textarea {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, var(--color-accent), transparent);
+  background: linear-gradient(90deg, #9A7020, #D4A840 40%, #F2E080 60%, transparent);
 }
 
 .stat:hover {
@@ -886,12 +896,12 @@ button, input, select, textarea {
 }
 
 .stat__number {
-  font-family: var(--font-display);
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
   font-size: clamp(3rem, 5vw, 4.75rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   line-height: 1;
-  background: linear-gradient(135deg, #DFC060 20%, #B8913A 80%);
+  background: var(--grad-gold);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -938,7 +948,7 @@ button, input, select, textarea {
   line-height: 1;
   color: var(--color-accent);
   opacity: 0.06;
-  font-family: Georgia, serif;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
   pointer-events: none;
   user-select: none;
 }
@@ -974,7 +984,7 @@ button, input, select, textarea {
 .testimonial__avatar {
   width: 46px;
   height: 46px;
-  background: linear-gradient(135deg, var(--color-accent), #CFA048);
+  background: var(--grad-gold);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1223,22 +1233,23 @@ button, input, select, textarea {
   justify-content: center;
   gap: var(--sp-2);
   padding: 1rem 2.5rem;
-  background: var(--color-accent);
-  color: var(--color-white);
+  background: var(--grad-gold-btn);
+  color: #0A0807;
   font-size: var(--text-base);
   font-weight: var(--fw-semibold);
   border-radius: var(--r-pill);
-  border: none;
+  border: 1px solid rgba(242, 224, 128, 0.25);
   cursor: pointer;
-  transition: background var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+  transition: opacity var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
   align-self: flex-start;
   width: 100%;
+  box-shadow: 0 2px 16px rgba(196, 154, 56, 0.3), inset 0 1px 0 rgba(242, 224, 128, 0.3);
 }
 
 .btn-submit:hover:not(:disabled) {
-  background: var(--color-accent-dark);
+  opacity: 0.88;
   transform: translateY(-1px);
-  box-shadow: var(--shadow-accent);
+  box-shadow: 0 6px 28px rgba(196, 154, 56, 0.45), inset 0 1px 0 rgba(242, 224, 128, 0.3);
 }
 
 .btn-submit:disabled {
@@ -1314,7 +1325,7 @@ button, input, select, textarea {
 .thank-you__check {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, var(--color-accent), #CFA048);
+  background: var(--grad-gold);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1392,6 +1403,9 @@ button, input, select, textarea {
 }
 
 .footer__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   font-size: var(--text-xl);
   font-weight: var(--fw-bold);
   color: var(--color-white);
@@ -1484,9 +1498,11 @@ body::before {
   height: 1px;
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(201,164,53,0.4) 20%,
-    #B8913A 50%,
-    rgba(201,164,53,0.4) 80%,
+    #9A7020 15%,
+    #D4A840 35%,
+    #F2E080 50%,
+    #D4A840 65%,
+    #9A7020 85%,
     transparent 100%);
   z-index: 9999;
   pointer-events: none;
@@ -1533,58 +1549,7 @@ body::before {
   background-size: 28px 28px;
 }
 
-/* 5. Hero concentric rings */
-.hero__rings {
-  position: absolute;
-  right: clamp(-100px, -2vw, 60px);
-  top: 50%;
-  transform: translateY(-48%);
-  width: clamp(320px, 45vw, 580px);
-  height: clamp(320px, 45vw, 580px);
-  pointer-events: none;
-}
-
-.hero__ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px solid rgba(184, 145, 58, 0.12);
-}
-
-.hero__ring::before {
-  content: '';
-  position: absolute;
-  inset: 14%;
-  border-radius: 50%;
-  border: 1px solid rgba(184, 145, 58, 0.08);
-}
-
-.hero__ring::after {
-  content: '';
-  position: absolute;
-  inset: 28%;
-  border-radius: 50%;
-  border: 1px solid rgba(184, 145, 58, 0.06);
-}
-
-/* Glowing dot on the ring */
-.hero__ring-dot {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 6px;
-  height: 6px;
-  background: var(--color-accent);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 12px 2px rgba(184,145,58,0.6);
-  animation: orbit 12s linear infinite;
-}
-
-@keyframes orbit {
-  from { transform: translate(-50%, -50%) rotate(0deg) translateX(calc(clamp(160px, 22.5vw, 290px))) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(360deg) translateX(calc(clamp(160px, 22.5vw, 290px))) rotate(-360deg); }
-}
+/* (hero rings removed — replaced by brand swoosh decoration) */
 
 /* 6. Scrolling tech strip between hero and services */
 .tech-strip {
@@ -1679,11 +1644,11 @@ body::before {
 }
 
 .why__statement {
-  font-family: var(--font-display);
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
   font-size: clamp(1.75rem, 4vw, 3rem);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.2;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   color: var(--color-text-on-dark);
   margin-top: var(--sp-3);
   margin-bottom: var(--sp-4);
@@ -1834,10 +1799,6 @@ details.faq__item[open] > summary::after { transform: rotate(45deg); }
 }
 
 @media (min-width: 768px) {
-  .services__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .testimonials__grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1860,10 +1821,6 @@ details.faq__item[open] > summary::after { transform: rotate(45deg); }
 }
 
 @media (min-width: 1024px) {
-  .services__grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   .testimonials__grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1972,4 +1929,126 @@ details.faq__item[open] > summary::after { transform: rotate(45deg); }
 /* ── Anchor-link nav overlap fix ──────────────────────── */
 section[id] {
   scroll-margin-top: calc(var(--nav-h) + 0.75rem);
+}
+
+/* ── Mobile fixes ─────────────────────────────────────────── */
+@media (max-width: 767px) {
+
+  /* Nav: tighter, no overflow */
+  .nav__inner {
+    gap: var(--sp-2);
+    padding-inline: var(--sp-2);
+  }
+
+  .nav__wordmark {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+  }
+
+  .nav__links {
+    gap: 0;
+  }
+
+  .nav__links a {
+    font-size: 10.5px;
+    padding: 5px 7px;
+  }
+
+  /* Hero: reduce padding, hide swooshes (too wide on small screen) */
+  .hero__swoosh-l,
+  .hero__swoosh-r {
+    display: none;
+  }
+
+  .hero__content {
+    padding-block: var(--sp-8);
+    gap: var(--sp-3);
+    max-width: 100%;
+  }
+
+  .hero__heading {
+    font-size: clamp(2.25rem, 9vw, 3rem);
+  }
+
+  .hero__sub {
+    font-size: var(--text-base);
+    max-width: 100%;
+  }
+
+  .hero__ctas {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .hero__ctas .btn-primary,
+  .hero__ctas .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero__trust {
+    gap: 6px;
+  }
+
+  /* Sections: tighter vertical padding */
+  .section--dark,
+  .section--gray,
+  .section--light {
+    padding-block: var(--sp-10);
+  }
+
+  /* Stats: single column */
+  .stats__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stat__number {
+    font-size: clamp(2.25rem, 9vw, 3rem);
+  }
+
+  /* Process steps: single column */
+  .process__steps {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer: single column stack */
+  .footer__inner {
+    grid-template-columns: 1fr;
+    gap: var(--sp-6);
+  }
+
+  .footer__bottom-inner {
+    flex-direction: column;
+    gap: var(--sp-1);
+    text-align: center;
+  }
+
+  /* Cards: full width, less padding */
+  .card {
+    padding: var(--sp-4) var(--sp-3);
+  }
+
+  /* Section headers */
+  .section__heading {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
+
+  /* Why section: single column */
+  .why__inner {
+    grid-template-columns: 1fr !important;
+  }
+
+  .why__header {
+    position: static;
+  }
+
+  .why__statement {
+    font-size: clamp(1.4rem, 5.5vw, 2rem);
+  }
+
+  /* CTA section padding */
+  .cta-section__content {
+    padding: var(--sp-6) var(--sp-3);
+  }
 }

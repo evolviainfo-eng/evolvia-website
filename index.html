@@ -59,12 +59,13 @@
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23B8913A'/><text x='16' y='23' font-family='Inter,sans-serif' font-weight='700' font-size='18' fill='white' text-anchor='middle'>E</text></svg>">
+  <link rel="icon" type="image/png" href="assets/evolvia-logo.png">
+  <link rel="apple-touch-icon" href="assets/evolvia-logo.png">
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
@@ -74,7 +75,10 @@
   <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
   <header class="nav" id="nav" role="banner">
     <div class="container nav__inner">
-      <a href="index.html" class="nav__logo" aria-label="Evolvia — pradinis puslapis">Evolvia</a>
+      <a href="index.html" class="nav__logo" aria-label="Evolvia — pradinis puslapis">
+        <img src="assets/evolvia-logo.png" class="nav__logomark" alt="" aria-hidden="true">
+        <span class="nav__wordmark">Evolvia</span>
+      </a>
 
       <nav role="navigation" aria-label="Pagrindinė navigacija">
         <ul class="nav__links">
@@ -93,15 +97,26 @@
     <!-- ══ HERO ════════════════════════════════════════════════ -->
     <section class="hero section--dark" aria-labelledby="hero-heading">
       <div class="hero__bg" aria-hidden="true">
-        <div class="hero__blob-1"></div>
-        <div class="hero__blob-2"></div>
-        <div class="hero__blob-3"></div>
+        <!-- Left swoosh panel — brand banner style -->
+        <div class="hero__swoosh-l"></div>
+        <!-- Right layered arc lines -->
+        <svg class="hero__swoosh-r" viewBox="0 0 100 100" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+          <!-- Panel 1 — innermost, brightest gold edge -->
+          <path d="M62,0 C108,0 108,100 62,100 L100,100 L100,0 Z" fill="#111010"/>
+          <path d="M62,0 C108,0 108,100 62,100" fill="none" stroke="rgba(196,154,56,0.65)" stroke-width="0.7"/>
+          <!-- Panel 2 -->
+          <path d="M69,0 C115,0 115,100 69,100 L100,100 L100,0 Z" fill="#131211"/>
+          <path d="M69,0 C115,0 115,100 69,100" fill="none" stroke="rgba(196,154,56,0.38)" stroke-width="0.55"/>
+          <!-- Panel 3 -->
+          <path d="M76,0 C122,0 122,100 76,100 L100,100 L100,0 Z" fill="#151413"/>
+          <path d="M76,0 C122,0 122,100 76,100" fill="none" stroke="rgba(196,154,56,0.2)" stroke-width="0.45"/>
+          <!-- Panel 4 — faint outline only -->
+          <path d="M83,0 C129,0 129,100 83,100" fill="none" stroke="rgba(196,154,56,0.1)" stroke-width="0.35"/>
+          <!-- Panel 5 — barely visible -->
+          <path d="M90,0 C136,0 136,100 90,100" fill="none" stroke="rgba(196,154,56,0.05)" stroke-width="0.25"/>
+        </svg>
         <div class="hero__grid"></div>
         <div class="hero__noise"></div>
-        <div class="hero__rings">
-          <div class="hero__ring"></div>
-          <div class="hero__ring-dot"></div>
-        </div>
       </div>
 
       <div class="container">
@@ -144,7 +159,6 @@
             </span>
           </div>
         </div>
-
       </div>
 
       <div class="hero__scroll" aria-hidden="true">
@@ -465,7 +479,10 @@
   <footer class="footer section--dark" role="contentinfo">
     <div class="container footer__inner">
       <div class="footer__brand">
-        <a href="index.html" class="footer__logo" aria-label="Evolvia pradinis puslapis">Evolvia</a>
+        <a href="index.html" class="footer__logo" aria-label="Evolvia pradinis puslapis">
+          <img src="assets/evolvia-logo.png" class="nav__logomark" alt="" aria-hidden="true">
+          Evolvia
+        </a>
         <p class="footer__tagline">
           AI automatizavimas ir svetainių kūrimas Lietuvoje.
           Dirbame, kad jūsų verslas augtų automatiškai.

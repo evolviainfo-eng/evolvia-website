@@ -22,12 +22,13 @@
   <meta name="mobile-web-app-capable" content="yes">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23B8913A'/><text x='16' y='23' font-family='Inter,sans-serif' font-weight='700' font-size='18' fill='white' text-anchor='middle'>E</text></svg>">
+  <link rel="icon" type="image/png" href="assets/evolvia-logo.png">
+  <link rel="apple-touch-icon" href="assets/evolvia-logo.png">
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
@@ -59,7 +60,10 @@
   <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
   <header class="nav nav--scrolled" id="nav" role="banner">
     <div class="container nav__inner">
-      <a href="index.html" class="nav__logo" aria-label="Evolvia — pradinis puslapis">Evolvia</a>
+      <a href="index.html" class="nav__logo" aria-label="Evolvia — pradinis puslapis">
+        <img src="assets/evolvia-logo.png" class="nav__logomark" alt="" aria-hidden="true">
+        <span class="nav__wordmark">Evolvia</span>
+      </a>
 
       <nav role="navigation" aria-label="Pagrindinė navigacija">
         <ul class="nav__links">
