@@ -1942,22 +1942,38 @@ section[id] {
 
   .nav__wordmark {
     font-size: 12px;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
   }
 
   .nav__links {
     gap: 0;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  /* Hide middle nav link on very small screens to prevent overflow */
+  @media (max-width: 479px) {
+    .nav__links li:nth-child(2) {
+      display: none;
+    }
   }
 
   .nav__links a {
-    font-size: 10.5px;
-    padding: 5px 7px;
+    font-size: 10px;
+    padding: 5px 6px;
+    white-space: nowrap;
   }
 
-  /* Hero: reduce padding, hide swooshes (too wide on small screen) */
-  .hero__swoosh-l,
+  /* Hero: scale swooshes for mobile instead of hiding */
+  .hero__swoosh-l {
+    left: -80%;
+    width: 100%;
+    opacity: 0.6;
+  }
+
   .hero__swoosh-r {
-    display: none;
+    width: 70%;
+    opacity: 0.5;
   }
 
   .hero__content {
