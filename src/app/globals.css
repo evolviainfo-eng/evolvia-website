@@ -1,26 +1,270 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────
+   Evolvia — design tokens (single source of truth)
+   Monochrome only: black / white / grays. Zero color, ever.
+   Default theme is DARK; [data-theme="light"] flips to light mode.
+   ───────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  --bg: #ffffff;          /* page background                  */
+  --surface-2: #f5f5f7;   /* alternating section bands        */
+  --surface: #ffffff;     /* raised cards / panels            */
+  --text: #1d1d1f;        /* primary text                     */
+  --text-muted: #6e6e73;  /* secondary text, captions         */
+  --border: #d2d2d7;      /* hairlines                        */
+  --accent: #0a0a0a;      /* primary CTA fill (auto-contrast) */
+  --accent-text: #ffffff; /* text on the accent fill          */
+  --aura: rgba(0, 0, 0, 0.04); /* hero depth wash             */
+
+  /* Soft, layered shadows for premium depth in light mode */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px rgba(0, 0, 0, 0.06);
+  --shadow-frame: 0 20px 60px rgba(0, 0, 0, 0.12);
+
+  --radius: 14px;
+  --radius-pill: 980px;
+
+  /* Live font stack: real SF Pro on Apple devices, self-hosted Inter elsewhere */
+  --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    var(--font-inter), system-ui, sans-serif;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0a0a0a;
+  --surface-2: #111114;
+  --surface: #1a1a1f;
+  --text: #f5f5f7;
+  --text-muted: #9a9aa3;
+  --border: rgba(255, 255, 255, 0.12);
+  --accent: #ffffff;
+  --accent-text: #0a0a0a;
+  --aura: rgba(255, 255, 255, 0.10);
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-frame: 0 30px 70px rgba(0, 0, 0, 0.6);
+}
+
+/* Map tokens into Tailwind's theme so utilities stay token-driven */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
+
+  /* Constant "ink" tokens — the one always-dark section (never flips) */
+  --color-ink-bg: #0a0a0a;
+  --color-ink-fg: #f5f5f7;
+  --color-ink-border: rgba(255, 255, 255, 0.14);
+
+  --radius-card: var(--radius);
+  --radius-pill: var(--radius-pill);
+
+  --font-sans: var(--font-stack);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 88px; /* clear the sticky nav on anchor jumps */
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-stack);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern", "liga", "calt";
+    transition: background-color 0.5s var(--ease), color 0.5s var(--ease);
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-text);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Smooth the theme flip at the band level */
+  section,
+  header > div,
+  footer {
+    transition: background-color 0.5s var(--ease), border-color 0.5s var(--ease),
+      color 0.5s var(--ease);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─────────────────────────────────────────────────────────────
+   Type scale (fluid). Defined as components so utilities override.
+   ───────────────────────────────────────────────────────────── */
+@layer components {
+  .t-display {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+  .t-h2 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+  .t-h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .t-body {
+    font-size: clamp(1.0625rem, 0.9rem + 0.5vw, 1.1875rem);
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+  .t-eyebrow {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  /* Wordmark — rendered as live text so it stays razor-sharp at any size.
+     Matches the redesigned logo: light, refined, slightly open. */
+  .wordmark {
+    font-weight: 300;
+    letter-spacing: -0.005em;
+    font-feature-settings: "kern";
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Ambient motion — slow, looping, GPU-cheap (transform/opacity only).
+   All disabled under prefers-reduced-motion.
+   ───────────────────────────────────────────────────────────── */
+@keyframes evolvia-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+@keyframes evolvia-twinkle {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: rotate(90deg) scale(1.16);
+    opacity: 1;
+  }
+}
+@keyframes evolvia-cursor {
+  0% {
+    transform: translate(0, 0);
+  }
+  30% {
+    transform: translate(-14px, 34px);
+  }
+  46% {
+    transform: translate(-14px, 34px);
+  }
+  64% {
+    transform: translate(8px, 8px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes evolvia-scrollcue {
+  0% {
+    transform: translateY(-2px);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+}
+@keyframes evolvia-aura {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
+}
+
+.anim-float {
+  animation: evolvia-float 7.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.anim-twinkle {
+  transform-origin: center;
+  animation: evolvia-twinkle 6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.anim-cursor {
+  animation: evolvia-cursor 6.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+.anim-scrollcue {
+  animation: evolvia-scrollcue 2.6s ease-in-out infinite;
+}
+.anim-aura {
+  animation: evolvia-aura 9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-float,
+  .anim-twinkle,
+  .anim-cursor,
+  .anim-scrollcue,
+  .anim-aura {
+    animation: none;
+  }
+}
+
+/* Hide scrollbars on the horizontal work rail while keeping it scrollable */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
