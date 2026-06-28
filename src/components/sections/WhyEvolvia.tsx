@@ -26,73 +26,91 @@ export function WhyEvolvia() {
         </Reveal>
 
         <Reveal className="mt-[clamp(40px,6vw,72px)]">
-          <p className="mb-3 text-[0.78rem] text-text-muted lg:hidden">
-            Slinkite lentelę →
-          </p>
-          {/* Comfortable columns; scrolls horizontally on narrow screens so
-              the text always fits. Evolvia is the first data column (visible
-              without scrolling) and the criterion column is pinned. */}
-          <div className="-mx-6 overflow-x-auto px-6 lg:mx-0 lg:overflow-visible lg:px-0">
-            <table className="w-full min-w-[660px] table-fixed border-collapse text-left lg:min-w-0">
-              <colgroup>
-                <col className="w-[24%]" />
-                <col className="w-[27%]" />
-                <col className="w-[24.5%]" />
-                <col className="w-[24.5%]" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th className="sticky left-0 z-10 bg-bg" />
-                  <th className="rounded-t-[14px] bg-surface-2 px-4 py-4 text-center align-middle sm:px-5 sm:py-5">
-                    <span className="inline-block rounded-full bg-accent px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-accent-text">
+          {/* DESKTOP: real 4-column table (fits, no scroll) */}
+          <table className="hidden w-full table-fixed border-collapse text-left lg:table">
+            <colgroup>
+              <col className="w-[24%]" />
+              <col className="w-[27%]" />
+              <col className="w-[24.5%]" />
+              <col className="w-[24.5%]" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th />
+                <th className="rounded-t-[14px] bg-surface-2 px-5 py-5 text-center align-middle">
+                  <span className="inline-block rounded-full bg-accent px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-accent-text">
+                    {compareColumns[2]}
+                  </span>
+                </th>
+                <th className={cn(cell, "border-b border-border text-[0.72rem] font-medium uppercase tracking-[0.08em]", loser)}>
+                  {compareColumns[0]}
+                </th>
+                <th className={cn(cell, "border-b border-border text-[0.72rem] font-medium uppercase tracking-[0.08em]", loser)}>
+                  {compareColumns[1]}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {compareRows.map((row, ri) => {
+                const isLast = ri === LAST;
+                return (
+                  <tr key={row.criterion}>
+                    <th scope="row" className={cn("py-5 pr-4 text-left align-middle text-[0.92rem] font-medium text-text", !isLast && "border-b border-border")}>
+                      {row.criterion}
+                    </th>
+                    <td className={cn(cell, "bg-surface-2 font-medium text-text", isLast ? "rounded-b-[14px]" : "border-b border-border")}>
+                      <span className="mr-1.5 text-text-muted">•</span>
+                      {row.values[2]}
+                    </td>
+                    <td className={cn(cell, loser, !isLast && "border-b border-border")}>
+                      <span className="mr-1.5 text-text-muted/60">—</span>
+                      {row.values[0]}
+                    </td>
+                    <td className={cn(cell, loser, !isLast && "border-b border-border")}>
+                      <span className="mr-1.5 text-text-muted/60">—</span>
+                      {row.values[1]}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          {/* MOBILE: grouped by criterion — no horizontal scroll, text always fits */}
+          <div className="border-t border-border lg:hidden">
+            {compareRows.map((row) => (
+              <div key={row.criterion} className="border-b border-border py-5">
+                <p className="mb-3 text-[0.95rem] font-medium text-text">
+                  {row.criterion}
+                </p>
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-start gap-3 rounded-lg bg-surface-2 px-3 py-2.5">
+                    <span className="w-[5.25rem] shrink-0 pt-0.5 text-[0.68rem] font-semibold uppercase leading-snug tracking-[0.04em] text-text">
                       {compareColumns[2]}
                     </span>
-                  </th>
-                  <th className={cn(cell, "border-b border-border text-[0.72rem] font-medium uppercase tracking-[0.08em]", loser)}>
-                    {compareColumns[0]}
-                  </th>
-                  <th className={cn(cell, "border-b border-border text-[0.72rem] font-medium uppercase tracking-[0.08em]", loser)}>
-                    {compareColumns[1]}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {compareRows.map((row, ri) => {
-                  const isLast = ri === LAST;
-                  return (
-                    <tr key={row.criterion}>
-                      <th
-                        scope="row"
-                        className={cn(
-                          "sticky left-0 z-10 bg-bg py-5 pr-4 text-left align-middle text-[0.9rem] font-medium text-text sm:text-[0.92rem]",
-                          !isLast && "border-b border-border",
-                        )}
-                      >
-                        {row.criterion}
-                      </th>
-                      <td
-                        className={cn(
-                          cell,
-                          "bg-surface-2 font-medium text-text",
-                          isLast ? "rounded-b-[14px]" : "border-b border-border",
-                        )}
-                      >
-                        <span className="mr-1.5 text-text-muted">•</span>
-                        {row.values[2]}
-                      </td>
-                      <td className={cn(cell, loser, !isLast && "border-b border-border")}>
-                        <span className="mr-1.5 text-text-muted/60">—</span>
-                        {row.values[0]}
-                      </td>
-                      <td className={cn(cell, loser, !isLast && "border-b border-border")}>
-                        <span className="mr-1.5 text-text-muted/60">—</span>
-                        {row.values[1]}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                    <span className="text-[0.92rem] font-medium leading-snug text-text">
+                      {row.values[2]}
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3 px-3 py-1">
+                    <span className="w-[5.25rem] shrink-0 pt-0.5 text-[0.68rem] uppercase leading-snug tracking-[0.04em] text-text-muted">
+                      {compareColumns[0]}
+                    </span>
+                    <span className="text-[0.9rem] leading-snug text-text-muted">
+                      {row.values[0]}
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3 px-3 py-1">
+                    <span className="w-[5.25rem] shrink-0 pt-0.5 text-[0.68rem] uppercase leading-snug tracking-[0.04em] text-text-muted">
+                      {compareColumns[1]}
+                    </span>
+                    <span className="text-[0.9rem] leading-snug text-text-muted">
+                      {row.values[1]}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </Reveal>
 
