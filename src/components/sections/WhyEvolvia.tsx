@@ -9,7 +9,7 @@ import { cn } from "@/lib/cn";
 const LAST = compareRows.length - 1;
 
 const cell =
-  "px-2.5 py-4 align-middle text-[0.8rem] sm:px-5 sm:py-5 sm:text-[0.92rem]";
+  "px-4 py-5 align-middle text-[0.9rem] break-words sm:px-5 sm:text-[0.92rem]";
 const loser = "text-text-muted";
 
 export function WhyEvolvia() {
@@ -26,68 +26,74 @@ export function WhyEvolvia() {
         </Reveal>
 
         <Reveal className="mt-[clamp(40px,6vw,72px)]">
-          {/* one comparison table that fits the viewport at every size; the
-              Evolvia column is highlighted with visible row lines. */}
-          <table className="w-full table-fixed border-collapse text-left">
-            <colgroup>
-              <col className="w-[27%] sm:w-[28%]" />
-              <col className="w-[24.3%] sm:w-[24%]" />
-              <col className="w-[24.3%] sm:w-[24%]" />
-              <col className="w-[24.4%] sm:w-[24%]" />
-            </colgroup>
-            <thead>
-              <tr>
-                <th />
-                <th className={cn(cell, "border-b border-border text-[0.66rem] font-medium uppercase tracking-[0.07em] sm:text-[0.76rem] sm:tracking-[0.09em]", loser)}>
-                  {compareColumns[0]}
-                </th>
-                <th className={cn(cell, "border-b border-border text-[0.66rem] font-medium uppercase tracking-[0.07em] sm:text-[0.76rem] sm:tracking-[0.09em]", loser)}>
-                  {compareColumns[1]}
-                </th>
-                <th className="rounded-t-[14px] bg-surface-2 px-2.5 py-4 text-center align-middle sm:px-5 sm:py-5">
-                  <span className="inline-block rounded-full bg-accent px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-accent-text">
-                    {compareColumns[2]}
-                  </span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {compareRows.map((row, ri) => {
-                const isLast = ri === LAST;
-                return (
-                  <tr key={row.criterion}>
-                    <th
-                      scope="row"
-                      className={cn(
-                        "py-4 pr-2.5 text-left text-[0.8rem] font-medium text-text align-middle sm:pr-4 sm:text-[0.92rem]",
-                        !isLast && "border-b border-border",
-                      )}
-                    >
-                      {row.criterion}
-                    </th>
-                    <td className={cn(cell, loser, !isLast && "border-b border-border")}>
-                      <span className="mr-1 text-text-muted/60 sm:mr-1.5">—</span>
-                      {row.values[0]}
-                    </td>
-                    <td className={cn(cell, loser, !isLast && "border-b border-border")}>
-                      <span className="mr-1 text-text-muted/60 sm:mr-1.5">—</span>
-                      {row.values[1]}
-                    </td>
-                    <td
-                      className={cn(
-                        cell,
-                        "bg-surface-2 font-medium text-text",
-                        isLast ? "rounded-b-[14px]" : "border-b border-border",
-                      )}
-                    >
-                      <span className="mr-1 text-text-muted sm:mr-1.5">•</span>
-                      {row.values[2]}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <p className="mb-3 text-[0.78rem] text-text-muted lg:hidden">
+            Slinkite lentelę →
+          </p>
+          {/* Comfortable columns; scrolls horizontally on narrow screens so
+              the text always fits. Evolvia is the first data column (visible
+              without scrolling) and the criterion column is pinned. */}
+          <div className="-mx-6 overflow-x-auto px-6 lg:mx-0 lg:overflow-visible lg:px-0">
+            <table className="w-full min-w-[660px] table-fixed border-collapse text-left lg:min-w-0">
+              <colgroup>
+                <col className="w-[24%]" />
+                <col className="w-[27%]" />
+                <col className="w-[24.5%]" />
+                <col className="w-[24.5%]" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th className="sticky left-0 z-10 bg-bg" />
+                  <th className="rounded-t-[14px] bg-surface-2 px-4 py-4 text-center align-middle sm:px-5 sm:py-5">
+                    <span className="inline-block rounded-full bg-accent px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-accent-text">
+                      {compareColumns[2]}
+                    </span>
+                  </th>
+                  <th className={cn(cell, "border-b border-border text-[0.72rem] font-medium uppercase tracking-[0.08em]", loser)}>
+                    {compareColumns[0]}
+                  </th>
+                  <th className={cn(cell, "border-b border-border text-[0.72rem] font-medium uppercase tracking-[0.08em]", loser)}>
+                    {compareColumns[1]}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {compareRows.map((row, ri) => {
+                  const isLast = ri === LAST;
+                  return (
+                    <tr key={row.criterion}>
+                      <th
+                        scope="row"
+                        className={cn(
+                          "sticky left-0 z-10 bg-bg py-5 pr-4 text-left align-middle text-[0.9rem] font-medium text-text sm:text-[0.92rem]",
+                          !isLast && "border-b border-border",
+                        )}
+                      >
+                        {row.criterion}
+                      </th>
+                      <td
+                        className={cn(
+                          cell,
+                          "bg-surface-2 font-medium text-text",
+                          isLast ? "rounded-b-[14px]" : "border-b border-border",
+                        )}
+                      >
+                        <span className="mr-1.5 text-text-muted">•</span>
+                        {row.values[2]}
+                      </td>
+                      <td className={cn(cell, loser, !isLast && "border-b border-border")}>
+                        <span className="mr-1.5 text-text-muted/60">—</span>
+                        {row.values[0]}
+                      </td>
+                      <td className={cn(cell, loser, !isLast && "border-b border-border")}>
+                        <span className="mr-1.5 text-text-muted/60">—</span>
+                        {row.values[1]}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </Reveal>
 
         <Reveal className="mt-12">
