@@ -44,8 +44,10 @@ export function WhyEvolvia() {
                 <th className={cn(cell, "border-b border-border text-[0.66rem] font-medium uppercase tracking-[0.07em] sm:text-[0.76rem] sm:tracking-[0.09em]", loser)}>
                   {compareColumns[1]}
                 </th>
-                <th className="rounded-t-[14px] bg-accent px-2.5 py-3 text-center text-[0.78rem] font-medium text-accent-text sm:px-5 sm:py-3.5 sm:text-[0.95rem]">
-                  {compareColumns[2]}
+                <th className="rounded-t-[14px] bg-surface-2 px-2.5 py-4 text-center align-middle sm:px-5 sm:py-5">
+                  <span className="inline-block rounded-full bg-accent px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-accent-text">
+                    {compareColumns[2]}
+                  </span>
                 </th>
               </tr>
             </thead>

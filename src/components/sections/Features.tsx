@@ -84,19 +84,15 @@ export function Features() {
         const cards = gsap.utils.toArray<HTMLElement>(".stack-card");
         cards.forEach((card, i) => {
           if (i >= cards.length - 1) return;
-          // recede each card to a faint ghost as the next stacks over it.
-          // force3D:false keeps 2D transforms so text stays crisp (no blurry
-          // GPU-layer rasterization while scrolling).
+          // recede to a faint ghost via OPACITY ONLY (no scale) — scaling
+          // rasterizes text and makes it blurry; opacity keeps it crisp.
           gsap.to(card, {
-            scale: 0.9,
-            opacity: 0.1,
-            transformOrigin: "center top",
-            force3D: false,
+            opacity: 0.12,
             ease: "none",
             scrollTrigger: {
               trigger: cards[i + 1],
-              start: "top 95%",
-              end: "top 62%",
+              start: "top 92%",
+              end: "top 58%",
               scrub: true,
             },
           });
