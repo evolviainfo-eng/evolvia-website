@@ -67,10 +67,10 @@ export function TrustStatement() {
 
             <h2
               aria-hidden="true"
-              className="mt-6 font-bold tracking-[-0.03em]"
+              className="mt-6 font-normal tracking-[-0.035em]"
               style={{
                 fontSize: "clamp(2rem, 4.6vw, 3.9rem)",
-                lineHeight: 1.12,
+                lineHeight: 1.14,
               }}
             >
               {WORDS.map((w, i) => {

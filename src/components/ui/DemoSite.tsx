@@ -20,8 +20,9 @@ function Chrome({ url }: { url: string }) {
   );
 }
 
+// taller than the frame so it can parallax without revealing edges
 const imgClass =
-  "absolute inset-0 h-full w-full object-cover grayscale";
+  "work-img absolute left-0 top-[-6%] h-[112%] w-full object-cover grayscale";
 
 function Architecture({ demo }: { demo: Demo }) {
   return (
@@ -129,7 +130,7 @@ export function DemoSite({
       aria-hidden="true"
     >
       <Chrome url={demo.url} />
-      <div className={cn("relative w-full overflow-hidden bg-black", ratioClass)}>
+      <div className={cn("work-frame relative w-full overflow-hidden bg-black", ratioClass)}>
         {demo.variant === "architecture" && <Architecture demo={demo} />}
         {demo.variant === "restaurant" && <Restaurant demo={demo} />}
         {demo.variant === "interior" && <Interior demo={demo} />}

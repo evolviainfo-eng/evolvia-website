@@ -126,23 +126,25 @@
    Type scale (fluid). Defined as components so utilities override.
    ───────────────────────────────────────────────────────────── */
 @layer components {
+  /* Light, sleek type to match the redesigned (thin) logo.
+     Hierarchy comes from size + tracking, not heavy weight. */
   .t-display {
     font-size: clamp(2.8rem, 6vw, 5rem);
-    font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -0.03em;
+    font-weight: 400;
+    line-height: 1.06;
+    letter-spacing: -0.035em;
   }
   .t-h2 {
     font-size: clamp(2rem, 4vw, 3.2rem);
-    font-weight: 700;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
   }
   .t-h3 {
     font-size: 1.4rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.25;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
   }
   .t-body {
     font-size: clamp(1.0625rem, 0.9rem + 0.5vw, 1.1875rem);
@@ -152,9 +154,9 @@
   }
   .t-eyebrow {
     font-size: 0.8rem;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     color: var(--text-muted);
   }
 
@@ -267,4 +269,22 @@
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }

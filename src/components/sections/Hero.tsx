@@ -52,7 +52,7 @@ export function Hero() {
               web dizainas
             </motion.p>
 
-            <h1 className="mt-6 font-bold tracking-[-0.035em] text-text [font-size:clamp(2.6rem,5.4vw,4.6rem)] [line-height:1.03]">
+            <h1 className="mt-6 font-normal tracking-[-0.04em] text-text [font-size:clamp(2.6rem,5.4vw,4.6rem)] [line-height:1.04]">
               <motion.span {...rise(0.16)} className="block">
                 Tavo konkurentai
               </motion.span>

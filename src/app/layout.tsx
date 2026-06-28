@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
+import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import "./globals.css";
 
 /* Inter is the cross-platform fallback (self-hosted by next/font).
@@ -74,6 +75,7 @@ export default function RootLayout({
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
+        <SmoothScroll />
         {children}
       </body>
     </html>
