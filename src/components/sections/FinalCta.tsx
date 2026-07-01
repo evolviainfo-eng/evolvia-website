@@ -11,25 +11,46 @@ const fieldBase =
   "placeholder:text-text-muted/70 outline-none transition-colors duration-200 " +
   "focus:border-text";
 
-export function FinalCta() {
-  const [sent, setSent] = useState(false);
+type Status = "idle" | "sending" | "sent" | "mailto" | "error";
 
-  // Works with no backend: composes a prefilled email. Swap for a Formspree
-  // endpoint later if you want inbox capture without the mail client.
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+export function FinalCta() {
+  const [status, setStatus] = useState<Status>("idle");
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
-    const name = String(data.get("name") ?? "").trim();
-    const email = String(data.get("email") ?? "").trim();
-    const message = String(data.get("message") ?? "").trim();
 
-    const subject = `Užklausa iš svetainės — ${name || "naujas klientas"}`;
-    const body = `Vardas: ${name}\nEl. paštas: ${email}\n\n${message}`;
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    // No form backend configured yet → open the visitor's mail app instead.
+    if (!site.formspreeId) {
+      const name = String(data.get("name") ?? "").trim();
+      const email = String(data.get("email") ?? "").trim();
+      const message = String(data.get("message") ?? "").trim();
+      const subject = `Užklausa iš svetainės — ${name || "naujas klientas"}`;
+      const body = `Vardas: ${name}\nEl. paštas: ${email}\n\n${message}`;
+      window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
+        subject,
+      )}&body=${encodeURIComponent(body)}`;
+      setStatus("mailto");
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const res = await fetch(`https://formspree.io/f/${site.formspreeId}`, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: data,
+      });
+      if (res.ok) {
+        setStatus("sent");
+        form.reset();
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
   }
 
   return (
@@ -93,16 +114,29 @@ export function FinalCta() {
                 className={`${fieldBase} resize-none`}
               />
             </div>
+            {/* subject line for the Formspree notification email */}
+            <input type="hidden" name="_subject" value="Nauja užklausa iš evolvia.lt" />
             <button
               type="submit"
-              className="inline-flex h-[52px] items-center justify-center rounded-pill bg-accent px-8 text-base font-medium text-accent-text transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0"
+              disabled={status === "sending"}
+              className="inline-flex h-[52px] items-center justify-center rounded-pill bg-accent px-8 text-base font-medium text-accent-text transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0 disabled:opacity-60"
             >
-              Siųsti užklausą
+              {status === "sending" ? "Siunčiama…" : "Siųsti užklausą"}
             </button>
-            {sent && (
+            {status === "sent" && (
+              <p className="text-center text-[0.95rem] text-text-muted" role="status">
+                Ačiū! Gavome jūsų žinutę — atsakysime per dieną.
+              </p>
+            )}
+            {status === "mailto" && (
               <p className="text-center text-[0.95rem] text-text-muted" role="status">
                 Atsidaro jūsų el. pašto programa. Jei ne — rašykite tiesiai{" "}
                 {site.email}.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-center text-[0.95rem] text-text-muted" role="status">
+                Nepavyko išsiųsti. Parašykite tiesiai {site.email}.
               </p>
             )}
           </form>

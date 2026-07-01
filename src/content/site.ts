@@ -6,6 +6,11 @@ export const site = {
   email: "evolvia.info@gmail.com",
   location: "Kaunas, Lietuva",
   year: 2026,
+  /** Production URL — used for canonical, OG, sitemap, robots. */
+  url: "https://evolvia.lt",
+  /** Formspree form id (the part after /f/ in the endpoint). Empty = the
+   *  contact form falls back to opening the visitor's mail app (mailto). */
+  formspreeId: "mzdljkzb",
 } as const;
 
 export const navLinks = [
