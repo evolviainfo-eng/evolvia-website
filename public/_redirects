@@ -1,0 +1,10 @@
+# Old pre-redesign agency-site pages → new single-page site (301).
+# These URLs are still in Google's index; send visitors to the new page
+# instead of a 404, and let Google consolidate them onto the homepage.
+/kontaktas.html    /#kontaktai    301!
+/kontaktas         /#kontaktai    301!
+/aciu.html         /              301!
+/aciu              /              301!
+/privatumas.html   /              301!
+/privatumas        /              301!
+/index.html        /              301!
