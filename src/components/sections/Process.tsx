@@ -57,19 +57,25 @@ export function Process() {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
 
+  // A wide scroll band so the sequence unfolds calmly across the whole
+  // section (the old "start 80%"→"end 60%" window lit everything up almost
+  // at once — it read as rushed).
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 80%", "end 60%"],
+    offset: ["start 82%", "end 30%"],
   });
 
-  // Connecting line draws as the section scrolls in.
-  const lineGrow = useTransform(scrollYProgress, [0, 0.85], [0, 1]);
+  // Connecting line draws as the section scrolls in. The explicit hold
+  // keyframe at progress 1 matters: framer's native ScrollTimeline path
+  // otherwise animates back to the initial value after the last keyframe
+  // (the line un-drew and nodes un-lit at the end of the section).
+  const lineGrow = useTransform(scrollYProgress, [0, 0.85, 1], [0, 1, 1]);
 
   // Per-step activation windows (each node lights up in sequence).
-  const a0 = useTransform(scrollYProgress, [0.0, 0.18], [0, 1]);
-  const a1 = useTransform(scrollYProgress, [0.22, 0.4], [0, 1]);
-  const a2 = useTransform(scrollYProgress, [0.46, 0.64], [0, 1]);
-  const a3 = useTransform(scrollYProgress, [0.7, 0.88], [0, 1]);
+  const a0 = useTransform(scrollYProgress, [0.0, 0.18, 1], [0, 1, 1]);
+  const a1 = useTransform(scrollYProgress, [0.22, 0.4, 1], [0, 1, 1]);
+  const a2 = useTransform(scrollYProgress, [0.46, 0.64, 1], [0, 1, 1]);
+  const a3 = useTransform(scrollYProgress, [0.7, 0.88, 1], [0, 1, 1]);
   const actives = reduce ? [null, null, null, null] : [a0, a1, a2, a3];
 
   return (

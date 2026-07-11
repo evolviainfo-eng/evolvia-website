@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { Button } from "@/components/ui/Button";
@@ -13,6 +14,7 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -47,8 +49,8 @@ export function Nav() {
         <Container>
           <nav className="flex h-16 items-center justify-between sm:h-[72px]">
             <a
-              href="#top"
-              aria-label="evolvia. — į viršų"
+              href="/"
+              aria-label="evolvia. — į pradžią"
               className="rounded-md outline-none"
             >
               <Wordmark />
@@ -56,20 +58,27 @@ export function Nav() {
 
             {/* desktop links */}
             <div className="hidden items-center gap-9 md:flex">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-[0.95rem] text-text-muted transition-colors duration-200 hover:text-text"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((link) => {
+                const active = pathname === link.href;
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "text-[0.95rem] transition-colors duration-200 hover:text-text",
+                      active ? "text-text" : "text-text-muted",
+                    )}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
             </div>
 
             <div className="hidden items-center gap-3 md:flex">
               <ThemeToggle />
-              <Button href="#kontaktai" variant="primary">
+              <Button href="/kontaktai" variant="primary">
                 Susisiekti
               </Button>
             </div>
@@ -138,7 +147,7 @@ export function Nav() {
               </nav>
               <div className="mt-auto">
                 <Button
-                  href="#kontaktai"
+                  href="/kontaktai"
                   variant="primary"
                   size="lg"
                   className="w-full"

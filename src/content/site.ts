@@ -13,9 +13,21 @@ export const site = {
   formspreeId: "mzdljkzb",
 } as const;
 
+/** Real routes (separate pages for SEO). The homepage keeps its in-page
+ *  anchors for its own CTAs, but navigation links point at the pages. */
 export const navLinks = [
-  { label: "Paslaugos", href: "#paslaugos" },
-  { label: "Procesas", href: "#procesas" },
-  { label: "Darbai", href: "#darbai" },
-  { label: "Kainos", href: "#kainos" },
+  { label: "Paslaugos", href: "/paslaugos" },
+  { label: "Darbai", href: "/darbai" },
+  { label: "Kainos", href: "/kainos" },
+  { label: "DUK", href: "/duk" },
+] as const;
+
+/** Every indexable page — single source of truth for sitemap + footer. */
+export const pages = [
+  { label: "Pradžia", path: "/" },
+  { label: "Paslaugos", path: "/paslaugos" },
+  { label: "Darbai", path: "/darbai" },
+  { label: "Kainos", path: "/kainos" },
+  { label: "DUK", path: "/duk" },
+  { label: "Kontaktai", path: "/kontaktai" },
 ] as const;

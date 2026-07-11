@@ -13,7 +13,12 @@ const fieldBase =
 
 type Status = "idle" | "sending" | "sent" | "mailto" | "error";
 
-export function FinalCta() {
+export function FinalCta({
+  standalone = false,
+}: {
+  /** true on /kontaktai — the PageHeader already carries the heading. */
+  standalone?: boolean;
+}) {
   const [status, setStatus] = useState<Status>("idle");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -57,19 +62,23 @@ export function FinalCta() {
     <Section id="kontaktai" tone="secondary">
       <Container>
         <Reveal className="mx-auto max-w-[680px] text-center">
-          <h2 className="t-display">Pradėkim.</h2>
-          <p className="t-body mx-auto mt-6 max-w-[40ch]">
-            Parašykite — atsakysime per dieną.
-          </p>
+          {!standalone && (
+            <>
+              <h2 className="t-display">Pradėkim.</h2>
+              <p className="t-body mx-auto mt-6 max-w-[40ch]">
+                Parašykite — atsakysime per dieną.
+              </p>
+            </>
+          )}
           <a
             href={`mailto:${site.email}`}
-            className="mt-6 inline-block text-[1.15rem] font-medium text-text underline decoration-border underline-offset-[6px] transition-colors hover:decoration-text"
+            className={`inline-block text-[1.15rem] font-medium text-text underline decoration-border underline-offset-[6px] transition-colors hover:decoration-text ${standalone ? "" : "mt-6"}`}
           >
             {site.email}
           </a>
         </Reveal>
 
-        <Reveal delay={0.08} className="mx-auto mt-12 max-w-[560px]">
+        <Reveal delay={0.08} className={`mx-auto max-w-[560px] ${standalone ? "mt-10" : "mt-12"}`}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div>

@@ -9,7 +9,14 @@ import { faqItems } from "@/content/faq";
 import { site } from "@/content/site";
 import { cn } from "@/lib/cn";
 
-export function Faq() {
+export function Faq({
+  standalone = false,
+  contactHref = "#kontaktai",
+}: {
+  /** true on /duk — the PageHeader already carries the heading. */
+  standalone?: boolean;
+  contactHref?: string;
+}) {
   const [open, setOpen] = useState<number | null>(null);
   const reduce = useReducedMotion();
   const baseId = useId();
@@ -18,22 +25,30 @@ export function Faq() {
   return (
     <Section id="duk" tone="light">
       <Container>
-        <div className="grid gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-16">
+        <div
+          className={
+            standalone
+              ? "mx-auto max-w-[780px]"
+              : "grid gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-16"
+          }
+        >
           {/* sticky editorial heading */}
-          <div className="md:sticky md:top-32 md:self-start">
-            <Eyebrow>D.U.K.</Eyebrow>
-            <h2 className="t-h2 mt-4">Dažni klausimai.</h2>
-            <p className="t-body mt-5 max-w-[34ch]">
-              Nerandate atsakymo?{" "}
-              <a
-                href="#kontaktai"
-                className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-text"
-              >
-                Parašykite mums
-              </a>{" "}
-              — atsakysime per dieną.
-            </p>
-          </div>
+          {!standalone && (
+            <div className="md:sticky md:top-32 md:self-start">
+              <Eyebrow>D.U.K.</Eyebrow>
+              <h2 className="t-h2 mt-4">Dažni klausimai.</h2>
+              <p className="t-body mt-5 max-w-[34ch]">
+                Nerandate atsakymo?{" "}
+                <a
+                  href={contactHref}
+                  className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-text"
+                >
+                  Parašykite mums
+                </a>{" "}
+                — atsakysime per dieną.
+              </p>
+            </div>
+          )}
 
           {/* accordion */}
           <ul className="border-t border-border">
@@ -88,6 +103,19 @@ export function Faq() {
               );
             })}
           </ul>
+
+          {standalone && (
+            <p className="t-body mt-8">
+              Nerandate atsakymo?{" "}
+              <a
+                href={contactHref}
+                className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-text"
+              >
+                Parašykite mums
+              </a>{" "}
+              — atsakysime per dieną.
+            </p>
+          )}
         </div>
 
         {/* fallback contact for crawlers / no-JS clarity */}

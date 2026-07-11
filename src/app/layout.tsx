@@ -17,7 +17,10 @@ const SITE_URL = "https://evolvia.lt";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Evolvia — Web dizainas Lietuvoje",
+  title: {
+    default: "Evolvia — Web dizainas Lietuvoje",
+    template: "%s — Evolvia",
+  },
   description:
     "Modernios svetainės Lietuvos verslui. Pamatote svetainę gyvai — tik tada mokate. Nuo pirmo eskizo iki paleidimo viskas padaroma už jus.",
   keywords: [
@@ -66,6 +69,24 @@ export const viewport: Viewport = {
 // Light is the default; applies a stored dark-mode preference before paint.
 const themeScript = `(function(){try{if(localStorage.getItem('theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();`;
 
+// Sitewide structured data — who Evolvia is, where it works, what it costs.
+const businessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Evolvia",
+  description:
+    "Modernios svetainės Lietuvos verslui — dizainas, programavimas, paleidimas ir priežiūra.",
+  url: SITE_URL,
+  email: "evolvia.info@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Kaunas",
+    addressCountry: "LT",
+  },
+  areaServed: "Lietuva",
+  priceRange: "€300–€600",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -75,6 +96,10 @@ export default function RootLayout({
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
+        />
         <SmoothScroll />
         {children}
       </body>

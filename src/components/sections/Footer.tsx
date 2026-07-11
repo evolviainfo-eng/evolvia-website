@@ -1,6 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import { Wordmark } from "@/components/ui/Wordmark";
-import { navLinks, site } from "@/content/site";
+import { pages, site } from "@/content/site";
 
 export function Footer() {
   return (
@@ -17,13 +17,13 @@ export function Footer() {
 
             <div className="flex flex-col gap-10 sm:flex-row sm:gap-20">
               <nav className="flex flex-col gap-3" aria-label="Poraštės navigacija">
-                {navLinks.map((link) => (
+                {pages.map((page) => (
                   <a
-                    key={link.href}
-                    href={link.href}
+                    key={page.path}
+                    href={page.path}
                     className="text-[0.95rem] text-text-muted transition-colors duration-200 hover:text-text"
                   >
-                    {link.label}
+                    {page.label}
                   </a>
                 ))}
               </nav>
@@ -34,12 +34,7 @@ export function Footer() {
                 >
                   {site.email}
                 </a>
-                <a
-                  href="#kontaktai"
-                  className="text-[0.95rem] text-text-muted transition-colors duration-200 hover:text-text"
-                >
-                  Susisiekti
-                </a>
+                <p className="text-[0.95rem] text-text-muted">{site.location}</p>
               </div>
             </div>
           </div>

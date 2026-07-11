@@ -13,8 +13,11 @@ import { Container } from "@/components/ui/Container";
 const STATEMENT = "Pamatote svetainę gyvai. Tik tada mokate.";
 const WORDS = STATEMENT.split(" ");
 
-// Words reveal across the first ~65% of scroll; the sub-line follows.
-const REVEAL_END = 0.62;
+// Words reveal across the first half of the scroll, the sub-line follows
+// right after — and everything HOLDS fully visible for the rest of the pin
+// (the sub-line used to appear at ~0.9 and unpin immediately: it flashed
+// and vanished before it could be read).
+const REVEAL_END = 0.5;
 
 function Word({
   children,
@@ -29,7 +32,11 @@ function Word({
   end: number;
   reduce: boolean;
 }) {
-  const opacity = useTransform(progress, [start, end], [0.14, 1]);
+  // NOTE: every mapping needs an explicit hold keyframe at progress 1 —
+  // framer's native ScrollTimeline path otherwise interpolates back to the
+  // element's inline initial value after the last keyframe (the text used
+  // to fade back OUT during the final third of the pin).
+  const opacity = useTransform(progress, [start, end, 1], [0.14, 1, 1]);
   return (
     <span className="inline-block">
       <motion.span style={reduce ? undefined : { opacity }} className="inline-block">
@@ -50,14 +57,15 @@ export function TrustStatement() {
     offset: ["start start", "end end"],
   });
 
-  const subOpacity = useTransform(scrollYProgress, [0.68, 0.9], [0, 1]);
-  const subY = useTransform(scrollYProgress, [0.68, 0.9], [20, 0]);
+  const subOpacity = useTransform(scrollYProgress, [0.54, 0.7, 1], [0, 1, 1]);
+  const subY = useTransform(scrollYProgress, [0.54, 0.7, 1], [20, 0, 0]);
 
   return (
-    // Tall track gives the sticky inner room to scrub the reveal.
+    // Tall track gives the sticky inner room to scrub the reveal — and a
+    // long fully-assembled hold (~last 30%) so the message can be read.
     <section
       ref={ref}
-      className="relative min-h-[200vh] bg-ink-bg text-ink-fg"
+      className="relative min-h-[220vh] bg-ink-bg text-ink-fg"
       aria-label="Pamatote svetainę gyvai. Tik tada mokate."
     >
       <div className="sticky top-0 flex min-h-[100svh] items-center py-24">

@@ -5,40 +5,19 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
-import { Eyebrow } from "@/components/ui/Eyebrow";
-import { Reveal } from "@/components/ui/Reveal";
-import { Button } from "@/components/ui/Button";
 import { DemoSite } from "@/components/ui/DemoSite";
-import { demos, type Demo } from "@/content/demos";
+import { demos } from "@/content/demos";
+import { cn } from "@/lib/cn";
 
-function Caption({ demo }: { demo: Demo }) {
-  return (
-    <figcaption className="mt-5 flex flex-col gap-1.5">
-      <div className="flex items-center gap-3">
-        <h3 className="text-[1.15rem] font-medium tracking-[-0.01em]">
-          {demo.name}
-        </h3>
-        <span className="rounded-full border border-border px-2.5 py-0.5 text-[0.68rem] font-medium uppercase tracking-[0.08em] text-text-muted">
-          {demo.label}
-        </span>
-      </div>
-      <p className="text-[0.82rem] uppercase tracking-[0.1em] text-text-muted">
-        {demo.sector} · {demo.year}
-      </p>
-      <p className="t-body mt-1 max-w-[46ch] text-[0.95rem]">{demo.tagline}</p>
-    </figcaption>
-  );
-}
-
-export function Work() {
+/** /darbai — the full demo set as editorial rows: big frame + meta rail with
+ *  an oversized index numeral, alternating sides. Phone mock on every frame. */
+export function WorkShowcase() {
   const root = useRef<HTMLDivElement>(null);
-  // the homepage shows three demos; the full set lives on /darbai
-  const [featured, ...rest] = demos.slice(0, 3);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const ctx = gsap.context(() => {
-      const items = gsap.utils.toArray<HTMLElement>(".work-item");
+      const items = gsap.utils.toArray<HTMLElement>(".showcase-item");
       const parts = (item: HTMLElement) => ({
         browser: item.querySelector<HTMLElement>(".demo-browser"),
         imgs: item.querySelectorAll<HTMLElement>(".demo-browser .work-img"),
@@ -52,7 +31,7 @@ export function Work() {
       gsap.registerPlugin(ScrollTrigger);
 
       // choreographed entrance: frame rises in → photo settles (Ken Burns)
-      // → caption follows → phone mock lands last
+      // → meta rail follows → phone mock lands last
       items.forEach((item) => {
         const p = parts(item);
         if (p.browser) gsap.set(p.browser, { opacity: 0, y: 56 });
@@ -108,44 +87,67 @@ export function Work() {
   }, []);
 
   return (
-    <Section id="darbai" tone="light">
+    <Section tone="light">
       <Container>
-        <div ref={root}>
-          <Reveal className="max-w-[680px]">
-            <Eyebrow>Darbai</Eyebrow>
-            <h2 className="t-h2 mt-4">Pavyzdžiai, kurie parduoda.</h2>
-            <p className="t-body mt-5 max-w-[54ch]">
-              Kol kuriame pirmuosius klientų projektus, štai demonstracinės
-              svetainės — kad iškart matytumėte, kokios kokybės tikėtis.
-            </p>
-          </Reveal>
+        <div
+          ref={root}
+          className="flex flex-col gap-[clamp(80px,11vw,140px)]"
+        >
+          {demos.map((demo, i) => {
+            const flip = i % 2 === 1;
+            return (
+              <figure
+                key={demo.name}
+                className="showcase-item grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10"
+              >
+                <div className={cn("lg:col-span-8", flip && "lg:order-2")}>
+                  <DemoSite demo={demo} ratioClass="aspect-[16/10]" phone />
+                </div>
 
-          {/* featured — with the overlapping mobile mock */}
-          <figure className="work-item mt-[clamp(40px,6vw,72px)]">
-            <DemoSite
-              demo={featured}
-              ratioClass="aspect-[16/9] md:aspect-[16/8] lg:aspect-[16/7]"
-              phone
-            />
-            <Caption demo={featured} />
-          </figure>
+                <figcaption
+                  className={cn(
+                    "flex flex-col lg:col-span-4",
+                    flip && "lg:order-1",
+                  )}
+                >
+                  <span
+                    className="select-none font-light leading-none tracking-[-0.04em] text-border tabular-nums [font-size:clamp(3.4rem,6vw,5.4rem)]"
+                    aria-hidden="true"
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
 
-          {/* two smaller */}
-          <div className="mt-12 grid gap-x-6 gap-y-12 md:grid-cols-2">
-            {rest.map((demo) => (
-              <figure key={demo.name} className="work-item">
-                <DemoSite demo={demo} ratioClass="aspect-[16/11]" />
-                <Caption demo={demo} />
+                  <div className="mt-4 flex items-center gap-3">
+                    <h2 className="text-[1.35rem] font-medium tracking-[-0.015em]">
+                      {demo.name}
+                    </h2>
+                    <span className="rounded-full border border-border px-2.5 py-0.5 text-[0.68rem] font-medium uppercase tracking-[0.08em] text-text-muted">
+                      {demo.label}
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-[0.82rem] uppercase tracking-[0.1em] text-text-muted">
+                    {demo.sector} · {demo.year}
+                  </p>
+
+                  <p className="t-body mt-4 max-w-[44ch] text-[0.98rem]">
+                    {demo.tagline}
+                  </p>
+
+                  <ul className="mt-5 flex flex-wrap gap-2">
+                    {demo.scope.map((s) => (
+                      <li
+                        key={s}
+                        className="rounded-full bg-surface-2 px-3 py-1 text-[0.75rem] text-text-muted"
+                      >
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                </figcaption>
               </figure>
-            ))}
-          </div>
-
-          {/* the full set (incl. the e-shop concept) lives on its own page */}
-          <Reveal className="mt-14 flex justify-center">
-            <Button href="/darbai" variant="secondary" size="lg">
-              Visi pavyzdžiai
-            </Button>
-          </Reveal>
+            );
+          })}
         </div>
       </Container>
     </Section>

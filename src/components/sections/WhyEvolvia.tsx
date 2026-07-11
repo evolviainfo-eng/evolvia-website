@@ -12,7 +12,11 @@ const cell =
   "px-4 py-5 align-middle text-[0.9rem] break-words sm:px-5 sm:text-[0.92rem]";
 const loser = "text-text-muted";
 
-export function WhyEvolvia() {
+export function WhyEvolvia({
+  contactHref = "#kontaktai",
+}: {
+  contactHref?: string;
+}) {
   return (
     <Section id="kodel-evolvia" tone="light">
       <Container>
@@ -95,7 +99,7 @@ export function WhyEvolvia() {
             {compareKicker}
           </p>
           <div className="mt-8 flex justify-center">
-            <Button href="#kontaktai" variant="primary" size="lg">
+            <Button href={contactHref} variant="primary" size="lg">
               Gauti nemokamą eskizą
             </Button>
           </div>

@@ -18,7 +18,9 @@ export function Hero() {
   });
   const copyY = useTransform(scrollYProgress, [0, 1], [0, -70]);
   const deviceY = useTransform(scrollYProgress, [0, 1], [0, -28]);
-  const fade = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+  // explicit hold at 1 — the ScrollTimeline path would otherwise animate
+  // back toward the initial value after the last keyframe
+  const fade = useTransform(scrollYProgress, [0, 0.85, 1], [1, 0, 0]);
 
   const copyStyle = reduce ? undefined : { y: copyY, opacity: fade };
   const deviceStyle = reduce ? undefined : { y: deviceY };

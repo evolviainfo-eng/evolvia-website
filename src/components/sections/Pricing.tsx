@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
-import { pricingTiers, pricingNote } from "@/content/pricing";
+import { payOptions, shopTier, pricingNote } from "@/content/pricing";
 
 function Check({ className }: { className?: string }) {
   return (
@@ -22,114 +22,108 @@ function Check({ className }: { className?: string }) {
   );
 }
 
-export function Pricing() {
-  const main = pricingTiers.find((t) => t.featured) ?? pricingTiers[0];
-  const step = pricingTiers.find((t) => !t.featured) ?? pricingTiers[1];
-
+/** Kainos: one website, two EQUAL payment options side by side (identical
+ *  visual weight — deliberate), then the e-shop tier as a quieter band below. */
+export function Pricing({
+  contactHref = "#kontaktai",
+  standalone = false,
+}: {
+  contactHref?: string;
+  /** true on /kainos — the PageHeader already carries the "Kainos" eyebrow. */
+  standalone?: boolean;
+}) {
   return (
     <Section id="kainos" tone="secondary">
       <Container>
-        <Reveal className="mx-auto max-w-[640px] text-center">
-          <Eyebrow>Kainos</Eyebrow>
-          <h2 className="t-h2 mt-4">Viena kaina. Jokių staigmenų.</h2>
+        <Reveal className="mx-auto max-w-[680px] text-center">
+          {!standalone && <Eyebrow>Kainos</Eyebrow>}
+          <h2 className={`t-h2 text-balance ${standalone ? "" : "mt-4"}`}>
+            Viena svetainė. Du mokėjimo būdai.
+          </h2>
+          <p className="t-body mx-auto mt-5 max-w-[46ch]">
+            Svetainė, dizainas ir kokybė — identiški. Pasirenkate tik tai, kaip
+            patogiau mokėti.
+          </p>
         </Reveal>
 
-        {/* main offer — €300, editorial split */}
-        <Reveal className="mx-auto mt-[clamp(40px,6vw,72px)] max-w-[820px]">
-          <div className="rounded-[26px] border border-border bg-surface p-8 shadow-[var(--shadow-frame)] sm:p-12">
-            <div className="grid gap-9 sm:grid-cols-[1.25fr_1fr] sm:items-center sm:gap-12">
-              {/* offer */}
-              <div>
-                <div className="flex items-center gap-3">
-                  <h3 className="t-h3">{main.name}</h3>
-                  {main.badge && (
-                    <span className="rounded-full bg-accent px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.1em] text-accent-text">
-                      {main.badge}
-                    </span>
-                  )}
-                </div>
+        {/* two equal options */}
+        <div className="mx-auto mt-[clamp(40px,6vw,72px)] grid max-w-[960px] gap-5 md:grid-cols-2 md:gap-6">
+          {payOptions.map((plan, i) => (
+            <Reveal key={plan.id} delay={i * 0.08} className="h-full">
+              <div className="flex h-full flex-col rounded-[26px] border border-border bg-surface p-8 shadow-[var(--shadow-frame)] sm:p-10">
+                <p className="t-eyebrow">{plan.mode}</p>
+                <h3 className="t-h3 mt-2">{plan.name}</h3>
 
-                <div className="mt-6 flex items-baseline gap-3">
-                  <span className="font-light leading-none tracking-[-0.04em] text-text [font-size:clamp(3.5rem,8vw,5.5rem)]">
-                    {main.oneTime}
+                <div className="mt-6">
+                  <span className="font-light leading-none tracking-[-0.04em] text-text tabular-nums [font-size:clamp(3.2rem,6vw,4.6rem)]">
+                    {plan.oneTime}
                   </span>
-                  <div className="text-[0.9rem] leading-tight text-text-muted">
-                    <div>vienkartinis</div>
-                    <div>+ {main.monthly}</div>
-                  </div>
+                  <p className="mt-3 text-[0.95rem] text-text-muted">
+                    {plan.priceSuffix}
+                  </p>
                 </div>
 
-                <p className="t-body mt-6 max-w-[38ch]">{main.summary}</p>
+                <p className="t-body mt-5 text-[1rem]">{plan.summary}</p>
 
-                <Button
-                  href={main.cta.href}
-                  variant="primary"
-                  size="lg"
-                  className="mt-8 w-full sm:w-auto"
-                >
-                  {main.cta.label}
-                </Button>
-              </div>
-
-              {/* includes */}
-              <div className="border-t border-border pt-8 sm:border-l sm:border-t-0 sm:pl-12 sm:pt-0">
-                <Eyebrow>Kas įeina</Eyebrow>
-                <ul className="mt-5 flex flex-col gap-4">
-                  {main.includes.map((item) => (
-                    <li key={item} className="flex items-center gap-3 text-[0.98rem] text-text">
+                <ul className="mt-7 flex flex-col gap-3.5 border-t border-border pt-7">
+                  {plan.includes.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-center gap-3 text-[0.95rem] text-text"
+                    >
                       <Check className="h-5 w-5 shrink-0 text-text" />
                       {item}
                     </li>
                   ))}
                 </ul>
-              </div>
-            </div>
-          </div>
-        </Reveal>
 
-        {/* step-up — €600, fuller secondary card */}
-        <Reveal className="mx-auto mt-6 max-w-[820px]">
-          <div className="rounded-[22px] border border-border bg-surface p-8 sm:p-10">
-            <div className="grid gap-8 sm:grid-cols-[1.25fr_1fr] sm:items-center sm:gap-12">
-              <div>
-                <h3 className="t-h3">{step.name}</h3>
-                <div className="mt-4 flex items-baseline gap-3">
-                  <span className="font-light leading-none tracking-[-0.035em] text-text [font-size:clamp(2.4rem,5vw,3.4rem)]">
-                    {step.oneTime}
-                  </span>
-                  <div className="text-[0.88rem] leading-tight text-text-muted">
-                    <div>vienkartinis</div>
-                    <div>+ {step.monthly}</div>
-                  </div>
+                <div className="mt-auto pt-8">
+                  <Button
+                    href={contactHref}
+                    variant="primary"
+                    size="lg"
+                    className="w-full"
+                  >
+                    {plan.cta.label}
+                  </Button>
                 </div>
-                <p className="t-body mt-5 max-w-[40ch]">{step.summary}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* e-shop / larger site — quieter band below the two equal options */}
+        <Reveal className="mx-auto mt-6 max-w-[960px]">
+          <div className="rounded-[22px] border border-border bg-surface p-7 sm:p-8">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-[46ch]">
+                <h3 className="t-h3">{shopTier.name}</h3>
+                <p className="t-body mt-2 text-[0.98rem]">{shopTier.summary}</p>
+              </div>
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
+                <div className="sm:text-right">
+                  <span className="font-light leading-none tracking-[-0.035em] text-text tabular-nums [font-size:clamp(2.2rem,4vw,2.9rem)]">
+                    {shopTier.oneTime}
+                  </span>
+                  <p className="mt-1.5 text-[0.88rem] text-text-muted">
+                    {shopTier.priceSuffix}
+                  </p>
+                </div>
                 <Button
-                  href={step.cta.href}
+                  href={contactHref}
                   variant="secondary"
                   size="lg"
-                  className="mt-7 w-full sm:w-auto"
+                  className="w-full sm:w-auto"
                 >
-                  {step.cta.label}
+                  {shopTier.cta.label}
                 </Button>
-              </div>
-
-              <div className="border-t border-border pt-7 sm:border-l sm:border-t-0 sm:pl-12 sm:pt-0">
-                <Eyebrow>Kas įeina</Eyebrow>
-                <ul className="mt-5 flex flex-col gap-4">
-                  {step.includes.map((item) => (
-                    <li key={item} className="flex items-center gap-3 text-[0.98rem] text-text">
-                      <Check className="h-5 w-5 shrink-0 text-text" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
           </div>
         </Reveal>
 
         <Reveal>
-          <p className="t-body mx-auto mt-9 max-w-[58ch] text-center text-[0.95rem]">
+          <p className="t-body mx-auto mt-9 max-w-[62ch] text-center text-[0.95rem]">
             {pricingNote}
           </p>
         </Reveal>

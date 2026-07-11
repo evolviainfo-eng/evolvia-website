@@ -1,50 +1,65 @@
-/** Kainos — two tiers, the €300 plan first (featured) and the €600 plan after.
- *  Only the €300 tier is emphasised. No fake discounts, no timers. */
+/** Kainos — one website, two EQUAL payment options side by side,
+ *  plus the e-shop / larger-site tier as a separate band below.
+ *  No fake discounts, no timers, no invented claims. */
 
-export interface PricingTier {
+export interface PayOption {
+  id: string;
+  /** Small mode label above the name, e.g. "Mokate dalimis". */
+  mode: string;
   name: string;
-  badge?: string;
   oneTime: string;
-  monthly: string;
+  /** Second line under the price, e.g. "+ €50 / mėn" or "be mėnesinio mokesčio". */
+  priceSuffix: string;
   summary: string;
   includes: string[];
   cta: { label: string; href: string };
-  featured: boolean;
 }
 
-export const pricingTiers: PricingTier[] = [
+/** The two equal options for the standard website. */
+export const payOptions: PayOption[] = [
   {
-    name: "Svetainė",
-    badge: "Populiariausias",
+    id: "prieziura",
+    mode: "Mažesnė pradžia",
+    name: "Su priežiūra",
     oneTime: "€300",
-    monthly: "€50 / mėn",
+    priceSuffix: "vienkartinis + €50 / mėn",
     summary:
-      "Viena profesionali svetainė, paruošta parduoti. Idealu daugumai verslų.",
+      "Sumokate mažiau iš karto, o toliau viskuo rūpinamės mes — svetainė visada gyva ir atnaujinta.",
     includes: [
-      "Dizainas",
-      "Programavimas",
-      "Paleidimas",
-      "Perkėlimas į domeną",
+      "Dizainas ir programavimas",
+      "Paleidimas ir perkėlimas į domeną",
+      "Hostingas ir palaikymas",
+      "Atnaujinimai ir smulkūs pakeitimai",
     ],
     cta: { label: "Pradėti", href: "#kontaktai" },
-    featured: true,
   },
   {
-    name: "Verslo svetainė",
-    oneTime: "€600",
-    monthly: "€100 / mėn",
+    id: "vienkartinis",
+    mode: "Viskas iš karto",
+    name: "Vienkartinis",
+    oneTime: "€400",
+    priceSuffix: "vienkartinis · be mėnesinio mokesčio",
     summary:
-      "Kelių puslapių svetainė arba el. parduotuvė. Pilnas funkcionalumas augančiam verslui.",
+      "Viena kaina, jokių mėnesinių įsipareigojimų. Ta pati svetainė, tas pats dizainas ir greitis.",
     includes: [
-      "Dizainas",
-      "Programavimas",
-      "El. parduotuvė / keli puslapiai",
-      "Paleidimas",
+      "Dizainas ir programavimas",
+      "Paleidimas ir perkėlimas į domeną",
+      "Ta pati kokybė ir greitis",
+      "Jokių mėnesinių mokesčių",
     ],
-    cta: { label: "Susisiekti", href: "#kontaktai" },
-    featured: false,
+    cta: { label: "Pradėti", href: "#kontaktai" },
   },
 ];
 
+/** The step-up tier — always shown below the two equal options. */
+export const shopTier = {
+  name: "El. parduotuvė / didesnė svetainė",
+  oneTime: "€600",
+  priceSuffix: "vienkartinis + €100 / mėn",
+  summary:
+    "Kelių puslapių svetainė arba el. parduotuvė su pilnu funkcionalumu augančiam verslui.",
+  cta: { label: "Susisiekti", href: "#kontaktai" },
+} as const;
+
 export const pricingNote =
-  "Mėnesinis mokestis abiem planams: hostingas, atnaujinimai, palaikymas ir smulkūs pakeitimai.";
+  "Abu planai — ta pati svetainė: tas pats dizainas, greitis ir kokybė. Skiriasi tik mokėjimo būdas. Mėnesinis mokestis apima hostingą, atnaujinimus, palaikymą ir smulkius pakeitimus.";
