@@ -31,7 +31,7 @@ export const demos: Demo[] = [
       "Statybų bendrovės svetainė — tvirta, struktūruota ir įtikinama nuo pirmo ekrano.",
     scope: ["Vizitinė svetainė", "Projektų galerija", "Užklausos forma"],
     variant: "architecture",
-    image: "/work/demo-architecture.jpg",
+    image: "/work/demo-architecture.webp",
     url: "konstrukta.lt",
   },
   {
@@ -43,7 +43,7 @@ export const demos: Demo[] = [
       "Restoranas su stalo rezervacija ir meniu — atmosfera juntama dar prieš atveriant duris.",
     scope: ["Meniu", "Stalo rezervacija", "Atmosferos fotografija"],
     variant: "restaurant",
-    image: "/work/demo-restaurant.jpg",
+    image: "/work/demo-restaurant.webp",
     url: "fume.lt",
   },
   {
@@ -55,7 +55,7 @@ export const demos: Demo[] = [
       "Interjero studijos portfolio — projektų indeksas, kuriame darbai kalba patys.",
     scope: ["Portfolio", "Projektų indeksas", "Užklausos"],
     variant: "interior",
-    image: "/work/demo-interior.jpg",
+    image: "/work/demo-interior.webp",
     url: "forma.lt",
   },
   {
@@ -67,8 +67,8 @@ export const demos: Demo[] = [
       "Rankų darbo žvakių el. parduotuvė — katalogas, krepšelis ir apmokėjimas vienoje švarioje sistemoje.",
     scope: ["Prekių katalogas", "Krepšelis", "Apmokėjimas"],
     variant: "shop",
-    image: "/work/demo-shop.jpg",
-    imageAlt: "/work/demo-shop-b.jpg",
+    image: "/work/demo-shop.webp",
+    imageAlt: "/work/demo-shop-b.webp",
     url: "skalsa.lt",
   },
 ];

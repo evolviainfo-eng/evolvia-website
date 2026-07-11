@@ -45,6 +45,11 @@ export function WorkShowcase() {
         onEnter: (batch) =>
           batch.forEach((item, bi) => {
             const p = parts(item as HTMLElement);
+            // the frame is about to be seen — release any native lazy gate
+            // (belt-and-braces: instant scroll jumps can leave it stuck)
+            item.querySelectorAll("img").forEach((im) => {
+              if (im.loading === "lazy") im.loading = "eager";
+            });
             const tl = gsap.timeline({
               delay: bi * 0.12,
               defaults: { ease: "power3.out", force3D: false },

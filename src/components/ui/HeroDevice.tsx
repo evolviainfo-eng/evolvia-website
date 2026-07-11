@@ -5,9 +5,9 @@ import { cn } from "@/lib/cn";
  *  Compact: a landscape hero image + a thumbnail row, so it stays short on
  *  phones. Theme-aware frame. */
 const THUMBS = [
-  "/work/hero-int-1.jpg",
-  "/work/hero-int-3.jpg",
-  "/work/hero-int-4.jpg",
+  "/work/hero-int-1.webp",
+  "/work/hero-int-3.webp",
+  "/work/hero-int-4.webp",
 ];
 
 export function HeroDevice({ className }: { className?: string }) {
@@ -47,12 +47,15 @@ export function HeroDevice({ className }: { className?: string }) {
 
           {/* hero image */}
           <div className="relative mt-4 aspect-[16/10] overflow-hidden rounded-[10px]">
+            {/* the LCP image — eager + high priority (a lazy LCP image
+                delays first paint and gets flagged by PageSpeed) */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/work/hero-int-2.jpg"
+              src="/work/hero-int-2.webp"
               alt=""
               className="absolute inset-0 h-full w-full object-cover grayscale"
-              loading="lazy"
+              loading="eager"
+              fetchPriority="high"
               decoding="async"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
@@ -76,12 +79,13 @@ export function HeroDevice({ className }: { className?: string }) {
                 key={src}
                 className="aspect-[4/3] overflow-hidden rounded-[8px] border border-border"
               >
+                {/* above the fold on desktop — don't lazy-load */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={src}
                   alt=""
                   className="h-full w-full object-cover grayscale"
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                 />
               </div>
