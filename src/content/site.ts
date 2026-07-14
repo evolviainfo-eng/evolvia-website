@@ -3,7 +3,7 @@
 export const site = {
   name: "evolvia.",
   tagline: "web design",
-  email: "evolvia.info@gmail.com",
+  email: "info@evolvia.lt",
   location: "Kaunas, Lietuva",
   year: 2026,
   /** Production URL — used for canonical, OG, sitemap, robots. */

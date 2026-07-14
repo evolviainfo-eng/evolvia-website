@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
+import { site } from "@/content/site";
 import "./globals.css";
 
 /* Inter is the cross-platform fallback (self-hosted by next/font).
@@ -77,7 +78,7 @@ const businessJsonLd = {
   description:
     "Modernios svetainės Lietuvos verslui — dizainas, programavimas, paleidimas ir priežiūra.",
   url: SITE_URL,
-  email: "evolvia.info@gmail.com",
+  email: site.email,
   address: {
     "@type": "PostalAddress",
     addressLocality: "Kaunas",
