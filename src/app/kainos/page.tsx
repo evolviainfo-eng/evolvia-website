@@ -38,7 +38,7 @@ const serviceJsonLd = {
       name: "Svetainė — vienkartinis mokėjimas",
       price: "400",
       priceCurrency: "EUR",
-      description: "€400 vienkartinai, be mėnesinio mokesčio.",
+      description: "€400 vienkartinai, be mėnesinio mokesčio. Pirmų metų hostingas įskaičiuotas.",
     },
     {
       "@type": "Offer",

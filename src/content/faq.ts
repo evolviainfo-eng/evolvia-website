@@ -12,7 +12,7 @@ export const faqItems: FaqItem[] = [
   },
   {
     q: "Kuo skiriasi €150 + €50/mėn nuo €400 vienkartinio?",
-    a: "Tik mokėjimo būdu — svetainė, dizainas ir kokybė identiški. Su €150 + €50/mėn planu pradžioje mokate mažiau, o hostingas, atnaujinimai, palaikymas ir smulkūs pakeitimai įskaičiuoti kiekvieną mėnesį. Su €400 planu sumokate vieną kartą ir neturite jokių mėnesinių įsipareigojimų.",
+    a: "Tik mokėjimo būdu — svetainė, dizainas ir kokybė identiški. Su €150 + €50/mėn planu pradžioje mokate mažiau, o hostingas, atnaujinimai, palaikymas ir smulkūs pakeitimai įskaičiuoti kiekvieną mėnesį. Su €400 planu sumokate vieną kartą, pirmų metų hostingas jau įskaičiuotas ir neturite jokių mėnesinių įsipareigojimų.",
   },
   {
     q: "Kaip greitai svetainė bus paruošta?",

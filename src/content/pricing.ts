@@ -40,11 +40,11 @@ export const payOptions: PayOption[] = [
     oneTime: "€400",
     priceSuffix: "vienkartinis · be mėnesinio mokesčio",
     summary:
-      "Viena kaina, jokių mėnesinių įsipareigojimų. Ta pati svetainė, tas pats dizainas ir greitis.",
+      "Viena kaina, jokių mėnesinių įsipareigojimų. Ta pati svetainė, o pirmų metų hostingas jau įskaičiuotas.",
     includes: [
       "Dizainas ir programavimas",
       "Paleidimas ir perkėlimas į domeną",
-      "Ta pati kokybė ir greitis",
+      "Hostingas pirmus metus įskaičiuotas",
       "Jokių mėnesinių mokesčių",
     ],
     cta: { label: "Pradėti", href: "#kontaktai" },
