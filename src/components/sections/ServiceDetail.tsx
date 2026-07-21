@@ -50,7 +50,7 @@ export function ServiceDetail() {
         <Reveal>
           <div className="border-t border-border pt-8">
             <p className="t-body">
-              Aiškios kainos — nuo €300.{" "}
+              Aiškios kainos — nuo €150.{" "}
               <a
                 href="/kainos"
                 className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-text"

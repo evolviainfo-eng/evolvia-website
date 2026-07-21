@@ -8,11 +8,11 @@ export interface FaqItem {
 export const faqItems: FaqItem[] = [
   {
     q: "Kiek kainuoja ir kas įeina į kainą?",
-    a: "Standartinė svetainė — €300 + €50/mėn priežiūra arba €400 vienkartinai, be mėnesinio mokesčio. Pasirenkate mokėjimo būdą, svetainė ta pati. El. parduotuvė ar didesnė kelių puslapių svetainė — €600. Į kainą visada įeina dizainas, programavimas, paleidimas ir perkėlimas į jūsų domeną — jokių paslėptų mokesčių.",
+    a: "Standartinė svetainė — €150 + €50/mėn priežiūra arba €400 vienkartinai, be mėnesinio mokesčio. Pasirenkate mokėjimo būdą, svetainė ta pati. El. parduotuvė ar didesnė kelių puslapių svetainė — €600. Į kainą visada įeina dizainas, programavimas, paleidimas ir perkėlimas į jūsų domeną — jokių paslėptų mokesčių.",
   },
   {
-    q: "Kuo skiriasi €300 + €50/mėn nuo €400 vienkartinio?",
-    a: "Tik mokėjimo būdu — svetainė, dizainas ir kokybė identiški. Su €300 + €50/mėn planu pradžioje mokate mažiau, o hostingas, atnaujinimai, palaikymas ir smulkūs pakeitimai įskaičiuoti kiekvieną mėnesį. Su €400 planu sumokate vieną kartą ir neturite jokių mėnesinių įsipareigojimų.",
+    q: "Kuo skiriasi €150 + €50/mėn nuo €400 vienkartinio?",
+    a: "Tik mokėjimo būdu — svetainė, dizainas ir kokybė identiški. Su €150 + €50/mėn planu pradžioje mokate mažiau, o hostingas, atnaujinimai, palaikymas ir smulkūs pakeitimai įskaičiuoti kiekvieną mėnesį. Su €400 planu sumokate vieną kartą ir neturite jokių mėnesinių įsipareigojimų.",
   },
   {
     q: "Kaip greitai svetainė bus paruošta?",

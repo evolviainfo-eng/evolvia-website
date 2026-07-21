@@ -11,9 +11,9 @@ import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { faqItems } from "@/content/faq";
 
 export const metadata = pageMetadata({
-  title: "Svetainės kaina — nuo €300",
+  title: "Svetainės kaina — nuo €150",
   description:
-    "Kiek kainuoja svetainė? €300 + €50/mėn su priežiūra arba €400 vienkartinai be mėnesinio mokesčio. El. parduotuvė — €600. Aiškios kainos, jokių paslėptų mokesčių.",
+    "Kiek kainuoja svetainė? €150 + €50/mėn su priežiūra arba €400 vienkartinai be mėnesinio mokesčio. El. parduotuvė — €600. Aiškios kainos, jokių paslėptų mokesčių.",
   path: "/kainos",
 });
 
@@ -28,10 +28,10 @@ const serviceJsonLd = {
     {
       "@type": "Offer",
       name: "Svetainė su priežiūra",
-      price: "300",
+      price: "150",
       priceCurrency: "EUR",
       description:
-        "€300 vienkartinis + €50/mėn: hostingas, atnaujinimai, palaikymas ir smulkūs pakeitimai.",
+        "€150 vienkartinis + €50/mėn: hostingas, atnaujinimai, palaikymas ir smulkūs pakeitimai.",
     },
     {
       "@type": "Offer",

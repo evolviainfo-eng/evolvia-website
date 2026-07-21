@@ -21,7 +21,7 @@ export const payOptions: PayOption[] = [
     id: "prieziura",
     mode: "Mažesnė pradžia",
     name: "Su priežiūra",
-    oneTime: "€300",
+    oneTime: "€150",
     priceSuffix: "vienkartinis + €50 / mėn",
     summary:
       "Sumokate mažiau iš karto, o toliau viskuo rūpinamės mes — svetainė visada gyva ir atnaujinta.",

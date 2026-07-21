@@ -85,7 +85,7 @@ const businessJsonLd = {
     addressCountry: "LT",
   },
   areaServed: "Lietuva",
-  priceRange: "€300–€600",
+  priceRange: "€150–€600",
 };
 
 export default function RootLayout({
