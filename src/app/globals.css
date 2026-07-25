@@ -30,6 +30,50 @@
     var(--font-inter), system-ui, sans-serif;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ── Motion personality ──────────────────────────────────────
+     Two curves and five durations govern every animation on the
+     site. Fewer variables than a typical build on purpose: the
+     coherence comes from repetition, not from variety.
+
+     --e-out   precision. Starts at full speed, decelerates long.
+               The default: entrances, reveals, scroll gestures.
+     --e-mass  weight. x1 ≠ 0, so it eases IN before it accelerates
+               and settles — reads as something heavy being moved.
+               Reserved for large travel (overlays, drawers, pins).
+     ─────────────────────────────────────────────────────────── */
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --e-mass: cubic-bezier(0.4, 0, 0.1, 1);
+
+  --d-tap: 120ms;  /* pointer response — under 150ms reads instant */
+  --d-ui: 260ms;   /* hovers, toggles, small state changes         */
+  --d-el: 520ms;   /* one element entering                          */
+  --d-gesture: 820ms; /* a whole section arriving as one gesture    */
+  --d-scene: 1200ms;  /* hero / full-screen scene                   */
+
+  /* Stagger step inside a gesture. One value, used everywhere. */
+  --d-step: 70ms;
+
+  /* Height of the honesty bar pinned above every /demo site. Demo pages
+     offset their own sticky navigation by this. */
+  --demo-bar-h: 44px;
+
+  /* ── Glass ────────────────────────────────────────────────────
+     The floating header. Four parts make it read as glass rather than
+     as a translucent box: a background that is genuinely see-through,
+     a hairline edge, a brighter INNER top edge (the specular line where
+     light catches a real bevel), and a shadow that lifts it off the page. */
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(0, 0, 0, 0.07);
+  --glass-shine: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 10px 30px rgba(0, 0, 0, 0.08);
+  --glass-blur: 20px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --demo-bar-h: 48px;
+  }
 }
 
 :root[data-theme="dark"] {
@@ -47,6 +91,13 @@
 
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.5);
   --shadow-frame: 0 30px 70px rgba(0, 0, 0, 0.6);
+
+  /* Dark glass is smoked, not milky: less white, a brighter edge, and a
+     deeper shadow, because there is no page brightness to lift it. */
+  --glass-bg: rgba(24, 24, 28, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.11);
+  --glass-shine: rgba(255, 255, 255, 0.16);
+  --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 14px 36px rgba(0, 0, 0, 0.5);
 }
 
 /* Map tokens into Tailwind's theme so utilities stay token-driven */
@@ -73,7 +124,8 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    /* No `scroll-behavior: smooth` — it fights Lenis, and when Lenis is off
+       (reduced motion) an instant jump is the correct behaviour anyway. */
     -webkit-text-size-adjust: 100%;
     scroll-padding-top: 88px; /* clear the sticky nav on anchor jumps */
   }
@@ -160,6 +212,26 @@
     color: var(--text-muted);
   }
 
+  /* The floating header's pane.
+     `backdrop-filter` is what makes it glass rather than paint — the page
+     genuinely blurs and saturates through it. Where the browser cannot do
+     that, the @supports block below swaps in a near-opaque panel: still
+     legible, just not see-through. Never leave it translucent without the
+     blur, or text collides with whatever scrolls underneath. */
+  .glass {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass {
+      background: color-mix(in srgb, var(--bg) 94%, transparent);
+    }
+  }
+
   /* Wordmark — rendered as live text so it stays razor-sharp at any size.
      Matches the redesigned logo: light, refined, slightly open. */
   .wordmark {
@@ -170,59 +242,77 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Choreography — the one reveal primitive.
+
+   A section arrives as a SINGLE gesture: the parent carries the
+   timing, children only carry an offset. `data-rise` marks a part,
+   `--i` is its index inside the gesture.
+
+   The hidden state is scoped to `html[data-choreo]`, an attribute
+   Choreo.tsx sets at mount. So if JS never runs — or the visitor
+   asked for reduced motion — every element renders at its natural,
+   visible state and nothing can strand content at opacity 0.
+   ───────────────────────────────────────────────────────────── */
+html[data-choreo] [data-rise] {
+  opacity: 0;
+  transform: translate3d(0, var(--rise-y, 20px), 0);
+  transition:
+    opacity var(--d-gesture) var(--e-out) calc(var(--i, 0) * var(--d-step)),
+    transform var(--d-gesture) var(--e-out) calc(var(--i, 0) * var(--d-step));
+  will-change: opacity, transform;
+}
+html[data-choreo] [data-rise].is-in {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+/* Variants — same timing, different vector. */
+html[data-choreo] [data-rise="left"] {
+  transform: translate3d(calc(var(--rise-y, 20px) * -1), 0, 0);
+}
+html[data-choreo] [data-rise="right"] {
+  transform: translate3d(var(--rise-y, 20px), 0, 0);
+}
+html[data-choreo] [data-rise="fade"] {
+  transform: none;
+}
+/* A headline line sliding up out of its own mask. `data-line` is the mask
+   (it clips); its single child is what travels. Line-level only — a
+   per-character version of this reads as a stunt.
+
+   The mask needs vertical slack or it shears the descenders off Lithuanian
+   glyphs (ų, ę, į, p), hence the padding/negative-margin pair on the element.
+   Like everything else here it is gated on html[data-choreo], so with JS off
+   the headline is simply visible instead of parked below its mask. */
+html[data-choreo] [data-line] > * {
+  display: block;
+  transform: translate3d(0, 112%, 0);
+  transition: transform var(--d-scene) var(--e-out)
+    calc(var(--i, 0) * var(--d-step));
+  will-change: transform;
+}
+html[data-choreo] [data-line].is-in > * {
+  transform: none;
+  will-change: auto;
+}
+
+/* A photo settling into its frame — pairs with a rising parent. */
+html[data-choreo] [data-settle] {
+  transform: scale(1.06);
+  transition: transform var(--d-scene) var(--e-out);
+}
+html[data-choreo] [data-settle].is-in {
+  transform: scale(1);
+}
+
+/* ─────────────────────────────────────────────────────────────
    Ambient motion — slow, looping, GPU-cheap (transform/opacity only).
    All disabled under prefers-reduced-motion.
    ───────────────────────────────────────────────────────────── */
-@keyframes evolvia-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-14px);
-  }
-}
-@keyframes evolvia-twinkle {
-  0%,
-  100% {
-    transform: rotate(0deg) scale(1);
-    opacity: 0.85;
-  }
-  50% {
-    transform: rotate(90deg) scale(1.16);
-    opacity: 1;
-  }
-}
-@keyframes evolvia-cursor {
-  0% {
-    transform: translate(0, 0);
-  }
-  30% {
-    transform: translate(-14px, 34px);
-  }
-  46% {
-    transform: translate(-14px, 34px);
-  }
-  64% {
-    transform: translate(8px, 8px);
-  }
-  100% {
-    transform: translate(0, 0);
-  }
-}
-@keyframes evolvia-scrollcue {
-  0% {
-    transform: translateY(-2px);
-    opacity: 0;
-  }
-  35% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(14px);
-    opacity: 0;
-  }
-}
+/* One ambient loop on the whole site, and this is it. The float, twinkle,
+   cursor and scroll-cue keyframes that used to live here were deleted with
+   the elements that used them — idle motion is decoration, and the scroll
+   cue was a hint the visitor never needed. */
 @keyframes evolvia-aura {
   0%,
   100% {
@@ -235,30 +325,38 @@
   }
 }
 
-.anim-float {
-  animation: evolvia-float 7.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-}
-.anim-twinkle {
-  transform-origin: center;
-  animation: evolvia-twinkle 6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-}
-.anim-cursor {
-  animation: evolvia-cursor 6.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-.anim-scrollcue {
-  animation: evolvia-scrollcue 2.6s ease-in-out infinite;
-}
 .anim-aura {
   animation: evolvia-aura 9s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .anim-float,
-  .anim-twinkle,
-  .anim-cursor,
-  .anim-scrollcue,
   .anim-aura {
     animation: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Page transitions.
+
+   Navigation is plain <a> full-document loads on purpose — client-side
+   routing leaves Lenis and ScrollTrigger holding stale measurements. The
+   cross-document View Transitions API gives the SPA feel back without any
+   of that: the browser cross-fades the two documents itself, no JS, no
+   router. Browsers without support just navigate as before.
+   ───────────────────────────────────────────────────────────── */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--d-el);
+  animation-timing-function: var(--e-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
   }
 }
 

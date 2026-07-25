@@ -9,6 +9,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { Container } from "@/components/ui/Container";
+import { SeamField } from "@/components/ui/SeamField";
 
 const STATEMENT = "Pamatote svetainę gyvai. Tik tada mokate.";
 const WORDS = STATEMENT.split(" ");
@@ -36,7 +37,11 @@ function Word({
   // framer's native ScrollTimeline path otherwise interpolates back to the
   // element's inline initial value after the last keyframe (the text used
   // to fade back OUT during the final third of the pin).
-  const opacity = useTransform(progress, [start, end, 1], [0.14, 1, 1]);
+  // Resting opacity is 0.3, not the 0.14 it was: framer serialises this value
+  // into the static HTML, so 0.14 meant a JS failure left the statement
+  // effectively invisible. 0.3 still reads as clearly "not yet revealed"
+  // while degrading to dim-but-legible.
+  const opacity = useTransform(progress, [start, end, 1], [0.3, 1, 1]);
   return (
     <span className="inline-block">
       <motion.span style={reduce ? undefined : { opacity }} className="inline-block">
@@ -68,8 +73,23 @@ export function TrustStatement() {
       className="relative min-h-[220vh] bg-ink-bg text-ink-fg"
       aria-label="Pamatote svetainę gyvai. Tik tada mokate."
     >
-      <div className="sticky top-0 flex min-h-[100svh] items-center py-24">
-        <Container>
+      <div className="sticky top-0 flex min-h-[100svh] items-center overflow-hidden py-24">
+        {/* The floor the shader sits on — and the whole background when there
+            is no WebGL2, no GPU worth spending, or reduced motion is on. It is
+            composed to stand alone, not to look like something failed. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(120% 90% at 50% 42%, rgba(255,255,255,0.075) 0%, rgba(255,255,255,0.022) 38%, transparent 72%)",
+          }}
+        />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <SeamField />
+        </div>
+
+        <Container className="relative">
           <div className="mx-auto max-w-[760px] text-center">
             <p className="t-eyebrow text-ink-fg/55">Be rizikos</p>
 

@@ -6,8 +6,8 @@ type Variant = "primary" | "secondary";
 const base =
   "inline-flex items-center justify-center rounded-pill font-medium " +
   "text-[0.95rem] leading-none whitespace-nowrap select-none " +
-  "transition-[transform,background-color,color,border-color,opacity] duration-300 " +
-  "ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform " +
+  "transition-[translate,background-color,color,border-color,opacity] " +
+  "duration-[var(--d-ui)] ease-[var(--e-out)] will-change-transform " +
   "hover:-translate-y-[2px] active:translate-y-0";
 
 const variants: Record<Variant, string> = {

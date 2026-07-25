@@ -8,7 +8,7 @@ import { site } from "@/content/site";
 
 const fieldBase =
   "w-full rounded-card border border-border bg-surface px-4 py-3.5 text-text " +
-  "placeholder:text-text-muted/70 outline-none transition-colors duration-200 " +
+  "placeholder:text-text-muted/70 outline-none transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] " +
   "focus:border-text";
 
 type Status = "idle" | "sending" | "sent" | "mailto" | "error";
@@ -128,7 +128,7 @@ export function FinalCta({
             <button
               type="submit"
               disabled={status === "sending"}
-              className="inline-flex h-[52px] items-center justify-center rounded-pill bg-accent px-8 text-base font-medium text-accent-text transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0 disabled:opacity-60"
+              className="inline-flex h-[52px] items-center justify-center rounded-pill bg-accent px-8 text-base font-medium text-accent-text transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0 disabled:opacity-60"
             >
               {status === "sending" ? "Siunčiama…" : "Siųsti užklausą"}
             </button>

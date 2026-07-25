@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
+import { Choreo } from "@/components/ui/Choreo";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -67,8 +68,27 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-// Light is the default; applies a stored dark-mode preference before paint.
-const themeScript = `(function(){try{if(localStorage.getItem('theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();`;
+/* Runs before first paint. Two jobs:
+ *
+ *  1. Apply a stored dark-mode preference, so the page never flashes light.
+ *  2. Arm the choreography. The reveal system hides `data-rise` elements
+ *     behind `html[data-choreo]`; if that attribute were set by React on
+ *     mount, everything above the fold would paint visible and then snap
+ *     hidden. Setting it here means it is hidden from the very first frame.
+ *
+ *  The watchdog is the safety net: if Choreo never mounts (a JS error, a
+ *  chunk that failed to load), the attribute is dropped after 4s and the
+ *  page renders as plain visible content. It only ever *reveals* — it can
+ *  never strand anything at opacity 0.
+ */
+const bootScript = `(function(){try{
+if(localStorage.getItem('theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}
+}catch(e){}
+try{
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var d=document.documentElement;d.setAttribute('data-choreo','');
+setTimeout(function(){if(!window.__choreo){d.removeAttribute('data-choreo');}},4000);
+}catch(e){}})();`;
 
 // Sitewide structured data — who Evolvia is, where it works, what it costs.
 const businessJsonLd = {
@@ -94,14 +114,15 @@ export default function RootLayout({
   return (
     <html lang="lt" className={inter.variable} suppressHydrationWarning>
       <body>
-        <Script id="theme-init" strategy="beforeInteractive">
-          {themeScript}
+        <Script id="boot-init" strategy="beforeInteractive">
+          {bootScript}
         </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
         />
         <SmoothScroll />
+        <Choreo />
         {children}
       </body>
     </html>

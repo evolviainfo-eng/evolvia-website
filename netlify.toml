@@ -6,3 +6,12 @@
 
 [build.environment]
   NODE_VERSION = "20"
+
+# The demo sites depict companies that do not exist. They must never turn up
+# in search results looking like real businesses. The pages already carry a
+# noindex meta tag; this header says the same thing at the HTTP level, which
+# also covers the assets under them.
+[[headers]]
+  for = "/demo/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

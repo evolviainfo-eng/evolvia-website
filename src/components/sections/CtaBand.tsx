@@ -20,7 +20,7 @@ export function CtaBand() {
             <div className="flex shrink-0 flex-col items-start gap-4 md:items-end">
               <a
                 href="/kontaktai"
-                className="inline-flex h-[52px] items-center justify-center whitespace-nowrap rounded-pill bg-ink-fg px-8 text-base font-medium leading-none text-ink-bg transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0"
+                className="inline-flex h-[52px] items-center justify-center whitespace-nowrap rounded-pill bg-ink-fg px-8 text-base font-medium leading-none text-ink-bg transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0"
               >
                 Gauti nemokamą eskizą
               </a>

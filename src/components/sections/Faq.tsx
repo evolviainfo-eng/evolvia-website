@@ -20,7 +20,7 @@ export function Faq({
   const [open, setOpen] = useState<number | null>(null);
   const reduce = useReducedMotion();
   const baseId = useId();
-  const dur = reduce ? 0 : 0.35;
+  const dur = reduce ? 0 : 0.26; // --d-ui: an accordion should feel instant
 
   return (
     <Section id="duk" tone="light">
@@ -72,7 +72,7 @@ export function Faq({
                       </span>
                       <span
                         className={cn(
-                          "relative h-4 w-4 shrink-0 text-text transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                          "relative h-4 w-4 shrink-0 text-text transition-transform duration-[var(--d-ui)] ease-[var(--e-out)]",
                           isOpen && "rotate-45",
                         )}
                         aria-hidden="true"
@@ -92,7 +92,7 @@ export function Faq({
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: dur, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: dur, ease: [0.16, 1, 0.3, 1] }}
                         className="overflow-hidden"
                       >
                         <p className="t-body max-w-[58ch] pb-6">{item.a}</p>

@@ -4,14 +4,44 @@ import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { HeroDevice } from "@/components/ui/HeroDevice";
+import { DemoSite } from "@/components/ui/DemoSite";
+import { demos } from "@/content/demos";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+/* The hero frame used to be a hand-built mock of a fictional "atelier.lt".
+   It now shows a real demo — the e-shop, the one the homepage work section
+   doesn't already carry — so the first thing a visitor sees is a website they
+   can actually open. */
+const heroDemo = demos.find((d) => d.slug === "skalsa") ?? demos[0];
+
+/** One line of the headline, revealed by sliding up out of its mask.
+ *
+ *  The reveal is pure CSS (`data-line` in globals.css) rather than framer,
+ *  and that is the point: framer serialises its `initial` state as an inline
+ *  style, so the static HTML used to ship this headline at
+ *  `translateY(112%)` — parked below its mask, invisible until JS ran. The
+ *  CSS version is gated behind `html[data-choreo]`, which the boot script
+ *  sets before paint and a watchdog removes if the observer never arrives.
+ *  Worst case the headline is simply visible.
+ */
+function Line({ children, i }: { children: string; i: number }) {
+  return (
+    <span
+      data-line
+      style={{ "--i": i } as React.CSSProperties}
+      className="block overflow-hidden pb-[0.14em] -mb-[0.14em]"
+    >
+      <span>{children}</span>
+    </span>
+  );
+}
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
 
+  /* Framer is kept for the scroll-linked parallax only. A scroll transform has
+     no hidden resting state, so it cannot strand content the way an entrance
+     `initial` can. */
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -24,12 +54,6 @@ export function Hero() {
 
   const copyStyle = reduce ? undefined : { y: copyY, opacity: fade };
   const deviceStyle = reduce ? undefined : { y: deviceY };
-
-  const rise = (delay: number) => ({
-    initial: reduce ? false : { opacity: 0, y: 26 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.9, ease: EASE, delay },
-  });
 
   return (
     <section id="top" ref={ref} className="relative overflow-hidden">
@@ -44,38 +68,35 @@ export function Hero() {
 
       <Container>
         <div className="grid items-center gap-12 pt-[120px] pb-[clamp(56px,8vw,96px)] lg:min-h-[90vh] lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-          {/* copy */}
-          <motion.div style={copyStyle} className="max-w-[640px]">
-            <motion.p
-              {...rise(0.05)}
+          {/* copy — one gesture, the parts a stagger step apart */}
+          <motion.div style={copyStyle} className="min-w-0 max-w-[640px]">
+            <p
+              data-rise
               className="inline-flex items-center gap-2 text-[0.8rem] font-semibold uppercase tracking-[0.16em] text-text-muted"
             >
               <span className="inline-block h-px w-6 bg-text/30" />
               web dizainas
-            </motion.p>
+            </p>
 
+            {/* Line-level, never letter-level. */}
             <h1 className="mt-6 font-normal tracking-[-0.04em] text-text [font-size:clamp(2.6rem,5.4vw,4.6rem)] [line-height:1.04]">
-              <motion.span {...rise(0.16)} className="block">
-                Tavo konkurentai
-              </motion.span>
-              <motion.span {...rise(0.3)} className="block">
-                jau matomi.
-              </motion.span>
-              <motion.span {...rise(0.44)} className="block">
-                O tu?
-              </motion.span>
+              <Line i={2}>Tavo konkurentai</Line>
+              <Line i={3}>jau matomi.</Line>
+              <Line i={4}>O tu?</Line>
             </h1>
 
-            <motion.p
-              {...rise(0.58)}
+            <p
+              data-rise
+              style={{ "--i": 7 } as React.CSSProperties}
               className="mt-6 max-w-[44ch] text-pretty text-[1.0625rem] leading-relaxed text-text-muted sm:text-[1.1875rem]"
             >
               Modernios svetainės Lietuvos verslui. Nuo pirmo eskizo iki
               paleidimo — viskas padaroma už jus.
-            </motion.p>
+            </p>
 
-            <motion.div
-              {...rise(0.7)}
+            <div
+              data-rise
+              style={{ "--i": 9 } as React.CSSProperties}
               className="mt-8 flex flex-col gap-3 sm:flex-row"
             >
               <Button
@@ -94,36 +115,23 @@ export function Hero() {
               >
                 Pamatyti darbus
               </Button>
-            </motion.div>
+            </div>
           </motion.div>
 
-          {/* device */}
-          <motion.div
-            style={deviceStyle}
-            initial={reduce ? false : { opacity: 0, y: 48 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, ease: EASE, delay: 0.45 }}
-            className="lg:pl-4"
-          >
-            <div className="anim-float">
-              <HeroDevice />
+          {/* device — a real demo, not a mock.
+              The parallax and the entrance live on SEPARATE elements on
+              purpose: framer writes `transform` inline, which would win over
+              the CSS transform `data-rise` needs, and the two would fight. */}
+          <motion.div style={deviceStyle} className="min-w-0 lg:pl-4">
+            <div data-rise style={{ "--i": 5 } as React.CSSProperties}>
+              <DemoSite demo={heroDemo} ratioClass="aspect-[16/10]" eager />
+              <p className="mt-3 text-[0.8rem] text-text-muted">
+                Demonstracinė svetainė — atsidaro ir veikia.
+              </p>
             </div>
           </motion.div>
         </div>
       </Container>
-
-      {/* scroll cue */}
-      <motion.div
-        initial={reduce ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, ease: EASE, delay: 1.3 }}
-        className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 lg:block"
-        aria-hidden="true"
-      >
-        <span className="relative block h-9 w-px bg-text/15">
-          <span className="anim-scrollcue absolute left-1/2 top-0 h-2 w-px -translate-x-1/2 bg-text/50" />
-        </span>
-      </motion.div>
     </section>
   );
 }

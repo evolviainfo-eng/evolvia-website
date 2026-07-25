@@ -2,7 +2,7 @@ import { Nav } from "@/components/sections/Nav";
 import { Footer } from "@/components/sections/Footer";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { ServiceDetail } from "@/components/sections/ServiceDetail";
-import { WhyEvolvia } from "@/components/sections/WhyEvolvia";
+import { BuildSequence } from "@/components/sections/BuildSequence";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
@@ -26,7 +26,7 @@ export default function PaslaugosPage() {
           lead="Nuo pirmo eskizo iki veikiančios svetainės — dizainas, programavimas, paleidimas ir priežiūra vienose rankose. Jums lieka tik jūsų verslas."
         />
         <ServiceDetail />
-        <WhyEvolvia contactHref="/kontaktai" />
+        <BuildSequence />
         <CtaBand />
       </main>
       <Footer />

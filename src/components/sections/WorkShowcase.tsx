@@ -1,132 +1,54 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { DemoSite } from "@/components/ui/DemoSite";
 import { demos } from "@/content/demos";
 import { cn } from "@/lib/cn";
 
-/** /darbai — the full demo set as editorial rows: big frame + meta rail with
- *  an oversized index numeral, alternating sides. Phone mock on every frame. */
+/** /darbai — the full demo set as editorial rows: big frame + meta rail,
+ *  alternating sides, mobile capture on every frame.
+ *
+ *  Each row arrives as ONE gesture: the frame rises, the photo settles out of
+ *  a 1.06 crop, and the meta rail follows two steps behind. That sequencing
+ *  is expressed entirely with `data-rise` / `data-settle` and the `--i`
+ *  offset — no timeline code, and it degrades to plain visible content when
+ *  JS or motion is off. */
 export function WorkShowcase() {
-  const root = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const ctx = gsap.context(() => {
-      const items = gsap.utils.toArray<HTMLElement>(".showcase-item");
-      const parts = (item: HTMLElement) => ({
-        browser: item.querySelector<HTMLElement>(".demo-browser"),
-        imgs: item.querySelectorAll<HTMLElement>(".demo-browser .work-img"),
-        phone: item.querySelector<HTMLElement>(".demo-phone"),
-        caption: item.querySelector<HTMLElement>("figcaption"),
-      });
-
-      if (reduce) {
-        return; // everything stays at its natural, visible state
-      }
-      gsap.registerPlugin(ScrollTrigger);
-
-      // choreographed entrance: frame rises in → photo settles (Ken Burns)
-      // → meta rail follows → phone mock lands last
-      items.forEach((item) => {
-        const p = parts(item);
-        if (p.browser) gsap.set(p.browser, { opacity: 0, y: 56 });
-        if (p.imgs.length) gsap.set(p.imgs, { scale: 1.12, force3D: false });
-        if (p.phone) gsap.set(p.phone, { opacity: 0, y: 28 });
-        if (p.caption) gsap.set(p.caption, { opacity: 0, y: 26 });
-      });
-      ScrollTrigger.batch(items, {
-        start: "top 84%",
-        once: true,
-        onEnter: (batch) =>
-          batch.forEach((item, bi) => {
-            const p = parts(item as HTMLElement);
-            // the frame is about to be seen — release any native lazy gate
-            // (belt-and-braces: instant scroll jumps can leave it stuck)
-            item.querySelectorAll("img").forEach((im) => {
-              if (im.loading === "lazy") im.loading = "eager";
-            });
-            const tl = gsap.timeline({
-              delay: bi * 0.12,
-              defaults: { ease: "power3.out", force3D: false },
-            });
-            if (p.browser)
-              // clearProps so the CSS hover-lift transform works afterwards
-              tl.to(p.browser, { opacity: 1, y: 0, duration: 1.1, clearProps: "transform" }, 0);
-            if (p.imgs.length) tl.to(p.imgs, { scale: 1, duration: 1.5 }, 0);
-            if (p.caption)
-              tl.to(p.caption, { opacity: 1, y: 0, duration: 0.8, clearProps: "transform" }, 0.25);
-            if (p.phone)
-              tl.to(p.phone, { opacity: 1, y: 0, duration: 0.8, clearProps: "transform" }, 0.4);
-          }),
-      });
-
-      // subtle parallax on each demo photo
-      gsap.utils.toArray<HTMLElement>(".work-img").forEach((img) => {
-        const frame = img.closest(".work-frame");
-        if (!frame) return;
-        gsap.fromTo(
-          img,
-          { yPercent: -5 },
-          {
-            yPercent: 5,
-            ease: "none",
-            scrollTrigger: {
-              trigger: frame,
-              scrub: true,
-              start: "top bottom",
-              end: "bottom top",
-            },
-          },
-        );
-      });
-
-      ScrollTrigger.refresh();
-    }, root);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <Section tone="light">
       <Container>
-        <div
-          ref={root}
-          className="flex flex-col gap-[clamp(80px,11vw,140px)]"
-        >
+        <div className="flex flex-col gap-[clamp(80px,11vw,140px)]">
           {demos.map((demo, i) => {
             const flip = i % 2 === 1;
             return (
               <figure
-                key={demo.name}
-                className="showcase-item grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10"
+                key={demo.slug}
+                className="grid min-w-0 gap-8 lg:grid-cols-12 lg:items-end lg:gap-10"
               >
-                <div className={cn("lg:col-span-8", flip && "lg:order-2")}>
-                  <DemoSite demo={demo} ratioClass="aspect-[16/10]" phone />
+                <div
+                  data-rise
+                  className={cn("min-w-0 lg:col-span-8", flip && "lg:order-2")}
+                >
+                  <DemoSite
+                    demo={demo}
+                    ratioClass="aspect-[16/10]"
+                    phone
+                    eager={i === 0}
+                  />
                 </div>
 
                 <figcaption
+                  data-rise
+                  style={{ "--i": 2 } as React.CSSProperties}
                   className={cn(
-                    "flex flex-col lg:col-span-4",
+                    "flex min-w-0 flex-col lg:col-span-4",
                     flip && "lg:order-1",
                   )}
                 >
-                  <span
-                    className="select-none font-light leading-none tracking-[-0.04em] text-border tabular-nums [font-size:clamp(3.4rem,6vw,5.4rem)]"
-                    aria-hidden="true"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-
-                  <div className="mt-4 flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                     <h2 className="text-[1.35rem] font-medium tracking-[-0.015em]">
                       {demo.name}
                     </h2>
-                    <span className="rounded-full border border-border px-2.5 py-0.5 text-[0.68rem] font-medium uppercase tracking-[0.08em] text-text-muted">
+                    <span className="rounded-pill border border-border px-2.5 py-0.5 text-[0.68rem] font-medium uppercase tracking-[0.08em] text-text-muted">
                       {demo.label}
                     </span>
                   </div>
@@ -143,12 +65,37 @@ export function WorkShowcase() {
                     {demo.scope.map((s) => (
                       <li
                         key={s}
-                        className="rounded-full bg-surface-2 px-3 py-1 text-[0.75rem] text-text-muted"
+                        className="rounded-pill bg-surface-2 px-3 py-1 text-[0.75rem] text-text-muted"
                       >
                         {s}
                       </li>
                     ))}
                   </ul>
+
+                  {/* The point of the whole page: it is not a picture, it
+                      opens. Named so the visitor knows what to go and try. */}
+                  <a
+                    href={demo.href}
+                    target="_blank"
+                    rel="noopener"
+                    className="mt-7 inline-flex h-12 w-fit items-center gap-2.5 rounded-pill bg-accent px-6 text-[0.95rem] font-medium text-accent-text transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0"
+                  >
+                    Atidaryti demo svetainę
+                    <svg
+                      viewBox="0 0 12 12"
+                      className="h-3 w-3"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                      aria-hidden="true"
+                    >
+                      <path d="M4.5 2H10v5.5" />
+                      <path d="M10 2 2.5 9.5" />
+                    </svg>
+                  </a>
+                  <p className="mt-3 text-[0.86rem] text-text-muted">
+                    {demo.feature} · atsidaro naujame lange
+                  </p>
                 </figcaption>
               </figure>
             );

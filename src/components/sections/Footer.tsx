@@ -21,7 +21,7 @@ export function Footer() {
                   <a
                     key={page.path}
                     href={page.path}
-                    className="text-[0.95rem] text-text-muted transition-colors duration-200 hover:text-text"
+                    className="text-[0.95rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
                   >
                     {page.label}
                   </a>
@@ -30,7 +30,7 @@ export function Footer() {
               <div className="flex flex-col gap-3">
                 <a
                   href={`mailto:${site.email}`}
-                  className="text-[0.95rem] text-text-muted transition-colors duration-200 hover:text-text"
+                  className="text-[0.95rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
                 >
                   {site.email}
                 </a>

@@ -1,16 +1,21 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-
-/** Fade + translateY reveal as the block enters the viewport.
- *  Falls back to an instant, transform-free render under reduced motion. */
+/** A part of a scroll-in gesture.
+ *
+ *  Thin wrapper over the house `data-rise` system in globals.css — the same
+ *  primitive the demo sites use, so the whole project animates through one
+ *  observer and one pair of curves. It renders on the server and ships no JS;
+ *  `Choreo` in the root layout does the watching, and skips it entirely under
+ *  reduced motion.
+ *
+ *  `delay` stays in seconds for the call sites that already pass it, quantised
+ *  onto the 70ms stagger step so offsets inside a gesture keep the same rhythm
+ *  everywhere on the site.
+ */
 export function Reveal({
   children,
   delay = 0,
-  y = 28,
+  y = 24,
   className,
 }: {
   children: ReactNode;
@@ -18,21 +23,18 @@ export function Reveal({
   y?: number;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
-
-  if (reduce) {
-    return <div className={className}>{children}</div>;
-  }
-
   return (
-    <motion.div
+    <div
       className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -14% 0px" }}
-      transition={{ duration: 0.9, ease: EASE, delay }}
+      data-rise
+      style={
+        {
+          "--i": Math.max(0, Math.round(delay / 0.07)),
+          "--rise-y": `${y}px`,
+        } as React.CSSProperties
+      }
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

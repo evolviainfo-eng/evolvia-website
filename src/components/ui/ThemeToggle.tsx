@@ -46,7 +46,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={isDark ? "Įjungti šviesų režimą" : "Įjungti tamsų režimą"}
       title={isDark ? "Šviesus režimas" : "Tamsus režimas"}
       className={cn(
-        "flex h-10 w-10 items-center justify-center rounded-full border border-border text-text transition-[transform,border-color,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[1px] hover:border-text",
+        "flex h-10 w-10 items-center justify-center rounded-full border border-border text-text transition-[translate,border-color,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-text",
         className,
       )}
     >
