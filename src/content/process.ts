@@ -1,8 +1,9 @@
 /** "Kaip dirbame" — 4 steps. Step 2 is the trust hook (see-it-live).
  *
- *  Step 1 used to promise a 15-minute phone call. There is no call — the whole
- *  thing runs over email by preference, and saying otherwise put a promise on
- *  the site nobody was going to keep. */
+ *  Step 1 used to promise a scheduled 15-minute call, which does not happen —
+ *  enquiries arrive by email. It briefly over-corrected into "no calls at
+ *  all", which was equally untrue: a call is fine, it is just not the way in.
+ *  The line now says where things start and leaves the rest open. */
 
 export interface ProcessStep {
   title: string;
@@ -13,7 +14,7 @@ export interface ProcessStep {
 export const processSteps: ProcessStep[] = [
   {
     title: "Užklausa el. paštu",
-    body: "Parašote, ką veikiate ir ko reikia. Be skambučių ir susitikimų — viskas vyksta laiškais.",
+    body: "Parašote, ką veikiate ir ko reikia — užtenka kelių sakinių. Norite aptarti balsu? Taip pat galima.",
   },
   {
     title: "Gyvas eskizas",

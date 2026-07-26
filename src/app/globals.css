@@ -296,6 +296,18 @@ html[data-choreo] [data-line].is-in > * {
   will-change: auto;
 }
 
+/* Content revealed under a travelling edge, left to right — the same move the
+   seam makes in the dark section, at row scale. clip-path leaves the layout
+   box intact, so the observer still sees the element and nothing reflows. */
+html[data-choreo] [data-sweep] {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--d-gesture) var(--e-out)
+    calc(var(--i, 0) * var(--d-step));
+}
+html[data-choreo] [data-sweep].is-in {
+  clip-path: inset(0 0 0 0);
+}
+
 /* A rule drawing itself from the left. The same gesture the nav underline
    makes, promoted to a primitive so sections can use it for hairlines. */
 html[data-choreo] [data-wipe] {

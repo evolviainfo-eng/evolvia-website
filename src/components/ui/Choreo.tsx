@@ -26,7 +26,8 @@ export function Choreo() {
     (window as unknown as { __choreo?: boolean }).__choreo = true;
     root.setAttribute("data-choreo", "");
 
-    const SELECTOR = "[data-rise], [data-settle], [data-line], [data-wipe]";
+    const SELECTOR =
+      "[data-rise], [data-settle], [data-line], [data-wipe], [data-sweep]";
     const seen = new WeakSet<Element>();
 
     const io = new IntersectionObserver(
