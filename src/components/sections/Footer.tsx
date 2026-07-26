@@ -26,6 +26,12 @@ export function Footer() {
                     {page.label}
                   </a>
                 ))}
+                <a
+                  href="/kontaktai#privatumas"
+                  className="text-[0.95rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
+                >
+                  Privatumas
+                </a>
               </nav>
               <div className="flex flex-col gap-3">
                 <a

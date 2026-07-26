@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
+import { PrivacyNote } from "@/components/ui/PrivacyNote";
 import { site } from "@/content/site";
 
 const fieldBase =
@@ -149,6 +150,9 @@ export function FinalCta({
               </p>
             )}
           </form>
+
+          {/* At the point of collection, not linked away from it. */}
+          <PrivacyNote className="mx-auto mt-10 max-w-[560px]" />
         </Reveal>
       </Container>
     </Section>
