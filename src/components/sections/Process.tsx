@@ -84,9 +84,14 @@ export function Process() {
                   aria-hidden="true"
                   className="block h-px w-full bg-border"
                 />
+                {/* the sweep wrapper stays unclipped so the observer can see
+                    it; its single child is what the edge travels across */}
                 <div
                   data-sweep
                   style={{ "--i": i * 2 + 1 } as React.CSSProperties}
+                  className="min-w-0"
+                >
+                <div
                   className={cn(
                     "grid min-w-0 gap-x-[clamp(24px,5vw,72px)] gap-y-3",
                     "py-[clamp(22px,3.2vw,38px)] md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]",
@@ -103,6 +108,7 @@ export function Process() {
                   <p className="t-body min-w-0 max-w-[46ch] text-pretty text-[1rem]">
                     {step.body}
                   </p>
+                </div>
                 </div>
               </li>
             );
