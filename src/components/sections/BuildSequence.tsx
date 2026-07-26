@@ -10,12 +10,23 @@ import { Canvas } from "./build/Canvas";
 import { cn } from "@/lib/cn";
 
 /* ─────────────────────────────────────────────────────────────
-   Amatas — a website assembling itself.
+   Iš jūsų medžiagos — a page made from what the business already has.
 
-   This section is about the artefact, not the engagement: the layers a
-   page is made of. The client-facing sequence (call → live sketch →
-   launch → maintenance) belongs to Process, which follows immediately
-   after — hence no numerals and no "etapai" here. Two numbered
+   This section used to claim a design methodology — a twelve-column
+   grid, wireframes before content, a typography stage — that this
+   studio does not actually follow. It was rewritten because the owner
+   read it back and said, correctly, that it was a lie.
+
+   What it says now is true and is also the better argument: the raw
+   material already exists, scattered across a phone, a price sheet, a
+   listings portal. The work is choosing what is usable and arranging
+   it. Deliberately silent about WHO gathers it — sometimes the client
+   sends it over, sometimes it gets tracked down, and the section must
+   not promise either.
+
+   The client-facing sequence (enquiry → live sketch → launch →
+   maintenance) belongs to Process, which follows immediately after —
+   hence no numerals and no "etapai" here. Two numbered
    roads-to-launch back to back read as one trick used twice.
 
    Desktop: the section pins for 300vh and a real page builds inside
@@ -39,16 +50,16 @@ type Stage = { title: string; copy: string };
 
 const STAGES: Stage[] = [
   {
-    title: "Tinklelis",
-    copy: "Dvylika stulpelių ir bendra eilutė. Ant jų sėda visi elementai.",
+    title: "Jūsų medžiaga",
+    copy: "Nuotraukos telefone, kainos lapelyje, atsiliepimai portale, darbo laikas. Viskas jau yra — tik išbarstyta.",
   },
   {
-    title: "Blokai",
-    copy: "Antraštė, pagrindinis ekranas, tekstas, galerija, poraštė — vietos prieš turinį.",
+    title: "Vieta kiekvienam",
+    copy: "Kas tinka, gauna savo vietą puslapyje. Kas neryšku ar pasenę — lieka nuošalyje.",
   },
   {
-    title: "Tipografija",
-    copy: "Tikras tekstas tikrais dydžiais — ne „Lorem ipsum“ ir ne pilki brūkšniai.",
+    title: "Tekstas",
+    copy: "Tikri jūsų žodžiai tikrais dydžiais — ne „Lorem ipsum“.",
   },
   {
     title: "Nuotraukos",
@@ -56,7 +67,7 @@ const STAGES: Stage[] = [
   },
   {
     title: "Gyva svetainė",
-    copy: "Tinklelis dingsta, lieka svetainė. Tokia, kokią pamatys jūsų klientas.",
+    copy: "Ta pati medžiaga. Tik dabar ji dirba jums.",
   },
 ];
 
@@ -220,12 +231,13 @@ export function BuildSequence() {
       <Container>
         <div className="pt-[clamp(80px,12vw,160px)]">
           <Reveal className="max-w-[680px]">
-            <Eyebrow>Amatas</Eyebrow>
-            <h2 className="t-h2 mt-4">Svetainė, kuri susidėlioja prieš akis.</h2>
+            <Eyebrow>Iš jūsų medžiagos</Eyebrow>
+            <h2 className="t-h2 mt-4">Medžiaga jau yra. Tik išbarstyta.</h2>
             <p className="t-body mt-5 max-w-[54ch]">
-              Tinklelis, blokai, tipografija, nuotraukos — sluoksniai, iš kurių
-              sudėliota kiekviena mūsų svetainė. Paprastai jų nematyti. Čia
-              matote visus.
+              Nuotraukos, kainos, atsiliepimai, darbo laikas — kiekvienas verslas tai
+              jau turi, tik niekur nesudėta į vietą. Nieko naujo išgalvoti
+              nereikia: reikia atrinkti, sudėlioti ir padaryti taip, kad tai
+              dirbtų jūsų naudai.
             </p>
           </Reveal>
         </div>

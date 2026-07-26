@@ -1,83 +1,34 @@
-"use client";
-
-import { useRef } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
-import { processSteps, type ProcessStep } from "@/content/process";
+import { processSteps } from "@/content/process";
 import { cn } from "@/lib/cn";
 
-const TOTAL = processSteps.length;
+/* ─────────────────────────────────────────────────────────────
+   Kaip dirbame — the four steps, set as a ledger.
 
-function StepNode({
-  index,
-  active,
-}: {
-  index: number;
-  active: MotionValue<number> | null;
-}) {
-  const label = String(index + 1).padStart(2, "0");
-  return (
-    <span className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-border bg-bg text-[0.95rem] font-semibold text-text-muted">
-      {label}
-      {/* active overlay cross-fades the node from grayscale → solid black */}
-      <motion.span
-        style={active ? { opacity: active } : undefined}
-        className="absolute inset-0 flex items-center justify-center rounded-full bg-accent text-[0.95rem] font-semibold text-accent-text"
-      >
-        {label}
-      </motion.span>
-    </span>
-  );
-}
+   This replaced four numbered circles on a connecting line that drew
+   itself as you scrolled. That is a timeline graphic anyone has seen a
+   hundred times, and the owner's verdict was simply "bland". The
+   circle-and-line vocabulary is gone entirely.
 
-function StepText({ step }: { step: ProcessStep }) {
-  return (
-    <>
-      <h3 className="t-h3">{step.title}</h3>
-      {step.lead && (
-        <span className="mt-3 inline-block rounded-full border border-border px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-text">
-          Be rizikos
-        </span>
-      )}
-      <p className="t-body mt-3 max-w-[30ch]">{step.body}</p>
-    </>
-  );
-}
+   What is here instead is editorial: full-width rows separated by
+   hairlines, each row arriving as one gesture — the rule wipes in from
+   the left, the title slides up out of its own mask, the body follows a
+   step behind. No numerals larger than a caption, no connectors, no
+   widgets.
+
+   Step 2 is the whole argument (you see the real site before paying),
+   so it gets the room: a larger title, ink-weight body copy and its own
+   tag. Everything else stays quiet around it.
+
+   Server-rendered and static — the reveal is the house CSS primitive,
+   so there is no client JS here at all and nothing is hidden if it
+   never runs.
+   ───────────────────────────────────────────────────────────── */
 
 export function Process() {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-
-  // A wide scroll band so the sequence unfolds calmly across the whole
-  // section (the old "start 80%"→"end 60%" window lit everything up almost
-  // at once — it read as rushed).
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 82%", "end 30%"],
-  });
-
-  // Connecting line draws as the section scrolls in. The explicit hold
-  // keyframe at progress 1 matters: framer's native ScrollTimeline path
-  // otherwise animates back to the initial value after the last keyframe
-  // (the line un-drew and nodes un-lit at the end of the section).
-  const lineGrow = useTransform(scrollYProgress, [0, 0.85, 1], [0, 1, 1]);
-
-  // Per-step activation windows (each node lights up in sequence).
-  const a0 = useTransform(scrollYProgress, [0.0, 0.18, 1], [0, 1, 1]);
-  const a1 = useTransform(scrollYProgress, [0.22, 0.4, 1], [0, 1, 1]);
-  const a2 = useTransform(scrollYProgress, [0.46, 0.64, 1], [0, 1, 1]);
-  const a3 = useTransform(scrollYProgress, [0.7, 0.88, 1], [0, 1, 1]);
-  const actives = reduce ? [null, null, null, null] : [a0, a1, a2, a3];
-
   return (
     <Section id="procesas" tone="secondary">
       <Container>
@@ -85,50 +36,93 @@ export function Process() {
           <Eyebrow>Kaip dirbame</Eyebrow>
           <h2 className="t-h2 mt-4">Procesas be staigmenų.</h2>
           <p className="t-body mt-5 max-w-[52ch]">
-            Keturi aiškūs žingsniai nuo pirmo pokalbio iki paleidimo. Realią
+            Keturi aiškūs žingsniai nuo pirmo laiško iki paleidimo. Realią
             svetainę pamatote dar prieš mokėdami.
           </p>
         </Reveal>
 
-        <div ref={ref} className="mt-[clamp(48px,7vw,88px)]">
-          {/* desktop: horizontal */}
-          <div className="relative hidden md:block">
-            <div className="absolute left-[12.5%] right-[12.5%] top-7 h-px bg-border" />
-            <motion.div
-              style={reduce ? { scaleX: 1 } : { scaleX: lineGrow }}
-              className="absolute left-[12.5%] right-[12.5%] top-7 h-px origin-left bg-accent"
-            />
-            <ol className="grid grid-cols-4 gap-8">
-              {processSteps.map((step, i) => (
-                <li key={step.title} className="flex flex-col items-center text-center">
-                  <StepNode index={i} active={actives[i]} />
-                  <div className="mt-7">
-                    <StepText step={step} />
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
+        <ol className="mt-[clamp(44px,6vw,80px)]">
+          {processSteps.map((step, i) => {
+            const lead = !!step.lead;
+            return (
+              <li key={step.title} className="min-w-0">
+                {/* the rule belongs to the row below it, and draws first */}
+                <span
+                  data-wipe
+                  style={{ "--i": i * 2 } as React.CSSProperties}
+                  aria-hidden="true"
+                  className="block h-px w-full bg-border"
+                />
 
-          {/* mobile: vertical */}
-          <div className="relative md:hidden">
-            <div className="absolute bottom-9 left-7 top-7 w-px bg-border" />
-            <motion.div
-              style={reduce ? { scaleY: 1 } : { scaleY: lineGrow }}
-              className="absolute bottom-9 left-7 top-7 w-px origin-top bg-accent"
-            />
-            <ol className="flex flex-col gap-12">
-              {processSteps.map((step, i) => (
-                <li key={step.title} className="flex gap-6">
-                  <StepNode index={i} active={actives[i]} />
-                  <div className="pt-2.5">
-                    <StepText step={step} />
+                <div
+                  className={cn(
+                    "grid min-w-0 gap-x-[clamp(24px,5vw,72px)] gap-y-3 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]",
+                    lead
+                      ? "py-[clamp(30px,4.4vw,54px)]"
+                      : "py-[clamp(22px,3.2vw,38px)]",
+                  )}
+                >
+                  <div
+                    data-rise
+                    style={{ "--i": i * 2 } as React.CSSProperties}
+                    className="flex min-w-0 items-baseline gap-4"
+                  >
+                    <span className="shrink-0 text-[0.78rem] tabular-nums tracking-[0.1em] text-text-muted">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    {/* the house masked-line reveal, at row scale */}
+                    <span
+                      data-line
+                      style={{ "--i": i * 2 + 1 } as React.CSSProperties}
+                      className="block min-w-0 overflow-hidden pb-[0.14em] -mb-[0.14em]"
+                    >
+                      <span
+                        className={cn(
+                          "block tracking-[-0.02em] text-text",
+                          lead
+                            ? "text-[clamp(1.5rem,2.9vw,2.15rem)] leading-[1.12]"
+                            : "text-[clamp(1.2rem,2vw,1.5rem)] leading-[1.2]",
+                        )}
+                      >
+                        {step.title}
+                      </span>
+                    </span>
                   </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
+
+                  <div
+                    data-rise
+                    style={{ "--i": i * 2 + 2 } as React.CSSProperties}
+                    className="min-w-0"
+                  >
+                    <p
+                      className={cn(
+                        "max-w-[46ch] text-pretty",
+                        lead
+                          ? "text-[1.0625rem] leading-relaxed text-text sm:text-[1.1875rem]"
+                          : "t-body text-[1rem]",
+                      )}
+                    >
+                      {step.body}
+                    </p>
+                    {lead && (
+                      <span className="mt-4 inline-block rounded-pill border border-text/25 px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.1em] text-text">
+                        Be rizikos
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+          {/* closes the ledger */}
+          <li aria-hidden="true">
+            <span
+              data-wipe
+              style={{ "--i": processSteps.length * 2 } as React.CSSProperties}
+              className="block h-px w-full bg-border"
+            />
+          </li>
+        </ol>
       </Container>
     </Section>
   );

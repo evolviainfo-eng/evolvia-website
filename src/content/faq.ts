@@ -24,7 +24,7 @@ export const faqItems: FaqItem[] = [
   },
   {
     q: "Ką man reikia paruošti, kad pradėtume?",
-    a: "Beveik nieko — užtenka trumpo pokalbio. Tekstus, nuotraukas ir logotipą sutvarkome kartu: turite savų — puiku, neturite — padėsime.",
+    a: "Beveik nieko — užtenka vieno laiško. Tekstus, nuotraukas ir logotipą sutvarkome kartu: turite savų — puiku, neturite — padėsime.",
   },
   {
     q: "Kas prižiūri svetainę po paleidimo?",

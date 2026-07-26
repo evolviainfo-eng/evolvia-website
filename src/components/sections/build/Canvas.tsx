@@ -11,11 +11,11 @@ import { cn } from "@/lib/cn";
    animation code anywhere.
 
      -1  blank artboard
-      0  Tinklelis      — 12 columns + baseline rules draw themselves
-      1  Blokai         — hairline blocks place themselves on the grid
-      2  Tipografija    — real type lands, wireframe outlines fade
+      0  Jūsų medžiaga  — loose fragments: photos, a price list, a review
+      1  Vieta kiekvienam — the fragments clear, plates take their places
+      2  Tekstas        — real words land, wireframe outlines fade
       3  Nuotraukos     — imagery settles in from a slight scale
-      4  Gyva svetainė  — grid gone, browser chrome resolves
+      4  Gyva svetainė  — browser chrome resolves, the page is done
 
    Everything inside is decorative: the artboard is aria-hidden and the
    readable content lives in the stage index beside it.
@@ -26,13 +26,60 @@ import { cn } from "@/lib/cn";
    is to drop blocks on mobile, never to shrink the type.
    ───────────────────────────────────────────────────────────── */
 
-const COLS = 12;
-const COLS_COMPACT = 6;
-const RULES = 8;
-const RULES_COMPACT = 6;
 
 /** the mock's gallery — three different rooms, cropped to the cell ratio */
 const THUMBS = ["/work/mock-1.webp", "/work/mock-2.webp", "/work/mock-3.webp"];
+
+type Box = { l: string; t: string; w: string; h: string };
+type Photo = { src: string; from: Box; to: Box; r: string };
+type Scrap = Box & { r: string; dx: string; dy: string; bars: string[] };
+
+/* The four photographs, scattered and then where they actually end up.
+   `to` is the real geometry of the page's own slots, derived from the grid
+   below: rows 0.62/3.05/1.85/1.25/0.5fr with 2% gaps put the hero band at
+   9.8% and the gallery band at 75.9%, and the gallery's inset-[1.6%]
+   three-column track puts its cells at 1.6 / 34.3 / 67.1%.
+
+   They travel there and hold, so when the page's own images fade in at
+   stage 3 they arrive in the same place these left. Same material, moved
+   into position — which is the entire claim the section makes. */
+const PHOTOS: Photo[] = [
+  {
+    src: "/work/mock-hero.webp",
+    from: { l: "60%", t: "2%", w: "34%", h: "23%" },
+    to: { l: "53%", t: "13%", w: "44%", h: "31%" },
+    r: "2.4deg",
+  },
+  {
+    src: THUMBS[0],
+    from: { l: "1%", t: "7%", w: "27%", h: "19%" },
+    to: { l: "1.6%", t: "76.1%", w: "31.3%", h: "15.2%" },
+    r: "-3.2deg",
+  },
+  {
+    src: THUMBS[1],
+    from: { l: "30%", t: "31%", w: "26%", h: "18%" },
+    to: { l: "34.3%", t: "76.1%", w: "31.3%", h: "15.2%" },
+    r: "1.6deg",
+  },
+  {
+    src: THUMBS[2],
+    from: { l: "69%", t: "36%", w: "26%", h: "18%" },
+    to: { l: "67.1%", t: "76.1%", w: "31.3%", h: "15.2%" },
+    r: "-2deg",
+  },
+];
+
+/* The written material. It has no slot to travel to — it becomes type — so
+   it simply clears once the words land. */
+const SCRAPS: Scrap[] = [
+  { l: "3%", t: "52%", w: "27%", h: "16%", r: "1.8deg", dx: "12%", dy: "-10%",
+    bars: ["82%", "58%", "70%", "44%"] },
+  { l: "63%", t: "66%", w: "27%", h: "13%", r: "-2.2deg", dx: "-12%", dy: "-12%",
+    bars: ["90%", "74%", "38%"] },
+  { l: "28%", t: "78%", w: "23%", h: "11%", r: "1.4deg", dx: "2%", dy: "-14%",
+    bars: ["66%", "48%"] },
+];
 
 /** offset for one child inside the single gesture */
 const step = (i: number) => ({ transitionDelay: `calc(${i} * var(--d-step))` });
@@ -59,9 +106,6 @@ export function Canvas({
 }) {
   const at = (n: number) => stage >= n;
 
-  const cols = compact ? COLS_COMPACT : COLS;
-  const rules = compact ? RULES_COMPACT : RULES;
-
   /* a wireframe block: at stage 1 it lands on the grid as a filled plate —
      it has to occlude the rules, or "blokai" is just more hairlines on a
      field of hairlines and the beat reads as nothing happening. At stage 2
@@ -77,12 +121,6 @@ export function Canvas({
 
   /* the words inside a block */
   const type = cn(FADE, at(2) ? "opacity-100" : "opacity-0");
-
-  const gridLayer = cn(
-    "absolute inset-0",
-    SETTLE,
-    at(4) ? "opacity-0" : at(2) ? "opacity-30" : "opacity-100",
-  );
 
   return (
     <div
@@ -117,39 +155,43 @@ export function Canvas({
 
       {/* ── artboard ────────────────────────────────────────────── */}
       <div className="relative min-h-0 flex-1">
-        {/* 01 — the grid draws itself: columns first, baselines a beat later */}
+        {/* 01 — the written scraps. Hand-placed, not generated: a random
+            scatter reads as confetti, and this has to read as a desk with
+            things on it. They clear once the words land. */}
         <div className="pointer-events-none absolute inset-x-[5%] inset-y-[7%]">
-          <div
-            className={cn(
-              gridLayer,
-              "origin-top",
-              at(0) ? "scale-y-100" : "scale-y-0",
-            )}
-          >
-            {Array.from({ length: cols + 1 }, (_, i) => (
-              <span
-                key={i}
-                className="absolute inset-y-0 w-px bg-border"
-                style={{ left: `${(i / cols) * 100}%` }}
-              />
-            ))}
-          </div>
-          <div
-            className={cn(
-              gridLayer,
-              "origin-left",
-              at(0) ? "scale-x-100" : "scale-x-0",
-            )}
-            style={step(2)}
-          >
-            {Array.from({ length: rules + 1 }, (_, i) => (
-              <span
-                key={i}
-                className="absolute inset-x-0 h-px bg-border"
-                style={{ top: `${(i / rules) * 100}%` }}
-              />
-            ))}
-          </div>
+          {SCRAPS.map((s, i) => (
+            <div
+              key={i}
+              className={cn(
+                "absolute overflow-hidden rounded-[3px] border border-border bg-surface shadow-[var(--shadow-card)]",
+                // rotate+translate is a real `transform` below, so this names
+                // transform — SETTLE names `scale`, which Tailwind emits as a
+                // separate property and which would not cover it
+                "transition-[transform,opacity] duration-[var(--d-scene)] ease-[var(--e-out)]",
+                at(2) ? "opacity-0" : "opacity-100",
+              )}
+              style={{
+                left: s.l,
+                top: s.t,
+                width: s.w,
+                height: s.h,
+                transform: at(2)
+                  ? `rotate(${s.r}) translate(${s.dx}, ${s.dy})`
+                  : `rotate(${s.r}) translate(0,0)`,
+                ...step(i),
+              }}
+            >
+              <div className="flex flex-col gap-[0.7cqw] p-[1.5cqw]">
+                {s.bars.map((w, b) => (
+                  <span
+                    key={b}
+                    className="block h-[0.5cqw] rounded-[1px] bg-text-muted/35"
+                    style={{ width: w }}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* 02–05 — the page itself */}
@@ -329,6 +371,51 @@ export function Canvas({
               </span>
             </div>
           </div>
+        </div>
+
+        {/* The photographs, on top of the page rather than behind it.
+            They start scattered, travel to the exact slots the page's own
+            images occupy, and hold there — then fade at stage 3 as the real
+            ones arrive underneath in the same place. The handoff is the
+            point: it has to read as this material being moved into position,
+            not as one picture dissolving into a different one. */}
+        <div className="pointer-events-none absolute inset-x-[5%] inset-y-[7%]">
+          {PHOTOS.map((ph, i) => {
+            const box = at(1) ? ph.to : ph.from;
+            return (
+              <div
+                key={ph.src}
+                className={cn(
+                  "absolute overflow-hidden bg-surface-2",
+                  at(1)
+                    ? "rounded-none border-transparent shadow-none"
+                    : "rounded-[3px] border-border shadow-[var(--shadow-card)]",
+                  "border",
+                  "transition-[left,top,width,height,transform,opacity,border-color,border-radius] duration-[var(--d-scene)] ease-[var(--e-mass)]",
+                  at(3) ? "opacity-0" : "opacity-100",
+                )}
+                style={{
+                  left: box.l,
+                  top: box.t,
+                  width: box.w,
+                  height: box.h,
+                  transform: at(1) ? "rotate(0deg)" : `rotate(${ph.r})`,
+                  ...step(i),
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={ph.src}
+                  alt=""
+                  width={800}
+                  height={520}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -296,6 +296,18 @@ html[data-choreo] [data-line].is-in > * {
   will-change: auto;
 }
 
+/* A rule drawing itself from the left. The same gesture the nav underline
+   makes, promoted to a primitive so sections can use it for hairlines. */
+html[data-choreo] [data-wipe] {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--d-gesture) var(--e-out)
+    calc(var(--i, 0) * var(--d-step));
+}
+html[data-choreo] [data-wipe].is-in {
+  transform: none;
+}
+
 /* A photo settling into its frame — pairs with a rising parent. */
 html[data-choreo] [data-settle] {
   transform: scale(1.06);
