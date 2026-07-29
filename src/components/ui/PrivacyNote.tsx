@@ -10,19 +10,23 @@ import { site } from "@/content/site";
  *  compliance than linking away from them.
  *
  *  There is deliberately NO cookie banner anywhere on this site. Consent under
- *  the ePrivacy rules is needed to store or read things on someone's device
- *  unless it is strictly necessary for something they asked for. This site
- *  runs no analytics, no pixels, no embeds and no third-party scripts; the one
- *  thing it writes is the light/dark choice, and only at the moment the
- *  visitor clicks the toggle. Asking permission for that would be theatre, and
- *  it would imply tracking that is not happening.
+ *  the ePrivacy rules is needed to store or READ things on someone's device
+ *  unless it is strictly necessary for something they asked for. Nothing here
+ *  does: the only thing written is the light/dark choice, at the moment the
+ *  visitor clicks the toggle, and Vercel Web Analytics is cookieless — it
+ *  counts page views from the request itself and puts nothing in the browser.
+ *
+ *  That is the line to hold. Analytics that DID set an identifier would move
+ *  this site into banner territory, and this notice would have to change with
+ *  it. Keep the two in step: whatever the site actually does is what this
+ *  text has to say.
  */
 export function PrivacyNote({ className }: { className?: string }) {
   return (
     <div id="privatumas" className={className}>
       <p className="text-[0.85rem] leading-relaxed text-text-muted">
         Jūsų duomenis naudojame tik atsakymui į šią užklausą. Slapukų
-        nenaudojame.{" "}
+        nenaudojame ir jūsų neseka.{" "}
         <span className="text-text">Kaip tvarkome duomenis — žemiau.</span>
       </p>
 
@@ -66,8 +70,8 @@ export function PrivacyNote({ className }: { className?: string }) {
             <dt className="font-medium text-text">Kas dar mato</dt>
             <dd>
               Formą aptarnauja „Formspree“ (JAV) — per jų sistemą žinutė
-              atkeliauja į mūsų pašto dėžutę. Daugiau niekam neperduodame ir
-              niekada nepardavinėjame.
+              atkeliauja į mūsų pašto dėžutę. Svetainę talpina „Vercel“.
+              Daugiau niekam neperduodame ir niekada nepardavinėjame.
             </dd>
           </div>
           <div>
@@ -87,11 +91,21 @@ export function PrivacyNote({ className }: { className?: string }) {
             </dd>
           </div>
           <div>
+            <dt className="font-medium text-text">Lankomumo statistika</dt>
+            <dd>
+              Matome tik tai, kiek kartų atidaryti puslapiai — tam naudojame
+              „Vercel Analytics“. Jis neįrašo nieko į jūsų naršyklę, nekuria
+              jūsų profilio ir neseka jūsų kitose svetainėse. Nematome, kas
+              jūs esate.
+            </dd>
+          </div>
+          <div>
             <dt className="font-medium text-text">Slapukai</dt>
             <dd>
-              Nenaudojame — nei analitikos, nei reklamos, nei stebėjimo. Į
-              naršyklę įrašome vienintelį dalyką: pasirinktą šviesią ar tamsią
-              temą, ir tik tada, kai patys ją perjungiate.
+              Nenaudojame — nei reklamos, nei stebėjimo. Į naršyklę įrašome
+              vienintelį dalyką: pasirinktą šviesią ar tamsią temą, ir tik
+              tada, kai patys ją perjungiate. Todėl ir sutikimo juostos čia
+              nėra — nėra ko sutikti.
             </dd>
           </div>
         </dl>

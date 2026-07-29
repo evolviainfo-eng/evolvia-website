@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { Choreo } from "@/components/ui/Choreo";
+import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -124,6 +125,11 @@ export default function RootLayout({
         <SmoothScroll />
         <Choreo />
         {children}
+        {/* Cookieless page counting. It writes nothing to the visitor's
+            device, so it needs no consent banner — but it does process the
+            request, so the privacy notice names it. Only collects when the
+            site is served from Vercel. */}
+        <Analytics />
       </body>
     </html>
   );
