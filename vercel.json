@@ -1,19 +1,45 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "comment": "Vercel equivalents of what netlify.toml and public/_redirects do. Both of those are Netlify syntax and are inert here, so without this file the old indexed URLs would 404 and the demo sites would lose their noindex header on the way over.",
   "redirects": [
-    { "source": "/kontaktas.html", "destination": "/#kontaktai", "permanent": true },
-    { "source": "/kontaktas", "destination": "/#kontaktai", "permanent": true },
-    { "source": "/aciu.html", "destination": "/", "permanent": true },
-    { "source": "/aciu", "destination": "/", "permanent": true },
-    { "source": "/privatumas.html", "destination": "/", "permanent": true },
-    { "source": "/privatumas", "destination": "/", "permanent": true }
+    {
+      "source": "/kontaktas.html",
+      "destination": "/#kontaktai",
+      "permanent": true
+    },
+    {
+      "source": "/kontaktas",
+      "destination": "/#kontaktai",
+      "permanent": true
+    },
+    {
+      "source": "/aciu.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/aciu",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/privatumas.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/privatumas",
+      "destination": "/",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/demo/(.*)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
       ]
     }
   ]

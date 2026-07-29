@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# evolvia-web
 
-## Getting Started
-
-First, run the development server:
+Evolvia's own site — a web-design studio selling to Lithuanian small
+businesses. Next.js 16 (App Router, Turbopack), TypeScript, Tailwind v4,
+`output: "export"` so it ships as plain static files.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev     # http://localhost:3030
+npm run build   # static export into out/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Two platform configs live in the repo on purpose.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **`vercel.json`** — the live one. Holds the 301s for pre-redesign URLs that
+  are still in Google's index, and the `X-Robots-Tag: noindex` header for
+  `/demo/*`. Vercel's schema rejects unknown keys, so it cannot carry comments;
+  this section is its documentation.
+- **`netlify.toml` + `public/_redirects`** — the previous host. Both are
+  Netlify syntax and are inert on Vercel. Kept so the old deploy keeps working
+  during the switch; delete them once it is retired, but port anything in them
+  to `vercel.json` first — they are not equivalent files and nothing warns you
+  if a redirect quietly stops existing.
 
-## Learn More
+## The demo sites
 
-To learn more about Next.js, take a look at the following resources:
+`/demo/{konstrukta,fume,forma,skalsa}` are four complete websites for companies
+that **do not exist**, each with one genuinely working feature. Every surface
+that shows one says so: a pinned honesty bar, a closing strip, example contacts
+on `.demo` domains, and forms whose confirmation states nothing was sent.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+They are `noindex` twice over — a meta tag from `app/demo/layout.tsx` and the
+HTTP header above. `robots.txt` deliberately does **not** disallow `/demo/`: a
+crawler has to be allowed to fetch a page in order to read that it says
+noindex.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+If you touch these, the rule is that nothing may imply a real business.
 
-## Deploy on Vercel
+## Motion
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Two easing curves and five durations, defined as CSS custom properties in
+`globals.css`. Nothing anywhere writes a raw `cubic-bezier()` or a raw
+millisecond value.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Scroll reveals go through one primitive set — `data-rise`, `data-line`,
+`data-wipe`, `data-sweep`, `data-settle` — watched by a single observer in
+`components/ui/Choreo.tsx`. The hidden state is gated behind
+`html[data-choreo]`, which the boot script sets before first paint and a
+watchdog removes if the observer never arrives, so a JS failure can only ever
+leave content visible.
+
+**Never clip, scale to zero, or collapse the element being observed.** A
+fully clipped element has no visible area, `IntersectionObserver` never reports
+it, and the content stays blank forever. Clip a child instead — that is what
+`data-sweep` does.
+
+**Tailwind v4 emits `translate` and `scale` as their own CSS properties**, not
+as `transform`. A transition list must name `translate`;
+`transition-[transform,…]` next to a `translate-*` utility animates nothing.
+The named `transition-transform` utility is fine — it covers all four.
+
+## Before shipping
+
+```bash
+npm run build
+npx tsc --noEmit --incremental false
+```
+
+Plus the viewport-fit gate — horizontal overflow is invisible to every tool
+that lies about mobile widths, so it is measured inside a real iframe at each
+width and checked against `document.scrollWidth`. A failure is a layout bug, not
+an artifact.
