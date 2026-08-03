@@ -1,4 +1,4 @@
-import { Body, Eyebrow, H2, HAIRLINE, Photo } from "./Type";
+import { Body, Eyebrow, H2, HAIRLINE, Note, Shot } from "./Type";
 
 const WINES = [
   {
@@ -18,11 +18,14 @@ const WINES = [
   { n: "Tempranillo Reserva", r: "Rioja Alta · Ispanija", g: 9, b: 48 },
 ];
 
+const PRICE_COL =
+  "w-[3.4rem] shrink-0 text-right font-[family-name:var(--font-fume-display)] text-[1.02rem] leading-[1.3] tabular-nums";
+
 export function Wine() {
   return (
     <section
       id="vynas"
-      className="mx-auto max-w-[1240px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8"
+      className="mx-auto max-w-[1240px] px-5 py-[var(--sec)] sm:px-8"
     >
       <div className="grid items-start gap-[clamp(36px,5vw,72px)] lg:grid-cols-12">
         <div className="min-w-0 lg:col-span-6">
@@ -46,50 +49,53 @@ export function Wine() {
             className="mt-10"
           >
             <div
-              className="flex items-baseline gap-4 border-b pb-2.5 font-[family-name:var(--font-fume-ui)] text-[0.64rem] uppercase tracking-[0.18em] text-[#9c948a]"
+              className="flex items-baseline gap-x-3 border-b pb-2.5 font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.18em] text-[#9c948a]"
               style={{ borderColor: HAIRLINE }}
             >
               <span className="min-w-0 flex-1">Taurėmis ir buteliais</span>
-              <span className="w-[54px] shrink-0 text-right">Taurė</span>
-              <span className="w-[58px] shrink-0 text-right">Butelis</span>
+              <span className="w-[3.4rem] shrink-0 text-right">Taurė</span>
+              <span className="w-[3.4rem] shrink-0 text-right">Butelis</span>
             </div>
 
             <ul>
               {WINES.map((w) => (
                 <li
                   key={w.n}
-                  className="flex items-baseline gap-4 border-b border-[rgba(237,230,218,0.07)] py-4 last:border-b-0"
+                  style={{ borderColor: HAIRLINE }}
+                  className="fume-row -mx-2 border-b px-2 py-4 last:border-b-0"
                 >
-                  <div className="min-w-0 flex-1">
-                    <p className="font-[family-name:var(--font-fume-display)] text-[1.1rem] font-normal italic leading-[1.3] text-[#ede6da]">
+                  <p className="flex items-baseline gap-x-3">
+                    <span className="min-w-0 flex-1 font-[family-name:var(--font-fume-display)] text-[1.05rem] italic leading-[1.3] text-[#ede6da]">
                       {w.n}
-                    </p>
-                    <p className="mt-1.5 font-[family-name:var(--font-fume-ui)] text-[0.78rem] leading-[1.55] text-[#9c948a]">
-                      {w.r}
-                    </p>
-                  </div>
-                  {/* The column headings above are visual only — a screen
-                      reader would otherwise read the two figures back to back
-                      with no way to tell the glass price from the bottle. */}
-                  <span className="w-[54px] shrink-0 text-right font-[family-name:var(--font-fume-ui)] text-[0.9rem] tabular-nums text-[rgba(237,230,218,0.88)]">
-                    <span className="sr-only">Taurė: </span>
-                    {w.g}&nbsp;€
-                  </span>
-                  <span className="w-[58px] shrink-0 text-right font-[family-name:var(--font-fume-ui)] text-[0.9rem] tabular-nums text-[rgba(237,230,218,0.88)]">
-                    <span className="sr-only">Butelis: </span>
-                    {w.b}&nbsp;€
-                  </span>
+                    </span>
+                    {/* The column headings above are visual only — a screen
+                        reader would otherwise read the two figures back to back
+                        with no way to tell the glass price from the bottle. */}
+                    <span className={`${PRICE_COL} text-[rgba(237,230,218,0.9)]`}>
+                      <span className="sr-only">Taurė: </span>
+                      {w.g}&nbsp;€
+                    </span>
+                    <span className={`${PRICE_COL} text-[rgba(237,230,218,0.9)]`}>
+                      <span className="sr-only">Butelis: </span>
+                      {w.b}&nbsp;€
+                    </span>
+                  </p>
+                  <p className="mt-1.5 max-w-[46ch] font-[family-name:var(--font-fume-ui)] text-[0.78rem] leading-[1.6] text-[#9c948a]">
+                    {w.r}
+                  </p>
                 </li>
               ))}
             </ul>
 
-            <p
-              className="mt-6 border-t pt-5 font-[family-name:var(--font-fume-ui)] text-[0.76rem] leading-relaxed text-[#9c948a]"
+            <div
               style={{ borderColor: HAIRLINE }}
+              className="mt-6 border-t pt-5"
             >
-              Dešimt vietų prie baro laikome nerezervuotų — vien taurei vyno
-              užeiti galima be išankstinio susitarimo.
-            </p>
+              <Note>
+                Dešimt vietų prie baro laikome nerezervuotų — vien taurei vyno
+                užeiti galima be išankstinio susitarimo.
+              </Note>
+            </div>
           </div>
         </div>
 
@@ -98,31 +104,21 @@ export function Wine() {
           style={{ "--i": 1 } as React.CSSProperties}
           className="min-w-0 lg:col-span-5 lg:col-start-8"
         >
-          <figure
-            className="overflow-hidden bg-[#141210]"
-            style={{ aspectRatio: "1200 / 800" }}
-          >
-            <Photo
-              src="/demo/fume/wine.webp"
-              w={1200}
-              h={800}
-              alt="Raudonas vynas pilamas į taurę prieblandoje"
-              settle
-              className="h-full w-full object-cover"
-            />
-          </figure>
-          <figure
-            className="ml-auto mt-[clamp(16px,2.5vw,28px)] w-[68%] overflow-hidden bg-[#141210]"
-            style={{ aspectRatio: "1100 / 893" }}
-          >
-            <Photo
-              src="/demo/fume/wine-studio.webp"
-              w={1100}
-              h={893}
-              alt="Vyno pylimas į taurę švariame fone"
-              className="h-full w-full object-cover"
-            />
-          </figure>
+          <Shot
+            src="/demo/fume/wine.webp"
+            w={1200}
+            h={800}
+            alt="Raudonas vynas pilamas į taurę prieblandoje"
+            settle
+          />
+          <Shot
+            className="ml-auto mt-[clamp(16px,2.5vw,28px)] w-[68%]"
+            src="/demo/fume/wine-studio.webp"
+            w={1100}
+            h={893}
+            ratio="5 / 4"
+            alt="Vyno pylimas į taurę švariame fone"
+          />
         </div>
       </div>
     </section>

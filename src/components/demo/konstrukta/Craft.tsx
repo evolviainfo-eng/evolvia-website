@@ -1,4 +1,4 @@
-import { BAND, CONTAINER, SectionHead } from "./ui";
+import { BAND, CONTAINER, Plate, SectionHead, T_MICRO, T_SM } from "./ui";
 
 const SHOTS = [
   {
@@ -41,10 +41,7 @@ const SHOTS = [
 
 export function Craft() {
   return (
-    <section
-      id="amatas"
-      className={`${BAND} border-t border-white/[0.11]`}
-    >
+    <section id="amatas" className={`${BAND} border-t border-white/[0.11]`}>
       <div className={CONTAINER}>
         <SectionHead
           index="06"
@@ -53,7 +50,7 @@ export function Craft() {
           lead="Keturios detalės iš eilinių darbo dienų. Ne rikiuotė prieš objektyvą — tiesiog tai, kaip atrodo tvarkinga aikštelė."
         />
 
-        <div className="mt-[clamp(36px,5vw,60px)] grid gap-x-[clamp(20px,3vw,36px)] gap-y-[clamp(32px,4vw,52px)] sm:grid-cols-2">
+        <div className="mt-[clamp(40px,5vw,64px)] grid gap-x-[clamp(20px,3vw,36px)] gap-y-[clamp(32px,4vw,52px)] sm:grid-cols-2">
           {SHOTS.map((s, i) => (
             <figure
               key={s.code}
@@ -61,21 +58,14 @@ export function Craft() {
               style={{ "--i": i + 1 } as React.CSSProperties}
               className="min-w-0"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={s.src}
-                width={s.w}
-                height={s.h}
-                alt={s.alt}
-                decoding="async"
-                loading="lazy"
-                className="h-auto w-full"
-              />
+              <Plate src={s.src} width={s.w} height={s.h} alt={s.alt} />
               <figcaption className="mt-4 border-t border-white/[0.11] pt-3">
-                <span className="knst-mono block text-[0.62rem] uppercase tracking-[0.18em] text-[#9A9791]">
+                <span className={`${T_MICRO} block text-[#9A9791]`}>
                   {s.code}
                 </span>
-                <span className="mt-2 block max-w-[42ch] text-[0.9rem] leading-[1.55] text-[#E7E5E1]">
+                <span
+                  className={`mt-2 block max-w-[46ch] text-pretty ${T_SM} text-[#E7E5E1]`}
+                >
                   {s.caption}
                 </span>
               </figcaption>

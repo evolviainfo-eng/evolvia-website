@@ -1,4 +1,4 @@
-import { Body, Eyebrow, Frame, H2, HAIRLINE } from "./Type";
+import { Body, Eyebrow, H2, HAIRLINE, Rule, Shot } from "./Type";
 
 const FACTS = [
   { k: "34", v: "vietos salėje" },
@@ -8,7 +8,7 @@ const FACTS = [
 
 export function Intro() {
   return (
-    <section className="mx-auto max-w-[1240px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
+    <section className="mx-auto max-w-[1240px] px-5 pt-[var(--sec)] sm:px-8">
       <div className="grid items-start gap-[clamp(32px,5vw,64px)] lg:grid-cols-12">
         <div className="min-w-0 lg:col-span-5">
           <div data-rise>
@@ -39,14 +39,18 @@ export function Intro() {
 
             <dl
               style={{ borderColor: HAIRLINE }}
-              className="!mt-10 grid grid-cols-3 gap-4 border-t pt-6"
+              className="!mt-10 grid grid-cols-3 gap-x-4 gap-y-4 border-t pt-6"
             >
-              {FACTS.map((f) => (
-                <div key={f.k} className="min-w-0">
-                  <dt className="font-[family-name:var(--font-fume-display)] text-[clamp(1.4rem,3vw,1.9rem)] font-light leading-none text-[#ede6da]">
+              {FACTS.map((f, i) => (
+                <div
+                  key={f.k}
+                  style={{ borderColor: HAIRLINE }}
+                  className={`min-w-0 ${i > 0 ? "sm:border-l sm:pl-5" : ""}`}
+                >
+                  <dt className="font-[family-name:var(--font-fume-display)] text-[clamp(1.4rem,3vw,1.9rem)] font-light leading-none tabular-nums text-[#ede6da]">
                     {f.k}
                   </dt>
-                  <dd className="mt-2 font-[family-name:var(--font-fume-ui)] text-[0.72rem] leading-snug text-[#9c948a]">
+                  <dd className="mt-2 font-[family-name:var(--font-fume-ui)] text-[0.76rem] leading-[1.5] text-[#9c948a]">
                     {f.v}
                   </dd>
                 </div>
@@ -55,23 +59,18 @@ export function Intro() {
           </div>
         </div>
 
-        <Frame
-          className="min-w-0 lg:col-span-6 lg:col-start-7"
+        <Shot
+          className="lg:col-span-6 lg:col-start-7"
           src="/demo/fume/room-hall.webp"
           w={1400}
           h={933}
-          ratio="1400 / 933"
           alt="Padengta Fumé salė šiltoje vakaro šviesoje"
-          index={1}
+          rise={1}
           settle
         />
       </div>
 
-      <div
-        aria-hidden
-        className="mt-[clamp(56px,8vw,104px)] h-px w-full"
-        style={{ background: HAIRLINE }}
-      />
+      <Rule className="mt-[var(--gap)]" />
     </section>
   );
 }

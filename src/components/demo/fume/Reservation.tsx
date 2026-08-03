@@ -7,7 +7,7 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import { Body, Eyebrow, H2, HAIRLINE } from "./Type";
+import { Body, Eyebrow, H2, HAIRLINE, Note } from "./Type";
 
 /* ── Calendar vocabulary ─────────────────────────────────────────────── */
 
@@ -224,12 +224,11 @@ function guestsLabel(n: number) {
 
 /** Lithuanian numeral agreement: 1 laikas · 2–9 laikai · 10–20 laikų. */
 function freeLabel(n: number) {
-  if (n === 0) return "šį vakarą laisvų laikų nebeliko";
   const last = n % 10;
   const tens = Math.floor(n / 10) % 10;
-  if (last === 1 && tens !== 1) return `šį vakarą laisvas ${n} laikas`;
-  if (last === 0 || tens === 1) return `šį vakarą laisva ${n} laikų`;
-  return `šį vakarą laisvi ${n} laikai`;
+  if (last === 1 && tens !== 1) return `Laisvas ${n} laikas`;
+  if (last === 0 || tens === 1) return `Laisva ${n} laikų`;
+  return `Laisvi ${n} laikai`;
 }
 
 /* ── Shared control styling ──────────────────────────────────────────── */
@@ -238,13 +237,21 @@ const chipBase =
   "rounded-[2px] border font-[family-name:var(--font-fume-ui)] transition-[border-color,color,background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)]";
 
 /* Chosen state is cream, not ember. Against the hairline default it reads as
-   "selected" perfectly well, and it keeps the page's five accent marks for the
-   things that are actually accents. */
-const chipOn = "border-[#ede6da] bg-[rgba(237,230,218,0.08)] text-[#ede6da]";
+   "selected" perfectly well, and it keeps the page's four accent marks for the
+   things that are actually accents.
+   Pressed states darken rather than move: a 25-chip grid that lifts under the
+   pointer reads as a toy. */
+const chipOn =
+  "border-[#ede6da] bg-[rgba(237,230,218,0.08)] text-[#ede6da] active:bg-[rgba(237,230,218,0.16)]";
 const chipOff =
-  "border-[rgba(237,230,218,0.14)] text-[#9c948a] hover:border-[rgba(237,230,218,0.45)] hover:text-[#ede6da]";
+  "border-[rgba(237,230,218,0.14)] text-[#9c948a] hover:border-[rgba(237,230,218,0.45)] hover:text-[#ede6da] active:bg-[rgba(237,230,218,0.12)]";
 const chipDead =
   "cursor-not-allowed border-[rgba(237,230,218,0.07)] text-[rgba(156,148,138,0.5)]";
+
+/* The one ember-filled control on the page, and the ember-bordered quiet one
+   next to it in the empty state. */
+const emberBtn =
+  "inline-flex h-12 shrink-0 items-center justify-center rounded-[2px] bg-[#C0703A] px-7 font-[family-name:var(--font-fume-ui)] text-[0.86rem] font-medium tracking-[0.03em] text-[#0c0b0a] transition-[background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#CE7B41] active:translate-y-0 active:bg-[#B0642F]";
 
 /* Placeholders carry the only formatting guidance these fields give, so they
    sit at the palette's muted token (6.5:1 on #0c0b0a) — no alpha. */
@@ -354,11 +361,22 @@ export function Reservation() {
 
   const freeCount = taken.filter((t) => !t).length;
 
+  // An evening can legitimately run out: late on a busy Tuesday the only slot
+  // left may already be taken. That is a designed state, not a dead end — the
+  // next open evening is offered by name.
+  const nextOpen = useMemo(() => {
+    if (!days || !day) return null;
+    return days.find((d) => bookable(d) && d.iso > day.iso) ?? null;
+  }, [days, day]);
+
+  const helper = !day
+    ? "Perbraukti laikai užimti."
+    : freeCount === 0
+      ? "Laisvų laikų šiam vakarui nebeliko."
+      : `${freeLabel(freeCount)} · perbraukti — užimti.`;
+
   return (
-    <section
-      id="rezervacija"
-      className="bg-[#141210] py-[clamp(64px,9vw,120px)]"
-    >
+    <section id="rezervacija" className="bg-[#141210] py-[var(--sec)]">
       <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
         <div className="grid items-start gap-[clamp(36px,5vw,72px)] lg:grid-cols-12">
           {/* ── Left: what booking here actually means ── */}
@@ -407,24 +425,36 @@ export function Reservation() {
             className="min-w-0 rounded-[2px] border bg-[#0c0b0a] p-4 sm:p-7 lg:col-span-8"
           >
             {booking ? (
-              <div>
-                {/* accent 5 of 5 */}
-                <span aria-hidden className="block h-px w-9 bg-[#C0703A]" />
+              /* The confirmation is the one place on the page that arrives
+                 without being scrolled to, so it gets its own short gesture:
+                 five parts, one --d-step apart, the same rhythm the scroll
+                 reveals use. */
+              <div className="fume-arrive">
+                {/* accent 4 of 4 */}
+                <span
+                  aria-hidden
+                  className="block h-px w-9 bg-[#C0703A]"
+                  style={{ "--n": 0 } as React.CSSProperties}
+                />
                 <p
                   ref={doneRef}
                   tabIndex={-1}
+                  style={{ "--n": 1 } as React.CSSProperties}
                   className="mt-5 font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.24em] text-[#C0703A]"
                 >
                   Rezervacija patvirtinta
                 </p>
-                <p className="mt-4 font-[family-name:var(--font-fume-display)] text-[clamp(1.5rem,3.4vw,2.1rem)] font-light leading-[1.2] text-[#ede6da]">
+                <p
+                  style={{ "--n": 2 } as React.CSSProperties}
+                  className="mt-4 text-balance font-[family-name:var(--font-fume-display)] text-[clamp(1.5rem,3.4vw,2.1rem)] font-light leading-[1.2] text-[#ede6da]"
+                >
                   Laukiame jūsų {booking.dateAcc},{" "}
                   <span className="italic">{booking.time}</span>.
                 </p>
 
                 <dl
-                  className="mt-8 grid gap-x-8 gap-y-4 border-t pt-6 font-[family-name:var(--font-fume-ui)] text-[0.88rem] sm:grid-cols-2"
-                  style={{ borderColor: HAIRLINE }}
+                  className="mt-8 grid gap-x-8 gap-y-4 border-t pt-6 font-[family-name:var(--font-fume-ui)] text-[0.86rem] sm:grid-cols-2"
+                  style={{ borderColor: HAIRLINE, "--n": 3 } as React.CSSProperties}
                 >
                   {[
                     ["Data", booking.dateLabel],
@@ -451,22 +481,24 @@ export function Reservation() {
                   )}
                 </dl>
 
-                <p
-                  className="mt-8 border-t pt-5 font-[family-name:var(--font-fume-ui)] text-[0.8rem] leading-relaxed text-[#9c948a]"
-                  style={{ borderColor: HAIRLINE }}
+                <div
+                  className="mt-8 border-t pt-5"
+                  style={{ borderColor: HAIRLINE, "--n": 4 } as React.CSSProperties}
                 >
-                  Tai demonstracinė forma. Rezervacija nebuvo atlikta ir jokie
-                  duomenys niekur neišsiųsti — Fumé neegzistuoja.
-                </p>
+                  <Note>
+                    Tai demonstracinė forma. Rezervacija nebuvo atlikta ir jokie
+                    duomenys niekur neišsiųsti — Fumé neegzistuoja.
+                  </Note>
 
-                <button
-                  type="button"
-                  onClick={reset}
-                  className={`${chipBase} mt-6 inline-flex h-11 items-center px-6 text-[0.85rem] tracking-[0.04em] text-[#ede6da] hover:-translate-y-[1px] hover:border-[#ede6da]`}
-                  style={{ borderColor: HAIRLINE }}
-                >
-                  Rinktis iš naujo
-                </button>
+                  <button
+                    type="button"
+                    onClick={reset}
+                    className={`${chipBase} mt-6 inline-flex h-11 items-center px-6 text-[0.86rem] tracking-[0.04em] text-[#ede6da] hover:-translate-y-[1px] hover:border-[#ede6da] hover:bg-[rgba(237,230,218,0.06)] active:translate-y-0 active:bg-[rgba(237,230,218,0.12)]`}
+                    style={{ borderColor: HAIRLINE }}
+                  >
+                    Rinktis iš naujo
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={submit} noValidate>
@@ -489,9 +521,15 @@ export function Reservation() {
                               style={{ borderColor: HAIRLINE }}
                             />
                           ))
-                        : days.map((d) => {
+                        : days.map((d, i) => {
                             const on = d.iso === day?.iso;
                             const open = bookable(d);
+                            const when =
+                              i === 0
+                                ? "Šiandien"
+                                : i === 1
+                                  ? "Rytoj"
+                                  : MONTH_SHORT[d.month];
                             return (
                               <button
                                 key={d.iso}
@@ -504,7 +542,9 @@ export function Reservation() {
                                     ? `${longDate(d)} — nedirbame`
                                     : d.late
                                       ? `${longDate(d)} — šiandien laikų nebeliko`
-                                      : longDate(d)
+                                      : i < 2
+                                        ? `${longDate(d)} — ${when.toLowerCase()}`
+                                        : longDate(d)
                                 }
                                 onClick={() => setDateIso(d.iso)}
                                 className={`${chipBase} flex h-[74px] min-w-0 flex-col items-center justify-center gap-1 px-1 ${
@@ -522,7 +562,7 @@ export function Reservation() {
                                     ? "Nedirbame"
                                     : d.late
                                       ? "Jau vėlu"
-                                      : MONTH_SHORT[d.month]}
+                                      : when}
                                 </span>
                               </button>
                             );
@@ -570,14 +610,35 @@ export function Reservation() {
                     </div>
                     <p
                       aria-live="polite"
-                      className="mt-2.5 font-[family-name:var(--font-fume-ui)] text-[0.74rem] text-[#9c948a]"
+                      className="mt-2.5 font-[family-name:var(--font-fume-ui)] text-[0.76rem] text-[#9c948a]"
                     >
-                      {day
-                        ? `Perbraukti laikai užimti — ${freeLabel(freeCount)}.`
-                        : "Perbraukti laikai užimti."}
+                      {helper}
                     </p>
+                    {day && freeCount === 0 && (
+                      <div
+                        className="mt-4 rounded-[2px] border p-4"
+                        style={{ borderColor: HAIRLINE }}
+                      >
+                        <p className="font-[family-name:var(--font-fume-ui)] text-[0.86rem] leading-[1.6] text-[#ede6da]">
+                          Šis vakaras jau pilnas.
+                        </p>
+                        <Note className="mt-1.5 max-w-[46ch]">
+                          Vietos prie baro lieka nerezervuotos — arba rinkitės
+                          kitą vakarą.
+                        </Note>
+                        {nextOpen && (
+                          <button
+                            type="button"
+                            onClick={() => setDateIso(nextOpen.iso)}
+                            className={`${chipBase} ${chipOff} mt-4 inline-flex h-11 items-center px-5 text-[0.82rem] tracking-[0.03em]`}
+                          >
+                            Rinktis {whenDate(nextOpen)}
+                          </button>
+                        )}
+                      </div>
+                    )}
                     {errors.time && (
-                      <p role="alert" className={`mt-1.5 ${errCls}`}>
+                      <p role="alert" className={`mt-3 ${errCls}`}>
                         {errors.time}
                       </p>
                     )}
@@ -709,21 +770,30 @@ export function Reservation() {
                     </div>
                   </div>
 
-                  <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center">
-                    {/* accent 4 of 5 */}
-                    <button
-                      type="submit"
-                      className="inline-flex h-12 shrink-0 items-center justify-center rounded-[2px] bg-[#C0703A] px-7 font-[family-name:var(--font-fume-ui)] text-[0.9rem] font-medium tracking-[0.03em] text-[#0c0b0a] transition-transform duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[2px]"
-                    >
-                      Rezervuoti
-                    </button>
-                    {/* The evening is always preselected, so the only thing
-                        left to ask for is the hour. */}
-                    <p className="min-w-0 font-[family-name:var(--font-fume-ui)] text-[0.78rem] leading-relaxed text-[#9c948a]">
-                      {day && time
-                        ? `${longDate(day)}, ${time} · ${guestsLabel(guests)}`
-                        : "Pasirinkite laiką."}
-                    </p>
+                  <div
+                    className="mt-8 border-t pt-6"
+                    style={{ borderColor: HAIRLINE }}
+                  >
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                      {/* accent 3 of 4 */}
+                      <button type="submit" className={emberBtn}>
+                        Rezervuoti
+                      </button>
+                      {/* The evening is always preselected, so the only thing
+                          left to ask for is the hour. */}
+                      <p
+                        aria-live="polite"
+                        className="min-w-0 font-[family-name:var(--font-fume-ui)] text-[0.82rem] leading-[1.6] text-[rgba(237,230,218,0.88)]"
+                      >
+                        {day && time
+                          ? `${longDate(day)}, ${time} · ${guestsLabel(guests)}`
+                          : "Pasirinkite laiką."}
+                      </p>
+                    </div>
+                    <Note className="mt-4 max-w-[52ch]">
+                      Demonstracinė forma — paspaudus nieko neišsiunčiame ir
+                      niekur neįrašome.
+                    </Note>
                   </div>
                 </div>
               </form>

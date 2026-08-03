@@ -1,6 +1,11 @@
-import { CONTAINER } from "./ui";
+import { CONTAINER, T_MICRO } from "./ui";
 
-const FACTS = ["Nuo 2009", "Kaunas ir apskritis", "40 objektų", "12 žmonių komanda"];
+const FACTS = [
+  "Nuo 2009",
+  "Kaunas ir apskritis",
+  "40 objektų",
+  "12 žmonių komanda",
+];
 
 export function Hero() {
   return (
@@ -14,7 +19,8 @@ export function Hero() {
         decoding="async"
         loading="eager"
         fetchPriority="high"
-        className="absolute inset-0 -z-10 h-full w-full object-cover"
+        data-settle
+        className="absolute inset-0 -z-10 h-full w-full object-cover object-center"
       />
       <div
         aria-hidden
@@ -33,7 +39,7 @@ export function Hero() {
             crushed a 70px headline into four short lines. The <br/> below
             already sets the break; the measure needs no help. */}
         <div data-rise>
-          <p className="knst-mono text-[0.66rem] uppercase tracking-[0.22em] text-[#9A9791] sm:text-[0.7rem]">
+          <p className={`${T_MICRO} tracking-[0.22em] text-[#9A9791]`}>
             Generalinis rangovas · Kaunas
           </p>
           <h1 className="mt-6 text-[clamp(2.35rem,6vw,4.4rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-[#E7E5E1]">
@@ -46,7 +52,7 @@ export function Hero() {
         <p
           data-rise
           style={{ "--i": 1 } as React.CSSProperties}
-          className="mt-7 max-w-[54ch] text-[1.02rem] leading-[1.6] text-[rgba(231,229,225,0.76)] sm:text-[1.08rem]"
+          className="mt-7 max-w-[54ch] text-pretty text-[1.02rem] leading-[1.62] text-[rgba(231,229,225,0.78)] sm:text-[1.08rem]"
         >
           Karkasinė ir mūrinė statyba, renovacija, vidaus apdaila. Vienas
           rangovas, vienas grafikas — nuo iškasos iki statybos užbaigimo akto.
@@ -59,13 +65,13 @@ export function Hero() {
         >
           <a
             href="#samata"
-            className="inline-flex h-12 items-center justify-center bg-[#E8B14C] px-7 text-[0.92rem] font-semibold tracking-[0.005em] text-[#121316] transition-[translate,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#F2BE5F]"
+            className="inline-flex h-12 items-center justify-center bg-[#E8B14C] px-7 text-[0.92rem] font-semibold tracking-[0.005em] text-[#121316] transition-[translate,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#F2BE5F] active:translate-y-0 active:bg-[#D9A343]"
           >
             Skaičiuoti sąmatą
           </a>
           <a
             href="#objektai"
-            className="inline-flex h-12 items-center justify-center border border-white/[0.22] px-7 text-[0.92rem] text-[#E7E5E1] transition-[translate,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-white/60"
+            className="inline-flex h-12 items-center justify-center border border-white/[0.22] px-7 text-[0.92rem] text-[#E7E5E1] transition-[translate,border-color,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-white/[0.5] hover:bg-white/[0.04] active:translate-y-0 active:bg-white/[0.08]"
           >
             Peržiūrėti objektus
           </a>
@@ -78,12 +84,12 @@ export function Hero() {
         className="border-t border-white/[0.11]"
       >
         <ul
-          className={`${CONTAINER} flex flex-wrap items-center gap-x-5 gap-y-1.5 py-3.5 sm:gap-x-8`}
+          className={`${CONTAINER} flex flex-wrap items-center gap-x-5 gap-y-1.5 py-4 sm:gap-x-8`}
         >
           {FACTS.map((f, i) => (
             <li
               key={f}
-              className="knst-mono flex items-center gap-5 text-[0.64rem] uppercase tracking-[0.16em] text-[#9A9791] sm:gap-8 sm:text-[0.69rem]"
+              className={`${T_MICRO} flex items-center gap-5 text-[#9A9791] sm:gap-8`}
             >
               {i > 0 ? (
                 <span aria-hidden className="hidden text-white/20 sm:inline">

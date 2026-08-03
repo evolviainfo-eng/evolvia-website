@@ -1,4 +1,12 @@
-import { BAND, CONTAINER, SectionHead, Tag } from "./ui";
+import {
+  BAND,
+  CONTAINER,
+  Plate,
+  SectionHead,
+  T_BODY,
+  T_MICRO,
+  Tag,
+} from "./ui";
 
 const SERVICES = [
   {
@@ -29,10 +37,7 @@ const SERVICES = [
 
 export function Services() {
   return (
-    <section
-      id="paslaugos"
-      className={`${BAND} border-t border-white/[0.11]`}
-    >
+    <section id="paslaugos" className={`${BAND} border-t border-white/[0.11]`}>
       <div className={CONTAINER}>
         <div className="grid gap-[clamp(32px,5vw,56px)] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.78fr)] lg:items-end">
           <SectionHead
@@ -43,19 +48,15 @@ export function Services() {
           />
 
           <figure className="min-w-0">
-            <div className="border border-white/[0.11] p-1.5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/demo/konstrukta/frame.webp"
-                width={1400}
-                height={933}
-                alt="Medinis namo karkasas su pastoliais statybos aikštelėje"
-                decoding="async"
-                loading="lazy"
-                className="h-auto w-full"
-              />
-            </div>
-            <figcaption className="knst-mono mt-3 text-[0.63rem] uppercase leading-relaxed tracking-[0.12em] text-[#9A9791]">
+            <Plate
+              src="/demo/konstrukta/frame.webp"
+              width={1400}
+              height={933}
+              alt="Medinis namo karkasas su pastoliais statybos aikštelėje"
+            />
+            <figcaption
+              className={`${T_MICRO} mt-3 max-w-[52ch] tracking-[0.12em] text-[#9A9791]`}
+            >
               Karkasas · Ringaudai · 11 darbo dienų iki uždaro kontūro
             </figcaption>
           </figure>
@@ -69,17 +70,19 @@ export function Services() {
               style={{ "--i": i + 1 } as React.CSSProperties}
               className="border-b border-white/[0.11]"
             >
-              <div className="grid gap-x-8 gap-y-4 px-1 py-7 transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] hover:bg-[#1A1C20] md:grid-cols-[56px_minmax(0,1fr)_minmax(0,1.25fr)] md:py-9">
-                <span className="knst-mono text-[0.7rem] tracking-[0.18em] text-[#9A9791]">
+              <div className="group grid gap-x-8 gap-y-4 px-1 py-7 transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] hover:bg-[#1A1C20] md:grid-cols-[56px_minmax(0,1fr)_minmax(0,1.25fr)] md:py-9">
+                <span
+                  className={`${T_MICRO} tracking-[0.2em] text-[#9A9791] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:text-[#E7E5E1]`}
+                >
                   {s.no}
                 </span>
 
-                <h3 className="min-w-0 text-[1.18rem] font-semibold leading-tight tracking-[-0.018em] text-[#E7E5E1] md:text-[1.3rem]">
+                <h3 className="min-w-0 text-balance text-[1.18rem] font-semibold leading-[1.2] tracking-[-0.018em] text-[#E7E5E1] transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:translate-x-[3px] md:text-[1.3rem]">
                   {s.title}
                 </h3>
 
                 <div className="min-w-0">
-                  <p className="text-[0.95rem] leading-[1.62] text-[#9A9791]">
+                  <p className={`max-w-[64ch] text-pretty ${T_BODY} text-[#9A9791]`}>
                     {s.body}
                   </p>
                   <ul className="mt-4 flex flex-wrap gap-2">

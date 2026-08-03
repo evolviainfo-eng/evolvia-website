@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { BAND, CONTAINER, SectionHead } from "./ui";
+import { BAND, CONTAINER, SectionHead, T_MICRO, T_SM } from "./ui";
 
 /* ── Model ──────────────────────────────────────────────────────────────
    Every group carries a €/m² band, not a single rate — the output has to
@@ -93,23 +93,32 @@ export type EstimatePayload = {
 const fmt = (n: number) =>
   Math.round(n)
     .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, "\u00A0");
+    .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
 const round100 = (n: number) => Math.round(n / 100) * 100;
-const round5 = (n: number) => Math.round(n / 5) * 5;
+
+/** 1–6 groups only, so two forms cover it correctly. */
+const groupsLabel = (n: number) =>
+  n === 1 ? "1 darbų grupė" : `${n} darbų grupės`;
 
 const RANGE_CSS = `
 .knst-range{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;cursor:pointer;display:block}
 .knst-range::-webkit-slider-runnable-track{height:2px;border-radius:0;background:linear-gradient(90deg,#E7E5E1 0,#E7E5E1 var(--knst-p,0%),rgba(255,255,255,0.16) var(--knst-p,0%),rgba(255,255,255,0.16) 100%)}
-.knst-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;margin-top:-7px;border:0;border-radius:0;background:#E7E5E1}
+.knst-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;margin-top:-7px;border:0;border-radius:0;background:#E7E5E1;transition:transform var(--d-tap) var(--e-out)}
+.knst-range:hover::-webkit-slider-thumb{transform:scale(1.2)}
+.knst-range:active::-webkit-slider-thumb{transform:scale(.9)}
 .knst-range::-moz-range-track{height:2px;border-radius:0;background:rgba(255,255,255,0.16)}
 .knst-range::-moz-range-progress{height:2px;background:#E7E5E1}
-.knst-range::-moz-range-thumb{width:16px;height:16px;border:0;border-radius:0;background:#E7E5E1}
+.knst-range::-moz-range-thumb{width:16px;height:16px;border:0;border-radius:0;background:#E7E5E1;transition:transform var(--d-tap) var(--e-out)}
+.knst-range:hover::-moz-range-thumb{transform:scale(1.2)}
+.knst-range:active::-moz-range-thumb{transform:scale(.9)}
 .knst-range:focus-visible{outline:none}
 .knst-range:focus-visible::-webkit-slider-thumb{outline:2px solid #E7E5E1;outline-offset:3px}
 .knst-range:focus-visible::-moz-range-thumb{outline:2px solid #E7E5E1;outline-offset:3px}
 .knst-numfield{appearance:textfield;-moz-appearance:textfield}
 .knst-numfield::-webkit-outer-spin-button,.knst-numfield::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+@keyframes knst-pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+.knst-pop{animation:knst-pop var(--d-tap) var(--e-out)}
 `;
 
 export function Estimator() {
@@ -146,28 +155,36 @@ export function Estimator() {
   };
 
   const result = useMemo(() => {
-    const chosen = WORKS.filter((w) => works[w.id]);
     const typeMul = TYPES.find((t) => t.id === type)!.mul;
     const finishMul = FINISHES.find((f) => f.id === finish)!.mul;
 
     /* The finish level belongs to the finishing and engineering packages,
        not to the project as a whole: choosing Premium taps cannot make a
-       foundation cost 60 % more. Structural groups stay on typeMul alone. */
-    const rate = (base: number, id: WorkId) =>
-      base * (FINISH_SCOPED.has(id) ? finishMul : 1);
+       foundation cost 60 % more. Structural groups stay on typeMul alone.
 
-    const perLo = round5(
-      typeMul * chosen.reduce((a, w) => a + rate(w.lo, w.id), 0),
-    );
-    const perHi = round5(
-      typeMul * chosen.reduce((a, w) => a + rate(w.hi, w.id), 0),
-    );
+       Each group is rounded FIRST and the totals are the exact sum of those
+       rounded lines — so a visitor who adds the breakdown up on paper gets
+       the number printed at the top, to the euro. */
+    const chosen = WORKS.filter((w) => works[w.id]).map((w) => {
+      const f = FINISH_SCOPED.has(w.id) ? finishMul : 1;
+      return {
+        id: w.id,
+        label: w.label,
+        lo: Math.round(typeMul * w.lo * f),
+        hi: Math.round(typeMul * w.hi * f),
+      };
+    });
+
+    const perLo = chosen.reduce((a, w) => a + w.lo, 0);
+    const perHi = chosen.reduce((a, w) => a + w.hi, 0);
+    const span = perLo + perHi;
 
     return {
       chosen,
       empty: chosen.length === 0,
       perLo,
       perHi,
+      span,
       totalLo: round100(perLo * area),
       totalHi: round100(perHi * area),
     };
@@ -219,7 +236,7 @@ export function Estimator() {
         <div
           data-rise
           style={{ "--i": 1 } as React.CSSProperties}
-          className="mt-[clamp(36px,5vw,60px)] grid gap-[clamp(28px,4vw,48px)] lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:items-start"
+          className="mt-[clamp(40px,5vw,64px)] grid gap-[clamp(32px,4vw,48px)] lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:items-start"
         >
           {/* ── Inputs ─────────────────────────────────────────────── */}
           <form
@@ -239,7 +256,7 @@ export function Estimator() {
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <label
                   htmlFor="knst-area"
-                  className="knst-mono text-[0.66rem] uppercase tracking-[0.18em] text-[#9A9791]"
+                  className={`${T_MICRO} text-[#9A9791]`}
                 >
                   Plotas, m²
                 </label>
@@ -254,7 +271,7 @@ export function Estimator() {
                     value={areaText}
                     onChange={(e) => onAreaText(e.target.value)}
                     onBlur={onAreaBlur}
-                    className="knst-mono knst-numfield w-[86px] border border-white/[0.22] bg-transparent px-3 py-2 text-right text-[0.92rem] text-[#E7E5E1] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-white/[0.4]"
+                    className="knst-mono knst-numfield w-[86px] border border-white/[0.22] bg-transparent px-3 py-2 text-right text-[0.92rem] text-[#E7E5E1] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-white/[0.5] focus:border-white/[0.5]"
                   />
                   <span className="knst-mono text-[0.78rem] text-[#9A9791]">
                     m²
@@ -273,7 +290,9 @@ export function Estimator() {
                 className="knst-range mt-5"
                 style={{ "--knst-p": `${pct}%` } as React.CSSProperties}
               />
-              <div className="knst-mono mt-1 flex justify-between text-[0.62rem] uppercase tracking-[0.12em] text-[#9A9791]">
+              <div
+                className={`${T_MICRO} mt-1 flex justify-between tracking-[0.12em] text-[#9A9791]`}
+              >
                 <span>{MIN_AREA} m²</span>
                 <span>{MAX_AREA} m²</span>
               </div>
@@ -281,7 +300,7 @@ export function Estimator() {
 
             {/* Darbų apimtis */}
             <fieldset className="min-w-0">
-              <legend className="knst-mono text-[0.66rem] uppercase tracking-[0.18em] text-[#9A9791]">
+              <legend className={`${T_MICRO} text-[#9A9791]`}>
                 Darbų apimtis
               </legend>
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -292,9 +311,9 @@ export function Estimator() {
                       key={w.id}
                       className={`knst-opt flex min-w-0 cursor-pointer items-start gap-3 border p-3.5 transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] ${
                         on
-                          ? "border-white/[0.3] bg-[#121316]"
-                          : "border-white/[0.11] hover:border-white/[0.24]"
-                      }`}
+                          ? "border-white/[0.3] bg-[#121316] hover:border-white/[0.5]"
+                          : "border-white/[0.11] hover:border-white/[0.3] hover:bg-white/[0.02]"
+                      } active:border-white/[0.7]`}
                     >
                       <input
                         type="checkbox"
@@ -319,6 +338,7 @@ export function Estimator() {
                             viewBox="0 0 9 7"
                             fill="none"
                             aria-hidden
+                            className="knst-pop"
                           >
                             <path
                               d="M1 3.4 3.3 5.7 8 1"
@@ -329,13 +349,15 @@ export function Estimator() {
                         ) : null}
                       </span>
                       <span className="min-w-0">
-                        <span className="block text-[0.9rem] leading-snug text-[#E7E5E1]">
+                        <span className="block text-[0.9rem] leading-[1.35] text-[#E7E5E1]">
                           {w.label}
                         </span>
-                        <span className="mt-1 block text-[0.76rem] leading-snug text-[#9A9791]">
+                        <span className="mt-1 block text-[0.8rem] leading-[1.4] text-[#9A9791]">
                           {w.note}
                         </span>
-                        <span className="knst-mono mt-2 block text-[0.63rem] uppercase tracking-[0.1em] text-[#9A9791]">
+                        <span
+                          className={`${T_MICRO} mt-2 block tracking-[0.1em] text-[#9A9791]`}
+                        >
                           {w.lo}–{w.hi} €/m²
                         </span>
                       </span>
@@ -355,30 +377,46 @@ export function Estimator() {
             />
           </form>
 
-          {/* ── Result ─────────────────────────────────────────────── */}
-          <div className="min-w-0 lg:sticky lg:top-[calc(var(--demo-bar-h)+72px)]">
+          {/* ── Result ─────────────────────────────────────────────────
+              The one thing on this page a visitor has to trust. It reads
+              like a quotation sheet: a ruled header, the range, then the
+              lines it is made of — which add up to exactly the number
+              printed above them.
+              Sticky only where there is genuinely room for it: a 1366×768
+              laptop must not get a card taller than the space it is pinned
+              into. ─────────────────────────────────────────────────── */}
+          <div className="min-w-0 lg:top-[calc(var(--demo-bar-h)+72px)] [@media(min-width:1024px)_and_(min-height:720px)]:sticky">
             <div className="border border-white/[0.11] bg-[#121316]">
               <span aria-hidden className="block h-[2px] w-full bg-[#E8B14C]" />
 
               <div className="p-5 sm:p-7">
-                <p className="knst-mono text-[0.63rem] uppercase tracking-[0.2em] text-[#9A9791]">
-                  Preliminari sąmata
-                </p>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <p className={`${T_MICRO} tracking-[0.2em] text-[#9A9791]`}>
+                    Preliminari sąmata
+                  </p>
+                  <p className={`${T_MICRO} tracking-[0.12em] text-[#9A9791]`}>
+                    {typeLabel} · {area} m²
+                  </p>
+                </div>
 
-                <div aria-live="polite" aria-atomic="true" className="mt-5">
+                <div aria-live="polite" aria-atomic="true" className="mt-6">
                   {result.empty ? (
-                    <p className="knst-mono text-[1.6rem] leading-none text-[#9A9791]">
+                    <p className="knst-mono text-[clamp(1.5rem,4.6vw,2.05rem)] leading-none text-[#9A9791]">
                       — €
                     </p>
                   ) : (
                     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <span className="knst-mono text-[0.63rem] uppercase tracking-[0.16em] text-[#9A9791]">
+                      <span
+                        className={`${T_MICRO} tracking-[0.16em] text-[#9A9791]`}
+                      >
                         nuo
                       </span>
                       <span className="knst-mono text-[clamp(1.5rem,4.6vw,2.05rem)] leading-none tracking-[-0.01em] text-[#E7E5E1]">
                         {fmt(result.totalLo)} €
                       </span>
-                      <span className="knst-mono text-[0.63rem] uppercase tracking-[0.16em] text-[#9A9791]">
+                      <span
+                        className={`${T_MICRO} tracking-[0.16em] text-[#9A9791]`}
+                      >
                         iki
                       </span>
                       <span className="knst-mono text-[clamp(1.5rem,4.6vw,2.05rem)] leading-none tracking-[-0.01em] text-[#E7E5E1]">
@@ -387,53 +425,109 @@ export function Estimator() {
                     </div>
                   )}
 
-                  <p className="knst-mono mt-4 text-[0.76rem] text-[#9A9791]">
+                  <p className="knst-mono mt-4 text-[0.76rem] leading-[1.5] text-[#9A9791]">
                     {result.empty
                       ? "Pažymėkite bent vieną darbų grupę."
-                      : `${fmt(result.perLo)}–${fmt(result.perHi)} €/m² · ${area} m² · ${typeLabel}`}
+                      : `${fmt(result.perLo)}–${fmt(result.perHi)} €/m² · ${groupsLabel(result.chosen.length)}`}
                   </p>
                 </div>
 
-                <dl className="mt-6 border-t border-white/[0.11] pt-4">
-                  <dt className="knst-mono text-[0.62rem] uppercase tracking-[0.16em] text-[#9A9791]">
-                    Įskaičiuota
-                  </dt>
-                  <dd className="mt-2 text-[0.88rem] leading-[1.55] text-[#E7E5E1]">
-                    {result.empty
-                      ? "—"
-                      : result.chosen.map((w) => w.label).join(" · ")}
-                  </dd>
+                {/* Sudėtis — the lines the range is made of. The bars are
+                    proportional to each group's share of the range, so the
+                    weight of a decision is visible before the number is
+                    even read. */}
+                <div className="mt-7 border-t border-white/[0.11] pt-5">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <p className={`${T_MICRO} text-[#9A9791]`}>Sudėtis</p>
+                    <p
+                      className={`${T_MICRO} shrink-0 tracking-[0.12em] text-[#9A9791]`}
+                    >
+                      Jūsų atveju, €/m²
+                    </p>
+                  </div>
 
-                  <dt className="knst-mono mt-4 text-[0.62rem] uppercase tracking-[0.16em] text-[#9A9791]">
+                  {result.empty ? (
+                    <p className={`mt-4 max-w-[46ch] ${T_SM} text-[#9A9791]`}>
+                      Nepažymėta nė viena grupė, todėl sąmatoje kol kas nėra nė
+                      vienos eilutės. Pažymėkite kairėje — intervalas atsiras
+                      iškart.
+                    </p>
+                  ) : (
+                    <ul className="mt-4 space-y-3">
+                      {result.chosen.map((w) => (
+                        <li key={w.id} className="min-w-0">
+                          <div className="flex items-baseline justify-between gap-4">
+                            <span className="min-w-0 text-[0.875rem] leading-[1.45] text-[#E7E5E1]">
+                              {w.label}
+                            </span>
+                            <span className="knst-mono shrink-0 text-[0.72rem] leading-[1.45] text-[#9A9791]">
+                              {fmt(w.lo)}–{fmt(w.hi)}
+                            </span>
+                          </div>
+                          <span
+                            aria-hidden
+                            className="mt-2 block h-[2px] w-full bg-white/[0.09]"
+                          >
+                            <span
+                              className="block h-[2px] bg-white/[0.5] transition-[width] duration-[var(--d-el)] ease-[var(--e-out)]"
+                              style={{
+                                width: `${result.span ? ((w.lo + w.hi) / result.span) * 100 : 0}%`,
+                              }}
+                            />
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-white/[0.11] pt-4">
+                  <span className={`${T_MICRO} text-[#9A9791]`}>
                     Apdailos lygis
-                  </dt>
-                  <dd className="mt-2 text-[0.88rem] leading-[1.55] text-[#E7E5E1]">
+                  </span>
+                  <span className="shrink-0 text-[0.875rem] leading-[1.45] text-[#E7E5E1]">
                     {result.empty ? "—" : finishSummary}
-                  </dd>
-                </dl>
+                  </span>
+                </div>
 
-                <p className="mt-6 border-t border-white/[0.11] pt-4 text-[0.8rem] leading-[1.55] text-[#9A9791]">
-                  Preliminaru. Tiksli kaina — po objekto apžiūros ir techninio
-                  projekto peržiūros. Į skaičių neįeina sklypo darbai, baldai ir
-                  projektavimas.
+                <p
+                  className={`mt-6 border-t border-white/[0.11] pt-4 text-pretty ${T_SM} text-[#9A9791]`}
+                >
+                  Įkainiai su PVM. Tiksli kaina — po objekto apžiūros ir
+                  techninio projekto peržiūros. Į skaičių neįeina sklypo darbai,
+                  baldai ir projektavimas.
                 </p>
 
                 {result.empty ? (
-                  <button
-                    type="button"
-                    disabled
-                    className="mt-6 inline-flex h-12 w-full cursor-not-allowed items-center justify-center border border-white/[0.14] px-6 text-[0.9rem] font-semibold text-[#9A9791]"
-                  >
-                    Gauti tikslią sąmatą
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      disabled
+                      className="mt-6 inline-flex h-12 w-full cursor-not-allowed items-center justify-center border border-white/[0.11] bg-white/[0.02] px-6 text-[0.9rem] font-semibold text-[#9A9791] opacity-70"
+                    >
+                      Gauti tikslią sąmatą
+                    </button>
+                    <p
+                      className={`${T_MICRO} mt-3 tracking-[0.12em] text-[#9A9791]`}
+                    >
+                      Pažymėkite darbus, kad galėtumėte tęsti
+                    </p>
+                  </>
                 ) : (
-                  <a
-                    href="#kontaktai"
-                    onClick={handOff}
-                    className="mt-6 inline-flex h-12 w-full items-center justify-center bg-[#E7E5E1] px-6 text-[0.9rem] font-semibold text-[#121316] transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90"
-                  >
-                    Gauti tikslią sąmatą
-                  </a>
+                  <>
+                    <a
+                      href="#kontaktai"
+                      onClick={handOff}
+                      className="mt-6 inline-flex h-12 w-full items-center justify-center bg-[#E7E5E1] px-6 text-[0.9rem] font-semibold text-[#121316] transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0 active:opacity-80"
+                    >
+                      Gauti tikslią sąmatą
+                    </a>
+                    <p
+                      className={`${T_MICRO} mt-3 tracking-[0.12em] text-[#9A9791]`}
+                    >
+                      Parametrai persikels į užklausos formą
+                    </p>
+                  </>
                 )}
               </div>
             </div>
@@ -465,9 +559,7 @@ function Segmented({
 }) {
   return (
     <fieldset className="min-w-0">
-      <legend className="knst-mono text-[0.66rem] uppercase tracking-[0.18em] text-[#9A9791]">
-        {legend}
-      </legend>
+      <legend className={`${T_MICRO} text-[#9A9791]`}>{legend}</legend>
       <div className="mt-4 grid grid-cols-3 gap-px border border-white/[0.11] bg-white/[0.11]">
         {options.map((o) => {
           const on = o.id === value;
@@ -477,7 +569,7 @@ function Segmented({
               className={`knst-opt flex min-w-0 cursor-pointer flex-col items-center justify-center gap-1 px-2 py-3 text-center transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] ${
                 on
                   ? "bg-[#E7E5E1] text-[#121316]"
-                  : "bg-[#1A1C20] text-[#9A9791] hover:text-[#E7E5E1]"
+                  : "bg-[#1A1C20] text-[#9A9791] hover:bg-[#212329] hover:text-[#E7E5E1] active:bg-[#121316]"
               }`}
             >
               <input
@@ -488,7 +580,7 @@ function Segmented({
                 onChange={() => onChange(o.id)}
               />
               <span
-                className={`text-[0.74rem] leading-tight sm:text-[0.85rem] ${on ? "font-semibold" : ""}`}
+                className={`text-balance text-[0.74rem] leading-[1.25] sm:text-[0.85rem] ${on ? "font-semibold" : ""}`}
               >
                 {o.label}
               </span>
@@ -502,7 +594,7 @@ function Segmented({
         })}
       </div>
       {hint ? (
-        <p className="mt-3 max-w-[52ch] text-[0.76rem] leading-[1.5] text-[#9A9791]">
+        <p className={`mt-3 max-w-[56ch] text-pretty ${T_SM} text-[#9A9791]`}>
           {hint}
         </p>
       ) : null}

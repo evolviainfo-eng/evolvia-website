@@ -1,4 +1,12 @@
-import { BAND, CONTAINER, SectionHead, SpecRow } from "./ui";
+import {
+  BAND,
+  CONTAINER,
+  Plate,
+  SectionHead,
+  SpecRow,
+  T_BODY,
+  T_MICRO,
+} from "./ui";
 
 type Project = {
   no: string;
@@ -74,7 +82,7 @@ const PROJECTS: Project[] = [
       alt: "Monolitinė betono perdanga, fotografuota iš apačios",
     },
     specs: [
-      ["Plotas", "1 240 m² perdangų"],
+      ["Plotas", "1 240 m² perdangų"],
       ["Metai", "2025"],
       ["Tipas", "Konstrukcijų darbai"],
       ["Trukmė", "5 mėn."],
@@ -97,7 +105,7 @@ export function Projects() {
           lead="Kiekvienas įrašas — su tuo, kas iš tikrųjų rūpi: plotas, metai, trukmė ir viena techninė aplinkybė, kuri nulėmė sprendimą."
         />
 
-        <div className="mt-[clamp(40px,6vw,72px)] flex flex-col gap-[clamp(44px,6vw,80px)]">
+        <div className="mt-[clamp(40px,6vw,72px)] flex flex-col gap-[clamp(48px,6vw,80px)]">
           {PROJECTS.map((p, i) => (
             <article
               key={p.no}
@@ -105,27 +113,24 @@ export function Projects() {
               style={{ "--i": i + 1 } as React.CSSProperties}
               className="grid gap-7 border-t border-white/[0.11] pt-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-12"
             >
-              <div className="min-w-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={p.img.src}
-                  width={p.img.w}
-                  height={p.img.h}
-                  alt={p.img.alt}
-                  decoding="async"
-                  loading="lazy"
-                  className="h-auto w-full"
-                />
-              </div>
+              <Plate
+                src={p.img.src}
+                width={p.img.w}
+                height={p.img.h}
+                alt={p.img.alt}
+                className="min-w-0"
+              />
 
               <div className="min-w-0">
-                <p className="knst-mono text-[0.65rem] uppercase tracking-[0.18em] text-[#9A9791]">
+                <p className={`${T_MICRO} tracking-[0.2em] text-[#9A9791]`}>
                   {p.no}
                 </p>
-                <h3 className="mt-3 text-[1.2rem] font-semibold leading-tight tracking-[-0.02em] text-[#E7E5E1] md:text-[1.35rem]">
+                <h3 className="mt-3 text-balance text-[1.2rem] font-semibold leading-[1.2] tracking-[-0.02em] text-[#E7E5E1] md:text-[1.35rem]">
                   {p.title}
                 </h3>
-                <p className="mt-4 max-w-[46ch] text-[0.94rem] leading-[1.62] text-[#9A9791]">
+                <p
+                  className={`mt-4 max-w-[52ch] text-pretty ${T_BODY} text-[#9A9791]`}
+                >
                   {p.body}
                 </p>
 

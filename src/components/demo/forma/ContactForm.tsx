@@ -1,15 +1,24 @@
 "use client";
 
 import { useRef, useState, type FormEvent } from "react";
+import {
+  MUTED,
+  SERIF,
+  T_BODY,
+  T_META,
+  T_SMALL,
+} from "@/components/demo/forma/tokens";
 
 /* No `outline-none` here on purpose: it compiles into Tailwind's utilities
    layer as `outline-style:none` and would leave every control with nothing but
    a 1px border tint to mark focus. The demo-scoped `.forma :focus-visible`
-   ring in page.tsx is the visible indicator; the border shift is the accent. */
+   ring in page.tsx is the visible indicator; the border shift is the accent,
+   and it now has three states — resting, under the pointer, focused — so no
+   field is ever dead. */
 const FIELD =
-  "mt-2 h-12 w-full min-w-0 rounded-none border-0 border-b border-[rgba(26,25,23,0.24)] bg-transparent px-0 text-[0.95rem] text-[#1A1917] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] placeholder:text-[#6B6660] focus:border-[#1A1917]";
+  "mt-2 h-12 w-full min-w-0 rounded-none border-0 border-b border-[rgba(26,25,23,0.24)] bg-transparent px-0 text-[0.95rem] text-[#1A1917] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] placeholder:text-[#8A857C] hover:border-[rgba(26,25,23,0.5)] focus:border-[#1A1917]";
 
-const LABEL = "block text-[0.72rem] uppercase tracking-[0.16em] text-[#6B6660]";
+const LABEL = `block ${T_META}`;
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
@@ -29,12 +38,15 @@ export function ContactForm() {
     return (
       <div className="border-t border-[rgba(26,25,23,0.24)] pt-8">
         <p
-          style={{ fontFamily: "var(--font-forma-display)" }}
-          className="text-[clamp(1.5rem,3vw,2rem)] leading-[1.15]"
+          style={SERIF}
+          className="max-w-[20ch] text-[clamp(1.5rem,3vw,2rem)] leading-[1.15] tracking-[-0.015em] text-balance"
         >
           Ačiū — bet nieko neišsiuntėme.
         </p>
-        <p className="mt-4 max-w-[46ch] text-[0.92rem] leading-[1.7] text-[#6B6660]">
+        <p
+          className={`mt-4 max-w-[46ch] ${T_BODY}`}
+          style={{ color: MUTED }}
+        >
           Tai demonstracinė svetainė, todėl užklausa niekur nekeliavo. Tikroje
           svetainėje ši forma per kelias sekundes atsidurtų studijos pašte, o
           jūs gautumėte patvirtinimą.
@@ -46,7 +58,7 @@ export function ContactForm() {
             setSent(false);
             formRef.current?.reset();
           }}
-          className="mt-7 inline-flex h-12 items-center rounded-full border border-[rgba(26,25,23,0.24)] px-6 text-[0.9rem] transition-[background-color,color,border-color] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC]"
+          className="mt-7 inline-flex h-12 items-center rounded-full border border-[rgba(26,25,23,0.24)] px-6 text-[0.9rem] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-0 active:opacity-80"
         >
           Pildyti iš naujo
         </button>
@@ -63,7 +75,7 @@ export function ContactForm() {
     >
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="min-w-0">
-          <label className={LABEL} htmlFor="forma-vardas">
+          <label className={LABEL} htmlFor="forma-vardas" style={{ color: MUTED }}>
             Vardas
           </label>
           <input
@@ -77,7 +89,7 @@ export function ContactForm() {
           />
         </div>
         <div className="min-w-0">
-          <label className={LABEL} htmlFor="forma-pastas">
+          <label className={LABEL} htmlFor="forma-pastas" style={{ color: MUTED }}>
             El. paštas
           </label>
           <input
@@ -91,23 +103,33 @@ export function ContactForm() {
           />
         </div>
         <div className="min-w-0">
-          <label className={LABEL} htmlFor="forma-tipas">
+          <label className={LABEL} htmlFor="forma-tipas" style={{ color: MUTED }}>
             Objektas
           </label>
-          <select
-            id="forma-tipas"
-            name="tipas"
-            defaultValue="butas"
-            className={`${FIELD} appearance-none`}
-          >
-            <option value="butas">Butas</option>
-            <option value="namas">Namas</option>
-            <option value="komercine">Komercinė erdvė</option>
-            <option value="nezinau">Dar nežinau</option>
-          </select>
+          {/* `appearance-none` strips the native arrow along with the native
+              styling, so the affordance has to be drawn back — without it the
+              select is indistinguishable from a text field. */}
+          <div className="relative">
+            <select
+              id="forma-tipas"
+              name="tipas"
+              defaultValue="butas"
+              className={`${FIELD} cursor-pointer appearance-none pr-7`}
+            >
+              <option value="butas">Butas</option>
+              <option value="namas">Namas</option>
+              <option value="komercine">Komercinė erdvė</option>
+              <option value="nezinau">Dar nežinau</option>
+            </select>
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute bottom-[20px] right-[3px] h-[7px] w-[7px] rotate-45 border-b border-r"
+              style={{ borderColor: MUTED }}
+            />
+          </div>
         </div>
         <div className="min-w-0">
-          <label className={LABEL} htmlFor="forma-plotas">
+          <label className={LABEL} htmlFor="forma-plotas" style={{ color: MUTED }}>
             Plotas, m²
           </label>
           <input
@@ -122,7 +144,7 @@ export function ContactForm() {
       </div>
 
       <div className="mt-6 min-w-0">
-        <label className={LABEL} htmlFor="forma-zinute">
+        <label className={LABEL} htmlFor="forma-zinute" style={{ color: MUTED }}>
           Trumpai apie erdvę
         </label>
         <textarea
@@ -130,18 +152,21 @@ export function ContactForm() {
           name="zinute"
           rows={3}
           placeholder="Kada planuojate pradėti, kas erdvėje netinka, ko norėtumėte."
-          className={`${FIELD} h-auto resize-none py-3 leading-[1.6]`}
+          className={`${FIELD} h-auto resize-none py-3 leading-[1.65]`}
         />
       </div>
 
       <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <button
           type="submit"
-          className="inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-[#1A1917] px-7 text-[0.92rem] text-[#F4F1EC] transition-[translate,opacity] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:opacity-90"
+          className="inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-[#1A1917] px-7 text-[0.92rem] text-[#F4F1EC] transition-[translate,opacity] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:opacity-90 active:translate-y-0 active:opacity-75"
         >
           Siųsti užklausą
         </button>
-        <p className="min-w-0 text-[0.78rem] leading-[1.6] text-[#656059]">
+        <p
+          className={`min-w-0 max-w-[34ch] ${T_SMALL}`}
+          style={{ color: MUTED }}
+        >
           Atsakome per vieną darbo dieną. Pirmas pokalbis — nemokamas.
         </p>
       </div>

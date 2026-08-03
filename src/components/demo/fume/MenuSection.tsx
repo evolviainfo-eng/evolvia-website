@@ -1,4 +1,4 @@
-import { Body, Eyebrow, H2, HAIRLINE, Photo } from "./Type";
+import { Body, Eyebrow, H2, HAIRLINE, Note, Shot } from "./Type";
 
 type Item = { n: string; d: string; p: number };
 
@@ -117,17 +117,24 @@ const PLATES = [
   },
 ];
 
+/** A course, set the way a printed card sets one: name and price on the same
+ *  baseline with leaders between them, the description dropped underneath, and
+ *  every price landing in the same 3.4rem column so the figures form a line of
+ *  their own down the page.
+ *
+ *  The leaders are hidden below 640px — at that width a name needs the whole
+ *  measure, and dots would be filling a gap of two characters. */
 function Course({ title, note, items }: (typeof COURSES)[number]) {
   return (
     <div>
       <div
-        className="flex items-baseline justify-between gap-4 border-b pb-3"
+        className="flex flex-col gap-1 border-b pb-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
         style={{ borderColor: HAIRLINE }}
       >
         <h3 className="font-[family-name:var(--font-fume-display)] text-[clamp(1.35rem,3vw,1.7rem)] font-light italic leading-none text-[#ede6da]">
           {title}
         </h3>
-        <p className="min-w-0 text-right font-[family-name:var(--font-fume-ui)] text-[0.68rem] uppercase tracking-[0.16em] text-[#9c948a]">
+        <p className="min-w-0 font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.18em] text-[#9c948a] sm:text-right">
           {note}
         </p>
       </div>
@@ -136,19 +143,24 @@ function Course({ title, note, items }: (typeof COURSES)[number]) {
         {items.map((it) => (
           <li
             key={it.n}
-            className="flex items-baseline gap-5 border-b border-[rgba(237,230,218,0.07)] py-4 last:border-b-0"
+            style={{ borderColor: HAIRLINE }}
+            className="fume-row -mx-2 border-b px-2 py-4 last:border-b-0"
           >
-            <div className="min-w-0 flex-1">
-              <p className="font-[family-name:var(--font-fume-display)] text-[1.12rem] font-normal leading-[1.3] text-[#ede6da]">
+            <p className="flex items-baseline gap-x-3">
+              <span className="min-w-0 flex-1 font-[family-name:var(--font-fume-display)] text-[1.05rem] leading-[1.3] text-[#ede6da] sm:flex-initial">
                 {it.n}
-              </p>
-              <p className="mt-1.5 font-[family-name:var(--font-fume-ui)] text-[0.8rem] leading-[1.6] text-[#9c948a]">
-                {it.d}
-              </p>
-            </div>
-            <span className="shrink-0 font-[family-name:var(--font-fume-ui)] text-[0.92rem] tabular-nums text-[rgba(237,230,218,0.88)]">
-              {it.p}&nbsp;€
-            </span>
+              </span>
+              <span
+                aria-hidden
+                className="fume-leader hidden min-w-[2rem] flex-1 sm:block"
+              />
+              <span className="w-[3.4rem] shrink-0 text-right font-[family-name:var(--font-fume-display)] text-[1.05rem] leading-[1.3] tabular-nums text-[rgba(237,230,218,0.9)]">
+                {it.p}&nbsp;€
+              </span>
+            </p>
+            <p className="mt-1.5 max-w-[46ch] font-[family-name:var(--font-fume-ui)] text-[0.78rem] leading-[1.6] text-[#9c948a]">
+              {it.d}
+            </p>
           </li>
         ))}
       </ul>
@@ -158,47 +170,39 @@ function Course({ title, note, items }: (typeof COURSES)[number]) {
 
 export function MenuSection() {
   return (
-    <section
-      id="meniu"
-      className="bg-[#141210] py-[clamp(64px,9vw,120px)]"
-    >
+    <section id="meniu" className="bg-[#141210] py-[var(--sec)]">
       <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
         <div data-rise className="mx-auto max-w-[760px]">
-          {/* accent 2 of 5 — the one warm mark on the printed page */}
-          <span
-            aria-hidden
-            className="block h-px w-9 bg-[#C0703A]"
-          />
+          {/* accent 2 of 4 — the one warm mark on the printed page */}
+          <span aria-hidden className="block h-px w-9 bg-[#C0703A]" />
           <div className="mt-5">
             <Eyebrow>Meniu</Eyebrow>
           </div>
           <H2 className="mt-5">Sezoninė kortelė</H2>
           <Body className="mt-5 max-w-[52ch]">
-            Kortelę perrašome kas tris–keturias savaites. Jei turite alergijų
-            ar nevalgote mėsos — pasakykite salės vadovui, pritaikysime beveik
+            Kortelę perrašome kas tris–keturias savaites. Jei turite alergijų ar
+            nevalgote mėsos — pasakykite salės vadovui, pritaikysime beveik
             viską.
           </Body>
         </div>
 
         <div className="mx-auto mt-[clamp(40px,6vw,72px)] max-w-[760px] space-y-[clamp(40px,5vw,64px)]">
           {COURSES.map((c, i) => (
-            <div
-              key={c.title}
-              data-rise
-              style={{ "--i": i } as React.CSSProperties}
-            >
+            <div key={c.title} data-rise style={{ "--i": i } as React.CSSProperties}>
               <Course {...c} />
             </div>
           ))}
         </div>
 
-        <p
-          className="mx-auto mt-8 max-w-[760px] border-t pt-5 font-[family-name:var(--font-fume-ui)] text-[0.76rem] leading-relaxed text-[#9c948a]"
+        <div
           style={{ borderColor: HAIRLINE }}
+          className="mx-auto mt-8 max-w-[760px] border-t pt-5"
         >
-          Aptarnavimas į kainą neįskaičiuotas. Degustacinis vakaras — penki
-          patiekalai, 58 € asmeniui — vyksta trečiadieniais, iš anksto.
-        </p>
+          <Note>
+            Aptarnavimas į kainą neįskaičiuotas. Degustacinis vakaras — penki
+            patiekalai, 58 € asmeniui — vyksta trečiadieniais, iš anksto.
+          </Note>
+        </div>
 
         {/* Photography sits apart from the list: not cards, no captions —
             just plates arranged the way they would fall on a table. */}
@@ -207,19 +211,14 @@ export function MenuSection() {
           className="mt-[clamp(56px,8vw,112px)] grid grid-cols-1 gap-[clamp(16px,2.5vw,28px)] sm:grid-cols-12"
         >
           {PLATES.map((p) => (
-            <figure
+            <Shot
               key={p.src}
-              className={`min-w-0 overflow-hidden bg-[#0c0b0a] ${p.cls}`}
-              style={{ aspectRatio: `${p.w} / ${p.h}` }}
-            >
-              <Photo
-                src={p.src}
-                w={p.w}
-                h={p.h}
-                alt={p.alt}
-                className="h-full w-full object-cover"
-              />
-            </figure>
+              src={p.src}
+              w={p.w}
+              h={p.h}
+              alt={p.alt}
+              className={p.cls}
+            />
           ))}
         </div>
       </div>

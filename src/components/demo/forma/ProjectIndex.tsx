@@ -6,6 +6,20 @@ import {
   type FormaProject,
   type FormaProjectKind,
 } from "@/components/demo/forma/ProjectLightbox";
+import {
+  HAIR,
+  INK,
+  MUTED,
+  SECTION,
+  SERIF,
+  T_BODY,
+  T_EYEBROW,
+  T_H2,
+  T_META,
+  T_NUM,
+  T_SMALL,
+  WRAP,
+} from "@/components/demo/forma/tokens";
 
 /* Display order is deliberately mixed, so filtering visibly re-orders the
    grid rather than just hiding rows. */
@@ -146,58 +160,66 @@ export function ProjectIndex() {
 
   return (
     <>
-      <section
-        id="projektai"
-        className="scroll-mt-[120px] py-[clamp(72px,11vw,140px)]"
-      >
-        <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8">
+      <section id="projektai" className={SECTION}>
+        <div className={WRAP}>
           <div data-rise className="min-w-0">
-            <p className="text-[0.7rem] uppercase tracking-[0.22em] text-[#656059]">
+            <p className={T_EYEBROW} style={{ color: MUTED }}>
               Projektai
             </p>
             <div className="mt-5 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <h2
-                style={{ fontFamily: "var(--font-forma-display)" }}
-                className="min-w-0 max-w-[18ch] text-[clamp(2rem,4.6vw,3.1rem)] font-normal leading-[1.06] tracking-[-0.015em]"
-              >
+              <h2 style={SERIF} className={`${T_H2} max-w-[18ch]`}>
                 Šeši darbai, kuriuos parodome pirmiausia.
               </h2>
-              <p className="min-w-0 max-w-[40ch] text-[0.95rem] leading-[1.7] text-[#6B6660]">
+              <p
+                className={`min-w-0 max-w-[40ch] ${T_BODY}`}
+                style={{ color: MUTED }}
+              >
                 Butai, namai ir nedidelės komercinės erdvės Vilniuje bei
                 aplinkui. Atverkite projektą — atsivers didelė nuotrauka ir
                 trumpas sprendimo paaiškinimas.
               </p>
             </div>
 
-            <div
-              role="group"
-              aria-label="Filtruoti projektus pagal tipą"
-              className="mt-[clamp(28px,4vw,44px)] flex flex-wrap gap-2"
-            >
-              {FILTERS.map((f) => {
-                const on = f.id === filter;
-                return (
-                  <button
-                    key={f.id}
-                    type="button"
-                    aria-pressed={on}
-                    onClick={() => setFilter(f.id)}
-                    className={[
-                      "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[0.82rem] leading-none transition-[background-color,color,border-color] duration-[var(--d-tap)] ease-[var(--e-out)]",
-                      on
-                        ? "border-[#1A1917] bg-[#1A1917] text-[#F4F1EC]"
-                        : "border-[rgba(26,25,23,0.18)] text-[#1A1917] hover:border-[#1A1917]",
-                    ].join(" ")}
-                  >
-                    {f.label}
-                    <span
-                      className={`text-[0.68rem] tabular-nums ${on ? "text-[#F4F1EC]/60" : "text-[#656059]"}`}
+            <div className="mt-[clamp(30px,4vw,46px)] flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+              <div
+                role="group"
+                aria-label="Filtruoti projektus pagal tipą"
+                className="flex min-w-0 flex-wrap gap-2"
+              >
+                {FILTERS.map((f) => {
+                  const on = f.id === filter;
+                  return (
+                    <button
+                      key={f.id}
+                      type="button"
+                      aria-pressed={on}
+                      onClick={() => setFilter(f.id)}
+                      className={[
+                        "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[0.82rem] leading-none transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] active:translate-y-px",
+                        on
+                          ? "border-[#1A1917] bg-[#1A1917] text-[#F4F1EC]"
+                          : "border-[rgba(26,25,23,0.18)] hover:border-[#1A1917] hover:bg-[rgba(26,25,23,0.05)]",
+                      ].join(" ")}
                     >
-                      {countOf(f.id)}
-                    </span>
-                  </button>
-                );
-              })}
+                      {f.label}
+                      <span
+                        className={`tabular-nums text-[0.7rem] ${
+                          on ? "text-[#F4F1EC]/65" : "text-[#5E5952]"
+                        }`}
+                      >
+                        {countOf(f.id)}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* the same fact the live region announces, said out loud in the
+                  layout — so a sighted visitor sees the filter took effect even
+                  when the grid is below the fold */}
+              <p className={`shrink-0 ${T_NUM}`} style={{ color: MUTED }}>
+                Rodoma {pad(visible.length)} / {pad(PROJECTS.length)}
+              </p>
             </div>
           </div>
 
@@ -205,65 +227,119 @@ export function ProjectIndex() {
             Rodoma {visible.length} iš {PROJECTS.length} projektų.
           </p>
 
-          <ul className="mt-[clamp(30px,4.5vw,52px)] grid grid-cols-1 gap-x-6 gap-y-[clamp(34px,4.5vw,64px)] sm:grid-cols-2">
-            {visible.map((p, i) => (
-              /* key carries the filter on purpose: every remaining card
-                 re-mounts, so the whole grid re-enters as ONE choreography
-                 with --i set from its new position — not card by card. */
-              <li
-                key={`${filter}:${p.id}`}
-                data-rise
-                style={{ "--i": i } as CSSProperties}
-                className="min-w-0"
+          {visible.length === 0 ? (
+            <div
+              className="mt-[clamp(30px,4.5vw,52px)] border-t pt-8"
+              style={{ borderColor: HAIR }}
+            >
+              <p
+                style={SERIF}
+                className="max-w-[24ch] text-[clamp(1.35rem,2.6vw,1.75rem)] leading-[1.16] text-pretty"
               >
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    setTrigger(e.currentTarget);
-                    setOpenIndex(i);
-                  }}
-                  aria-label={cardLabel(p)}
-                  className="group block w-full min-w-0 text-left"
+                Šios rūšies darbų viešai kol kas nerodome.
+              </p>
+              <p
+                className={`mt-3 max-w-[46ch] ${T_BODY}`}
+                style={{ color: MUTED }}
+              >
+                Archyve jų yra — parašykite ir atsiųsime tinkamiausius jūsų
+                erdvei.
+              </p>
+              <button
+                type="button"
+                onClick={() => setFilter("visi")}
+                className="mt-6 inline-flex h-11 items-center rounded-full border border-[rgba(26,25,23,0.18)] px-5 text-[0.82rem] leading-none transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-px"
+              >
+                Rodyti visus darbus
+              </button>
+            </div>
+          ) : (
+            <ul className="mt-[clamp(30px,4.5vw,52px)] grid grid-cols-1 gap-x-6 gap-y-[clamp(34px,4.5vw,64px)] sm:grid-cols-2">
+              {visible.map((p, i) => (
+                /* key carries the filter on purpose: every remaining card
+                   re-mounts, so the whole grid re-enters as ONE choreography
+                   with --i set from its new position — not card by card. */
+                <li
+                  key={`${filter}:${p.id}`}
+                  data-rise
+                  style={{ "--i": i } as CSSProperties}
+                  className="min-w-0 sm:even:mt-[clamp(28px,4vw,64px)]"
                 >
-                  <span className="block overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={p.src}
-                      width={p.w}
-                      height={p.h}
-                      alt={p.alt}
-                      loading="lazy"
-                      decoding="async"
-                      className="aspect-[4/3] h-full w-full object-cover transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:scale-[1.02]"
-                    />
-                  </span>
-                  <span className="mt-4 flex items-baseline justify-between gap-4 border-t border-[rgba(26,25,23,0.14)] pt-3">
-                    <span
-                      style={{ fontFamily: "var(--font-forma-display)" }}
-                      className="min-w-0 text-[clamp(1.15rem,2.2vw,1.45rem)] leading-[1.15]"
-                    >
-                      {p.title}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      setTrigger(e.currentTarget);
+                      setOpenIndex(i);
+                    }}
+                    aria-label={cardLabel(p)}
+                    className="group block w-full min-w-0 text-left"
+                  >
+                    <span className="block overflow-hidden bg-[rgba(26,25,23,0.06)]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={p.src}
+                        width={p.w}
+                        height={p.h}
+                        alt={p.alt}
+                        loading="lazy"
+                        decoding="async"
+                        className="aspect-[4/3] h-full w-full object-cover transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:scale-[1.035] group-focus-visible:scale-[1.035] group-active:scale-[1.015]"
+                      />
                     </span>
-                    <span className="shrink-0 text-[0.7rem] tabular-nums tracking-[0.16em] text-[#656059]">
-                      {pad(i + 1)}
+
+                    {/* the card's own hairline, and the ink rule that draws
+                        across it under the pointer — the page's one hover
+                        signature, repeated from the header links */}
+                    <span className="relative mt-4 block pt-3">
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-x-0 top-0 h-px"
+                        style={{ background: HAIR }}
+                      />
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:scale-x-100 group-focus-visible:scale-x-100"
+                        style={{ background: INK }}
+                      />
+
+                      <span className="flex items-baseline justify-between gap-4">
+                        <span
+                          style={SERIF}
+                          className="min-w-0 text-[clamp(1.15rem,2.2vw,1.45rem)] leading-[1.15] text-pretty"
+                        >
+                          {p.title}
+                        </span>
+                        <span
+                          className={`shrink-0 ${T_NUM}`}
+                          style={{ color: MUTED }}
+                        >
+                          {pad(i + 1)}
+                        </span>
+                      </span>
+                      <span
+                        className={`mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1 ${T_META}`}
+                        style={{ color: MUTED }}
+                      >
+                        <span>{p.kindLabel}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>{p.area}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>{p.place}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>{p.year}</span>
+                      </span>
+                      <span
+                        className={`mt-2 block ${T_SMALL}`}
+                        style={{ color: MUTED }}
+                      >
+                        {p.scope}
+                      </span>
                     </span>
-                  </span>
-                  <span className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[0.75rem] uppercase tracking-[0.13em] text-[#6B6660]">
-                    <span>{p.kindLabel}</span>
-                    <span aria-hidden="true">·</span>
-                    <span>{p.area}</span>
-                    <span aria-hidden="true">·</span>
-                    <span>{p.place}</span>
-                    <span aria-hidden="true">·</span>
-                    <span>{p.year}</span>
-                  </span>
-                  <span className="mt-2 block text-[0.8rem] text-[#656059]">
-                    {p.scope}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
 

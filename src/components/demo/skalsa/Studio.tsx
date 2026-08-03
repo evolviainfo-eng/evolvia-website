@@ -30,32 +30,32 @@ const STEPS = [
 
 export function Studio() {
   return (
-    <section className="relative border-t border-[rgba(36,30,25,0.13)]">
+    <section data-sk-sec="dirbtuve" className="relative">
       <span id="dirbtuve" aria-hidden="true" className="absolute -top-[30px]" />
       <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
         <div data-rise className="max-w-[54ch]">
-          <p className="text-[0.76rem] uppercase tracking-[0.14em] text-[#6E6257]">
+          <p className="text-[0.75rem] uppercase tracking-[0.16em] text-[#6E6257]">
             Dirbtuvė
           </p>
           <h2
-            className="mt-4 text-[clamp(1.9rem,3.6vw,2.9rem)] leading-[1.08] tracking-[-0.03em]"
+            className="mt-4 text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.08] tracking-[-0.03em] text-balance"
             style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
           >
             Trys žingsniai, jokių skubotų partijų.
           </h2>
-          <p className="mt-5 text-[1rem] leading-[1.65] text-[#6E6257]">
+          <p className="mt-5 max-w-[52ch] text-[1.0625rem] leading-[1.65] text-pretty text-[#6E6257]">
             Vienu kartu išliejame apie keturiasdešimt žvakių. Tiek telpa ant
             stalo, tiek spėjame patikrinti rankomis.
           </p>
         </div>
 
-        <ol className="mt-[clamp(40px,6vw,72px)] grid gap-x-6 gap-y-12 md:grid-cols-3">
+        <ol className="mt-[clamp(40px,6vw,72px)] grid gap-x-6 gap-y-[clamp(40px,5vw,64px)] md:grid-cols-3">
           {STEPS.map((s, i) => (
             <li
               key={s.n}
               data-rise
               style={{ "--i": i } as React.CSSProperties}
-              className="min-w-0"
+              className="group min-w-0"
             >
               <div className="overflow-hidden rounded-[10px] bg-[#F1EAE0]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -66,21 +66,23 @@ export function Studio() {
                   height={s.h}
                   decoding="async"
                   loading="lazy"
-                  className="aspect-[4/3] h-auto w-full object-cover"
+                  className="aspect-[4/3] h-auto w-full object-cover transition-[scale] duration-[var(--d-el)] ease-[var(--e-out)] group-hover:scale-[1.04]"
                 />
               </div>
-              <div className="mt-5 flex items-baseline gap-3">
-                <span className="text-[0.78rem] tabular-nums text-[#6E6257]">
+
+              <div className="mt-5 flex items-baseline gap-3 border-t border-[rgba(36,30,25,0.13)] pt-4">
+                <span className="text-[0.75rem] tabular-nums tracking-[0.14em] text-[#6E6257]">
                   {s.n}
                 </span>
                 <h3
-                  className="text-[1.15rem] leading-tight tracking-[-0.015em]"
+                  className="text-[1.125rem] leading-tight tracking-[-0.015em]"
                   style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
                 >
                   {s.title}
                 </h3>
               </div>
-              <p className="mt-3 text-[0.94rem] leading-[1.6] text-[#6E6257]">
+
+              <p className="mt-3 max-w-[46ch] text-[0.9375rem] leading-[1.6] text-pretty text-[#6E6257]">
                 {s.body}
               </p>
             </li>

@@ -112,7 +112,7 @@ export const BUNDLES: Bundle[] = [
     lead: "Trys kvapai vienai savaitei — nuo šiltos pradžios iki ramaus galo.",
     contains: ["Gintaras ir kedras", "Pievų šienas", "Levandos ir vanilė"],
     price: 62,
-    note: "Perkant atskirai — 68,00 €",
+    note: "Atskirai 68,00 €",
   },
   {
     id: "b-2",

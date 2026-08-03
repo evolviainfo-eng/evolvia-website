@@ -8,6 +8,14 @@ import {
   useState,
   type CSSProperties,
 } from "react";
+import {
+  HAIR,
+  MUTED,
+  SERIF,
+  T_BODY,
+  T_META,
+  T_NUM,
+} from "@/components/demo/forma/tokens";
 
 export type FormaProjectKind = "butas" | "namas" | "komercine";
 
@@ -43,6 +51,12 @@ const SCROLL_KEYS = new Set([
 
 const FOCUSABLE =
   'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])';
+
+/** Every control in here is the same object: a paper disc that fills with ink.
+ *  Stated once so the close, the arrows and any future control cannot drift
+ *  apart. Size and shape only carry a colour that no call site overrides. */
+const CONTROL =
+  "pointer-events-auto inline-flex h-11 shrink-0 items-center justify-center rounded-full border border-[rgba(26,25,23,0.18)] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-px disabled:pointer-events-none disabled:border-[rgba(26,25,23,0.10)] disabled:text-[rgba(26,25,23,0.28)]";
 
 /** Full-screen project view.
  *
@@ -127,6 +141,21 @@ export function ProjectLightbox({
   useEffect(() => {
     closeRef.current?.focus({ preventScroll: true });
   }, []);
+
+  /* Warm the neighbours. A gallery that flashes paper between two pictures
+     reads as a slideshow; decoding the next and previous frames while the
+     visitor is still looking at this one removes that entirely, and costs
+     nothing on a page that has already fetched the thumbnails. */
+  useEffect(() => {
+    if (items.length < 2) return;
+    const next = items[(index + 1) % items.length];
+    const prev = items[(index - 1 + items.length) % items.length];
+    for (const it of Array.from(new Set([next, prev]))) {
+      const img = new Image();
+      img.decoding = "async";
+      img.src = it.src;
+    }
+  }, [index, items]);
 
   /* scroll lock. One exception: the height-capped project note, which on a
      short viewport is the only thing in here with its own overflow. It is
@@ -219,9 +248,6 @@ export function ProjectLightbox({
     transitionTimingFunction: "var(--e-mass)",
   };
 
-  const round =
-    "pointer-events-auto inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[rgba(26,25,23,0.18)] text-[1rem] leading-none transition-[background-color,color,border-color] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] disabled:pointer-events-none disabled:opacity-30";
-
   return (
     <div
       className="fixed inset-0 z-[150]"
@@ -246,15 +272,53 @@ export function ProjectLightbox({
         className="pointer-events-none relative flex h-full w-full flex-col text-[#1A1917]"
       >
         <div className="flex shrink-0 items-center justify-between gap-4 px-5 py-3 sm:px-8 sm:py-4">
-          <span className="pointer-events-auto text-[0.72rem] tabular-nums tracking-[0.2em] text-[#6B6660]">
+          <span
+            className={`pointer-events-auto ${T_NUM}`}
+            style={{ color: MUTED }}
+          >
             {pad(index + 1)} / {pad(items.length)}
           </span>
+
+          {/* The film strip. It is the only place the whole filtered set is
+              visible at once, so it doubles as the position indicator and as
+              the way back to a picture already seen. */}
+          {many && (
+            <div
+              role="group"
+              aria-label="Peržiūros kadrai"
+              className="pointer-events-auto hidden items-center gap-1.5 sm:flex"
+            >
+              {items.map((it, i) => {
+                const on = i === index;
+                return (
+                  <button
+                    key={it.id}
+                    type="button"
+                    onClick={() => onNavigate(i)}
+                    aria-current={on ? "true" : undefined}
+                    aria-label={`Rodyti projektą ${it.title}`}
+                    className="group inline-flex h-8 items-center px-0.5"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`block h-[2px] transition-[width,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] ${
+                        on
+                          ? "w-8 bg-[#1A1917]"
+                          : "w-4 bg-[rgba(26,25,23,0.28)] group-hover:bg-[rgba(26,25,23,0.6)]"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           <button
             ref={closeRef}
             type="button"
             onClick={requestClose}
             aria-label="Uždaryti projekto peržiūrą"
-            className="pointer-events-auto inline-flex h-11 items-center gap-2.5 rounded-full border border-[rgba(26,25,23,0.18)] px-4 text-[0.78rem] tracking-[0.06em] transition-[background-color,color,border-color] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC]"
+            className={`${CONTROL} gap-2.5 px-4 text-[0.82rem] tracking-[0.04em]`}
           >
             <span className="hidden sm:inline">Uždaryti</span>
             <span aria-hidden="true" className="text-[1.05rem] leading-none">
@@ -280,21 +344,27 @@ export function ProjectLightbox({
               maxWidth: `min(100%, ${project.w}px)`,
               maxHeight: `min(100%, ${project.h}px)`,
             }}
-            className="pointer-events-auto w-auto object-contain"
+            className="forma-plate-in pointer-events-auto w-auto object-contain"
           />
         </div>
 
         <div className="shrink-0 px-5 pb-6 pt-5 sm:px-8">
-          <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-5 border-t border-[rgba(26,25,23,0.14)] pt-5 sm:flex-row sm:items-end sm:justify-between">
+          <div
+            className="mx-auto flex w-full max-w-[1240px] flex-col gap-5 border-t pt-5 sm:flex-row sm:items-end sm:justify-between"
+            style={{ borderColor: HAIR }}
+          >
             <div className="pointer-events-auto min-w-0">
               <h2
                 id={titleId}
-                style={{ fontFamily: "var(--font-forma-display)" }}
-                className="text-[clamp(1.5rem,3.2vw,2.1rem)] font-normal leading-[1.1]"
+                style={SERIF}
+                className="text-[clamp(1.5rem,3.2vw,2.1rem)] font-normal leading-[1.1] tracking-[-0.015em] text-balance"
               >
                 {project.title}
               </h2>
-              <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.76rem] uppercase tracking-[0.14em] text-[#6B6660]">
+              <p
+                className={`mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 ${T_META}`}
+                style={{ color: MUTED }}
+              >
                 <span>{project.kindLabel}</span>
                 <span aria-hidden="true">·</span>
                 <span>{project.area}</span>
@@ -309,7 +379,8 @@ export function ProjectLightbox({
                   image row is `flex-1 min-h-0` and gives the height back. */}
               <p
                 data-lb-scroll
-                className="mt-3 max-h-[26vh] max-w-[58ch] overflow-y-auto overscroll-contain text-[0.9rem] leading-[1.65] text-[#6B6660]"
+                className={`mt-3 max-h-[26vh] max-w-[58ch] overflow-y-auto overscroll-contain ${T_BODY}`}
+                style={{ color: MUTED }}
               >
                 {project.note}
               </p>
@@ -321,7 +392,7 @@ export function ProjectLightbox({
                 onClick={() => go(-1)}
                 disabled={!many}
                 aria-label="Ankstesnis projektas"
-                className={round}
+                className={`${CONTROL} w-11 text-[1rem] leading-none`}
               >
                 <span aria-hidden="true">←</span>
               </button>
@@ -330,7 +401,7 @@ export function ProjectLightbox({
                 onClick={() => go(1)}
                 disabled={!many}
                 aria-label="Kitas projektas"
-                className={round}
+                className={`${CONTROL} w-11 text-[1rem] leading-none`}
               >
                 <span aria-hidden="true">→</span>
               </button>
