@@ -4,6 +4,9 @@ export const site = {
   name: "evolvia.",
   tagline: "web design",
   email: "info@evolvia.lt",
+  phone: "+370 657 716 01",
+  /** tel: href — no spaces, they break some dialers */
+  phoneHref: "+37065771601",
   location: "Kaunas, Lietuva",
   year: 2026,
   /** Production URL — used for canonical, OG, sitemap, robots. */

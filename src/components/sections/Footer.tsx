@@ -40,6 +40,12 @@ export function Footer() {
                 >
                   {site.email}
                 </a>
+                <a
+                  href={`tel:${site.phoneHref}`}
+                  className="text-[0.95rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
+                >
+                  {site.phone}
+                </a>
                 <p className="text-[0.95rem] text-text-muted">{site.location}</p>
               </div>
             </div>

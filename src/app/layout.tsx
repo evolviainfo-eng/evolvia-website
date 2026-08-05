@@ -100,6 +100,7 @@ const businessJsonLd = {
     "Modernios svetainės Lietuvos verslui — dizainas, programavimas, paleidimas ir priežiūra.",
   url: SITE_URL,
   email: site.email,
+  telephone: site.phone,
   address: {
     "@type": "PostalAddress",
     addressLocality: "Kaunas",

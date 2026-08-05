@@ -71,12 +71,22 @@ export function FinalCta({
               </p>
             </>
           )}
-          <a
-            href={`mailto:${site.email}`}
-            className={`inline-block text-[1.15rem] font-medium text-text underline decoration-border underline-offset-[6px] transition-colors hover:decoration-text ${standalone ? "" : "mt-6"}`}
+          <div
+            className={`flex flex-col items-center gap-2 sm:flex-row sm:justify-center sm:gap-6 ${standalone ? "" : "mt-6"}`}
           >
-            {site.email}
-          </a>
+            <a
+              href={`mailto:${site.email}`}
+              className="inline-block text-[1.15rem] font-medium text-text underline decoration-border underline-offset-[6px] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:decoration-text"
+            >
+              {site.email}
+            </a>
+            <a
+              href={`tel:${site.phoneHref}`}
+              className="inline-block text-[1.15rem] font-medium text-text underline decoration-border underline-offset-[6px] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:decoration-text"
+            >
+              {site.phone}
+            </a>
+          </div>
         </Reveal>
 
         <Reveal delay={0.08} className={`mx-auto max-w-[560px] ${standalone ? "mt-10" : "mt-12"}`}>

@@ -16,7 +16,7 @@ export function DemoFooter({ slug }: { slug: string }) {
             Demonstracinė svetainė
           </p>
           <h2 className="mt-4 text-[clamp(1.5rem,3.2vw,2.2rem)] font-normal leading-[1.15] tracking-[-0.025em]">
-            „{current?.name}“ neegzistuoja. Svetainė — tikra.
+            „{current?.name}“ neegzistuoja. Tai pavyzdinis darbas.
           </h2>
           <p className="mt-4 text-[0.98rem] leading-relaxed text-white/60">
             Įmonė, jos projektai, kainos ir kontaktai yra sugalvoti. Viskas

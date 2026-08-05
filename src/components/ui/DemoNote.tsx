@@ -15,11 +15,11 @@ export function DemoNote({ className }: { className?: string }) {
       )}
     >
       <strong className="font-medium text-text">
-        Tai demonstracinės svetainės.
+        Tai pavyzdiniai darbai.
       </strong>{" "}
-      Įmonės, jų projektai, kainos ir kontaktai — sugalvoti. Pačios svetainės
-      tikros ir pilnai veikia: atsidarykite, paspaudinėkite, išbandykite
-      skaičiuoklę, rezervaciją ar krepšelį. Tokios kokybės ir tikėkitės.
+      Įmonės, jų projektai, kainos ir kontaktai — sugalvoti. Svetaines galite
+      atidaryti ir paspaudinėti: išbandykite skaičiuoklę, rezervaciją ar
+      krepšelį. Tokios kokybės ir tikėkitės.
     </p>
   );
 }
