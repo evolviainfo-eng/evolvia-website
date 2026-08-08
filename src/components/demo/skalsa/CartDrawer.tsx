@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { motion, useTransform } from "framer-motion";
+import { useSheetGesture } from "./useSheetGesture";
 import { CATALOG, FREE_SHIPPING_FROM, PRODUCTS, eur } from "./data";
 import { Check } from "./AddToCart";
 import { useShop } from "./ShopProvider";
@@ -119,6 +121,13 @@ export function CartDrawer() {
     setStep("done");
   };
 
+  /* The panel is grabbable, so its motion cannot be a CSS transition — those
+     finish what they started. See useSheetGesture for the projection maths. */
+  const sheet = useSheetGesture(open, close);
+  /* The scrim tracks the drag 1:1 the whole way, not just at the ends: the
+     further the panel is thrown, the more the page behind comes back. */
+  const scrim = useTransform(sheet.x, [0, sheet.width], [1, 0]);
+
   const progress = freeShipping
     ? 1
     : Math.max(0.015, Math.min(subtotal / FREE_SHIPPING_FROM, 1));
@@ -134,23 +143,42 @@ export function CartDrawer() {
       style={{ top: "var(--demo-bar-h)" }}
     >
       {/* fonas */}
-      <div
+      <motion.div
         onClick={close}
         aria-hidden="true"
-        className={`absolute inset-0 bg-[rgba(36,30,25,0.42)] backdrop-blur-[3px] transition-opacity duration-[var(--d-el)] ease-[var(--e-out)] ${
-          open ? "opacity-100" : "opacity-0"
+        style={sheet.reduce ? undefined : { opacity: scrim }}
+        className={`absolute inset-0 bg-[rgba(36,30,25,0.42)] backdrop-blur-[3px] ${
+          sheet.reduce
+            ? `transition-opacity duration-[var(--d-el)] ease-[var(--e-out)] ${open ? "opacity-100" : "opacity-0"}`
+            : ""
         }`}
       />
 
-      <div
-        ref={panelRef}
+      <motion.div
+        ref={(el) => {
+          panelRef.current = el;
+          sheet.measure(el);
+        }}
         role="dialog"
         aria-modal="true"
         aria-label={title}
         aria-hidden={!open}
         inert={!open}
-        className={`absolute inset-y-0 right-0 flex w-[calc(100%-2.5rem)] max-w-[27rem] flex-col border-l border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] shadow-[-24px_0_60px_-30px_rgba(36,30,25,0.55)] transition-transform duration-[var(--d-el)] ease-[var(--e-mass)] sm:w-full ${
-          open ? "translate-x-0" : "translate-x-full"
+        /* Drag right to dismiss — the same path it arrived along. Dragging the
+           other way finds nothing, so it rubber-bands instead of stopping dead.
+           dragDirectionLock keeps a horizontal throw from stealing the
+           vertical scroll of the item list. */
+        drag={sheet.reduce ? false : "x"}
+        dragDirectionLock
+        dragConstraints={{ left: 0, right: sheet.width }}
+        dragElastic={{ left: 0.06, right: 0 }}
+        dragMomentum={false}
+        onDragEnd={(_, info) => sheet.onDragEnd(info.velocity.x)}
+        style={sheet.reduce ? undefined : { x: sheet.x, touchAction: "pan-y" }}
+        className={`absolute inset-y-0 right-0 flex w-[calc(100%-2.5rem)] max-w-[27rem] flex-col border-l border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] shadow-[-24px_0_60px_-30px_rgba(36,30,25,0.55)] sm:w-full ${
+          sheet.reduce
+            ? `transition-transform duration-[var(--d-el)] ease-[var(--e-out)] ${open ? "translate-x-0" : "translate-x-full"}`
+            : ""
         }`}
       >
         {/* antraštė */}
@@ -612,7 +640,7 @@ export function CartDrawer() {
             </button>
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }

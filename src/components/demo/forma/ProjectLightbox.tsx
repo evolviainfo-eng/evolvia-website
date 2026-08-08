@@ -1,6 +1,13 @@
 "use client";
 
 import {
+  animate,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from "framer-motion";
+import {
   useCallback,
   useEffect,
   useId,
@@ -71,6 +78,13 @@ const CONTROL =
  *  and `data-lenis-prevent` keeps Lenis out of the overlay entirely. Nothing
  *  moves, nothing is restored, nothing can jump.
  */
+/** Apple's momentum projection (Designing Fluid Interfaces sample code).
+ *  Exponential decay, not the textbook v²/2a — a flick should land where a
+ *  scroll would land. */
+function projectMomentum(velocity: number, decelerationRate = 0.998) {
+  return ((velocity / 1000) * decelerationRate) / (1 - decelerationRate);
+}
+
 export function ProjectLightbox({
   items,
   index,
@@ -235,6 +249,36 @@ export function ProjectLightbox({
     return () => document.removeEventListener("keydown", onKey, true);
   }, [go, requestClose]);
 
+  /* ── the fling ────────────────────────────────────────────────────────
+     Apple's projection function, exponential-decay form: where would this
+     come to rest if it kept decelerating like a scroll? Decide from that
+     point, not from where the finger happened to stop. */
+  const reduce = !!useReducedMotion();
+  const dragX = useMotionValue(0);
+  const dragY = useMotionValue(0);
+  /* Pulling down fades the picture out as it goes — continuous feedback the
+     whole way, so it is obvious what the gesture is about to do. */
+  const dragFade = useTransform(dragY, [0, 260], [1, 0.45], { clamp: true });
+
+  const onFling = useCallback(
+    (offset: { x: number; y: number }, velocity: { x: number; y: number }) => {
+      const px = offset.x + projectMomentum(velocity.x);
+      const py = offset.y + projectMomentum(velocity.y);
+
+      // Sideways wins only if it clearly beats the vertical throw.
+      if (Math.abs(px) > 140 && Math.abs(px) > Math.abs(py)) {
+        go(px < 0 ? 1 : -1);
+      } else if (py > 180) {
+        requestClose();
+      }
+      // Whatever happened, the picture comes home from where it actually is,
+      // carrying the velocity it had — no seam between drag and animation.
+      animate(dragX, 0, { type: "spring", bounce: 0.18, duration: 0.34, velocity: velocity.x });
+      animate(dragY, 0, { type: "spring", bounce: 0.18, duration: 0.34, velocity: velocity.y });
+    },
+    [go, requestClose, dragX, dragY],
+  );
+
   if (!project) return null;
 
   const active = shown && !leaving;
@@ -328,8 +372,12 @@ export function ProjectLightbox({
         </div>
 
         <div className="flex min-h-0 flex-1 items-center justify-center px-5 sm:px-8">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          {/* Grabbable: throw it sideways to change project, down to close.
+              A spring, not a transition — a picture you can catch mid-flight
+              has to animate from wherever it currently is. The decision at
+              release comes from the PROJECTED endpoint, so a flick throws and
+              a nudge springs back. */}
+          <motion.img
             key={project.id}
             src={project.src}
             width={project.w}
@@ -337,14 +385,21 @@ export function ProjectLightbox({
             alt={project.alt}
             decoding="async"
             loading="eager"
-            /* `min()` and not a bare natural width: this has to cap the upscale
-               on a tall display AND stay inside the container at 375px, where
-               a flat `max-width: 1400px` would blow the document out. */
+            drag={reduce ? false : true}
+            dragDirectionLock
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            dragElastic={0.55}
+            dragMomentum={false}
+            onDragEnd={(_, info) => onFling(info.offset, info.velocity)}
+            /* X and Y are independent motion values, never one 2D distance —
+               a single spring on the diagonal desyncs the moment the two axes
+               carry different velocities. */
             style={{
               maxWidth: `min(100%, ${project.w}px)`,
               maxHeight: `min(100%, ${project.h}px)`,
+              ...(reduce ? {} : { x: dragX, y: dragY, opacity: dragFade }),
             }}
-            className="forma-plate-in pointer-events-auto w-auto object-contain"
+            className="forma-plate-in pointer-events-auto w-auto cursor-grab object-contain active:cursor-grabbing"
           />
         </div>
 

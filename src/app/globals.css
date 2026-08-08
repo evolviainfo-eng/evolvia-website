@@ -232,6 +232,30 @@
     }
   }
 
+  /* Translucency is a preference, not a given. Someone who has asked for less
+     of it gets a frosted-to-solid panel instead — the blur goes, the opacity
+     comes up. Dropping only the blur would be the worst of both: still
+     see-through, but now with the page legible straight through the text. */
+  @media (prefers-reduced-transparency: reduce) {
+    .glass {
+      background: color-mix(in srgb, var(--bg) 96%, transparent);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* And at higher contrast the material stops being the point: a near-solid
+     panel with an edge you can actually see. */
+  @media (prefers-contrast: more) {
+    .glass {
+      background: var(--bg);
+      border-color: var(--text);
+      box-shadow: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
   /* Wordmark — rendered as live text so it stays razor-sharp at any size.
      Matches the redesigned logo: light, refined, slightly open. */
   .wordmark {
