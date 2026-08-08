@@ -67,7 +67,7 @@ export function Faq({
                       onClick={() => setOpen(isOpen ? null : i)}
                       className="flex w-full items-center justify-between gap-6 py-6 text-left"
                     >
-                      <span className="text-[1.15rem] font-medium tracking-[-0.01em] text-text">
+                      <span className="text-[1.0625rem] font-medium tracking-[-0.01em] text-text">
                         {item.q}
                       </span>
                       <span
@@ -119,9 +119,7 @@ export function Faq({
         </div>
 
         {/* fallback contact for crawlers / no-JS clarity */}
-        <p className="sr-only">
-          Klausimai: {site.email}
-        </p>
+        <p className="sr-only">Klausimai: {site.email}</p>
       </Container>
     </Section>
   );

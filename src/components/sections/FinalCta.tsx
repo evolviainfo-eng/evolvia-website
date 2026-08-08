@@ -76,20 +76,23 @@ export function FinalCta({
           >
             <a
               href={`mailto:${site.email}`}
-              className="inline-block text-[1.15rem] font-medium text-text underline decoration-border underline-offset-[6px] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:decoration-text"
+              className="inline-block text-[1.0625rem] font-medium text-text underline decoration-border underline-offset-[6px] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:decoration-text"
             >
               {site.email}
             </a>
             <a
               href={`tel:${site.phoneHref}`}
-              className="inline-block text-[1.15rem] font-medium text-text underline decoration-border underline-offset-[6px] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:decoration-text"
+              className="inline-block text-[1.0625rem] font-medium text-text underline decoration-border underline-offset-[6px] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:decoration-text"
             >
               {site.phone}
             </a>
           </div>
         </Reveal>
 
-        <Reveal delay={0.08} className={`mx-auto max-w-[560px] ${standalone ? "mt-10" : "mt-12"}`}>
+        <Reveal
+          delay={0.08}
+          className={`mx-auto max-w-[560px] ${standalone ? "mt-10" : "mt-12"}`}
+        >
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
@@ -135,7 +138,11 @@ export function FinalCta({
               />
             </div>
             {/* subject line for the Formspree notification email */}
-            <input type="hidden" name="_subject" value="Nauja užklausa iš evolvia.lt" />
+            <input
+              type="hidden"
+              name="_subject"
+              value="Nauja užklausa iš evolvia.lt"
+            />
             <button
               type="submit"
               disabled={status === "sending"}
@@ -144,18 +151,27 @@ export function FinalCta({
               {status === "sending" ? "Siunčiama…" : "Siųsti užklausą"}
             </button>
             {status === "sent" && (
-              <p className="text-center text-[0.95rem] text-text-muted" role="status">
+              <p
+                className="text-center text-[0.9375rem] text-text-muted"
+                role="status"
+              >
                 Ačiū! Gavome jūsų žinutę — atsakysime per dieną.
               </p>
             )}
             {status === "mailto" && (
-              <p className="text-center text-[0.95rem] text-text-muted" role="status">
+              <p
+                className="text-center text-[0.9375rem] text-text-muted"
+                role="status"
+              >
                 Atsidaro jūsų el. pašto programa. Jei ne — rašykite tiesiai{" "}
                 {site.email}.
               </p>
             )}
             {status === "error" && (
-              <p className="text-center text-[0.95rem] text-text-muted" role="status">
+              <p
+                className="text-center text-[0.9375rem] text-text-muted"
+                role="status"
+              >
                 Nepavyko išsiųsti. Parašykite tiesiai {site.email}.
               </p>
             )}

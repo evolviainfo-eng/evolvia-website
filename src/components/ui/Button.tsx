@@ -9,7 +9,7 @@ type Variant = "primary" | "secondary";
    as neither. */
 const base =
   "press inline-flex items-center justify-center rounded-pill font-medium " +
-  "text-[0.95rem] leading-none whitespace-nowrap select-none " +
+  "text-[0.9375rem] leading-none whitespace-nowrap select-none " +
   "transition-[translate,background-color,color,border-color,opacity] " +
   "duration-[var(--d-ui)] ease-[var(--e-out)] will-change-transform " +
   "hover:-translate-y-[2px] active:translate-y-0";

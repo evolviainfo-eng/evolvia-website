@@ -24,20 +24,20 @@ import { site } from "@/content/site";
 export function PrivacyNote({ className }: { className?: string }) {
   return (
     <div id="privatumas" className={className}>
-      <p className="text-[0.85rem] leading-relaxed text-text-muted">
+      <p className="text-[0.8125rem] leading-relaxed text-text-muted">
         Jūsų duomenis naudojame tik atsakymui į šią užklausą. Slapukų
         nenaudojame ir jūsų neseka.{" "}
         <span className="text-text">Kaip tvarkome duomenis — žemiau.</span>
       </p>
 
       <details className="group mt-3 border-t border-border pt-3">
-        <summary className="cursor-pointer list-none text-[0.85rem] font-medium text-text marker:content-['']">
+        <summary className="cursor-pointer list-none text-[0.8125rem] font-medium text-text marker:content-['']">
           <span className="underline decoration-border underline-offset-4 transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] group-hover:decoration-text">
             Privatumo informacija
           </span>
         </summary>
 
-        <dl className="mt-4 flex flex-col gap-3 text-[0.85rem] leading-relaxed text-text-muted">
+        <dl className="mt-4 flex flex-col gap-3 text-[0.8125rem] leading-relaxed text-text-muted">
           <div>
             <dt className="font-medium text-text">Kas tvarko</dt>
             <dd>
@@ -62,16 +62,16 @@ export function PrivacyNote({ className }: { className?: string }) {
           <div>
             <dt className="font-medium text-text">Kokiu pagrindu</dt>
             <dd>
-              Jūsų pačių prašymu atliekami veiksmai prieš sudarant sutartį
-              (BDAR 6 str. 1 d. b punktas).
+              Jūsų pačių prašymu atliekami veiksmai prieš sudarant sutartį (BDAR
+              6 str. 1 d. b punktas).
             </dd>
           </div>
           <div>
             <dt className="font-medium text-text">Kas dar mato</dt>
             <dd>
               Formą aptarnauja „Formspree“ (JAV) — per jų sistemą žinutė
-              atkeliauja į mūsų pašto dėžutę. Svetainę talpina „Vercel“.
-              Daugiau niekam neperduodame ir niekada nepardavinėjame.
+              atkeliauja į mūsų pašto dėžutę. Svetainę talpina „Vercel“. Daugiau
+              niekam neperduodame ir niekada nepardavinėjame.
             </dd>
           </div>
           <div>
@@ -95,17 +95,17 @@ export function PrivacyNote({ className }: { className?: string }) {
             <dd>
               Matome tik tai, kiek kartų atidaryti puslapiai — tam naudojame
               „Vercel Analytics“. Jis neįrašo nieko į jūsų naršyklę, nekuria
-              jūsų profilio ir neseka jūsų kitose svetainėse. Nematome, kas
-              jūs esate.
+              jūsų profilio ir neseka jūsų kitose svetainėse. Nematome, kas jūs
+              esate.
             </dd>
           </div>
           <div>
             <dt className="font-medium text-text">Slapukai</dt>
             <dd>
               Nenaudojame — nei reklamos, nei stebėjimo. Į naršyklę įrašome
-              vienintelį dalyką: pasirinktą šviesią ar tamsią temą, ir tik
-              tada, kai patys ją perjungiate. Todėl ir sutikimo juostos čia
-              nėra — nėra ko sutikti.
+              vienintelį dalyką: pasirinktą šviesią ar tamsią temą, ir tik tada,
+              kai patys ją perjungiate. Todėl ir sutikimo juostos čia nėra —
+              nėra ko sutikti.
             </dd>
           </div>
         </dl>

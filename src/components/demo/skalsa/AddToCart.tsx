@@ -40,7 +40,7 @@ export function AddToCart({
   };
 
   const base =
-    "inline-flex h-11 items-center justify-center rounded-full px-5 text-[0.875rem] transition-[background-color,color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] active:translate-y-[1px]";
+    "inline-flex h-11 items-center justify-center rounded-full px-5 text-[0.8125rem] transition-[background-color,color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] active:translate-y-[1px]";
 
   const skin = added
     ? "border border-[#B4562F] bg-[#B4562F] text-[#FAF6F0]"
@@ -48,13 +48,16 @@ export function AddToCart({
       ? "border border-[#241E19] bg-[#241E19] text-[#FAF6F0] hover:bg-[#3A3129] hover:border-[#3A3129] hover:-translate-y-[1px]"
       : "border border-[rgba(36,30,25,0.13)] bg-transparent text-[#241E19] hover:border-[#241E19] hover:bg-[#241E19] hover:text-[#FAF6F0]";
 
-  const label = "transition-[opacity,translate] duration-[var(--d-ui)] ease-[var(--e-out)] col-start-1 row-start-1";
+  const label =
+    "transition-[opacity,translate] duration-[var(--d-ui)] ease-[var(--e-out)] col-start-1 row-start-1";
 
   return (
     <button
       type="button"
       onClick={onClick}
-      aria-label={added ? `${name} — pridėta į krepšelį` : `Įdėti „${name}“ į krepšelį`}
+      aria-label={
+        added ? `${name} — pridėta į krepšelį` : `Įdėti „${name}“ į krepšelį`
+      }
       className={`${base} ${skin}`}
     >
       <span aria-hidden="true" className="grid place-items-center">

@@ -4,15 +4,22 @@ import { BUNDLES, eur } from "./data";
 export function Bundles() {
   return (
     <section data-sk-sec="rinkiniai" className="relative bg-[#F1EAE0]">
-      <span id="rinkiniai" aria-hidden="true" className="absolute -top-[30px]" />
+      <span
+        id="rinkiniai"
+        aria-hidden="true"
+        className="absolute -top-[30px]"
+      />
       <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
         <div data-rise className="max-w-[50ch]">
-          <p className="text-[0.75rem] uppercase tracking-[0.16em] text-[#6E6257]">
+          <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
             Rinkiniai
           </p>
           <h2
-            className="mt-4 text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.08] text-balance"
-            style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
+            className="mt-4 text-[clamp(1.875rem,3.4vw,2.5rem)] leading-[1.08] text-balance"
+            style={{
+              fontFamily: "var(--font-skalsa-display)",
+              fontWeight: 500,
+            }}
           >
             Kai reikia dovanos, o ne prekės.
           </h2>
@@ -47,17 +54,20 @@ export function Bundles() {
               >
                 <div className="flex items-baseline justify-between gap-4">
                   <h3
-                    className="min-w-0 text-[1.375rem] leading-tight tracking-[-0.02em] break-words"
-                    style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
+                    className="min-w-0 text-[1.5rem] leading-tight tracking-[-0.02em] break-words"
+                    style={{
+                      fontFamily: "var(--font-skalsa-display)",
+                      fontWeight: 500,
+                    }}
                   >
                     {b.name}
                   </h3>
                   <div className="shrink-0 text-right">
-                    <span className="block text-[1.125rem] tabular-nums">
+                    <span className="block text-[1.0625rem] tabular-nums">
                       {eur(b.price)}
                     </span>
                     {b.note && (
-                      <span className="mt-1 block text-[0.75rem] tabular-nums text-[#6E6257]">
+                      <span className="mt-1 block text-[0.8125rem] tabular-nums text-[#6E6257]">
                         {b.note}
                       </span>
                     )}
@@ -74,7 +84,10 @@ export function Bundles() {
                       key={c}
                       className="flex items-baseline gap-3 py-1.5 text-[0.9375rem] text-[#241E19]"
                     >
-                      <span aria-hidden="true" className="mt-[2px] text-[#B4562F]">
+                      <span
+                        aria-hidden="true"
+                        className="mt-[2px] text-[#B4562F]"
+                      >
                         <Check size={11} />
                       </span>
                       <span className="min-w-0 break-words">{c}</span>

@@ -194,7 +194,10 @@ export function ProjectLightbox({
       e.preventDefault();
       e.stopPropagation();
     };
-    window.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    window.addEventListener("wheel", onWheel, {
+      passive: false,
+      capture: true,
+    });
     window.addEventListener("touchmove", onTouchMove, {
       passive: false,
       capture: true,
@@ -273,8 +276,18 @@ export function ProjectLightbox({
       }
       // Whatever happened, the picture comes home from where it actually is,
       // carrying the velocity it had — no seam between drag and animation.
-      animate(dragX, 0, { type: "spring", bounce: 0.18, duration: 0.34, velocity: velocity.x });
-      animate(dragY, 0, { type: "spring", bounce: 0.18, duration: 0.34, velocity: velocity.y });
+      animate(dragX, 0, {
+        type: "spring",
+        bounce: 0.18,
+        duration: 0.34,
+        velocity: velocity.x,
+      });
+      animate(dragY, 0, {
+        type: "spring",
+        bounce: 0.18,
+        duration: 0.34,
+        velocity: velocity.y,
+      });
     },
     [go, requestClose, dragX, dragY],
   );
@@ -362,10 +375,10 @@ export function ProjectLightbox({
             type="button"
             onClick={requestClose}
             aria-label="Uždaryti projekto peržiūrą"
-            className={`${CONTROL} gap-2.5 px-4 text-[0.82rem] tracking-[0.04em]`}
+            className={`${CONTROL} gap-2.5 px-4 text-[0.8125rem] tracking-[0.04em]`}
           >
             <span className="hidden sm:inline">Uždaryti</span>
-            <span aria-hidden="true" className="text-[1.05rem] leading-none">
+            <span aria-hidden="true" className="text-[1.0625rem] leading-none">
               ✕
             </span>
           </button>
@@ -412,7 +425,7 @@ export function ProjectLightbox({
               <h2
                 id={titleId}
                 style={SERIF}
-                className="text-[clamp(1.5rem,3.2vw,2.1rem)] font-normal leading-[1.1] text-balance"
+                className="text-[clamp(1.5rem,3.2vw,1.875rem)] font-normal leading-[1.1] text-balance"
               >
                 {project.title}
               </h2>
@@ -447,7 +460,7 @@ export function ProjectLightbox({
                 onClick={() => go(-1)}
                 disabled={!many}
                 aria-label="Ankstesnis projektas"
-                className={`${CONTROL} w-11 text-[1rem] leading-none`}
+                className={`${CONTROL} w-11 text-[0.9375rem] leading-none`}
               >
                 <span aria-hidden="true">←</span>
               </button>
@@ -456,7 +469,7 @@ export function ProjectLightbox({
                 onClick={() => go(1)}
                 disabled={!many}
                 aria-label="Kitas projektas"
-                className={`${CONTROL} w-11 text-[1rem] leading-none`}
+                className={`${CONTROL} w-11 text-[0.9375rem] leading-none`}
               >
                 <span aria-hidden="true">→</span>
               </button>

@@ -124,10 +124,10 @@ function StageIndex({
                     : "opacity-65",
               )}
             >
-              <h3 className="text-[1.02rem] leading-tight tracking-[-0.015em] text-text">
+              <h3 className="text-[1.0625rem] leading-tight tracking-[-0.015em] text-text">
                 {s.title}
               </h3>
-              <p className="mt-1 text-[0.855rem] leading-[1.5] text-text-muted">
+              <p className="mt-1 text-[0.8125rem] leading-[1.5] text-text-muted">
                 {s.copy}
               </p>
             </li>
@@ -234,10 +234,10 @@ export function BuildSequence() {
             <Eyebrow>Iš jūsų medžiagos</Eyebrow>
             <h2 className="t-h2 mt-4">Medžiaga jau yra. Tik išbarstyta.</h2>
             <p className="t-body mt-5 max-w-[54ch]">
-              Nuotraukos, kainos, atsiliepimai, darbo laikas — kiekvienas verslas tai
-              jau turi, tik niekur nesudėta į vietą. Nieko naujo išgalvoti
-              nereikia: reikia atrinkti, sudėlioti ir padaryti taip, kad tai
-              dirbtų jūsų naudai.
+              Nuotraukos, kainos, atsiliepimai, darbo laikas — kiekvienas
+              verslas tai jau turi, tik niekur nesudėta į vietą. Nieko naujo
+              išgalvoti nereikia: reikia atrinkti, sudėlioti ir padaryti taip,
+              kad tai dirbtų jūsų naudai.
             </p>
           </Reveal>
         </div>
@@ -280,18 +280,14 @@ export function BuildSequence() {
             {STAGES.map((s, i) => (
               <li key={s.title} data-rise className="min-w-0">
                 <div className="min-w-0 border-t border-border pt-4">
-                  <h3 className="text-[1.06rem] tracking-[-0.015em] text-text">
+                  <h3 className="text-[1.0625rem] tracking-[-0.015em] text-text">
                     {s.title}
                   </h3>
-                  <p className="mt-2 max-w-[42ch] text-[0.92rem] leading-[1.55] text-text-muted">
+                  <p className="mt-2 max-w-[42ch] text-[0.9375rem] leading-[1.55] text-text-muted">
                     {s.copy}
                   </p>
                 </div>
-                <Canvas
-                  stage={i}
-                  compact={compact}
-                  className="mt-5 min-w-0"
-                />
+                <Canvas stage={i} compact={compact} className="mt-5 min-w-0" />
               </li>
             ))}
           </ol>
@@ -317,7 +313,7 @@ export function BuildSequence() {
             data-rise
             className="mt-[clamp(56px,9vw,112px)] border-t border-border pt-[clamp(26px,4vw,44px)]"
           >
-            <p className="max-w-[30ch] text-[clamp(1.2rem,2.1vw,1.6rem)] leading-[1.35] font-light tracking-[-0.025em] text-text">
+            <p className="max-w-[30ch] text-[clamp(1.25rem,2.1vw,1.5rem)] leading-[1.35] font-light tracking-[-0.025em] text-text">
               Tą patį darbą gali padaryti pigiau. Bet ne taip, kad atrodytum
               brangiai.
             </p>

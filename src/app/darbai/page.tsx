@@ -19,7 +19,7 @@ export default function DarbaiPage() {
     <>
       <JsonLd data={breadcrumbJsonLd("Darbai", "/darbai")} />
       <Nav />
-      <main>
+      <main id="main">
         <PageHeader
           eyebrow="Darbai"
           title="Keturios svetainės, kurias galite išbandyti."

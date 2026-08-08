@@ -9,26 +9,29 @@ export function Footer() {
         <div className="py-[clamp(56px,8vw,88px)]">
           <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
             <div>
-              <Wordmark className="text-[1.6rem]" />
-              <p className="mt-3 text-[0.8rem] font-medium uppercase tracking-[0.22em] text-text-muted">
+              <Wordmark className="text-[1.5rem]" />
+              <p className="mt-3 text-[0.8125rem] font-medium uppercase tracking-[0.22em] text-text-muted">
                 web design
               </p>
             </div>
 
             <div className="flex flex-col gap-10 sm:flex-row sm:gap-20">
-              <nav className="flex flex-col gap-3" aria-label="Poraštės navigacija">
+              <nav
+                className="flex flex-col gap-3"
+                aria-label="Poraštės navigacija"
+              >
                 {pages.map((page) => (
                   <a
                     key={page.path}
                     href={page.path}
-                    className="text-[0.95rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
+                    className="text-[0.9375rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
                   >
                     {page.label}
                   </a>
                 ))}
                 <a
                   href="/kontaktai#privatumas"
-                  className="text-[0.95rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
+                  className="text-[0.9375rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
                 >
                   Privatumas
                 </a>
@@ -36,22 +39,24 @@ export function Footer() {
               <div className="flex flex-col gap-3">
                 <a
                   href={`mailto:${site.email}`}
-                  className="text-[0.95rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
+                  className="text-[0.9375rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
                 >
                   {site.email}
                 </a>
                 <a
                   href={`tel:${site.phoneHref}`}
-                  className="text-[0.95rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
+                  className="text-[0.9375rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
                 >
                   {site.phone}
                 </a>
-                <p className="text-[0.95rem] text-text-muted">{site.location}</p>
+                <p className="text-[0.9375rem] text-text-muted">
+                  {site.location}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="mt-16 flex flex-col gap-2 border-t border-border pt-8 text-[0.85rem] text-text-muted sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-16 flex flex-col gap-2 border-t border-border pt-8 text-[0.8125rem] text-text-muted sm:flex-row sm:items-center sm:justify-between">
             <p>
               © {site.year} Evolvia · {site.location}
             </p>

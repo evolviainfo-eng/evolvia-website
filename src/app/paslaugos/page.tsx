@@ -19,7 +19,7 @@ export default function PaslaugosPage() {
     <>
       <JsonLd data={breadcrumbJsonLd("Paslaugos", "/paslaugos")} />
       <Nav />
-      <main>
+      <main id="main">
         <PageHeader
           eyebrow="Paslaugos"
           title="Viena kaina. Visa svetainė."

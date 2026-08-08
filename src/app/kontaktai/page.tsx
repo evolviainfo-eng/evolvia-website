@@ -17,7 +17,7 @@ export default function KontaktaiPage() {
     <>
       <JsonLd data={breadcrumbJsonLd("Kontaktai", "/kontaktai")} />
       <Nav />
-      <main>
+      <main id="main">
         <PageHeader
           eyebrow="Kontaktai"
           title="Pradėkim."

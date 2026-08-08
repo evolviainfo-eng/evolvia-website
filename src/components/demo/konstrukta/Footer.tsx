@@ -8,12 +8,12 @@ export function KonstruktaFooter() {
       >
         <a
           href="#top"
-          className="group flex shrink-0 items-baseline gap-3 text-[0.86rem] font-semibold uppercase tracking-[0.24em] text-[#E7E5E1] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] hover:opacity-70 active:opacity-50"
+          className="group flex shrink-0 items-baseline gap-3 text-[0.8125rem] font-semibold uppercase tracking-[0.24em] text-[#E7E5E1] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] hover:opacity-70 active:opacity-50"
         >
           Konstrukta
           <span
             aria-hidden
-            className="knst-mono text-[0.6rem] font-normal tracking-[0.14em] text-[#9A9791] transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:-translate-y-[3px]"
+            className="knst-mono text-[0.6875rem] font-normal tracking-[0.14em] text-[#9A9791] transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:-translate-y-[3px]"
           >
             ↑
           </span>

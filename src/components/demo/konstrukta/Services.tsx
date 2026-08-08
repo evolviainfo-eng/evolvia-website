@@ -77,12 +77,14 @@ export function Services() {
                   {s.no}
                 </span>
 
-                <h3 className="min-w-0 text-balance text-[1.18rem] font-semibold leading-[1.2] tracking-[-0.018em] text-[#E7E5E1] transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:translate-x-[3px] md:text-[1.3rem]">
+                <h3 className="min-w-0 text-balance text-[1.25rem] font-semibold leading-[1.2] tracking-[-0.018em] text-[#E7E5E1] transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:translate-x-[3px] md:text-[1.25rem]">
                   {s.title}
                 </h3>
 
                 <div className="min-w-0">
-                  <p className={`max-w-[64ch] text-pretty ${T_BODY} text-[#9A9791]`}>
+                  <p
+                    className={`max-w-[64ch] text-pretty ${T_BODY} text-[#9A9791]`}
+                  >
                     {s.body}
                   </p>
                   <ul className="mt-4 flex flex-wrap gap-2">

@@ -96,10 +96,10 @@ function PanelCopy({ i }: { i: number }) {
   return (
     <div className="min-w-0">
       <span className={cn(caps, "block text-text-muted")}>0{i + 1}</span>
-      <h3 className="mt-4 text-[clamp(1.5rem,2.1vw,1.9rem)] font-normal leading-[1.15] text-text">
+      <h3 className="mt-4 text-[clamp(1.5rem,2.1vw,1.875rem)] font-normal leading-[1.15] text-text">
         {s.title}
       </h3>
-      <p className="t-body mt-4 max-w-[34ch] text-[1rem]">{s.body}</p>
+      <p className="t-body mt-4 max-w-[34ch] text-[0.9375rem]">{s.body}</p>
     </div>
   );
 }
@@ -199,12 +199,15 @@ function Rail({ armed, live }: { armed: boolean; live: boolean }) {
               <Lede />
             </div>
             {/* decorative: each panel already announces its own index */}
-            <ol aria-hidden="true" className="flex shrink-0 items-center gap-4 pb-1.5">
+            <ol
+              aria-hidden="true"
+              className="flex shrink-0 items-center gap-4 pb-1.5"
+            >
               {services.map((s, i) => (
                 <li
                   key={s.title}
                   className={cn(
-                    "text-[0.78rem] tabular-nums transition-colors duration-[var(--d-el)] ease-[var(--e-out)]",
+                    "text-[0.8125rem] tabular-nums transition-colors duration-[var(--d-el)] ease-[var(--e-out)]",
                     active === i ? "text-text" : "text-text-muted/40",
                   )}
                 >
@@ -224,7 +227,10 @@ function Rail({ armed, live }: { armed: boolean; live: boolean }) {
         </Container>
 
         <div className="relative min-h-0 flex-1">
-          <div ref={strip} className="grid h-full grid-flow-col auto-cols-[100%]">
+          <div
+            ref={strip}
+            className="grid h-full grid-flow-col auto-cols-[100%]"
+          >
             {services.map((s, i) => {
               const Artefact = ARTEFACTS[i];
               return (
@@ -268,7 +274,12 @@ function Beat({ i, armed }: { i: number; armed: boolean }) {
         </div>
         <p className="t-body mt-3 max-w-[42ch]">{s.body}</p>
       </div>
-      <div ref={ref} data-rise style={{ "--i": 1 } as CSSProperties} className="mt-6">
+      <div
+        ref={ref}
+        data-rise
+        style={{ "--i": 1 } as CSSProperties}
+        className="mt-6"
+      >
         <Artefact play={inView} armed={armed} />
       </div>
     </div>

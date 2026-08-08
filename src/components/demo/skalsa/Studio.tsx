@@ -34,12 +34,15 @@ export function Studio() {
       <span id="dirbtuve" aria-hidden="true" className="absolute -top-[30px]" />
       <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
         <div data-rise className="max-w-[54ch]">
-          <p className="text-[0.75rem] uppercase tracking-[0.16em] text-[#6E6257]">
+          <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
             Dirbtuvė
           </p>
           <h2
-            className="mt-4 text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.08] text-balance"
-            style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
+            className="mt-4 text-[clamp(1.875rem,3.4vw,2.5rem)] leading-[1.08] text-balance"
+            style={{
+              fontFamily: "var(--font-skalsa-display)",
+              fontWeight: 500,
+            }}
           >
             Trys žingsniai, jokių skubotų partijų.
           </h2>
@@ -71,12 +74,15 @@ export function Studio() {
               </div>
 
               <div className="mt-5 flex items-baseline gap-3 border-t border-[rgba(36,30,25,0.13)] pt-4">
-                <span className="text-[0.75rem] tabular-nums tracking-[0.14em] text-[#6E6257]">
+                <span className="text-[0.8125rem] tabular-nums tracking-[0.14em] text-[#6E6257]">
                   {s.n}
                 </span>
                 <h3
-                  className="text-[1.125rem] leading-tight tracking-[-0.015em]"
-                  style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
+                  className="text-[1.0625rem] leading-tight tracking-[-0.015em]"
+                  style={{
+                    fontFamily: "var(--font-skalsa-display)",
+                    fontWeight: 500,
+                  }}
                 >
                   {s.title}
                 </h3>

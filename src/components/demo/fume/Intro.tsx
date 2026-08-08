@@ -47,10 +47,10 @@ export function Intro() {
                   style={{ borderColor: HAIRLINE }}
                   className={`min-w-0 ${i > 0 ? "sm:border-l sm:pl-5" : ""}`}
                 >
-                  <dt className="font-[family-name:var(--font-fume-display)] text-[clamp(1.4rem,3vw,1.9rem)] font-light leading-none tabular-nums text-[#ede6da]">
+                  <dt className="font-[family-name:var(--font-fume-display)] text-[clamp(1.5rem,3vw,1.875rem)] font-light leading-none tabular-nums text-[#ede6da]">
                     {f.k}
                   </dt>
-                  <dd className="mt-2 font-[family-name:var(--font-fume-ui)] text-[0.76rem] leading-[1.5] text-[#9c948a]">
+                  <dd className="mt-2 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.5] text-[#9c948a]">
                     {f.v}
                   </dd>
                 </div>

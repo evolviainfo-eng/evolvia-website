@@ -35,7 +35,7 @@ export function SmoothScroll() {
      * scrolls this page, and it keeps running, so the page still slides behind
      * the overlay. Rather than requiring every overlay to know Lenis exists,
      * watch for the lock and stop the instance while it is on. */
-     const isLocked = () =>
+    const isLocked = () =>
       getComputedStyle(document.documentElement).overflow === "hidden" ||
       getComputedStyle(document.body).overflow === "hidden";
 

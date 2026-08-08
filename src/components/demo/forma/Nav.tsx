@@ -15,10 +15,7 @@ const LINKS = [
  *  which of the four is the button. */
 export function FormaNav() {
   return (
-    <header
-      className="chrome sticky z-40"
-      style={{ top: "var(--demo-bar-h)" }}
-    >
+    <header className="chrome sticky z-40" style={{ top: "var(--demo-bar-h)" }}>
       <div className="mx-auto flex h-[56px] w-full max-w-[1240px] items-center justify-between gap-4 px-5 sm:h-[68px] sm:px-8">
         <a
           href="#top"
@@ -27,12 +24,12 @@ export function FormaNav() {
         >
           <span
             style={{ fontFamily: "var(--font-forma-display)" }}
-            className="text-[1.45rem] leading-none tracking-[-0.01em] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] group-hover:opacity-70 group-active:opacity-50 sm:text-[1.6rem]"
+            className="text-[1.5rem] leading-none tracking-[-0.01em] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] group-hover:opacity-70 group-active:opacity-50 sm:text-[1.5rem]"
           >
             Forma
           </span>
           <span
-            className="hidden truncate text-[0.7rem] uppercase tracking-[0.2em] md:inline"
+            className="hidden truncate text-[0.6875rem] uppercase tracking-[0.2em] md:inline"
             style={{ color: MUTED }}
           >
             Interjero architektūra
@@ -49,7 +46,7 @@ export function FormaNav() {
               href={l.href}
               className={`${
                 l.always ? "group inline-flex" : "group hidden sm:inline-flex"
-              } relative h-9 items-center px-2 text-[0.82rem] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] active:opacity-60`}
+              } relative h-9 items-center px-2 text-[0.8125rem] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] active:opacity-60`}
             >
               {l.label}
               <span
@@ -61,7 +58,7 @@ export function FormaNav() {
           ))}
           <a
             href="#kontaktai"
-            className="ml-1 press inline-flex h-9 shrink-0 items-center rounded-full border border-[rgba(26,25,23,0.28)] px-4 text-[0.82rem] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-0 active:opacity-80"
+            className="ml-1 press inline-flex h-9 shrink-0 items-center rounded-full border border-[rgba(26,25,23,0.28)] px-4 text-[0.8125rem] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-0 active:opacity-80"
           >
             Kontaktai
           </a>

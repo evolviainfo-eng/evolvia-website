@@ -42,7 +42,7 @@ export function Hero() {
           <p className={`${T_MICRO} tracking-[0.22em] text-[#9A9791]`}>
             Generalinis rangovas · Kaunas
           </p>
-          <h1 className="mt-6 text-[clamp(2.35rem,6vw,4.4rem)] font-semibold leading-[0.98] text-[#E7E5E1]">
+          <h1 className="mt-6 text-[clamp(2.5rem,6vw,4.625rem)] font-semibold leading-[0.98] text-[#E7E5E1]">
             Statome tai,
             <br />
             kas išlieka.
@@ -52,7 +52,7 @@ export function Hero() {
         <p
           data-rise
           style={{ "--i": 1 } as React.CSSProperties}
-          className="mt-7 max-w-[54ch] text-pretty text-[1.02rem] leading-[1.62] text-[rgba(231,229,225,0.78)] sm:text-[1.08rem]"
+          className="mt-7 max-w-[54ch] text-pretty text-[1.0625rem] leading-[1.62] text-[rgba(231,229,225,0.78)] sm:text-[1.0625rem]"
         >
           Karkasinė ir mūrinė statyba, renovacija, vidaus apdaila. Vienas
           rangovas, vienas grafikas — nuo iškasos iki statybos užbaigimo akto.
@@ -65,13 +65,13 @@ export function Hero() {
         >
           <a
             href="#samata"
-            className="inline-flex h-12 items-center justify-center bg-[#E8B14C] px-7 text-[0.92rem] font-semibold tracking-[0.005em] text-[#121316] transition-[translate,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#F2BE5F] active:translate-y-0 active:bg-[#D9A343]"
+            className="inline-flex h-12 items-center justify-center bg-[#E8B14C] px-7 text-[0.9375rem] font-semibold tracking-[0.005em] text-[#121316] transition-[translate,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#F2BE5F] active:translate-y-0 active:bg-[#D9A343]"
           >
             Skaičiuoti sąmatą
           </a>
           <a
             href="#objektai"
-            className="inline-flex h-12 items-center justify-center border border-white/[0.22] px-7 text-[0.92rem] text-[#E7E5E1] transition-[translate,border-color,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-white/[0.5] hover:bg-white/[0.04] active:translate-y-0 active:bg-white/[0.08]"
+            className="inline-flex h-12 items-center justify-center border border-white/[0.22] px-7 text-[0.9375rem] text-[#E7E5E1] transition-[translate,border-color,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-white/[0.5] hover:bg-white/[0.04] active:translate-y-0 active:bg-white/[0.08]"
           >
             Peržiūrėti objektus
           </a>

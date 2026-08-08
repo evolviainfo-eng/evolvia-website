@@ -10,7 +10,7 @@ export function CtaBand() {
         <Reveal>
           <div className="flex flex-col items-start gap-10 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-[0.8rem] font-medium uppercase tracking-[0.14em] text-ink-fg/50">
+              <p className="text-[0.8125rem] font-medium uppercase tracking-[0.14em] text-ink-fg/50">
                 Nemokamas eskizas
               </p>
               <h2 className="mt-4 max-w-[16ch] text-balance font-normal leading-[1.08] [font-size:clamp(2.1rem,4.4vw,3.4rem)]">
@@ -24,7 +24,7 @@ export function CtaBand() {
               >
                 Gauti nemokamą eskizą
               </a>
-              <p className="text-[0.9rem] text-ink-fg/60">
+              <p className="text-[0.9375rem] text-ink-fg/60">
                 Atsakome per dieną. Mokate tik tada, kai patinka.
               </p>
             </div>

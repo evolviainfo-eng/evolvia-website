@@ -5,11 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 import { HAIRLINE, Photo } from "./Type";
 
-const META = [
-  "Užupis, Vilnius",
-  "Antradienis–Sekmadienis",
-  "Durys nuo 17:00",
-];
+const META = ["Užupis, Vilnius", "Antradienis–Sekmadienis", "Durys nuo 17:00"];
 
 /** The page's one scroll moment: the evening falling.
  *
@@ -97,7 +93,7 @@ export function Hero() {
               under the bottom edge. */}
           <h1
             data-line
-            className="-mb-[0.08em] overflow-hidden pb-[0.08em] font-[family-name:var(--font-fume-display)] text-[clamp(3.4rem,10vw,4.5rem)] font-light leading-[1.02] text-[#ede6da]"
+            className="-mb-[0.08em] overflow-hidden pb-[0.08em] font-[family-name:var(--font-fume-display)] text-[clamp(3.375rem,10vw,4.625rem)] font-light leading-[1.02] text-[#ede6da]"
           >
             <span>Fumé</span>
           </h1>
@@ -107,7 +103,7 @@ export function Hero() {
             style={{ "--i": 1 } as React.CSSProperties}
             className="mt-6"
           >
-            <p className="max-w-[34ch] text-pretty font-[family-name:var(--font-fume-display)] text-[clamp(1.15rem,2.6vw,1.5rem)] font-light italic leading-[1.45] text-[rgba(237,230,218,0.86)]">
+            <p className="max-w-[34ch] text-pretty font-[family-name:var(--font-fume-display)] text-[clamp(1.0625rem,2.6vw,1.5rem)] font-light italic leading-[1.45] text-[rgba(237,230,218,0.86)]">
               Atviros ugnies virtuvė ir vyno baras. Trisdešimt keturios vietos
               Užupyje.
             </p>
@@ -116,14 +112,14 @@ export function Hero() {
               {/* accent 1 of 4 */}
               <a
                 href="#rezervacija"
-                className="inline-flex h-12 items-center rounded-[2px] bg-[#C0703A] px-7 font-[family-name:var(--font-fume-ui)] text-[0.86rem] font-medium tracking-[0.03em] text-[#0c0b0a] transition-[background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#CE7B41] active:translate-y-0 active:bg-[#B0642F]"
+                className="inline-flex h-12 items-center rounded-[2px] bg-[#C0703A] px-7 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] font-medium tracking-[0.03em] text-[#0c0b0a] transition-[background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#CE7B41] active:translate-y-0 active:bg-[#B0642F]"
               >
                 Rezervuoti stalą
               </a>
               <a
                 href="#meniu"
                 style={{ borderColor: HAIRLINE }}
-                className="border-b pb-1 font-[family-name:var(--font-fume-ui)] text-[0.86rem] tracking-[0.04em] text-[rgba(237,230,218,0.78)] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#ede6da] hover:text-[#ede6da] active:text-[rgba(237,230,218,0.7)]"
+                className="border-b pb-1 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] tracking-[0.04em] text-[rgba(237,230,218,0.78)] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#ede6da] hover:text-[#ede6da] active:text-[rgba(237,230,218,0.7)]"
               >
                 Vakaro meniu
               </a>
@@ -134,7 +130,7 @@ export function Hero() {
         <div
           data-rise
           style={{ "--i": 2, borderColor: HAIRLINE } as React.CSSProperties}
-          className="mt-[clamp(48px,8vw,88px)] grid gap-x-8 gap-y-2 border-t pt-4 font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.2em] text-[#9c948a] sm:grid-cols-3"
+          className="mt-[clamp(48px,8vw,88px)] grid gap-x-8 gap-y-2 border-t pt-4 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.2em] text-[#9c948a] sm:grid-cols-3"
         >
           {META.map((m) => (
             <p key={m} className="min-w-0">

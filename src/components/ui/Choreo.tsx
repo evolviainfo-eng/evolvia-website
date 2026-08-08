@@ -18,7 +18,9 @@ import { useEffect } from "react";
  */
 export function Choreo() {
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (reduce) return;
 
     const root = document.documentElement;
@@ -37,7 +39,10 @@ export function Choreo() {
           const el = entry.target as HTMLElement;
           // release any native lazy gate right before the frame is shown —
           // an instant scroll jump can otherwise leave the image stuck
-          if (el.tagName === "IMG" && (el as HTMLImageElement).loading === "lazy") {
+          if (
+            el.tagName === "IMG" &&
+            (el as HTMLImageElement).loading === "lazy"
+          ) {
             (el as HTMLImageElement).loading = "eager";
           }
           el.classList.add("is-in");

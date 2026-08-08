@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <main>
+      <main id="main">
         <Hero />
         <Features />
         <BuildSequence />

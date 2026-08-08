@@ -20,7 +20,8 @@ export function ThemeToggle({ className }: { className?: string }) {
     const current: Theme =
       attr === "dark" || stored === "dark" ? "dark" : "light";
     // Keep the attribute in sync in case the init script didn't run.
-    if (current === "dark") document.documentElement.setAttribute("data-theme", "dark");
+    if (current === "dark")
+      document.documentElement.setAttribute("data-theme", "dark");
     else document.documentElement.removeAttribute("data-theme");
     setTheme(current);
     setMounted(true);
@@ -46,7 +47,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={isDark ? "Įjungti šviesų režimą" : "Įjungti tamsų režimą"}
       title={isDark ? "Šviesus režimas" : "Tamsus režimas"}
       className={cn(
-        "flex h-10 w-10 items-center justify-center rounded-full border border-border text-text transition-[translate,border-color,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-text",
+        "flex h-10 w-10 items-center justify-center rounded-pill border border-border text-text transition-[translate,border-color,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-text",
         className,
       )}
     >

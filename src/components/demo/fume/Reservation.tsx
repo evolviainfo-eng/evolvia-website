@@ -117,16 +117,13 @@ type Snapshot = {
 function buildSnapshot(): Snapshot {
   const now = new Date();
   const nowMinutes = now.getHours() * 60 + now.getMinutes();
-  const past = TIMES.filter((t) => minutesOf(t) <= nowMinutes + NOTICE_MIN)
-    .length;
+  const past = TIMES.filter(
+    (t) => minutesOf(t) <= nowMinutes + NOTICE_MIN,
+  ).length;
 
   const base = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const days = Array.from({ length: 14 }, (_, i) => {
-    const d = new Date(
-      base.getFullYear(),
-      base.getMonth(),
-      base.getDate() + i,
-    );
+    const d = new Date(base.getFullYear(), base.getMonth(), base.getDate() + i);
     const wd = d.getDay();
     const closed = wd === 1; // pirmadieniais nedirbame
     return {
@@ -251,15 +248,15 @@ const chipDead =
 /* The one ember-filled control on the page, and the ember-bordered quiet one
    next to it in the empty state. */
 const emberBtn =
-  "inline-flex h-12 shrink-0 items-center justify-center rounded-[2px] bg-[#C0703A] px-7 font-[family-name:var(--font-fume-ui)] text-[0.86rem] font-medium tracking-[0.03em] text-[#0c0b0a] transition-[background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#CE7B41] active:translate-y-0 active:bg-[#B0642F]";
+  "inline-flex h-12 shrink-0 items-center justify-center rounded-[2px] bg-[#C0703A] px-7 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] font-medium tracking-[0.03em] text-[#0c0b0a] transition-[background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#CE7B41] active:translate-y-0 active:bg-[#B0642F]";
 
 /* Placeholders carry the only formatting guidance these fields give, so they
    sit at the palette's muted token (6.5:1 on #0c0b0a) — no alpha. */
 const fieldCls =
-  "w-full rounded-[2px] border bg-transparent px-3 py-3 font-[family-name:var(--font-fume-ui)] text-[0.92rem] text-[#ede6da] placeholder:text-[#9c948a] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] focus:border-[#ede6da]";
+  "w-full rounded-[2px] border bg-transparent px-3 py-3 font-[family-name:var(--font-fume-ui)] text-[0.9375rem] text-[#ede6da] placeholder:text-[#9c948a] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] focus:border-[#ede6da]";
 
 const errCls =
-  "font-[family-name:var(--font-fume-ui)] text-[0.76rem] text-[#e3b08a]";
+  "font-[family-name:var(--font-fume-ui)] text-[0.8125rem] text-[#e3b08a]";
 
 type Errors = Partial<Record<"time" | "name" | "phone", string>>;
 
@@ -329,7 +326,8 @@ export function Reservation() {
     e.preventDefault();
     const next: Errors = {};
     if (!time) next.time = "Pasirinkite laiką.";
-    if (name.trim().length < 2) next.name = "Įrašykite, kieno vardu rezervuoti.";
+    if (name.trim().length < 2)
+      next.name = "Įrašykite, kieno vardu rezervuoti.";
     if (phone.replace(/\D/g, "").length < 8)
       next.phone = "Įrašykite telefono numerį.";
     setErrors(next);
@@ -389,7 +387,7 @@ export function Reservation() {
             </Body>
 
             <dl
-              className="mt-9 space-y-4 border-t pt-6 font-[family-name:var(--font-fume-ui)] text-[0.82rem] leading-relaxed"
+              className="mt-9 space-y-4 border-t pt-6 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-relaxed"
               style={{ borderColor: HAIRLINE }}
             >
               <div>
@@ -419,9 +417,7 @@ export function Reservation() {
           {/* ── Right: the working widget ── */}
           <div
             data-rise
-            style={
-              { "--i": 1, borderColor: HAIRLINE } as React.CSSProperties
-            }
+            style={{ "--i": 1, borderColor: HAIRLINE } as React.CSSProperties}
             className="min-w-0 rounded-[2px] border bg-[#0c0b0a] p-4 sm:p-7 lg:col-span-8"
           >
             {booking ? (
@@ -440,21 +436,23 @@ export function Reservation() {
                   ref={doneRef}
                   tabIndex={-1}
                   style={{ "--n": 1 } as React.CSSProperties}
-                  className="mt-5 font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.24em] text-[#C0703A]"
+                  className="mt-5 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.24em] text-[#C0703A]"
                 >
                   Rezervacija patvirtinta
                 </p>
                 <p
                   style={{ "--n": 2 } as React.CSSProperties}
-                  className="mt-4 text-balance font-[family-name:var(--font-fume-display)] text-[clamp(1.5rem,3.4vw,2.1rem)] font-light leading-[1.2] text-[#ede6da]"
+                  className="mt-4 text-balance font-[family-name:var(--font-fume-display)] text-[clamp(1.5rem,3.4vw,1.875rem)] font-light leading-[1.2] text-[#ede6da]"
                 >
                   Laukiame jūsų {booking.dateAcc},{" "}
                   <span className="italic">{booking.time}</span>.
                 </p>
 
                 <dl
-                  className="mt-8 grid gap-x-8 gap-y-4 border-t pt-6 font-[family-name:var(--font-fume-ui)] text-[0.86rem] sm:grid-cols-2"
-                  style={{ borderColor: HAIRLINE, "--n": 3 } as React.CSSProperties}
+                  className="mt-8 grid gap-x-8 gap-y-4 border-t pt-6 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] sm:grid-cols-2"
+                  style={
+                    { borderColor: HAIRLINE, "--n": 3 } as React.CSSProperties
+                  }
                 >
                   {[
                     ["Data", booking.dateLabel],
@@ -463,7 +461,7 @@ export function Reservation() {
                     ["Vardas", booking.name],
                   ].map(([k, v]) => (
                     <div key={k} className="min-w-0">
-                      <dt className="text-[0.68rem] uppercase tracking-[0.18em] text-[#9c948a]">
+                      <dt className="text-[0.6875rem] uppercase tracking-[0.18em] text-[#9c948a]">
                         {k}
                       </dt>
                       <dd className="mt-1.5 break-words text-[#ede6da]">{v}</dd>
@@ -471,7 +469,7 @@ export function Reservation() {
                   ))}
                   {note.trim() && (
                     <div className="min-w-0 sm:col-span-2">
-                      <dt className="text-[0.68rem] uppercase tracking-[0.18em] text-[#9c948a]">
+                      <dt className="text-[0.6875rem] uppercase tracking-[0.18em] text-[#9c948a]">
                         Pastaba
                       </dt>
                       <dd className="mt-1.5 break-words text-[#ede6da]">
@@ -483,7 +481,9 @@ export function Reservation() {
 
                 <div
                   className="mt-8 border-t pt-5"
-                  style={{ borderColor: HAIRLINE, "--n": 4 } as React.CSSProperties}
+                  style={
+                    { borderColor: HAIRLINE, "--n": 4 } as React.CSSProperties
+                  }
                 >
                   <Note>
                     Tai demonstracinė forma. Rezervacija nebuvo atlikta ir jokie
@@ -493,7 +493,7 @@ export function Reservation() {
                   <button
                     type="button"
                     onClick={reset}
-                    className={`${chipBase} mt-6 inline-flex h-11 items-center px-6 text-[0.86rem] tracking-[0.04em] text-[#ede6da] hover:-translate-y-[1px] hover:border-[#ede6da] hover:bg-[rgba(237,230,218,0.06)] active:translate-y-0 active:bg-[rgba(237,230,218,0.12)]`}
+                    className={`${chipBase} mt-6 inline-flex h-11 items-center px-6 text-[0.8125rem] tracking-[0.04em] text-[#ede6da] hover:-translate-y-[1px] hover:border-[#ede6da] hover:bg-[rgba(237,230,218,0.06)] active:translate-y-0 active:bg-[rgba(237,230,218,0.12)]`}
                     style={{ borderColor: HAIRLINE }}
                   >
                     Rinktis iš naujo
@@ -505,7 +505,7 @@ export function Reservation() {
                 <div ref={formTopRef} tabIndex={-1}>
                   {/* ── Date ── */}
                   <fieldset className="min-w-0 border-0 p-0">
-                    <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.22em] text-[#9c948a]">
+                    <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]">
                       Vakaras
                     </legend>
                     <div
@@ -551,13 +551,13 @@ export function Reservation() {
                                   !open ? chipDead : on ? chipOn : chipOff
                                 }`}
                               >
-                                <span className="text-[0.6rem] uppercase tracking-[0.14em]">
+                                <span className="text-[0.6875rem] uppercase tracking-[0.14em]">
                                   {WD_SHORT[d.wd]}
                                 </span>
-                                <span className="text-[1.15rem] leading-none tabular-nums">
+                                <span className="text-[1.0625rem] leading-none tabular-nums">
                                   {d.day}
                                 </span>
-                                <span className="text-[0.52rem] uppercase tracking-[0.06em] sm:text-[0.56rem]">
+                                <span className="text-[0.6875rem] uppercase tracking-[0.06em] sm:text-[0.6875rem]">
                                   {d.closed
                                     ? "Nedirbame"
                                     : d.late
@@ -576,7 +576,7 @@ export function Reservation() {
                     tabIndex={-1}
                     className="mt-8 min-w-0 border-0 p-0"
                   >
-                    <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.22em] text-[#9c948a]">
+                    <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]">
                       Laikas
                     </legend>
                     <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-6 sm:gap-2">
@@ -595,7 +595,7 @@ export function Reservation() {
                               setTimeChoice(t);
                               setErrors((p) => ({ ...p, time: undefined }));
                             }}
-                            className={`${chipBase} h-11 min-w-0 px-1 text-[0.88rem] tabular-nums ${
+                            className={`${chipBase} h-11 min-w-0 px-1 text-[0.9375rem] tabular-nums ${
                               busy
                                 ? `${chipDead} line-through`
                                 : on
@@ -610,7 +610,7 @@ export function Reservation() {
                     </div>
                     <p
                       aria-live="polite"
-                      className="mt-2.5 font-[family-name:var(--font-fume-ui)] text-[0.76rem] text-[#9c948a]"
+                      className="mt-2.5 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] text-[#9c948a]"
                     >
                       {helper}
                     </p>
@@ -619,7 +619,7 @@ export function Reservation() {
                         className="mt-4 rounded-[2px] border p-4"
                         style={{ borderColor: HAIRLINE }}
                       >
-                        <p className="font-[family-name:var(--font-fume-ui)] text-[0.86rem] leading-[1.6] text-[#ede6da]">
+                        <p className="font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[#ede6da]">
                           Šis vakaras jau pilnas.
                         </p>
                         <Note className="mt-1.5 max-w-[46ch]">
@@ -630,7 +630,7 @@ export function Reservation() {
                           <button
                             type="button"
                             onClick={() => setDateIso(nextOpen.iso)}
-                            className={`${chipBase} ${chipOff} mt-4 inline-flex h-11 items-center px-5 text-[0.82rem] tracking-[0.03em]`}
+                            className={`${chipBase} ${chipOff} mt-4 inline-flex h-11 items-center px-5 text-[0.8125rem] tracking-[0.03em]`}
                           >
                             Rinktis {whenDate(nextOpen)}
                           </button>
@@ -646,7 +646,7 @@ export function Reservation() {
 
                   {/* ── Guests ── */}
                   <fieldset className="mt-8 min-w-0 border-0 p-0">
-                    <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.22em] text-[#9c948a]">
+                    <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]">
                       Svečiai
                     </legend>
                     <div className="grid grid-cols-8 gap-1">
@@ -657,7 +657,7 @@ export function Reservation() {
                           aria-pressed={n === guests}
                           aria-label={guestsLabel(n)}
                           onClick={() => setGuests(n)}
-                          className={`${chipBase} h-11 min-w-0 text-[0.9rem] tabular-nums ${
+                          className={`${chipBase} h-11 min-w-0 text-[0.9375rem] tabular-nums ${
                             n === guests ? chipOn : chipOff
                           }`}
                         >
@@ -672,7 +672,7 @@ export function Reservation() {
                     <div className="min-w-0">
                       <label
                         htmlFor="fume-name"
-                        className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.22em] text-[#9c948a]"
+                        className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]"
                       >
                         Vardas
                       </label>
@@ -688,7 +688,9 @@ export function Reservation() {
                           setErrors((p) => ({ ...p, name: undefined }));
                         }}
                         aria-invalid={Boolean(errors.name)}
-                        aria-describedby={errors.name ? "fume-name-err" : undefined}
+                        aria-describedby={
+                          errors.name ? "fume-name-err" : undefined
+                        }
                         placeholder="Vardas Pavardė"
                         className={fieldCls}
                         style={{
@@ -711,7 +713,7 @@ export function Reservation() {
                     <div className="min-w-0">
                       <label
                         htmlFor="fume-phone"
-                        className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.22em] text-[#9c948a]"
+                        className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]"
                       >
                         Telefonas
                       </label>
@@ -753,9 +755,12 @@ export function Reservation() {
                     <div className="min-w-0 sm:col-span-2">
                       <label
                         htmlFor="fume-note"
-                        className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.22em] text-[#9c948a]"
+                        className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]"
                       >
-                        Pastaba <span className="normal-case tracking-normal">(nebūtina)</span>
+                        Pastaba{" "}
+                        <span className="normal-case tracking-normal">
+                          (nebūtina)
+                        </span>
                       </label>
                       <textarea
                         id="fume-note"
@@ -783,7 +788,7 @@ export function Reservation() {
                           left to ask for is the hour. */}
                       <p
                         aria-live="polite"
-                        className="min-w-0 font-[family-name:var(--font-fume-ui)] text-[0.82rem] leading-[1.6] text-[rgba(237,230,218,0.88)]"
+                        className="min-w-0 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[rgba(237,230,218,0.88)]"
                       >
                         {day && time
                           ? `${longDate(day)}, ${time} · ${guestsLabel(guests)}`

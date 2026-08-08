@@ -18,12 +18,15 @@ export function FreeShippingMeter() {
     <div className="mt-[clamp(40px,5vw,64px)] rounded-[10px] border border-[rgba(36,30,25,0.13)] bg-[#F1EAE0] p-6 sm:p-8">
       <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
         <div className="min-w-0">
-          <p className="text-[0.75rem] uppercase tracking-[0.16em] text-[#6E6257]">
+          <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
             Jūsų krepšelis
           </p>
           <p
-            className="mt-3 max-w-[34ch] text-[1.125rem] leading-[1.3] tracking-[-0.015em] text-pretty"
-            style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
+            className="mt-3 max-w-[34ch] text-[1.0625rem] leading-[1.3] tracking-[-0.015em] text-pretty"
+            style={{
+              fontFamily: "var(--font-skalsa-display)",
+              fontWeight: 500,
+            }}
           >
             {count === 0
               ? `Nemokamas pristatymas prasideda nuo ${FREE_SHIPPING_FROM} €.`
@@ -36,7 +39,7 @@ export function FreeShippingMeter() {
         <button
           type="button"
           onClick={openCart}
-          className="group press inline-flex h-11 shrink-0 items-center gap-2.5 rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] pl-6 pr-5 text-[0.875rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[#241E19] hover:bg-[#241E19] hover:text-[#FAF6F0] active:translate-y-0"
+          className="group press inline-flex h-11 shrink-0 items-center gap-2.5 rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] pl-6 pr-5 text-[0.8125rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[#241E19] hover:bg-[#241E19] hover:text-[#FAF6F0] active:translate-y-0"
         >
           {count === 0 ? "Atidaryti krepšelį" : "Peržiūrėti krepšelį"}
           <svg

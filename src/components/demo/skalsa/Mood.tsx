@@ -99,12 +99,15 @@ export function Mood() {
 
       <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
         <div data-rise className="max-w-[26ch]">
-          <p className="text-[0.75rem] uppercase tracking-[0.16em] text-[rgba(250,246,240,0.58)]">
+          <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[rgba(250,246,240,0.58)]">
             Vakaras
           </p>
           <p
-            className="mt-5 text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.14] tracking-[-0.03em] text-balance"
-            style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
+            className="mt-5 text-[clamp(1.5rem,3vw,2.5rem)] leading-[1.14] tracking-[-0.03em] text-balance"
+            style={{
+              fontFamily: "var(--font-skalsa-display)",
+              fontWeight: 500,
+            }}
           >
             Viena žvakė vakarui — ne dekoras, o ženklas, kad diena baigėsi.
           </p>

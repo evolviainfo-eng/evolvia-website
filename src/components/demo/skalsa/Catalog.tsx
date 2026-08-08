@@ -7,15 +7,22 @@ export function Catalog() {
       data-sk-sec="katalogas"
       className="relative border-t border-[rgba(36,30,25,0.13)]"
     >
-      <span id="katalogas" aria-hidden="true" className="absolute -top-[30px]" />
+      <span
+        id="katalogas"
+        aria-hidden="true"
+        className="absolute -top-[30px]"
+      />
       <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
         <div data-rise className="max-w-[52ch]">
-          <p className="text-[0.75rem] uppercase tracking-[0.16em] text-[#6E6257]">
+          <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
             Katalogas
           </p>
           <h2
-            className="mt-4 text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.08] text-balance"
-            style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
+            className="mt-4 text-[clamp(1.875rem,3.4vw,2.5rem)] leading-[1.08] text-balance"
+            style={{
+              fontFamily: "var(--font-skalsa-display)",
+              fontWeight: 500,
+            }}
           >
             Šeši kvapai. Vienas vaškas.
           </h2>
@@ -50,11 +57,14 @@ export function Catalog() {
               <div className="mt-5 flex items-baseline justify-between gap-4">
                 <h3
                   className="min-w-0 text-[1.0625rem] leading-tight tracking-[-0.015em] break-words"
-                  style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
+                  style={{
+                    fontFamily: "var(--font-skalsa-display)",
+                    fontWeight: 500,
+                  }}
                 >
                   {p.name}
                 </h3>
-                <span className="shrink-0 text-[1rem] tabular-nums">
+                <span className="shrink-0 text-[0.9375rem] tabular-nums">
                   {eur(p.price)}
                 </span>
               </div>
@@ -64,7 +74,7 @@ export function Catalog() {
               </p>
 
               <div className="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-4 border-t border-[rgba(36,30,25,0.13)] pt-5">
-                <p className="text-[0.75rem] uppercase tracking-[0.14em] text-[#6E6257]">
+                <p className="text-[0.8125rem] uppercase tracking-[0.14em] text-[#6E6257]">
                   {p.burn} val. · {p.weight} g
                 </p>
                 <AddToCart id={p.id} name={p.name} variant="quiet" />

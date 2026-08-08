@@ -10,13 +10,11 @@ export function DemoNote({ className }: { className?: string }) {
   return (
     <p
       className={cn(
-        "border-l-2 border-border pl-4 text-[0.95rem] leading-relaxed text-text-muted sm:pl-5",
+        "border-l-2 border-border pl-4 text-[0.9375rem] leading-relaxed text-text-muted sm:pl-5",
         className,
       )}
     >
-      <strong className="font-medium text-text">
-        Tai pavyzdiniai darbai.
-      </strong>{" "}
+      <strong className="font-medium text-text">Tai pavyzdiniai darbai.</strong>{" "}
       Įmonės, jų projektai, kainos ir kontaktai — sugalvoti. Svetaines galite
       atidaryti ir paspaudinėti: išbandykite skaičiuoklę, rezervaciją ar
       krepšelį. Tokios kokybės ir tikėkitės.

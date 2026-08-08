@@ -22,10 +22,10 @@ export function KonstruktaNav() {
           href="#top"
           className="flex shrink-0 items-baseline gap-2 transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] hover:opacity-70 active:opacity-50"
         >
-          <span className="text-[0.92rem] font-semibold uppercase leading-none tracking-[0.2em] text-[#E7E5E1] sm:text-[0.98rem] sm:tracking-[0.24em]">
+          <span className="text-[0.9375rem] font-semibold uppercase leading-none tracking-[0.2em] text-[#E7E5E1] sm:text-[0.9375rem] sm:tracking-[0.24em]">
             Konstrukta
           </span>
-          <span className="knst-mono hidden text-[0.58rem] uppercase tracking-[0.18em] text-[#9A9791] sm:inline">
+          <span className="knst-mono hidden text-[0.6875rem] uppercase tracking-[0.18em] text-[#9A9791] sm:inline">
             Uab
           </span>
         </a>
@@ -38,7 +38,7 @@ export function KonstruktaNav() {
             <li key={l.href}>
               <a
                 href={l.href}
-                className="group relative block py-1 text-[0.68rem] text-[#9A9791] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-[#E7E5E1] focus-visible:text-[#E7E5E1]"
+                className="group relative block py-1 text-[0.6875rem] text-[#9A9791] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-[#E7E5E1] focus-visible:text-[#E7E5E1]"
               >
                 <span className="knst-mono uppercase tracking-[0.16em]">
                   {l.label}

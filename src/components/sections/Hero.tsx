@@ -1,7 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { DemoSite } from "@/components/ui/DemoSite";
@@ -59,7 +64,7 @@ export function Hero() {
     <section id="top" ref={ref} className="relative overflow-hidden">
       {/* subtle monochrome depth wash (theme-aware) */}
       <div
-        className="anim-aura pointer-events-none absolute right-[-10%] top-[6%] h-[560px] w-[760px] max-w-[110vw] rounded-full"
+        className="anim-aura pointer-events-none absolute right-[-10%] top-[6%] h-[560px] w-[760px] max-w-[110vw] rounded-pill"
         style={{
           background: "radial-gradient(closest-side, var(--aura), transparent)",
         }}
@@ -72,7 +77,7 @@ export function Hero() {
           <motion.div style={copyStyle} className="min-w-0 max-w-[640px]">
             <p
               data-rise
-              className="inline-flex items-center gap-2 text-[0.8rem] font-semibold uppercase tracking-[0.16em] text-text-muted"
+              className="inline-flex items-center gap-2 text-[0.8125rem] font-semibold uppercase tracking-[0.16em] text-text-muted"
             >
               <span className="inline-block h-px w-6 bg-text/30" />
               web dizainas
@@ -88,7 +93,7 @@ export function Hero() {
             <p
               data-rise
               style={{ "--i": 7 } as React.CSSProperties}
-              className="mt-6 max-w-[44ch] text-pretty text-[1.0625rem] leading-relaxed text-text-muted sm:text-[1.1875rem]"
+              className="mt-6 max-w-[44ch] text-pretty text-[1.0625rem] leading-relaxed text-text-muted sm:text-[1.25rem]"
             >
               Modernios svetainės Lietuvos verslui. Nuo pirmo eskizo iki
               paleidimo — viskas padaroma už jus.
@@ -125,7 +130,7 @@ export function Hero() {
           <motion.div style={deviceStyle} className="min-w-0 lg:pl-4">
             <div data-rise style={{ "--i": 5 } as React.CSSProperties}>
               <DemoSite demo={heroDemo} ratioClass="aspect-[16/10]" eager />
-              <p className="mt-3 text-[0.8rem] text-text-muted">
+              <p className="mt-3 text-[0.8125rem] text-text-muted">
                 Demonstracinė svetainė — atsidaro ir veikia.
               </p>
             </div>

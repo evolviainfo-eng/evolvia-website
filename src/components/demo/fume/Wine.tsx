@@ -19,7 +19,7 @@ const WINES = [
 ];
 
 const PRICE_COL =
-  "w-[3.4rem] shrink-0 text-right font-[family-name:var(--font-fume-display)] text-[1.02rem] leading-[1.3] tabular-nums";
+  "w-[3.4rem] shrink-0 text-right font-[family-name:var(--font-fume-display)] text-[1.0625rem] leading-[1.3] tabular-nums";
 
 export function Wine() {
   return (
@@ -49,7 +49,7 @@ export function Wine() {
             className="mt-10"
           >
             <div
-              className="flex items-baseline gap-x-3 border-b pb-2.5 font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.18em] text-[#9c948a]"
+              className="flex items-baseline gap-x-3 border-b pb-2.5 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.18em] text-[#9c948a]"
               style={{ borderColor: HAIRLINE }}
             >
               <span className="min-w-0 flex-1">Taurėmis ir buteliais</span>
@@ -65,22 +65,26 @@ export function Wine() {
                   className="fume-row -mx-2 border-b px-2 py-4 last:border-b-0"
                 >
                   <p className="flex items-baseline gap-x-3">
-                    <span className="min-w-0 flex-1 font-[family-name:var(--font-fume-display)] text-[1.05rem] italic leading-[1.3] text-[#ede6da]">
+                    <span className="min-w-0 flex-1 font-[family-name:var(--font-fume-display)] text-[1.0625rem] italic leading-[1.3] text-[#ede6da]">
                       {w.n}
                     </span>
                     {/* The column headings above are visual only — a screen
                         reader would otherwise read the two figures back to back
                         with no way to tell the glass price from the bottle. */}
-                    <span className={`${PRICE_COL} text-[rgba(237,230,218,0.9)]`}>
+                    <span
+                      className={`${PRICE_COL} text-[rgba(237,230,218,0.9)]`}
+                    >
                       <span className="sr-only">Taurė: </span>
                       {w.g}&nbsp;€
                     </span>
-                    <span className={`${PRICE_COL} text-[rgba(237,230,218,0.9)]`}>
+                    <span
+                      className={`${PRICE_COL} text-[rgba(237,230,218,0.9)]`}
+                    >
                       <span className="sr-only">Butelis: </span>
                       {w.b}&nbsp;€
                     </span>
                   </p>
-                  <p className="mt-1.5 max-w-[46ch] font-[family-name:var(--font-fume-ui)] text-[0.78rem] leading-[1.6] text-[#9c948a]">
+                  <p className="mt-1.5 max-w-[46ch] font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[#9c948a]">
                     {w.r}
                   </p>
                 </li>

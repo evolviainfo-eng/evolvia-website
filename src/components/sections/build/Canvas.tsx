@@ -26,7 +26,6 @@ import { cn } from "@/lib/cn";
    is to drop blocks on mobile, never to shrink the type.
    ───────────────────────────────────────────────────────────── */
 
-
 /** the mock's gallery — three different rooms, cropped to the cell ratio */
 const THUMBS = ["/work/mock-1.webp", "/work/mock-2.webp", "/work/mock-3.webp"];
 
@@ -73,12 +72,36 @@ const PHOTOS: Photo[] = [
 /* The written material. It has no slot to travel to — it becomes type — so
    it simply clears once the words land. */
 const SCRAPS: Scrap[] = [
-  { l: "3%", t: "52%", w: "27%", h: "16%", r: "1.8deg", dx: "12%", dy: "-10%",
-    bars: ["82%", "58%", "70%", "44%"] },
-  { l: "63%", t: "66%", w: "27%", h: "13%", r: "-2.2deg", dx: "-12%", dy: "-12%",
-    bars: ["90%", "74%", "38%"] },
-  { l: "28%", t: "78%", w: "23%", h: "11%", r: "1.4deg", dx: "2%", dy: "-14%",
-    bars: ["66%", "48%"] },
+  {
+    l: "3%",
+    t: "52%",
+    w: "27%",
+    h: "16%",
+    r: "1.8deg",
+    dx: "12%",
+    dy: "-10%",
+    bars: ["82%", "58%", "70%", "44%"],
+  },
+  {
+    l: "63%",
+    t: "66%",
+    w: "27%",
+    h: "13%",
+    r: "-2.2deg",
+    dx: "-12%",
+    dy: "-12%",
+    bars: ["90%", "74%", "38%"],
+  },
+  {
+    l: "28%",
+    t: "78%",
+    w: "23%",
+    h: "11%",
+    r: "1.4deg",
+    dx: "2%",
+    dy: "-14%",
+    bars: ["66%", "48%"],
+  },
 ];
 
 /** offset for one child inside the single gesture */
@@ -88,10 +111,12 @@ const step = (i: number) => ({ transitionDelay: `calc(${i} * var(--d-step))` });
    than `transform`, so those are what the transition lists name. */
 const MASS =
   "transition-[translate,opacity,border-color,background-color] duration-[var(--d-gesture)] ease-[var(--e-mass)]";
-const OUT = "transition-[border-color] duration-[var(--d-el)] ease-[var(--e-out)]";
+const OUT =
+  "transition-[border-color] duration-[var(--d-el)] ease-[var(--e-out)]";
 const SETTLE =
   "transition-[scale,opacity] duration-[var(--d-scene)] ease-[var(--e-out)]";
-const FADE = "transition-opacity duration-[var(--d-gesture)] ease-[var(--e-out)]";
+const FADE =
+  "transition-opacity duration-[var(--d-gesture)] ease-[var(--e-out)]";
 
 export function Canvas({
   stage,
@@ -115,7 +140,9 @@ export function Canvas({
       "relative min-w-0 overflow-hidden border",
       MASS,
       at(1) ? "translate-y-0 opacity-100" : "translate-y-[7%] opacity-0",
-      at(2) ? "border-transparent bg-transparent" : "border-border bg-surface-2",
+      at(2)
+        ? "border-transparent bg-transparent"
+        : "border-border bg-surface-2",
       extra,
     );
 
@@ -163,7 +190,7 @@ export function Canvas({
             <div
               key={i}
               className={cn(
-                "absolute overflow-hidden rounded-[3px] border border-border bg-surface shadow-[var(--shadow-card)]",
+                "absolute overflow-hidden rounded-sharp border border-border bg-surface shadow-[var(--shadow-card)]",
                 // rotate+translate is a real `transform` below, so this names
                 // transform — SETTLE names `scale`, which Tailwind emits as a
                 // separate property and which would not cover it
@@ -185,7 +212,7 @@ export function Canvas({
                 {s.bars.map((w, b) => (
                   <span
                     key={b}
-                    className="block h-[0.5cqw] rounded-[1px] bg-text-muted/35"
+                    className="block h-[0.5cqw] rounded-sharp bg-text-muted/35"
                     style={{ width: w }}
                   />
                 ))}
@@ -212,7 +239,10 @@ export function Canvas({
           {/* header ------------------------------------------------ */}
           <div className={block("flex items-center px-[3%]")} style={step(0)}>
             <div
-              className={cn("flex w-full items-center justify-between gap-[3%]", type)}
+              className={cn(
+                "flex w-full items-center justify-between gap-[3%]",
+                type,
+              )}
               style={step(4)}
             >
               <span className="truncate text-[length:calc(2.4cqw*var(--ts))] leading-none font-light tracking-[-0.01em] text-text">
@@ -221,7 +251,9 @@ export function Canvas({
               <span className="flex shrink-0 items-center gap-[2.2cqw] text-[length:calc(1.35cqw*var(--ts))] text-text-muted">
                 <span>Darbai</span>
                 <span>Apie</span>
-                <span className={compact ? "hidden" : undefined}>Kontaktai</span>
+                <span className={compact ? "hidden" : undefined}>
+                  Kontaktai
+                </span>
               </span>
             </div>
             {/* the nav rule of a finished page */}
@@ -240,7 +272,10 @@ export function Canvas({
             style={step(1)}
           >
             <div
-              className={cn("flex min-w-0 flex-1 flex-col justify-center", type)}
+              className={cn(
+                "flex min-w-0 flex-1 flex-col justify-center",
+                type,
+              )}
               style={step(5)}
             >
               <span className="text-[length:calc(1.2cqw*var(--ts))] tracking-[0.16em] text-text-muted uppercase">
@@ -301,8 +336,12 @@ export function Canvas({
                 </p>
               </div>
               <ul className="w-[34%] min-w-0 shrink-0 text-[length:calc(1.5cqw*var(--ts))] leading-[1.2] text-text-muted">
-                <li className="border-b border-border py-[0.3cqw]">Projektavimas</li>
-                <li className="border-b border-border py-[0.3cqw]">Vizualizacijos</li>
+                <li className="border-b border-border py-[0.3cqw]">
+                  Projektavimas
+                </li>
+                <li className="border-b border-border py-[0.3cqw]">
+                  Vizualizacijos
+                </li>
                 <li className="py-[0.3cqw]">Autorinė priežiūra</li>
               </ul>
             </div>
@@ -360,7 +399,10 @@ export function Canvas({
             style={step(compact ? 3 : 4)}
           >
             <div
-              className={cn("flex w-full items-center justify-between gap-[3%]", type)}
+              className={cn(
+                "flex w-full items-center justify-between gap-[3%]",
+                type,
+              )}
               style={step(7)}
             >
               <span className="truncate text-[length:calc(1.2cqw*var(--ts))] text-text-muted">
@@ -389,7 +431,7 @@ export function Canvas({
                   "absolute overflow-hidden bg-surface-2",
                   at(1)
                     ? "rounded-none border-transparent shadow-none"
-                    : "rounded-[3px] border-border shadow-[var(--shadow-card)]",
+                    : "rounded-sharp border-border shadow-[var(--shadow-card)]",
                   "border",
                   "transition-[left,top,width,height,transform,opacity,border-color,border-radius] duration-[var(--d-scene)] ease-[var(--e-mass)]",
                   at(3) ? "opacity-0" : "opacity-100",

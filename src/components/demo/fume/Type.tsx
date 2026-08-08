@@ -31,7 +31,7 @@ const DISPLAY = "font-[family-name:var(--font-fume-display)]";
 export function Eyebrow({ children }: { children: ReactNode }) {
   return (
     <p
-      className={`${UI} text-[0.66rem] uppercase leading-none tracking-[0.26em] text-[#9c948a]`}
+      className={`${UI} text-[0.6875rem] uppercase leading-none tracking-[0.26em] text-[#9c948a]`}
     >
       {children}
     </p>
@@ -47,7 +47,7 @@ export function H2({
 }) {
   return (
     <h2
-      className={`${DISPLAY} text-balance text-[clamp(1.9rem,3.4vw,2.6rem)] font-light leading-[1.12] text-[#ede6da] ${className}`}
+      className={`${DISPLAY} text-balance text-[clamp(1.875rem,3.4vw,2.5rem)] font-light leading-[1.12] text-[#ede6da] ${className}`}
     >
       {children}
     </h2>
@@ -63,7 +63,7 @@ export function Body({
 }) {
   return (
     <p
-      className={`${UI} text-pretty text-[0.95rem] leading-[1.75] text-[#9c948a] ${className}`}
+      className={`${UI} text-pretty text-[0.9375rem] leading-[1.75] text-[#9c948a] ${className}`}
     >
       {children}
     </p>
@@ -80,7 +80,7 @@ export function Note({
 }) {
   return (
     <p
-      className={`${UI} text-pretty text-[0.76rem] leading-[1.7] text-[#9c948a] ${className}`}
+      className={`${UI} text-pretty text-[0.8125rem] leading-[1.7] text-[#9c948a] ${className}`}
     >
       {children}
     </p>
@@ -202,7 +202,7 @@ export function Shot({
       </div>
       {caption && (
         <figcaption
-          className={`${UI} mt-3 max-w-[46ch] text-pretty text-[0.76rem] leading-[1.7] text-[#9c948a]`}
+          className={`${UI} mt-3 max-w-[46ch] text-pretty text-[0.8125rem] leading-[1.7] text-[#9c948a]`}
         >
           {caption}
         </figcaption>

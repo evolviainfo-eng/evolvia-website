@@ -19,26 +19,28 @@ export function DemoMeta({
   return (
     <Tag className={cn("mt-5 flex flex-col gap-1.5", className)}>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <h3 className="text-[1.15rem] font-medium tracking-[-0.01em]">
+        <h3 className="text-[1.0625rem] font-medium tracking-[-0.01em]">
           {demo.name}
         </h3>
-        <span className="rounded-pill border border-border px-2.5 py-0.5 text-[0.68rem] font-medium uppercase tracking-[0.08em] text-text-muted">
+        <span className="rounded-pill border border-border px-2.5 py-0.5 text-[0.6875rem] font-medium uppercase tracking-[0.08em] text-text-muted">
           {demo.label}
         </span>
       </div>
 
-      <p className="text-[0.82rem] uppercase tracking-[0.1em] text-text-muted">
+      <p className="text-[0.8125rem] uppercase tracking-[0.1em] text-text-muted">
         {demo.sector} · {demo.year}
       </p>
 
-      <p className="t-body mt-1 max-w-[46ch] text-[0.95rem]">{demo.tagline}</p>
+      <p className="t-body mt-1 max-w-[46ch] text-[0.9375rem]">
+        {demo.tagline}
+      </p>
 
       <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
         <a
           href={demo.href}
           target="_blank"
           rel="noopener"
-          className="group inline-flex items-center gap-2 text-[0.92rem] font-medium text-text"
+          className="group inline-flex items-center gap-2 text-[0.9375rem] font-medium text-text"
         >
           <span className="relative">
             Atidaryti demo
@@ -59,7 +61,7 @@ export function DemoMeta({
             <path d="M10 2 2.5 9.5" />
           </svg>
         </a>
-        <span className="text-[0.86rem] text-text-muted">{demo.feature}</span>
+        <span className="text-[0.8125rem] text-text-muted">{demo.feature}</span>
       </p>
     </Tag>
   );

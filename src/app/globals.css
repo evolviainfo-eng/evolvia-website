@@ -29,6 +29,24 @@
   --text: #1d1d1f; /* primary text                     */
   --text-muted: #6e6e73; /* secondary text, captions         */
   --border: #d2d2d7; /* hairlines                        */
+  /* ── The mark ─────────────────────────────────────────────────
+     The palette was #1D1D1F / #F5F5F7 / #6E6E73 — literally Apple's
+     greys — which made this read as Apple without Apple. The fix is not
+     to add a colour. It is to own a SHAPE.
+
+     The dot after the wordmark stops being punctuation and becomes a
+     drawn element: an exact circle, sized in a fixed ratio to the text
+     it follows, sitting on the baseline. Typographic periods differ in
+     size and position from face to face and are far too small to
+     register as a mark; a circle is the same in every context and can
+     be scaled without becoming a different thing.
+
+     It appears at three sizes and nowhere else — the wordmark, the
+     eyebrow bullet, and the favicon. Repetition is what turns a shape
+     into recognition. No colour, in keeping with everything else here:
+     ink on paper, and one form used deliberately. */
+  --mark-size: 0.2em; /* relative to the text it follows, so it scales with it */
+
   --accent: #0a0a0a; /* primary CTA fill (auto-contrast) */
   --accent-text: #ffffff; /* text on the accent fill          */
   --aura: rgba(0, 0, 0, 0.04); /* hero depth wash             */
@@ -37,13 +55,30 @@
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px rgba(0, 0, 0, 0.06);
   --shadow-frame: 0 20px 60px rgba(0, 0, 0, 0.12);
 
-  --radius: 14px;
-  --radius-pill: 980px;
+  /* Four radii, and exactly four. There were eleven — 1, 3, 4, 6, 14, 15, 20,
+     22, 26, 980, 9999 — which is not a system, it is eleven separate decisions
+     made on eleven different days. 15px next to 14px is not a distinction
+     anyone can see; it is just drift.
 
-  /* Live font stack: real SF Pro on Apple devices, self-hosted Inter elsewhere */
-  --font-stack:
-    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-    var(--font-inter), system-ui, sans-serif;
+     The demo sites are deliberately exempt: fume rounds at 2px because that
+     sharpness IS its identity, and flattening four brands into one radius
+     would make them look like one studio's template, which is precisely what
+     they must not look like. */
+  --radius-sharp: 3px; /* chips, focus rings, hairline boxes */
+  --radius: 14px; /* cards, panels, frames              */
+  --radius-lg: 24px; /* large surfaces, sheets             */
+  --radius-pill: 980px; /* controls — Apple's own pill value  */
+
+  /* ONE face, everywhere. This used to lead with -apple-system, which meant
+     the site rendered in SF Pro on a Mac, Segoe UI on Windows and Roboto on
+     Android — three different sites — while the Inter file it preloaded sat
+     at the back of the stack and was never reached. A paid download for
+     nothing, and no fixed identity.
+
+     Apple owns SF, Vercel owns Geist, Linear drew its own. A studio that
+     sells websites cannot have its own typeface be "whatever the visitor's
+     OS happens to ship". */
+  --font-stack: var(--font-inter), system-ui, sans-serif;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -219,10 +254,53 @@
   --color-ink-fg: #f5f5f7;
   --color-ink-border: rgba(255, 255, 255, 0.14);
 
+  --radius-sharp: var(--radius-sharp);
   --radius-card: var(--radius);
+  --radius-lg: var(--radius-lg);
   --radius-pill: var(--radius-pill);
 
   --font-sans: var(--font-stack);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   The type scale — closed, ten steps, no exceptions.
+
+     11  13  15  17  20  24  30  40  54  74   (px)
+
+   This is the whole vocabulary. Before it existed the site rendered
+   52 distinct sizes, and the drift was concentrated exactly where it
+   does the most damage: EIGHT sizes between 12.8px and 14.1px, four
+   between 14.7px and 15.2px. Nobody can see the difference between
+   14.7px and 15px — it is not a decision, it is an accident that
+   accumulated one section at a time.
+
+   The measured comparison that settled the numbers: apple.com renders
+   its entire homepage in 10 sizes across 515 text elements, and
+   vercel.com in 11. Coherence at that level is not taste, it is a
+   closed set used repeatedly.
+
+   The ramp is tight at reading sizes, where a small step still reads
+   as a different rank, and wide at display sizes, where only a large
+   jump registers as drama. Fluid headings clamp BETWEEN two steps
+   rather than to arbitrary values, so even mid-viewport the size is
+   somewhere on the scale.
+
+   Two files are exempt and must stay exempt: features/ReflowProof.tsx
+   and features/shared.tsx render a miniature of a web page. Their type
+   is a picture of type — scaling it to 11px would destroy the
+   miniature it exists to be.
+   ───────────────────────────────────────────────────────────── */
+@theme inline {
+  --text-step-1: 0.6875rem; /* 11 — caps labels, legal */
+  --text-step-2: 0.8125rem; /* 13 — captions, meta */
+  --text-step-3: 0.9375rem; /* 15 — secondary, UI */
+  --text-step-4: 1.0625rem; /* 17 — body */
+  --text-step-5: 1.25rem; /* 20 — lead */
+  --text-step-6: 1.5rem; /* 24 — h3 */
+  --text-step-7: 1.875rem; /* 30 */
+  --text-step-8: 2.5rem; /* 40 */
+  --text-step-9: 3.375rem; /* 54 */
+  --text-step-10: 4.625rem; /* 74 — display */
 }
 
 @layer base {
@@ -234,6 +312,9 @@
   }
 
   body {
+    /* Step 4. Left at the UA's 16px, every element without an explicit size
+       would sit one pixel off the scale — and 31 of them do exactly that. */
+    font-size: var(--text-step-4);
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-stack);
@@ -336,10 +417,46 @@
     }
   }
 
+  /* Skip link. Off-screen until focused, which is the only correct way to do
+     it — `display: none` would remove it from the tab order and defeat the
+     purpose. A keyboard visitor otherwise tabs through the entire header on
+     every page before reaching any content. */
+  .skip-link {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    z-index: 100;
+    translate: -50% -120%;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: var(--accent);
+    color: var(--accent-text);
+    font-size: var(--text-step-3);
+    transition: translate var(--d-ui) var(--e-out);
+  }
+  .skip-link:focus {
+    translate: -50% 0;
+  }
+
   *:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
     border-radius: 4px;
+  }
+
+  /* The page is sixteen thousand pixels tall. Without this the browser lays
+     out and paints every section on every frame, including the fourteen
+     screenfuls nobody is looking at. `content-visibility: auto` lets it skip
+     all of that until a section approaches the viewport.
+
+     `contain-intrinsic-size` is not optional here — without a size hint the
+     skipped sections collapse to zero height, the scrollbar jumps around as
+     you scroll, and anchor links land in the wrong place. The value is a
+     rough average section height; it only has to be close. */
+  main > section,
+  main > div > section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1200px;
   }
 
   /* Smooth the theme flip at the band level */
@@ -383,24 +500,24 @@
      the leading tightens 1.11 → 1.04. The em bounds keep the endpoints exact;
      the px+vw middle term does the interpolating. */
   .t-display {
-    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-size: clamp(2.5rem, 6vw, 4.625rem);
     font-weight: 400;
     /* Tracking comes from the sitewide law in @layer base. Leading does not:
        it has to be solved against this element's own clamp, whose slope
        changes at 746px and 1333px. Ratios run 1.107 at the 44.8px floor to
        1.040 at the 80px ceiling — tight leading is what large text wants, and
        a single unitless value cannot express that across a fluid size. */
-    line-height: clamp(3.1rem, 0.43rem + 5.72vw, 5.2rem);
+    line-height: clamp(2.75rem, 0.5rem + 5.2vw, 4.8rem);
   }
   .t-h2 {
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: clamp(1.875rem, 4vw, 3.375rem);
     font-weight: 400;
     /* Same construction, solved at 800px and 1280px: 1.14 at 32px tightening
        to 1.08 at 51.2px. */
-    line-height: clamp(2.28rem, 0.33rem + 3.92vw, 3.46rem);
+    line-height: clamp(2.15rem, 0.3rem + 3.7vw, 3.65rem);
   }
   .t-h3 {
-    font-size: 1.4rem;
+    font-size: var(--text-step-6);
     font-weight: 500;
     line-height: 1.25;
     letter-spacing: -0.015em;
@@ -408,13 +525,13 @@
   /* Small, all-caps, and widely tracked — the one place POSITIVE tracking is
      correct, because caps have no ascender/descender rhythm to space them. */
   .t-body {
-    font-size: clamp(1.0625rem, 0.9rem + 0.5vw, 1.1875rem);
+    font-size: clamp(1.0625rem, 0.9rem + 0.5vw, 1.25rem);
     font-weight: 400;
     line-height: 1.6;
     color: var(--text-muted);
   }
   .t-eyebrow {
-    font-size: 0.8rem;
+    font-size: var(--text-step-2);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -583,6 +700,19 @@
     .chrome::after {
       display: none;
     }
+  }
+
+  /* The mark. `currentColor` means it always agrees with the text it sits
+     beside — in the header, on the ink section, inside a demo — without a
+     single override anywhere. Baseline-aligned rather than centred, because
+     it stands in for a period and a period sits on the baseline. */
+  .mark {
+    display: inline-block;
+    width: var(--mark-size);
+    height: var(--mark-size);
+    border-radius: 50%;
+    background: currentColor;
+    vertical-align: baseline;
   }
 
   /* Wordmark — rendered as live text so it stays razor-sharp at any size.

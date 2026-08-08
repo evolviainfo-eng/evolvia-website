@@ -1,6 +1,9 @@
 <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- The mark, and nothing else. The previous version set "e." as <text> in a
+       font-family beginning with SF Pro — a font that does not exist on Windows
+       or Android, so the favicon rendered in whatever the OS substituted, or in
+       nothing. A drawn shape has no such dependency: it is identical on every
+       device, which is the entire point of having a mark. -->
   <rect width="64" height="64" rx="14" fill="#0a0a0a"/>
-  <text x="50%" y="50%" dy="0.02em" text-anchor="middle" dominant-baseline="central"
-    font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', Inter, system-ui, sans-serif"
-    font-size="40" font-weight="400" letter-spacing="-1.5" fill="#ffffff">e.</text>
+  <circle cx="32" cy="32" r="13" fill="#ffffff"/>
 </svg>

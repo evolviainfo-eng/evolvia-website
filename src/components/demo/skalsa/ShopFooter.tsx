@@ -19,7 +19,10 @@ export function ShopFooter() {
           <div className="min-w-0">
             <p
               className="text-[1.5rem] leading-none tracking-[-0.02em]"
-              style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
+              style={{
+                fontFamily: "var(--font-skalsa-display)",
+                fontWeight: 500,
+              }}
             >
               Skalsa
             </p>
@@ -30,7 +33,7 @@ export function ShopFooter() {
           </div>
 
           <nav aria-label="Puslapio apačia" className="min-w-0">
-            <p className="text-[0.75rem] uppercase tracking-[0.16em] text-[#6E6257]">
+            <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
               Parduotuvė
             </p>
             <ul className="mt-5 grid justify-items-start gap-3">
@@ -45,7 +48,7 @@ export function ShopFooter() {
           </nav>
 
           <div className="min-w-0">
-            <p className="text-[0.75rem] uppercase tracking-[0.16em] text-[#6E6257]">
+            <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
               Pavyzdiniai kontaktai
             </p>
             <ul className="mt-5 grid justify-items-start gap-3 text-[0.9375rem]">
@@ -55,7 +58,10 @@ export function ShopFooter() {
                 </a>
               </li>
               <li className="min-w-0 break-words">
-                <a href="mailto:labas@skalsa.demo" className={`${LINK} break-words`}>
+                <a
+                  href="mailto:labas@skalsa.demo"
+                  className={`${LINK} break-words`}
+                >
                   labas@skalsa.demo
                 </a>
               </li>

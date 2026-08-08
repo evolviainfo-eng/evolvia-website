@@ -55,18 +55,18 @@ export function Process() {
                 >
                   <div className="grid min-w-0 gap-x-[clamp(24px,5vw,72px)] gap-y-4 px-[clamp(20px,3.4vw,48px)] py-[clamp(30px,4.4vw,54px)] md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
                     <div className="flex min-w-0 items-baseline gap-4">
-                      <span className="shrink-0 text-[0.78rem] tabular-nums tracking-[0.1em] text-ink-fg/55">
+                      <span className="shrink-0 text-[0.8125rem] tabular-nums tracking-[0.1em] text-ink-fg/55">
                         {no}
                       </span>
-                      <h3 className="min-w-0 text-[clamp(1.6rem,3.1vw,2.3rem)] leading-[1.1]">
+                      <h3 className="min-w-0 text-[clamp(1.5rem,3.1vw,2.5rem)] leading-[1.1]">
                         {step.title}
                       </h3>
                     </div>
                     <div className="min-w-0">
-                      <p className="max-w-[46ch] text-pretty text-[1.0625rem] leading-relaxed text-ink-fg/80 sm:text-[1.1875rem]">
+                      <p className="max-w-[46ch] text-pretty text-[1.0625rem] leading-relaxed text-ink-fg/80 sm:text-[1.25rem]">
                         {step.body}
                       </p>
-                      <span className="mt-5 inline-block rounded-pill border border-ink-fg/30 px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.1em] text-ink-fg">
+                      <span className="mt-5 inline-block rounded-pill border border-ink-fg/30 px-3 py-1 text-[0.6875rem] font-medium uppercase tracking-[0.1em] text-ink-fg">
                         Be rizikos
                       </span>
                     </div>
@@ -91,24 +91,24 @@ export function Process() {
                   style={{ "--i": i * 2 + 1 } as React.CSSProperties}
                   className="min-w-0"
                 >
-                <div
-                  className={cn(
-                    "grid min-w-0 gap-x-[clamp(24px,5vw,72px)] gap-y-3",
-                    "py-[clamp(22px,3.2vw,38px)] md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]",
-                  )}
-                >
-                  <div className="flex min-w-0 items-baseline gap-4">
-                    <span className="shrink-0 text-[0.78rem] tabular-nums tracking-[0.1em] text-text-muted">
-                      {no}
-                    </span>
-                    <h3 className="min-w-0 text-[clamp(1.2rem,2vw,1.5rem)] leading-[1.2] text-text">
-                      {step.title}
-                    </h3>
+                  <div
+                    className={cn(
+                      "grid min-w-0 gap-x-[clamp(24px,5vw,72px)] gap-y-3",
+                      "py-[clamp(22px,3.2vw,38px)] md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]",
+                    )}
+                  >
+                    <div className="flex min-w-0 items-baseline gap-4">
+                      <span className="shrink-0 text-[0.8125rem] tabular-nums tracking-[0.1em] text-text-muted">
+                        {no}
+                      </span>
+                      <h3 className="min-w-0 text-[clamp(1.25rem,2vw,1.5rem)] leading-[1.2] text-text">
+                        {step.title}
+                      </h3>
+                    </div>
+                    <p className="t-body min-w-0 max-w-[46ch] text-pretty text-[0.9375rem]">
+                      {step.body}
+                    </p>
                   </div>
-                  <p className="t-body min-w-0 max-w-[46ch] text-pretty text-[1rem]">
-                    {step.body}
-                  </p>
-                </div>
                 </div>
               </li>
             );

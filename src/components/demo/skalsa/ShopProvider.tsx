@@ -59,7 +59,9 @@ export function ShopProvider({ children }: { children: ReactNode }) {
     setLines((prev) => {
       const found = prev.find((l) => l.id === id);
       if (!found) return [...prev, { id, qty: 1 }];
-      return prev.map((l) => (l.id === id ? { ...l, qty: Math.min(l.qty + 1, 99) } : l));
+      return prev.map((l) =>
+        l.id === id ? { ...l, qty: Math.min(l.qty + 1, 99) } : l,
+      );
     });
   }, []);
 

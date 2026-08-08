@@ -17,10 +17,10 @@ import type { Demo } from "@/content/demos";
 function Chrome({ url }: { url: string }) {
   return (
     <div className="flex items-center gap-2 border-b border-border bg-surface-2 px-3.5 py-2.5">
-      <span className="h-2.5 w-2.5 shrink-0 rounded-full border border-border" />
-      <span className="h-2.5 w-2.5 shrink-0 rounded-full border border-border" />
-      <span className="h-2.5 w-2.5 shrink-0 rounded-full border border-border" />
-      <div className="mx-auto flex h-5 min-w-0 max-w-[64%] items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-[9px] tracking-[0.04em] text-text-muted">
+      <span className="h-2.5 w-2.5 shrink-0 rounded-pill border border-border" />
+      <span className="h-2.5 w-2.5 shrink-0 rounded-pill border border-border" />
+      <span className="h-2.5 w-2.5 shrink-0 rounded-pill border border-border" />
+      <div className="mx-auto flex h-5 min-w-0 max-w-[64%] items-center gap-1.5 rounded-pill border border-border bg-surface px-3 text-[9px] tracking-[0.04em] text-text-muted">
         <svg
           viewBox="0 0 10 12"
           className="h-[9px] w-[8px] shrink-0"
@@ -46,8 +46,8 @@ function PhoneMock({ demo }: { demo: Demo }) {
       className="demo-phone pointer-events-none absolute -bottom-8 right-5 hidden w-[21%] min-w-[92px] max-w-[130px] transition-transform duration-[var(--d-el)] ease-[var(--e-out)] group-hover:-translate-y-1 lg:block"
       aria-hidden="true"
     >
-      <span className="block rounded-[20px] bg-[#101013] p-[5px] shadow-[var(--shadow-frame)]">
-        <span className="relative block aspect-[9/18.5] overflow-hidden rounded-[15px] bg-black">
+      <span className="block rounded-lg bg-[#101013] p-[5px] shadow-[var(--shadow-frame)]">
+        <span className="relative block aspect-[9/18.5] overflow-hidden rounded-card bg-black">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`/work/shot-${demo.slug}-m.webp`}
@@ -107,7 +107,7 @@ export function DemoSite({
           {/* The only thing that says the frame is a link. Still until the
               pointer arrives — no permanent badge sitting on the artwork. */}
           <span
-            className="pointer-events-none absolute bottom-4 left-4 inline-flex translate-y-1.5 items-center gap-2 rounded-pill bg-white/95 px-4 py-2 text-[0.78rem] font-medium text-neutral-900 opacity-0 shadow-[var(--shadow-card)] transition-[opacity,translate] duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"
+            className="pointer-events-none absolute bottom-4 left-4 inline-flex translate-y-1.5 items-center gap-2 rounded-pill bg-white/95 px-4 py-2 text-[0.8125rem] font-medium text-neutral-900 opacity-0 shadow-[var(--shadow-card)] transition-[opacity,translate] duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"
             aria-hidden="true"
           >
             Atidaryti demo

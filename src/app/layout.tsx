@@ -123,6 +123,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
         />
+        <a href="#main" className="skip-link">
+          Pereiti į turinį
+        </a>
         <SmoothScroll />
         <Choreo />
         {children}

@@ -35,7 +35,9 @@ function Ruler({ width }: { width: string }) {
     <div className="flex items-center gap-2">
       <span className="h-2 w-px shrink-0 bg-border" />
       <span className="h-px min-w-0 flex-1 bg-border" />
-      <span className={cn(caps, "shrink-0 tabular-nums text-text")}>{width}</span>
+      <span className={cn(caps, "shrink-0 tabular-nums text-text")}>
+        {width}
+      </span>
       <span className="h-px min-w-0 flex-1 bg-border" />
       <span className="h-2 w-px shrink-0 bg-border" />
     </div>
@@ -52,7 +54,10 @@ function MockPage({ stacked }: { stacked: boolean }) {
           studija.
         </span>
         {stacked ? (
-          <span aria-hidden="true" className="flex w-4 shrink-0 flex-col gap-[3px]">
+          <span
+            aria-hidden="true"
+            className="flex w-4 shrink-0 flex-col gap-[3px]"
+          >
             <span className="h-px w-full bg-text" />
             <span className="h-px w-full bg-text" />
             <span className="h-px w-full bg-text" />
@@ -93,7 +98,12 @@ function MockPage({ stacked }: { stacked: boolean }) {
       </div>
 
       {/* cards — three across become three down */}
-      <div className={cn("gap-2", stacked ? "mt-auto flex flex-col" : "grid grid-cols-3")}>
+      <div
+        className={cn(
+          "gap-2",
+          stacked ? "mt-auto flex flex-col" : "grid grid-cols-3",
+        )}
+      >
         {CARDS.map((title, i) => (
           <div
             key={title}
@@ -193,7 +203,9 @@ export function ReflowProof({ play, armed, className }: ArtefactProps) {
         </div>
       )}
 
-      <p className={cn(caps, "mt-4 text-text-muted")}>Nesumažinta — perrikiuota</p>
+      <p className={cn(caps, "mt-4 text-text-muted")}>
+        Nesumažinta — perrikiuota
+      </p>
     </Plate>
   );
 }

@@ -84,7 +84,7 @@ export function Nav() {
           <a
             href="/"
             aria-label="evolvia. — į pradžią"
-            className="press shrink-0 rounded-md px-2 outline-none"
+            className="press shrink-0 rounded-sharp px-2 outline-none"
           >
             <Wordmark />
           </a>
@@ -99,7 +99,7 @@ export function Nav() {
                   href={link.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "group relative py-1 text-[0.95rem] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text",
+                    "group relative py-1 text-[0.9375rem] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text",
                     // Ink at 70%, not the muted token. The glass composites
                     // against whatever is behind it, and over the always-dark
                     // section the muted grey fell to 1.9:1; this holds 4.8:1
@@ -202,7 +202,7 @@ export function Nav() {
         style={{ y: sheet.offset, touchAction: "pan-x" }}
         className={cn(
           "pointer-events-auto fixed inset-x-0 top-0 z-40 md:hidden",
-          "rounded-b-[28px] border-b border-border bg-bg/85 pb-4 pt-24 backdrop-blur-2xl backdrop-saturate-150",
+          "rounded-b-lg border-b border-border bg-bg/85 pb-4 pt-24 backdrop-blur-2xl backdrop-saturate-150",
           "shadow-[0_24px_60px_rgba(0,0,0,0.18)]",
           open ? "" : "pointer-events-none",
         )}
@@ -236,7 +236,7 @@ export function Nav() {
         <div className="flex justify-center pb-2 pt-5">
           <span
             aria-hidden="true"
-            className="h-1 w-10 rounded-full bg-text/20"
+            className="h-1 w-10 rounded-pill bg-text/20"
           />
         </div>
       </motion.div>

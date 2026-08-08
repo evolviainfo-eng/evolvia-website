@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { serviceJsonLd } from "@/content/schema";
 import { faqItems } from "@/content/faq";
 
 export const metadata = pageMetadata({
@@ -17,38 +18,6 @@ export const metadata = pageMetadata({
   path: "/kainos",
 });
 
-const serviceJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  name: "Svetainių kūrimas",
-  serviceType: "Web design",
-  provider: { "@type": "ProfessionalService", name: "Evolvia" },
-  areaServed: "Lietuva",
-  offers: [
-    {
-      "@type": "Offer",
-      name: "Svetainė su priežiūra",
-      price: "150",
-      priceCurrency: "EUR",
-      description:
-        "€150 vienkartinis + €50/mėn: hostingas, atnaujinimai, palaikymas ir smulkūs pakeitimai.",
-    },
-    {
-      "@type": "Offer",
-      name: "Svetainė — vienkartinis mokėjimas",
-      price: "400",
-      priceCurrency: "EUR",
-      description: "€400 vienkartinai, be mėnesinio mokesčio. Pirmų metų hostingas įskaičiuotas.",
-    },
-    {
-      "@type": "Offer",
-      name: "El. parduotuvė / didesnė svetainė",
-      price: "600",
-      priceCurrency: "EUR",
-      description: "€600 vienkartinis + €100/mėn.",
-    },
-  ],
-};
 
 /** The three price-related questions, inlined as crawlable text. */
 const priceFaq = [faqItems[0], faqItems[1], faqItems[5]];
@@ -75,7 +44,7 @@ function PricingFaq() {
             {priceFaq.map((item, i) => (
               <Reveal key={item.q} delay={i * 0.05}>
                 <div className="border-t border-border py-7">
-                  <h3 className="text-[1.15rem] font-medium tracking-[-0.01em] text-text">
+                  <h3 className="text-[1.0625rem] font-medium tracking-[-0.01em] text-text">
                     {item.q}
                   </h3>
                   <p className="t-body mt-3 max-w-[58ch]">{item.a}</p>
@@ -95,7 +64,7 @@ export default function KainosPage() {
       <JsonLd data={breadcrumbJsonLd("Kainos", "/kainos")} />
       <JsonLd data={serviceJsonLd} />
       <Nav />
-      <main>
+      <main id="main">
         <PageHeader
           eyebrow="Kainos"
           title="Aiški kaina. Jokių staigmenų."

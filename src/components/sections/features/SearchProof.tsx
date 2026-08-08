@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
-import { Plate, PlateHead, caps, step, usePre, type ArtefactProps } from "./shared";
+import {
+  Plate,
+  PlateHead,
+  caps,
+  step,
+  usePre,
+  type ArtefactProps,
+} from "./shared";
 
 /** How long *this* page took to become usable, read from the browser's own
  *  Navigation Timing entry.
@@ -71,12 +78,12 @@ export function SearchProof({ play, armed, className }: ArtefactProps) {
       {/* the query */}
       <div
         className={cn(
-          "mt-5 flex items-center gap-2 rounded-full border border-border bg-surface-2 px-4 py-2.5",
+          "mt-5 flex items-center gap-2 rounded-pill border border-border bg-surface-2 px-4 py-2.5",
           line,
         )}
         style={step(0)}
       >
-        <span className="min-w-0 truncate text-[0.82rem] text-text">
+        <span className="min-w-0 truncate text-[0.8125rem] text-text">
           jūsų verslas vilniuje
         </span>
         <span aria-hidden="true" className="h-4 w-px shrink-0 bg-text/45" />
@@ -85,14 +92,14 @@ export function SearchProof({ play, armed, className }: ArtefactProps) {
       {/* the result */}
       <div className="mt-5 border-t border-border pt-4">
         <p
-          className={cn("truncate text-[0.7rem] text-text-muted", line)}
+          className={cn("truncate text-[0.6875rem] text-text-muted", line)}
           style={step(2)}
         >
           jusuverslas.lt › paslaugos
         </p>
         <p
           className={cn(
-            "mt-1 text-[1rem] leading-[1.3] tracking-[-0.015em] text-text",
+            "mt-1 text-[0.9375rem] leading-[1.3] tracking-[-0.015em] text-text",
             line,
           )}
           style={step(3)}
@@ -100,7 +107,10 @@ export function SearchProof({ play, armed, className }: ArtefactProps) {
           Jūsų verslas — paslaugos, kainos, kontaktai
         </p>
         <p
-          className={cn("mt-2 text-[0.8rem] leading-[1.5] text-text-muted", line)}
+          className={cn(
+            "mt-2 text-[0.8125rem] leading-[1.5] text-text-muted",
+            line,
+          )}
           style={step(4)}
         >
           Aiški struktūra, tvarkingi pavadinimai, greitas puslapis. Tiek reikia,

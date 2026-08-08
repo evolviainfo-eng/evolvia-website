@@ -27,14 +27,14 @@ export const SECTION = "py-[clamp(80px,11vw,144px)]";
    utility on one element have no defined winner. Sizes belong to the step,
    headings state their own. */
 /** Caps meta — figure captions, table keys, indices, timings. */
-export const T_META = "text-[0.7rem] uppercase tracking-[0.2em]";
+export const T_META = "text-[0.6875rem] uppercase tracking-[0.2em]";
 /** The section label. Same size, opened up so it reads as a marker. */
-export const T_EYEBROW = "text-[0.7rem] uppercase tracking-[0.24em]";
+export const T_EYEBROW = "text-[0.6875rem] uppercase tracking-[0.24em]";
 /** Figures that must stay in sentence case — prices, counters, ratios. */
-export const T_NUM = "text-[0.7rem] tabular-nums tracking-[0.04em]";
-export const T_SMALL = "text-[0.82rem] leading-[1.65]";
-export const T_BODY = "text-[0.95rem] leading-[1.72]";
-export const T_LEAD = "text-[1.02rem] leading-[1.68]";
+export const T_NUM = "text-[0.6875rem] tabular-nums tracking-[0.04em]";
+export const T_SMALL = "text-[0.8125rem] leading-[1.65]";
+export const T_BODY = "text-[0.9375rem] leading-[1.72]";
+export const T_LEAD = "text-[1.0625rem] leading-[1.68]";
 /** Section heading. 48.8px at 1440 — well inside the 72px ceiling. */
 export const T_H2 =
   "min-w-0 font-normal text-[clamp(2rem,4.4vw,3.05rem)] leading-[1.06] tracking-[-0.02em] text-balance";

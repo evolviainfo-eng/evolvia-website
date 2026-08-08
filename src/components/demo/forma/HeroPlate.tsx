@@ -63,10 +63,7 @@ export function HeroPlate() {
 
   return (
     <figure className="mx-auto w-full max-w-[1680px]">
-      <div
-        ref={frameRef}
-        className="overflow-hidden bg-[rgba(26,25,23,0.06)]"
-      >
+      <div ref={frameRef} className="overflow-hidden bg-[rgba(26,25,23,0.06)]">
         <div ref={plateRef}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img

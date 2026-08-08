@@ -125,7 +125,7 @@ export function Projects() {
                 <p className={`${T_MICRO} tracking-[0.2em] text-[#9A9791]`}>
                   {p.no}
                 </p>
-                <h3 className="mt-3 text-balance text-[1.2rem] font-semibold leading-[1.2] tracking-[-0.02em] text-[#E7E5E1] md:text-[1.35rem]">
+                <h3 className="mt-3 text-balance text-[1.25rem] font-semibold leading-[1.2] tracking-[-0.02em] text-[#E7E5E1] md:text-[1.25rem]">
                   {p.title}
                 </h3>
                 <p

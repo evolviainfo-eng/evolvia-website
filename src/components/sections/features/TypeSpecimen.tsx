@@ -2,7 +2,15 @@
 
 import type { CSSProperties } from "react";
 import { cn } from "@/lib/cn";
-import { Mask, Plate, PlateHead, caps, step, usePre, type ArtefactProps } from "./shared";
+import {
+  Mask,
+  Plate,
+  PlateHead,
+  caps,
+  step,
+  usePre,
+  type ArtefactProps,
+} from "./shared";
 
 /** Neutral tone ramp — percentages of --text mixed into --bg, so it stays
  *  monochrome and correct in both themes. */

@@ -271,9 +271,9 @@ export function Estimator() {
                     value={areaText}
                     onChange={(e) => onAreaText(e.target.value)}
                     onBlur={onAreaBlur}
-                    className="knst-mono knst-numfield w-[86px] border border-white/[0.22] bg-transparent px-3 py-2 text-right text-[0.92rem] text-[#E7E5E1] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-white/[0.5] focus:border-white/[0.5]"
+                    className="knst-mono knst-numfield w-[86px] border border-white/[0.22] bg-transparent px-3 py-2 text-right text-[0.9375rem] text-[#E7E5E1] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-white/[0.5] focus:border-white/[0.5]"
                   />
-                  <span className="knst-mono text-[0.78rem] text-[#9A9791]">
+                  <span className="knst-mono text-[0.8125rem] text-[#9A9791]">
                     m²
                   </span>
                 </div>
@@ -349,10 +349,10 @@ export function Estimator() {
                         ) : null}
                       </span>
                       <span className="min-w-0">
-                        <span className="block text-[0.9rem] leading-[1.35] text-[#E7E5E1]">
+                        <span className="block text-[0.9375rem] leading-[1.35] text-[#E7E5E1]">
                           {w.label}
                         </span>
-                        <span className="mt-1 block text-[0.8rem] leading-[1.4] text-[#9A9791]">
+                        <span className="mt-1 block text-[0.8125rem] leading-[1.4] text-[#9A9791]">
                           {w.note}
                         </span>
                         <span
@@ -401,7 +401,7 @@ export function Estimator() {
 
                 <div aria-live="polite" aria-atomic="true" className="mt-6">
                   {result.empty ? (
-                    <p className="knst-mono text-[clamp(1.5rem,4.6vw,2.05rem)] leading-none text-[#9A9791]">
+                    <p className="knst-mono text-[clamp(1.5rem,4.6vw,1.875rem)] leading-none text-[#9A9791]">
                       — €
                     </p>
                   ) : (
@@ -411,7 +411,7 @@ export function Estimator() {
                       >
                         nuo
                       </span>
-                      <span className="knst-mono text-[clamp(1.5rem,4.6vw,2.05rem)] leading-none tracking-[-0.01em] text-[#E7E5E1]">
+                      <span className="knst-mono text-[clamp(1.5rem,4.6vw,1.875rem)] leading-none tracking-[-0.01em] text-[#E7E5E1]">
                         {fmt(result.totalLo)} €
                       </span>
                       <span
@@ -419,13 +419,13 @@ export function Estimator() {
                       >
                         iki
                       </span>
-                      <span className="knst-mono text-[clamp(1.5rem,4.6vw,2.05rem)] leading-none tracking-[-0.01em] text-[#E7E5E1]">
+                      <span className="knst-mono text-[clamp(1.5rem,4.6vw,1.875rem)] leading-none tracking-[-0.01em] text-[#E7E5E1]">
                         {fmt(result.totalHi)} €
                       </span>
                     </div>
                   )}
 
-                  <p className="knst-mono mt-4 text-[0.76rem] leading-[1.5] text-[#9A9791]">
+                  <p className="knst-mono mt-4 text-[0.8125rem] leading-[1.5] text-[#9A9791]">
                     {result.empty
                       ? "Pažymėkite bent vieną darbų grupę."
                       : `${fmt(result.perLo)}–${fmt(result.perHi)} €/m² · ${groupsLabel(result.chosen.length)}`}
@@ -457,10 +457,10 @@ export function Estimator() {
                       {result.chosen.map((w) => (
                         <li key={w.id} className="min-w-0">
                           <div className="flex items-baseline justify-between gap-4">
-                            <span className="min-w-0 text-[0.875rem] leading-[1.45] text-[#E7E5E1]">
+                            <span className="min-w-0 text-[0.8125rem] leading-[1.45] text-[#E7E5E1]">
                               {w.label}
                             </span>
-                            <span className="knst-mono shrink-0 text-[0.72rem] leading-[1.45] text-[#9A9791]">
+                            <span className="knst-mono shrink-0 text-[0.6875rem] leading-[1.45] text-[#9A9791]">
                               {fmt(w.lo)}–{fmt(w.hi)}
                             </span>
                           </div>
@@ -485,7 +485,7 @@ export function Estimator() {
                   <span className={`${T_MICRO} text-[#9A9791]`}>
                     Apdailos lygis
                   </span>
-                  <span className="shrink-0 text-[0.875rem] leading-[1.45] text-[#E7E5E1]">
+                  <span className="shrink-0 text-[0.8125rem] leading-[1.45] text-[#E7E5E1]">
                     {result.empty ? "—" : finishSummary}
                   </span>
                 </div>
@@ -503,7 +503,7 @@ export function Estimator() {
                     <button
                       type="button"
                       disabled
-                      className="mt-6 inline-flex h-12 w-full cursor-not-allowed items-center justify-center border border-white/[0.11] bg-white/[0.02] px-6 text-[0.9rem] font-semibold text-[#9A9791] opacity-70"
+                      className="mt-6 inline-flex h-12 w-full cursor-not-allowed items-center justify-center border border-white/[0.11] bg-white/[0.02] px-6 text-[0.9375rem] font-semibold text-[#9A9791] opacity-70"
                     >
                       Gauti tikslią sąmatą
                     </button>
@@ -518,7 +518,7 @@ export function Estimator() {
                     <a
                       href="#kontaktai"
                       onClick={handOff}
-                      className="mt-6 inline-flex h-12 w-full items-center justify-center bg-[#E7E5E1] px-6 text-[0.9rem] font-semibold text-[#121316] transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0 active:opacity-80"
+                      className="mt-6 inline-flex h-12 w-full items-center justify-center bg-[#E7E5E1] px-6 text-[0.9375rem] font-semibold text-[#121316] transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0 active:opacity-80"
                     >
                       Gauti tikslią sąmatą
                     </a>
@@ -580,12 +580,12 @@ function Segmented({
                 onChange={() => onChange(o.id)}
               />
               <span
-                className={`text-balance text-[0.74rem] leading-[1.25] sm:text-[0.85rem] ${on ? "font-semibold" : ""}`}
+                className={`text-balance text-[0.6875rem] leading-[1.25] sm:text-[0.8125rem] ${on ? "font-semibold" : ""}`}
               >
                 {o.label}
               </span>
               <span
-                className={`knst-mono text-[0.6rem] tracking-[0.08em] ${on ? "text-[#121316]" : "text-[#9A9791]"}`}
+                className={`knst-mono text-[0.6875rem] tracking-[0.08em] ${on ? "text-[#121316]" : "text-[#9A9791]"}`}
               >
                 {o.note}
               </span>

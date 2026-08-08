@@ -1,4 +1,12 @@
-import { BAND, CONTAINER, SectionHead, SpecRow, T_MICRO, T_SM, Tag } from "./ui";
+import {
+  BAND,
+  CONTAINER,
+  SectionHead,
+  SpecRow,
+  T_MICRO,
+  T_SM,
+  Tag,
+} from "./ui";
 import { ContactForm } from "./ContactForm";
 
 const DETAILS: Array<[string, string]> = [

@@ -137,7 +137,7 @@ export function Phases() {
                 <span className={`${T_MICRO} tracking-[0.2em] text-[#9A9791]`}>
                   {p.no}
                 </span>
-                <h3 className="min-w-0 text-balance text-[1.08rem] font-semibold leading-[1.22] tracking-[-0.015em] text-[#E7E5E1] md:text-[1.15rem]">
+                <h3 className="min-w-0 text-balance text-[1.0625rem] font-semibold leading-[1.22] tracking-[-0.015em] text-[#E7E5E1] md:text-[1.0625rem]">
                   {p.title}
                 </h3>
                 <p className={`min-w-0 text-pretty ${T_BODY} text-[#9A9791]`}>

@@ -195,7 +195,7 @@ export function ProjectIndex() {
                       aria-pressed={on}
                       onClick={() => setFilter(f.id)}
                       className={[
-                        "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[0.82rem] leading-none transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] active:translate-y-px",
+                        "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[0.8125rem] leading-none transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] active:translate-y-px",
                         on
                           ? "border-[#1A1917] bg-[#1A1917] text-[#F4F1EC]"
                           : "border-[rgba(26,25,23,0.18)] hover:border-[#1A1917] hover:bg-[rgba(26,25,23,0.05)]",
@@ -203,7 +203,7 @@ export function ProjectIndex() {
                     >
                       {f.label}
                       <span
-                        className={`tabular-nums text-[0.7rem] ${
+                        className={`tabular-nums text-[0.6875rem] ${
                           on ? "text-[#F4F1EC]/65" : "text-[#5E5952]"
                         }`}
                       >
@@ -234,7 +234,7 @@ export function ProjectIndex() {
             >
               <p
                 style={SERIF}
-                className="max-w-[24ch] text-[clamp(1.35rem,2.6vw,1.75rem)] leading-[1.16] text-pretty"
+                className="max-w-[24ch] text-[clamp(1.25rem,2.6vw,1.875rem)] leading-[1.16] text-pretty"
               >
                 Šios rūšies darbų viešai kol kas nerodome.
               </p>
@@ -248,7 +248,7 @@ export function ProjectIndex() {
               <button
                 type="button"
                 onClick={() => setFilter("visi")}
-                className="mt-6 press inline-flex h-11 items-center rounded-full border border-[rgba(26,25,23,0.18)] px-5 text-[0.82rem] leading-none transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-px"
+                className="mt-6 press inline-flex h-11 items-center rounded-full border border-[rgba(26,25,23,0.18)] px-5 text-[0.8125rem] leading-none transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-px"
               >
                 Rodyti visus darbus
               </button>
@@ -305,7 +305,7 @@ export function ProjectIndex() {
                       <span className="flex items-baseline justify-between gap-4">
                         <span
                           style={SERIF}
-                          className="min-w-0 text-[clamp(1.15rem,2.2vw,1.45rem)] leading-[1.15] text-pretty"
+                          className="min-w-0 text-[clamp(1.0625rem,2.2vw,1.5rem)] leading-[1.15] text-pretty"
                         >
                           {p.title}
                         </span>

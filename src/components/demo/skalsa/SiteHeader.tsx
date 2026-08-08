@@ -7,7 +7,7 @@ import { useShop } from "./ShopProvider";
    gestas, kurį pelė ką tik padarė. Mastelis nurodomas iškviečiant, kad
    dvi taisyklės tam pačiam `after:scale-x` niekada nesivaržytų. */
 const NAV =
-  "relative inline-block py-1 text-[0.875rem] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:bg-[#241E19] after:transition-transform after:duration-[var(--d-ui)] after:ease-[var(--e-out)] hover:text-[#241E19] hover:after:scale-x-100";
+  "relative inline-block py-1 text-[0.8125rem] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:bg-[#241E19] after:transition-transform after:duration-[var(--d-ui)] after:ease-[var(--e-out)] hover:text-[#241E19] hover:after:scale-x-100";
 
 const LINKS = [
   { href: "#katalogas", id: "katalogas", label: "Katalogas" },
@@ -36,7 +36,8 @@ export function SiteHeader() {
       const mid = window.innerHeight * 0.34;
       let current = "";
       document.querySelectorAll<HTMLElement>("[data-sk-sec]").forEach((el) => {
-        if (el.getBoundingClientRect().top <= mid) current = el.dataset.skSec ?? "";
+        if (el.getBoundingClientRect().top <= mid)
+          current = el.dataset.skSec ?? "";
       });
       setActive(current);
     };
@@ -66,7 +67,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-[58px] max-w-[1180px] items-center gap-4 px-5 sm:h-[66px] sm:gap-8 sm:px-8">
         <a
           href="#virsus"
-          className="shrink-0 text-[1.22rem] leading-none tracking-[-0.01em] text-[#241E19] sm:text-[1.32rem]"
+          className="shrink-0 text-[1.25rem] leading-none tracking-[-0.01em] text-[#241E19] sm:text-[1.25rem]"
           style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
         >
           Skalsa
@@ -104,7 +105,7 @@ export function SiteHeader() {
                 ? `Atidaryti krepšelį — prekių: ${count}`
                 : "Atidaryti krepšelį — tuščias"
             }
-            className="group press inline-flex h-10 items-center gap-2.5 rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] pl-3.5 pr-2.5 text-[0.875rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0] active:translate-y-0"
+            className="group press inline-flex h-10 items-center gap-2.5 rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] pl-3.5 pr-2.5 text-[0.8125rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0] active:translate-y-0"
           >
             <Bag />
             <span className="hidden sm:inline">Krepšelis</span>
@@ -113,7 +114,7 @@ export function SiteHeader() {
             <span
               key={count}
               aria-hidden="true"
-              className={`inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-[0.75rem] tabular-nums transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] ${
+              className={`inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-[0.8125rem] tabular-nums transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] ${
                 count > 0
                   ? "sk-pop bg-[#B4562F] text-[#FAF6F0]"
                   : "bg-[#F1EAE0] text-[#6E6257]"

@@ -45,19 +45,19 @@ export function WorkShowcase() {
                   )}
                 >
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                    <h2 className="text-[1.35rem] font-medium tracking-[-0.015em]">
+                    <h2 className="text-[1.25rem] font-medium tracking-[-0.015em]">
                       {demo.name}
                     </h2>
-                    <span className="rounded-pill border border-border px-2.5 py-0.5 text-[0.68rem] font-medium uppercase tracking-[0.08em] text-text-muted">
+                    <span className="rounded-pill border border-border px-2.5 py-0.5 text-[0.6875rem] font-medium uppercase tracking-[0.08em] text-text-muted">
                       {demo.label}
                     </span>
                   </div>
 
-                  <p className="mt-2 text-[0.82rem] uppercase tracking-[0.1em] text-text-muted">
+                  <p className="mt-2 text-[0.8125rem] uppercase tracking-[0.1em] text-text-muted">
                     {demo.sector} · {demo.year}
                   </p>
 
-                  <p className="t-body mt-4 max-w-[44ch] text-[0.98rem]">
+                  <p className="t-body mt-4 max-w-[44ch] text-[0.9375rem]">
                     {demo.tagline}
                   </p>
 
@@ -65,7 +65,7 @@ export function WorkShowcase() {
                     {demo.scope.map((s) => (
                       <li
                         key={s}
-                        className="rounded-pill bg-surface-2 px-3 py-1 text-[0.75rem] text-text-muted"
+                        className="rounded-pill bg-surface-2 px-3 py-1 text-[0.8125rem] text-text-muted"
                       >
                         {s}
                       </li>
@@ -78,7 +78,7 @@ export function WorkShowcase() {
                     href={demo.href}
                     target="_blank"
                     rel="noopener"
-                    className="mt-7 press inline-flex h-12 w-fit items-center gap-2.5 rounded-pill bg-accent px-6 text-[0.95rem] font-medium text-accent-text transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0"
+                    className="mt-7 press inline-flex h-12 w-fit items-center gap-2.5 rounded-pill bg-accent px-6 text-[0.9375rem] font-medium text-accent-text transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0"
                   >
                     Atidaryti demo svetainę
                     <svg
@@ -93,7 +93,7 @@ export function WorkShowcase() {
                       <path d="M10 2 2.5 9.5" />
                     </svg>
                   </a>
-                  <p className="mt-3 text-[0.86rem] text-text-muted">
+                  <p className="mt-3 text-[0.8125rem] text-text-muted">
                     {demo.feature} · atsidaro naujame lange
                   </p>
                 </figcaption>

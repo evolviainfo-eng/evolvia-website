@@ -7,7 +7,7 @@ import { T_MICRO, T_SM } from "./ui";
 const TYPES = ["Namas", "Butas", "Komercinės patalpos", "Kita"];
 
 const FIELD =
-  "w-full min-w-0 border border-white/[0.22] bg-transparent px-3.5 py-3 text-[0.94rem] leading-[1.5] text-[#E7E5E1] placeholder:text-[#9A9791] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-white/[0.34] focus:border-white/[0.5]";
+  "w-full min-w-0 border border-white/[0.22] bg-transparent px-3.5 py-3 text-[0.9375rem] leading-[1.5] text-[#E7E5E1] placeholder:text-[#9A9791] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-white/[0.34] focus:border-white/[0.5]";
 
 const LABEL = `${T_MICRO} mb-2 block text-[#9A9791]`;
 
@@ -50,7 +50,7 @@ export function ContactForm() {
             Forma veikia — bet niekas neišsiųsta.
           </h3>
           <p
-            className={`mt-4 max-w-[52ch] text-pretty text-[0.94rem] leading-[1.62] text-[#9A9791]`}
+            className={`mt-4 max-w-[52ch] text-pretty text-[0.9375rem] leading-[1.62] text-[#9A9791]`}
           >
             Tai demonstracinė svetainė, todėl užklausa niekur nekeliavo ir jokio
             skambučio nebus. Tikroje svetainėje ši užklausa jau būtų nukeliavusi
@@ -181,7 +181,7 @@ export function ContactForm() {
       <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <button
           type="submit"
-          className="inline-flex h-12 w-full items-center justify-center bg-[#E8B14C] px-6 text-[0.92rem] font-semibold text-[#121316] transition-[translate,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#F2BE5F] active:translate-y-0 active:bg-[#D9A343] sm:w-auto sm:px-9"
+          className="inline-flex h-12 w-full items-center justify-center bg-[#E8B14C] px-6 text-[0.9375rem] font-semibold text-[#121316] transition-[translate,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#F2BE5F] active:translate-y-0 active:bg-[#D9A343] sm:w-auto sm:px-9"
         >
           Siųsti užklausą
         </button>

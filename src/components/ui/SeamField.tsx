@@ -280,6 +280,25 @@ export function SeamField({ className }: { className?: string }) {
     });
     if (!gl) return; // CSS gradient underneath carries it
 
+    /* Refuse to run on a software rasteriser.
+     *
+     * This shader fills the field twice per frame. On any real GPU that is
+     * nothing; on SwiftShader or llvmpipe — a machine with no GPU, a locked-down
+     * corporate browser, a VM, or an automation harness — the same work is done
+     * on the CPU and can take seconds per frame, which does not merely drop the
+     * animation: it stalls the whole main thread, so scrolling stutters and CSS
+     * transitions freeze mid-flight. The page then looks broken in a way that
+     * has nothing to do with the page.
+     *
+     * There is already a CSS gradient behind the canvas, so bailing out costs a
+     * static background instead of a moving one. That is the correct trade every
+     * time — a still image beats a seized tab. */
+    const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+    const renderer = dbg
+      ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || "")
+      : "";
+    if (/swiftshader|llvmpipe|software|basic render/i.test(renderer)) return;
+
     const vs = compile(gl, gl.VERTEX_SHADER, VERT);
     const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG);
     if (!vs || !fs) return;

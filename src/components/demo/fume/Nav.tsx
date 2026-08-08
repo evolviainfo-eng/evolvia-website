@@ -69,7 +69,7 @@ export function Nav() {
       <div className="mx-auto flex h-[58px] max-w-[1240px] items-center gap-4 px-5 sm:h-[66px] sm:px-8">
         <a
           href="#top"
-          className="shrink-0 font-[family-name:var(--font-fume-display)] text-[1.35rem] font-light leading-none tracking-[0.02em] text-[#ede6da] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] hover:opacity-70 active:opacity-100"
+          className="shrink-0 font-[family-name:var(--font-fume-display)] text-[1.25rem] font-light leading-none tracking-[0.02em] text-[#ede6da] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] hover:opacity-70 active:opacity-100"
         >
           Fumé
         </a>
@@ -82,7 +82,7 @@ export function Nav() {
                 <a
                   href={l.href}
                   aria-current={on ? "location" : undefined}
-                  className={`fume-navlink font-[family-name:var(--font-fume-ui)] text-[0.82rem] tracking-[0.04em] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-[#ede6da] ${
+                  className={`fume-navlink font-[family-name:var(--font-fume-ui)] text-[0.8125rem] tracking-[0.04em] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-[#ede6da] ${
                     on ? "text-[#ede6da]" : "text-[#9c948a]"
                   }`}
                 >
@@ -95,7 +95,7 @@ export function Nav() {
 
         <a
           href="#rezervacija"
-          className="ml-auto inline-flex h-9 shrink-0 items-center rounded-[2px] border px-4 font-[family-name:var(--font-fume-ui)] text-[0.78rem] tracking-[0.06em] text-[#ede6da] transition-[border-color,background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[#ede6da] hover:bg-[rgba(237,230,218,0.06)] active:translate-y-0 md:ml-8"
+          className="ml-auto inline-flex h-9 shrink-0 items-center rounded-[2px] border px-4 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] tracking-[0.06em] text-[#ede6da] transition-[border-color,background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[#ede6da] hover:bg-[rgba(237,230,218,0.06)] active:translate-y-0 md:ml-8"
           style={{ borderColor: HAIRLINE }}
         >
           Rezervuoti

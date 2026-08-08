@@ -44,7 +44,10 @@ function Word({
   const opacity = useTransform(progress, [start, end, 1], [0.3, 1, 1]);
   return (
     <span className="inline-block">
-      <motion.span style={reduce ? undefined : { opacity }} className="inline-block">
+      <motion.span
+        style={reduce ? undefined : { opacity }}
+        className="inline-block"
+      >
         {children}
       </motion.span>
       {/* preserve the inter-word space */}
@@ -85,7 +88,10 @@ export function TrustStatement() {
               "radial-gradient(120% 90% at 50% 42%, rgba(255,255,255,0.075) 0%, rgba(255,255,255,0.022) 38%, transparent 72%)",
           }}
         />
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+        >
           <SeamField />
         </div>
 
@@ -121,7 +127,7 @@ export function TrustStatement() {
 
             <motion.p
               style={reduce ? undefined : { opacity: subOpacity, y: subY }}
-              className="mx-auto mt-8 max-w-[46ch] text-[1.0625rem] leading-relaxed text-ink-fg/70 sm:text-[1.1875rem]"
+              className="mx-auto mt-8 max-w-[46ch] text-[1.0625rem] leading-relaxed text-ink-fg/70 sm:text-[1.25rem]"
             >
               Jokios rizikos. Jokių prielaidų. Sukuriame realų eskizą jūsų
               verslui — jei nepatinka, nieko nemokate.

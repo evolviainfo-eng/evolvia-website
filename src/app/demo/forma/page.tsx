@@ -225,7 +225,7 @@ export default function Page() {
                 </p>
                 <h1
                   style={SERIF}
-                  className="mt-6 text-[clamp(2.6rem,7.2vw,4.4rem)] font-normal leading-[1.05]"
+                  className="mt-6 text-[clamp(2.5rem,7.2vw,4.625rem)] font-normal leading-[1.05]"
                 >
                   {HERO_LINES.map((line, i) => (
                     <span
@@ -245,8 +245,7 @@ export default function Page() {
                 className={`min-w-0 max-w-[38ch] ${T_BODY} lg:pb-2`}
               >
                 Dvi architektės. Butai, privatūs namai ir nedidelės komercinės
-                erdvės — nuo pirmo plano iki paskutinės rankenos, be
-                tarpininkų.
+                erdvės — nuo pirmo plano iki paskutinės rankenos, be tarpininkų.
               </p>
             </div>
           </div>
@@ -278,7 +277,7 @@ export default function Page() {
                   </span>
                   <h3
                     style={SERIF}
-                    className={`mt-5 ${T_H3} text-[clamp(1.45rem,2.4vw,1.9rem)]`}
+                    className={`mt-5 ${T_H3} text-[clamp(1.5rem,2.4vw,1.875rem)]`}
                   >
                     {m.t}
                   </h3>
@@ -331,13 +330,11 @@ export default function Page() {
                   <div className="flex items-baseline justify-between gap-4">
                     <h3
                       style={SERIF}
-                      className={`${T_H3} text-[clamp(1.35rem,2.2vw,1.7rem)]`}
+                      className={`${T_H3} text-[clamp(1.25rem,2.2vw,1.875rem)]`}
                     >
                       {s.t}
                     </h3>
-                    <span className={`shrink-0 ${T_NUM}`}>
-                      {s.price}
-                    </span>
+                    <span className={`shrink-0 ${T_NUM}`}>{s.price}</span>
                   </div>
                   <p className={`mt-4 ${T_BODY}`} style={{ color: MUTED }}>
                     {s.b}
@@ -484,13 +481,10 @@ export default function Page() {
                       className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b py-3"
                       style={{ borderColor: HAIR }}
                     >
-                      <dt
-                        className={T_META}
-                        style={{ color: MUTED }}
-                      >
+                      <dt className={T_META} style={{ color: MUTED }}>
                         {c.k}
                       </dt>
-                      <dd className="min-w-0 break-words text-[0.95rem]">
+                      <dd className="min-w-0 break-words text-[0.9375rem]">
                         {c.v}
                       </dd>
                     </div>
@@ -517,7 +511,7 @@ export default function Page() {
           <a
             href="#top"
             style={SERIF}
-            className="text-[1.35rem] leading-none tracking-[-0.01em] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] hover:opacity-70 active:opacity-50"
+            className="text-[1.25rem] leading-none tracking-[-0.01em] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] hover:opacity-70 active:opacity-50"
           >
             Forma
           </a>

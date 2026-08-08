@@ -131,10 +131,10 @@ function Course({ title, note, items }: (typeof COURSES)[number]) {
         className="flex flex-col gap-1 border-b pb-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
         style={{ borderColor: HAIRLINE }}
       >
-        <h3 className="font-[family-name:var(--font-fume-display)] text-[clamp(1.35rem,3vw,1.7rem)] font-light italic leading-none text-[#ede6da]">
+        <h3 className="font-[family-name:var(--font-fume-display)] text-[clamp(1.25rem,3vw,1.875rem)] font-light italic leading-none text-[#ede6da]">
           {title}
         </h3>
-        <p className="min-w-0 font-[family-name:var(--font-fume-ui)] text-[0.66rem] uppercase tracking-[0.18em] text-[#9c948a] sm:text-right">
+        <p className="min-w-0 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.18em] text-[#9c948a] sm:text-right">
           {note}
         </p>
       </div>
@@ -147,18 +147,18 @@ function Course({ title, note, items }: (typeof COURSES)[number]) {
             className="fume-row -mx-2 border-b px-2 py-4 last:border-b-0"
           >
             <p className="flex items-baseline gap-x-3">
-              <span className="min-w-0 flex-1 font-[family-name:var(--font-fume-display)] text-[1.05rem] leading-[1.3] text-[#ede6da] sm:flex-initial">
+              <span className="min-w-0 flex-1 font-[family-name:var(--font-fume-display)] text-[1.0625rem] leading-[1.3] text-[#ede6da] sm:flex-initial">
                 {it.n}
               </span>
               <span
                 aria-hidden
                 className="fume-leader hidden min-w-[2rem] flex-1 sm:block"
               />
-              <span className="w-[3.4rem] shrink-0 text-right font-[family-name:var(--font-fume-display)] text-[1.05rem] leading-[1.3] tabular-nums text-[rgba(237,230,218,0.9)]">
+              <span className="w-[3.4rem] shrink-0 text-right font-[family-name:var(--font-fume-display)] text-[1.0625rem] leading-[1.3] tabular-nums text-[rgba(237,230,218,0.9)]">
                 {it.p}&nbsp;€
               </span>
             </p>
-            <p className="mt-1.5 max-w-[46ch] font-[family-name:var(--font-fume-ui)] text-[0.78rem] leading-[1.6] text-[#9c948a]">
+            <p className="mt-1.5 max-w-[46ch] font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[#9c948a]">
               {it.d}
             </p>
           </li>
@@ -188,7 +188,11 @@ export function MenuSection() {
 
         <div className="mx-auto mt-[clamp(40px,6vw,72px)] max-w-[760px] space-y-[clamp(40px,5vw,64px)]">
           {COURSES.map((c, i) => (
-            <div key={c.title} data-rise style={{ "--i": i } as React.CSSProperties}>
+            <div
+              key={c.title}
+              data-rise
+              style={{ "--i": i } as React.CSSProperties}
+            >
               <Course {...c} />
             </div>
           ))}

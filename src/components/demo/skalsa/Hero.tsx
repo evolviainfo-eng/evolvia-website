@@ -16,13 +16,16 @@ export function Hero() {
           <div className="min-w-0">
             <p
               data-rise
-              className="text-[0.75rem] uppercase tracking-[0.16em] text-[#6E6257]"
+              className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]"
             >
               Rankų darbo žvakės · liejame Vilniuje
             </p>
             <h1
-              className="mt-5 text-[clamp(2.5rem,6vw,4.25rem)] leading-[1.02] text-balance text-[#241E19]"
-              style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
+              className="mt-5 text-[clamp(2.5rem,6vw,4.625rem)] leading-[1.02] text-balance text-[#241E19]"
+              style={{
+                fontFamily: "var(--font-skalsa-display)",
+                fontWeight: 500,
+              }}
             >
               <span
                 data-line
@@ -68,7 +71,7 @@ export function Hero() {
               </a>
             </div>
 
-            <ul className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[rgba(36,30,25,0.13)] pt-5 text-[0.75rem] uppercase tracking-[0.14em] text-[#6E6257]">
+            <ul className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[rgba(36,30,25,0.13)] pt-5 text-[0.8125rem] uppercase tracking-[0.14em] text-[#6E6257]">
               {FACTS.map((f, i) => (
                 <li key={f} className="flex items-center gap-5">
                   {i > 0 && (
@@ -108,7 +111,10 @@ export function Hero() {
             <div className="min-w-0">
               <p
                 className="truncate text-[0.9375rem] leading-tight tracking-[-0.015em]"
-                style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
+                style={{
+                  fontFamily: "var(--font-skalsa-display)",
+                  fontWeight: 500,
+                }}
               >
                 {FEATURED.name}
               </p>

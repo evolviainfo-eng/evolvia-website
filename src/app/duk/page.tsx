@@ -5,6 +5,7 @@ import { Faq } from "@/components/sections/Faq";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { faqJsonLd } from "@/content/schema";
 import { faqItems } from "@/content/faq";
 
 export const metadata = pageMetadata({
@@ -14,15 +15,6 @@ export const metadata = pageMetadata({
   path: "/duk",
 });
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqItems.map((item) => ({
-    "@type": "Question",
-    name: item.q,
-    acceptedAnswer: { "@type": "Answer", text: item.a },
-  })),
-};
 
 export default function DukPage() {
   return (
@@ -30,7 +22,7 @@ export default function DukPage() {
       <JsonLd data={breadcrumbJsonLd("DUK", "/duk")} />
       <JsonLd data={faqJsonLd} />
       <Nav />
-      <main>
+      <main id="main">
         <PageHeader
           eyebrow="D.U.K."
           title="Dažni klausimai."

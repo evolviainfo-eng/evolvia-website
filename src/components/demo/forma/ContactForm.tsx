@@ -16,7 +16,7 @@ import {
    and it now has three states — resting, under the pointer, focused — so no
    field is ever dead. */
 const FIELD =
-  "mt-2 h-12 w-full min-w-0 rounded-none border-0 border-b border-[rgba(26,25,23,0.24)] bg-transparent px-0 text-[0.95rem] text-[#1A1917] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] placeholder:text-[#8A857C] hover:border-[rgba(26,25,23,0.5)] focus:border-[#1A1917]";
+  "mt-2 h-12 w-full min-w-0 rounded-none border-0 border-b border-[rgba(26,25,23,0.24)] bg-transparent px-0 text-[0.9375rem] text-[#1A1917] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] placeholder:text-[#8A857C] hover:border-[rgba(26,25,23,0.5)] focus:border-[#1A1917]";
 
 const LABEL = `block ${T_META}`;
 
@@ -39,14 +39,11 @@ export function ContactForm() {
       <div className="border-t border-[rgba(26,25,23,0.24)] pt-8">
         <p
           style={SERIF}
-          className="max-w-[20ch] text-[clamp(1.5rem,3vw,2rem)] leading-[1.15] tracking-[-0.015em] text-balance"
+          className="max-w-[20ch] text-[clamp(1.5rem,3vw,1.875rem)] leading-[1.15] tracking-[-0.015em] text-balance"
         >
           Ačiū — bet nieko neišsiuntėme.
         </p>
-        <p
-          className={`mt-4 max-w-[46ch] ${T_BODY}`}
-          style={{ color: MUTED }}
-        >
+        <p className={`mt-4 max-w-[46ch] ${T_BODY}`} style={{ color: MUTED }}>
           Tai demonstracinė svetainė, todėl užklausa niekur nekeliavo. Tikroje
           svetainėje ši forma per kelias sekundes atsidurtų studijos pašte, o
           jūs gautumėte patvirtinimą.
@@ -58,7 +55,7 @@ export function ContactForm() {
             setSent(false);
             formRef.current?.reset();
           }}
-          className="mt-7 press inline-flex h-12 items-center rounded-full border border-[rgba(26,25,23,0.24)] px-6 text-[0.9rem] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-0 active:opacity-80"
+          className="mt-7 press inline-flex h-12 items-center rounded-full border border-[rgba(26,25,23,0.24)] px-6 text-[0.9375rem] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-0 active:opacity-80"
         >
           Pildyti iš naujo
         </button>
@@ -75,7 +72,11 @@ export function ContactForm() {
     >
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="min-w-0">
-          <label className={LABEL} htmlFor="forma-vardas" style={{ color: MUTED }}>
+          <label
+            className={LABEL}
+            htmlFor="forma-vardas"
+            style={{ color: MUTED }}
+          >
             Vardas
           </label>
           <input
@@ -89,7 +90,11 @@ export function ContactForm() {
           />
         </div>
         <div className="min-w-0">
-          <label className={LABEL} htmlFor="forma-pastas" style={{ color: MUTED }}>
+          <label
+            className={LABEL}
+            htmlFor="forma-pastas"
+            style={{ color: MUTED }}
+          >
             El. paštas
           </label>
           <input
@@ -103,7 +108,11 @@ export function ContactForm() {
           />
         </div>
         <div className="min-w-0">
-          <label className={LABEL} htmlFor="forma-tipas" style={{ color: MUTED }}>
+          <label
+            className={LABEL}
+            htmlFor="forma-tipas"
+            style={{ color: MUTED }}
+          >
             Objektas
           </label>
           {/* `appearance-none` strips the native arrow along with the native
@@ -129,7 +138,11 @@ export function ContactForm() {
           </div>
         </div>
         <div className="min-w-0">
-          <label className={LABEL} htmlFor="forma-plotas" style={{ color: MUTED }}>
+          <label
+            className={LABEL}
+            htmlFor="forma-plotas"
+            style={{ color: MUTED }}
+          >
             Plotas, m²
           </label>
           <input
@@ -144,7 +157,11 @@ export function ContactForm() {
       </div>
 
       <div className="mt-6 min-w-0">
-        <label className={LABEL} htmlFor="forma-zinute" style={{ color: MUTED }}>
+        <label
+          className={LABEL}
+          htmlFor="forma-zinute"
+          style={{ color: MUTED }}
+        >
           Trumpai apie erdvę
         </label>
         <textarea
@@ -159,7 +176,7 @@ export function ContactForm() {
       <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <button
           type="submit"
-          className="press inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-[#1A1917] px-7 text-[0.92rem] text-[#F4F1EC] transition-[translate,opacity] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:opacity-90 active:translate-y-0 active:opacity-75"
+          className="press inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-[#1A1917] px-7 text-[0.9375rem] text-[#F4F1EC] transition-[translate,opacity] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:opacity-90 active:translate-y-0 active:opacity-75"
         >
           Siųsti užklausą
         </button>
