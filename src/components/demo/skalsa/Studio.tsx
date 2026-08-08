@@ -38,7 +38,7 @@ export function Studio() {
             Dirbtuvė
           </p>
           <h2
-            className="mt-4 text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.08] tracking-[-0.03em] text-balance"
+            className="mt-4 text-[clamp(1.9rem,3.4vw,2.75rem)] leading-[1.08] text-balance"
             style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
           >
             Trys žingsniai, jokių skubotų partijų.

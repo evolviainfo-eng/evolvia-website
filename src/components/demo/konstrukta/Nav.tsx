@@ -14,7 +14,7 @@ export function KonstruktaNav() {
   return (
     <nav
       aria-label="Pagrindinė navigacija"
-      className="sticky z-50 border-b border-white/[0.11] bg-[#121316]/90 backdrop-blur-md"
+      className="chrome sticky z-50"
       style={{ top: "var(--demo-bar-h)" }}
     >
       <div className={`${CONTAINER} flex h-14 items-center gap-4`}>

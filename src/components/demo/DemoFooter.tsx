@@ -15,7 +15,7 @@ export function DemoFooter({ slug }: { slug: string }) {
           <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/45">
             Demonstracinė svetainė
           </p>
-          <h2 className="mt-4 text-[clamp(1.5rem,3.2vw,2.2rem)] font-normal leading-[1.15] tracking-[-0.025em]">
+          <h2 className="mt-4 text-[clamp(1.5rem,3.2vw,2.2rem)] font-normal leading-[1.15]">
             „{current?.name}“ neegzistuoja. Tai pavyzdinis darbas.
           </h2>
           <p className="mt-4 text-[0.98rem] leading-relaxed text-white/60">
@@ -33,13 +33,13 @@ export function DemoFooter({ slug }: { slug: string }) {
         >
           <a
             href="/kontaktai"
-            className="inline-flex h-12 items-center justify-center rounded-full bg-white px-7 text-[0.95rem] font-medium text-[#0a0a0a] transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90"
+            className="press inline-flex h-12 items-center justify-center rounded-full bg-white px-7 text-[0.95rem] font-medium text-[#0a0a0a] transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90"
           >
             Noriu tokios svetainės
           </a>
           <a
             href="/darbai"
-            className="inline-flex h-12 items-center justify-center rounded-full border border-white/25 px-7 text-[0.95rem] text-white/85 transition-[translate,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-white/60"
+            className="press inline-flex h-12 items-center justify-center rounded-full border border-white/25 px-7 text-[0.95rem] text-white/85 transition-[translate,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-white/60"
           >
             Visi pavyzdžiai
           </a>

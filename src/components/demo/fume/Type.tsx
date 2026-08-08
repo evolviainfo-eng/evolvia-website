@@ -47,7 +47,7 @@ export function H2({
 }) {
   return (
     <h2
-      className={`${DISPLAY} text-balance text-[clamp(1.9rem,3.4vw,2.6rem)] font-light leading-[1.12] tracking-[-0.012em] text-[#ede6da] ${className}`}
+      className={`${DISPLAY} text-balance text-[clamp(1.9rem,3.4vw,2.6rem)] font-light leading-[1.12] text-[#ede6da] ${className}`}
     >
       {children}
     </h2>

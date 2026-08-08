@@ -79,7 +79,7 @@ export function Hero() {
             </p>
 
             {/* Line-level, never letter-level. */}
-            <h1 className="mt-6 font-normal tracking-[-0.04em] text-text [font-size:clamp(2.6rem,5.4vw,4.6rem)] [line-height:1.04]">
+            <h1 className="mt-6 font-normal text-text [font-size:clamp(2.6rem,5.4vw,4.6rem)] [line-height:1.04]">
               <Line i={2}>Tavo konkurentai</Line>
               <Line i={3}>jau matomi.</Line>
               <Line i={4}>O tu?</Line>

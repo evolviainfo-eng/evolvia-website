@@ -43,6 +43,19 @@ Two easing curves and five durations, defined as CSS custom properties in
 `globals.css`. Nothing anywhere writes a raw `cubic-bezier()` or a raw
 millisecond value.
 
+**The two curves are springs, not beziers.** `--e-out` (damping 1.0) and
+`--e-mass` (damping 0.8) are sampled off a damped harmonic oscillator and
+emitted as CSS `linear()`, so the whole site gets real spring shape without a
+line of JavaScript — which is what keeps server components from having to
+become client components just to feel alive.
+
+A `linear()` curve has a fixed duration, so it cannot inherit a finger's
+velocity or be re-targeted mid-flight. **Anything a user can grab uses a real
+JS spring instead**: `lib/spring.ts` holds the physics (Apple's momentum
+projection, the presets, rubber-banding) and `lib/useSheet.ts` is the hook both
+draggable surfaces share — the cart drawer on X, the mobile menu on Y. Adding a
+third grabbable surface means extending that hook, not writing new physics.
+
 Scroll reveals go through one primitive set — `data-rise`, `data-line`,
 `data-wipe`, `data-sweep`, `data-settle` — watched by a single observer in
 `components/ui/Choreo.tsx`. The hidden state is gated behind
@@ -59,6 +72,31 @@ it, and the content stays blank forever. Clip a child instead — that is what
 as `transform`. A transition list must name `translate`;
 `transition-[transform,…]` next to a `translate-*` utility animates nothing.
 The named `transition-transform` utility is fine — it covers all four.
+
+**A custom property only animates if it is `@property`-registered.**
+`--glass-blur` and `--glass-sat` are, which is what lets the header's material
+thicken into place instead of jumping in one frame.
+
+**Do not put `isolation: isolate` on an element containing a
+`backdrop-filter`.** Isolation creates a backdrop root, and a backdrop root
+means the filter samples only what is *inside* that element — so the glass
+silently stops blurring. It is tempting when you want a negative `z-index`
+layer; use the existing stacking context instead.
+
+## Typography
+
+Tracking is a function of size, not a value anyone picks per element:
+`letter-spacing: calc(1.14px - 0.056em)` on every heading. The px term is
+constant and the em term scales with the font, so the ratio shifts
+continuously — about `+0.011em` at 17px, `−0.031em` at 45px, `−0.042em` at
+80px. An `em` value alone cannot do this: em keeps the gap *proportionally
+identical* at every size, and proportionally identical is exactly what looks
+too loose on large text.
+
+Leading is the one thing still solved per class, because it has to be solved
+against that class's own `clamp()` — and the middle terms are fitted through
+the viewport widths where the font-size clamp changes slope, or the ramp pins
+to a bound mid-viewport instead of interpolating.
 
 ## Before shipping
 

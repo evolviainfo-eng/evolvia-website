@@ -13,14 +13,14 @@ export function CtaBand() {
               <p className="text-[0.8rem] font-medium uppercase tracking-[0.14em] text-ink-fg/50">
                 Nemokamas eskizas
               </p>
-              <h2 className="mt-4 max-w-[16ch] text-balance font-normal leading-[1.08] tracking-[-0.03em] [font-size:clamp(2.1rem,4.4vw,3.4rem)]">
+              <h2 className="mt-4 max-w-[16ch] text-balance font-normal leading-[1.08] [font-size:clamp(2.1rem,4.4vw,3.4rem)]">
                 Pamatykite savo svetainę gyvai — dar prieš mokėdami.
               </h2>
             </div>
             <div className="flex shrink-0 flex-col items-start gap-4 md:items-end">
               <a
                 href="/kontaktai"
-                className="inline-flex h-[52px] items-center justify-center whitespace-nowrap rounded-pill bg-ink-fg px-8 text-base font-medium leading-none text-ink-bg transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0"
+                className="press inline-flex h-[52px] items-center justify-center whitespace-nowrap rounded-pill bg-ink-fg px-8 text-base font-medium leading-none text-ink-bg transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0"
               >
                 Gauti nemokamą eskizą
               </a>

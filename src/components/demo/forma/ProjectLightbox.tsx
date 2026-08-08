@@ -412,7 +412,7 @@ export function ProjectLightbox({
               <h2
                 id={titleId}
                 style={SERIF}
-                className="text-[clamp(1.5rem,3.2vw,2.1rem)] font-normal leading-[1.1] tracking-[-0.015em] text-balance"
+                className="text-[clamp(1.5rem,3.2vw,2.1rem)] font-normal leading-[1.1] text-balance"
               >
                 {project.title}
               </h2>

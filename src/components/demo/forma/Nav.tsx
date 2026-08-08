@@ -1,4 +1,4 @@
-import { HAIR, INK, MUTED } from "@/components/demo/forma/tokens";
+import { INK, MUTED } from "@/components/demo/forma/tokens";
 
 const LINKS = [
   { href: "#projektai", label: "Projektai", always: true },
@@ -16,12 +16,8 @@ const LINKS = [
 export function FormaNav() {
   return (
     <header
-      className="sticky z-40 border-b backdrop-blur-[10px]"
-      style={{
-        top: "var(--demo-bar-h)",
-        borderColor: HAIR,
-        background: "rgba(244,241,236,0.86)",
-      }}
+      className="chrome sticky z-40"
+      style={{ top: "var(--demo-bar-h)" }}
     >
       <div className="mx-auto flex h-[56px] w-full max-w-[1240px] items-center justify-between gap-4 px-5 sm:h-[68px] sm:px-8">
         <a
@@ -65,7 +61,7 @@ export function FormaNav() {
           ))}
           <a
             href="#kontaktai"
-            className="ml-1 inline-flex h-9 shrink-0 items-center rounded-full border border-[rgba(26,25,23,0.28)] px-4 text-[0.82rem] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-0 active:opacity-80"
+            className="ml-1 press inline-flex h-9 shrink-0 items-center rounded-full border border-[rgba(26,25,23,0.28)] px-4 text-[0.82rem] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-0 active:opacity-80"
           >
             Kontaktai
           </a>

@@ -199,7 +199,7 @@ export function CartDrawer() {
               type="button"
               onClick={close}
               aria-label="Uždaryti krepšelį"
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[#241E19] transition-[background-color,border-color,rotate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:rotate-90 hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
+              className="press inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[#241E19] transition-[background-color,border-color,rotate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:rotate-90 hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
             >
               <svg
                 width="11"
@@ -278,7 +278,7 @@ export function CartDrawer() {
               <a
                 href="#katalogas"
                 onClick={close}
-                className="group mt-7 inline-flex h-11 w-fit items-center gap-2.5 rounded-full bg-[#241E19] pl-6 pr-5 text-[0.875rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-0"
+                className="group mt-7 press inline-flex h-11 w-fit items-center gap-2.5 rounded-full bg-[#241E19] pl-6 pr-5 text-[0.875rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-0"
               >
                 Žiūrėti katalogą
                 <svg
@@ -376,7 +376,7 @@ export function CartDrawer() {
                           type="button"
                           onClick={() => remove(line.id)}
                           aria-label={`Pašalinti „${item.name}“ iš krepšelio`}
-                          className="-mr-1 -mt-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[#6E6257] transition-[background-color,color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:bg-[#F1EAE0] hover:text-[#B4562F]"
+                          className="-mr-1 -mt-1 press inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[#6E6257] transition-[background-color,color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:bg-[#F1EAE0] hover:text-[#B4562F]"
                         >
                           <svg
                             width="9"
@@ -489,7 +489,7 @@ export function CartDrawer() {
             <div className="py-10">
               <span
                 aria-hidden="true"
-                className="sk-stamp inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#B4562F] text-[#FAF6F0]"
+                className="sk-stamp press inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#B4562F] text-[#FAF6F0]"
               >
                 <Check size={18} />
               </span>
@@ -572,7 +572,7 @@ export function CartDrawer() {
             <button
               type="button"
               onClick={() => setStep("checkout")}
-              className="group mt-5 inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
+              className="group mt-5 press inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
             >
               Pereiti prie užsakymo
               <svg
@@ -608,14 +608,14 @@ export function CartDrawer() {
             <button
               type="submit"
               form="skalsa-order"
-              className="mt-4 inline-flex h-12 w-full items-center justify-center rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
+              className="mt-4 press inline-flex h-12 w-full items-center justify-center rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
             >
               Patvirtinti užsakymą
             </button>
             <button
               type="button"
               onClick={() => setStep("cart")}
-              className="mt-2.5 inline-flex h-11 w-full items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[0.875rem] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
+              className="mt-2.5 press inline-flex h-11 w-full items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[0.875rem] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
             >
               Grįžti į krepšelį
             </button>
@@ -627,14 +627,14 @@ export function CartDrawer() {
             <button
               type="button"
               onClick={() => setStep("cart")}
-              className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
+              className="press inline-flex h-12 w-full items-center justify-center rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
             >
               Grįžti į krepšelį
             </button>
             <button
               type="button"
               onClick={close}
-              className="mt-2.5 inline-flex h-11 w-full items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[0.875rem] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
+              className="mt-2.5 press inline-flex h-11 w-full items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[0.875rem] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
             >
               Tęsti apsipirkimą
             </button>

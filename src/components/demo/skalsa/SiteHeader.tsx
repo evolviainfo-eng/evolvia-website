@@ -56,10 +56,10 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky z-[90] border-b bg-[#FAF6F0]/92 backdrop-blur-[10px] transition-[border-color,box-shadow] duration-[var(--d-ui)] ease-[var(--e-out)] ${
-        stuck
-          ? "border-[rgba(36,30,25,0.13)] shadow-[0_10px_30px_-24px_rgba(36,30,25,0.7)]"
-          : "border-transparent shadow-none"
+      /* The separation is the scroll edge and a shadow, not a rule — the
+         `.chrome` fade does the work the border used to do. */
+      className={`chrome sticky z-[90] transition-[box-shadow] duration-[var(--d-ui)] ease-[var(--e-out)] ${
+        stuck ? "shadow-[0_10px_30px_-24px_rgba(36,30,25,0.7)]" : "shadow-none"
       }`}
       style={{ top: "var(--demo-bar-h)" }}
     >
@@ -104,7 +104,7 @@ export function SiteHeader() {
                 ? `Atidaryti krepšelį — prekių: ${count}`
                 : "Atidaryti krepšelį — tuščias"
             }
-            className="group inline-flex h-10 items-center gap-2.5 rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] pl-3.5 pr-2.5 text-[0.875rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0] active:translate-y-0"
+            className="group press inline-flex h-10 items-center gap-2.5 rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] pl-3.5 pr-2.5 text-[0.875rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0] active:translate-y-0"
           >
             <Bag />
             <span className="hidden sm:inline">Krepšelis</span>

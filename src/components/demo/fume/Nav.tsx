@@ -59,13 +59,12 @@ export function Nav() {
   return (
     <nav
       aria-label="Pagrindinė navigacija"
-      className={`sticky z-50 border-b transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] ${
-        lifted ? "bg-[rgba(12,11,10,0.86)] backdrop-blur-md" : "bg-transparent"
+      /* The material arrives on lift, same as the site header: at the top of
+         a demo there is nothing behind the bar worth blurring. */
+      className={`sticky z-50 transition-opacity duration-[var(--d-ui)] ease-[var(--e-out)] ${
+        lifted ? "chrome" : "bg-transparent"
       }`}
-      style={{
-        top: "var(--demo-bar-h)",
-        borderColor: lifted ? HAIRLINE : "transparent",
-      }}
+      style={{ top: "var(--demo-bar-h)" }}
     >
       <div className="mx-auto flex h-[58px] max-w-[1240px] items-center gap-4 px-5 sm:h-[66px] sm:px-8">
         <a

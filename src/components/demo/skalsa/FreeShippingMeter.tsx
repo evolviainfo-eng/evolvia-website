@@ -36,7 +36,7 @@ export function FreeShippingMeter() {
         <button
           type="button"
           onClick={openCart}
-          className="group inline-flex h-11 shrink-0 items-center gap-2.5 rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] pl-6 pr-5 text-[0.875rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[#241E19] hover:bg-[#241E19] hover:text-[#FAF6F0] active:translate-y-0"
+          className="group press inline-flex h-11 shrink-0 items-center gap-2.5 rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] pl-6 pr-5 text-[0.875rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[#241E19] hover:bg-[#241E19] hover:text-[#FAF6F0] active:translate-y-0"
         >
           {count === 0 ? "Atidaryti krepšelį" : "Peržiūrėti krepšelį"}
           <svg

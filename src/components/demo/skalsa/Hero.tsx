@@ -21,7 +21,7 @@ export function Hero() {
               Rankų darbo žvakės · liejame Vilniuje
             </p>
             <h1
-              className="mt-5 text-[clamp(2.5rem,6vw,4.25rem)] leading-[1.02] tracking-[-0.035em] text-balance text-[#241E19]"
+              className="mt-5 text-[clamp(2.5rem,6vw,4.25rem)] leading-[1.02] text-balance text-[#241E19]"
               style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
             >
               <span
@@ -55,14 +55,14 @@ export function Hero() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
                 href="#katalogas"
-                className="group inline-flex h-12 items-center gap-2.5 rounded-full bg-[#241E19] pl-7 pr-6 text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#3A3129] active:translate-y-0"
+                className="group press inline-flex h-12 items-center gap-2.5 rounded-full bg-[#241E19] pl-7 pr-6 text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#3A3129] active:translate-y-0"
               >
                 Apsipirkti
                 <Arrow />
               </a>
               <a
                 href="#dirbtuve"
-                className="inline-flex h-12 items-center rounded-full border border-[rgba(36,30,25,0.13)] px-7 text-[0.9375rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0] active:translate-y-0"
+                className="press inline-flex h-12 items-center rounded-full border border-[rgba(36,30,25,0.13)] px-7 text-[0.9375rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0] active:translate-y-0"
               >
                 Kaip liejame
               </a>

@@ -96,7 +96,7 @@ function PanelCopy({ i }: { i: number }) {
   return (
     <div className="min-w-0">
       <span className={cn(caps, "block text-text-muted")}>0{i + 1}</span>
-      <h3 className="mt-4 text-[clamp(1.5rem,2.1vw,1.9rem)] font-normal leading-[1.15] tracking-[-0.03em] text-text">
+      <h3 className="mt-4 text-[clamp(1.5rem,2.1vw,1.9rem)] font-normal leading-[1.15] text-text">
         {s.title}
       </h3>
       <p className="t-body mt-4 max-w-[34ch] text-[1rem]">{s.body}</p>

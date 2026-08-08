@@ -42,7 +42,7 @@ export function Hero() {
           <p className={`${T_MICRO} tracking-[0.22em] text-[#9A9791]`}>
             Generalinis rangovas · Kaunas
           </p>
-          <h1 className="mt-6 text-[clamp(2.35rem,6vw,4.4rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-[#E7E5E1]">
+          <h1 className="mt-6 text-[clamp(2.35rem,6vw,4.4rem)] font-semibold leading-[0.98] text-[#E7E5E1]">
             Statome tai,
             <br />
             kas išlieka.

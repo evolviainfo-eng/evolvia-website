@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+/* A custom property can only be animated if the browser knows its type.
+   Unregistered, `--glass-blur` is just a string and jumps from 0px to 20px in
+   one frame; registered, it interpolates — which is what lets the header's
+   material genuinely thicken into place instead of cross-fading. */
+@property --glass-blur {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+@property --glass-sat {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
 /* ─────────────────────────────────────────────────────────────
    Evolvia — design tokens (single source of truth)
    Monochrome only: black / white / grays. Zero color, ever.
@@ -8,13 +23,13 @@
 :root {
   color-scheme: light;
 
-  --bg: #ffffff;          /* page background                  */
-  --surface-2: #f5f5f7;   /* alternating section bands        */
-  --surface: #ffffff;     /* raised cards / panels            */
-  --text: #1d1d1f;        /* primary text                     */
-  --text-muted: #6e6e73;  /* secondary text, captions         */
-  --border: #d2d2d7;      /* hairlines                        */
-  --accent: #0a0a0a;      /* primary CTA fill (auto-contrast) */
+  --bg: #ffffff; /* page background                  */
+  --surface-2: #f5f5f7; /* alternating section bands        */
+  --surface: #ffffff; /* raised cards / panels            */
+  --text: #1d1d1f; /* primary text                     */
+  --text-muted: #6e6e73; /* secondary text, captions         */
+  --border: #d2d2d7; /* hairlines                        */
+  --accent: #0a0a0a; /* primary CTA fill (auto-contrast) */
   --accent-text: #ffffff; /* text on the accent fill          */
   --aura: rgba(0, 0, 0, 0.04); /* hero depth wash             */
 
@@ -26,7 +41,8 @@
   --radius-pill: 980px;
 
   /* Live font stack: real SF Pro on Apple devices, self-hosted Inter elsewhere */
-  --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+  --font-stack:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
     var(--font-inter), system-ui, sans-serif;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -42,14 +58,100 @@
                and settles — reads as something heavy being moved.
                Reserved for large travel (overlays, drawers, pins).
      ─────────────────────────────────────────────────────────── */
-  --e-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --e-mass: cubic-bezier(0.4, 0, 0.1, 1);
+  /* These are SPRINGS, not bezier approximations of springs.
+     Sampled from a damped harmonic oscillator and emitted as `linear()`, so
+     the shape is the real physics — and it costs no JavaScript, which means
+     server components stay server components instead of every button becoming
+     a client component just to feel alive.
 
-  --d-tap: 120ms;  /* pointer response — under 150ms reads instant */
-  --d-ui: 260ms;   /* hovers, toggles, small state changes         */
-  --d-el: 520ms;   /* one element entering                          */
+     Apple parameterises springs as (damping ratio, response) rather than
+     mass/stiffness/damping, and the two below are its two defaults:
+
+     --e-out   damping 1.0 — critically damped, no overshoot. The default for
+               everything, because overshoot on something that merely appeared
+               feels wrong.
+     --e-mass  damping 0.8 — overshoots to 1.015 and settles back. Only for
+               large travel that reads as momentum: overlays, drawers, pins.
+
+     A gesture still needs a real JS spring: `linear()` has a fixed duration,
+     so it cannot inherit a finger's velocity or be re-targeted mid-flight.
+     Anything grabbable uses framer springs instead — see
+     components/demo/skalsa/useSheetGesture.ts. */
+  --e-out: linear(
+    0,
+    0.0259,
+    0.0885,
+    0.1703,
+    0.26,
+    0.3502,
+    0.4364,
+    0.516,
+    0.5878,
+    0.6513,
+    0.7068,
+    0.7547,
+    0.7957,
+    0.8305,
+    0.8598,
+    0.8844,
+    0.905,
+    0.9221,
+    0.9363,
+    0.948,
+    0.9576,
+    0.9655,
+    0.972,
+    0.9773,
+    0.9816,
+    0.9851,
+    0.988,
+    0.9903,
+    0.9922,
+    0.9937,
+    1
+  );
+  --e-mass: linear(
+    0,
+    0.0392,
+    0.1329,
+    0.2535,
+    0.3817,
+    0.5054,
+    0.6174,
+    0.714,
+    0.7941,
+    0.8584,
+    0.9082,
+    0.9454,
+    0.9723,
+    0.9909,
+    1.0029,
+    1.0101,
+    1.0138,
+    1.0151,
+    1.0148,
+    1.0135,
+    1.0118,
+    1.0098,
+    1.0079,
+    1.0062,
+    1.0047,
+    1.0034,
+    1.0024,
+    1.0016,
+    1.0009,
+    1.0005,
+    1
+  );
+
+  /* Kept for the few places that want a plain, non-physical ramp. */
+  --e-linear: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --d-tap: 120ms; /* pointer response — under 150ms reads instant */
+  --d-ui: 260ms; /* hovers, toggles, small state changes         */
+  --d-el: 520ms; /* one element entering                          */
   --d-gesture: 820ms; /* a whole section arriving as one gesture    */
-  --d-scene: 1200ms;  /* hero / full-screen scene                   */
+  --d-scene: 1200ms; /* hero / full-screen scene                   */
 
   /* Stagger step inside a gesture. One value, used everywhere. */
   --d-step: 70ms;
@@ -66,7 +168,8 @@
   --glass-bg: rgba(255, 255, 255, 0.78);
   --glass-border: rgba(0, 0, 0, 0.07);
   --glass-shine: rgba(255, 255, 255, 0.9);
-  --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 10px 30px rgba(0, 0, 0, 0.08);
+  --glass-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04), 0 10px 30px rgba(0, 0, 0, 0.08);
   --glass-blur: 20px;
 }
 
@@ -87,7 +190,7 @@
   --border: rgba(255, 255, 255, 0.12);
   --accent: #ffffff;
   --accent-text: #0a0a0a;
-  --aura: rgba(255, 255, 255, 0.10);
+  --aura: rgba(255, 255, 255, 0.1);
 
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.5);
   --shadow-frame: 0 30px 70px rgba(0, 0, 0, 0.6);
@@ -138,12 +241,99 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-feature-settings: "kern", "liga", "calt";
-    transition: background-color 0.5s var(--ease), color 0.5s var(--ease);
+    /* SF Pro ships two optical designs — Text below 20pt, Display above — and
+       switches on real metric differences, not just weight. `auto` lets the
+       browser pick per element instead of stretching one design across the
+       whole scale. Inter carries an optical axis too. */
+    font-optical-sizing: auto;
+    /* No faux bold. If a weight is missing from the loaded face the browser
+       would smear the nearest one wider, which on a 300-weight wordmark next
+       to real SF Pro is instantly visible. Better a weight that does not
+       change than one that changes badly. */
+    font-synthesis-weight: none;
+    transition:
+      background-color 0.5s var(--ease),
+      color 0.5s var(--ease);
+  }
+
+  /* ── Tracking is a function of size, not a value you pick ──────
+     Apple's rule: large text needs NEGATIVE tracking (letters read as further
+     apart the bigger they get) and small text needs slightly positive. So a
+     single letter-spacing is wrong somewhere by definition — and an `em`
+     value, which is what a design system usually reaches for, is wrong
+     everywhere, because em keeps the gap *proportionally identical* at 17px
+     and at 80px. Proportionally identical is exactly the thing that looks
+     wrong.
+
+     This is the whole rule as one expression. The px term is constant, the em
+     term scales with the font, so the ratio between them shifts continuously
+     with size:
+
+        17px  →  +0.011em   body: a hair open, which small text wants
+        45px  →  −0.031em   a heading tightening up
+        80px  →  −0.042em   display: properly closed
+
+     No breakpoints, no per-size table, nothing to keep in sync. Headings that
+     genuinely want something else still override it with a utility — this is
+     the default, not a cage. */
+  h1,
+  h2,
+  h3,
+  h4,
+  .t-display,
+  .t-h2,
+  .t-h3 {
+    letter-spacing: calc(1.14px - 0.056em);
+    font-optical-sizing: auto;
+    /* Balanced wrapping on short headings: no orphan word on its own line.
+       Browsers cap it around six lines, which is exactly the range headings
+       live in and body copy does not. */
+    text-wrap: balance;
   }
 
   ::selection {
     background: var(--accent);
     color: var(--accent-text);
+  }
+
+  /* ── Press ────────────────────────────────────────────────────
+     "The moment lag appears, the feeling of directness falls off a
+     cliff." So every control answers the finger going DOWN, not the
+     click coming back up — under 120ms, which reads as instant.
+
+     It lives in @layer base on the element selectors themselves, so
+     it is a default rather than 30 files' worth of utility classes,
+     and any Tailwind `active:` utility still outranks it. `scale` is
+     its own property in Tailwind v4, so this composes with the hover
+     lifts (which use `translate`) instead of overwriting them.
+
+     --press is per-control: a small pill can take 0.97, but the same
+     3% on a full-width card is a lurch, so large surfaces set their
+     own value. */
+  button,
+  summary,
+  [role="button"],
+  .press {
+    --press: 0.97;
+    transition: scale var(--d-tap) var(--e-out);
+    -webkit-tap-highlight-color: transparent;
+  }
+  button:active,
+  summary:active,
+  [role="button"]:active,
+  .press:active {
+    scale: var(--press);
+  }
+  /* A press is a physical response, not a decorative one — but at reduced
+     motion even 3% of scale is movement, so it becomes a tonal answer. */
+  @media (prefers-reduced-motion: reduce) {
+    button:active,
+    summary:active,
+    [role="button"]:active,
+    .press:active {
+      scale: 1;
+      opacity: 0.7;
+    }
   }
 
   *:focus-visible {
@@ -156,7 +346,9 @@
   section,
   header > div,
   footer {
-    transition: background-color 0.5s var(--ease), border-color 0.5s var(--ease),
+    transition:
+      background-color 0.5s var(--ease),
+      border-color 0.5s var(--ease),
       color 0.5s var(--ease);
   }
 
@@ -180,17 +372,32 @@
 @layer components {
   /* Light, sleek type to match the redesigned (thin) logo.
      Hierarchy comes from size + tracking, not heavy weight. */
+  /* Tracking and leading are SIZE-SPECIFIC, and these two sizes are fluid —
+     so the tracking has to be fluid with them. An `em` value would not do it:
+     em scales with the font, which keeps the letter gaps proportionally
+     identical at 45px and at 80px. But identical proportion is exactly what
+     looks wrong, because letters read as further apart the larger they get.
+
+     So both ramps run on the same viewport range as the size itself: as the
+     display grows 2.8rem → 5rem the tracking tightens −0.026em → −0.042em and
+     the leading tightens 1.11 → 1.04. The em bounds keep the endpoints exact;
+     the px+vw middle term does the interpolating. */
   .t-display {
     font-size: clamp(2.8rem, 6vw, 5rem);
     font-weight: 400;
-    line-height: 1.06;
-    letter-spacing: -0.035em;
+    /* Tracking comes from the sitewide law in @layer base. Leading does not:
+       it has to be solved against this element's own clamp, whose slope
+       changes at 746px and 1333px. Ratios run 1.107 at the 44.8px floor to
+       1.040 at the 80px ceiling — tight leading is what large text wants, and
+       a single unitless value cannot express that across a fluid size. */
+    line-height: clamp(3.1rem, 0.43rem + 5.72vw, 5.2rem);
   }
   .t-h2 {
     font-size: clamp(2rem, 4vw, 3.2rem);
     font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    /* Same construction, solved at 800px and 1280px: 1.14 at 32px tightening
+       to 1.08 at 51.2px. */
+    line-height: clamp(2.28rem, 0.33rem + 3.92vw, 3.46rem);
   }
   .t-h3 {
     font-size: 1.4rem;
@@ -198,6 +405,8 @@
     line-height: 1.25;
     letter-spacing: -0.015em;
   }
+  /* Small, all-caps, and widely tracked — the one place POSITIVE tracking is
+     correct, because caps have no ascender/descender rhythm to space them. */
   .t-body {
     font-size: clamp(1.0625rem, 0.9rem + 0.5vw, 1.1875rem);
     font-weight: 400;
@@ -212,22 +421,68 @@
     color: var(--text-muted);
   }
 
-  /* The floating header's pane.
-     `backdrop-filter` is what makes it glass rather than paint — the page
-     genuinely blurs and saturates through it. Where the browser cannot do
-     that, the @supports block below swaps in a near-opaque panel: still
-     legible, just not see-through. Never leave it translucent without the
-     blur, or text collides with whatever scrolls underneath. */
+  /* The floating header's material.
+
+     It is painted on a ::before layer rather than on the element, for one
+     reason: a material should ARRIVE — blur radius and scale ramping together
+     — not cross-fade like paint. But scaling the capsule itself would scale
+     the wordmark and the buttons with it, so the logo would pulse on every
+     scroll. Separating the material from its contents lets the glass thicken
+     into place while the content never moves a pixel.
+
+     Both --glass-blur and --glass-sat are @property-registered above, which is
+     the whole trick: an unregistered custom property is just a string and
+     jumps in one frame. Registered, they interpolate, so `blur(0 → 20px)` and
+     `saturate(1 → 1.8)` are a real ramp. Saturation has to ramp too — at
+     blur(0) a leftover saturate(180%) still visibly tints the hero.
+
+     Deliberately no `isolation: isolate` here, tempting as it is for the
+     negative z-index: isolation creates a backdrop root, and a backdrop root
+     means backdrop-filter samples only what is inside the header — which is
+     nothing, so the glass would silently stop blurring. The fixed header's own
+     stacking context is enough to keep the layer in place. */
   .glass {
+    position: relative;
+  }
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
     background: var(--glass-bg);
-    border-color: var(--glass-border);
-    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      var(--glass-shadow),
+      inset 0 1px 0 var(--glass-shine);
+    --glass-blur: 20px;
+    --glass-sat: 1.8;
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    transition:
+      opacity var(--d-ui) var(--e-out),
+      scale var(--d-el) var(--e-mass),
+      --glass-blur var(--d-el) var(--e-out),
+      --glass-sat var(--d-el) var(--e-out);
+  }
+  /* At the top of the page there is nothing behind the header worth blurring,
+     so the material is not there at all — and it is scaled a hair down, so
+     that when it arrives it grows into its frame. */
+  .glass[data-lit="false"]::before {
+    opacity: 0;
+    scale: 0.985;
+    --glass-blur: 0px;
+    --glass-sat: 1;
+    box-shadow: none;
   }
 
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .glass {
+  /* Where the browser cannot blur a backdrop at all, a near-opaque panel takes
+     over: still legible, just not see-through. Never leave it translucent
+     without the blur — text would collide with whatever scrolls underneath. */
+  @supports not (
+    (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+  ) {
+    .glass::before {
       background: color-mix(in srgb, var(--bg) 94%, transparent);
     }
   }
@@ -237,22 +492,96 @@
      comes up. Dropping only the blur would be the worst of both: still
      see-through, but now with the page legible straight through the text. */
   @media (prefers-reduced-transparency: reduce) {
-    .glass {
+    .glass::before {
       background: color-mix(in srgb, var(--bg) 96%, transparent);
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
     }
   }
 
-  /* And at higher contrast the material stops being the point: a near-solid
-     panel with an edge you can actually see. */
+  /* And at higher contrast the material stops being the point: a solid panel
+     with an edge you can actually see. */
   @media (prefers-contrast: more) {
-    .glass {
+    .glass::before {
       background: var(--bg);
       border-color: var(--text);
       box-shadow: none;
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
+    }
+  }
+
+  /* Scale is travel, and travel is what reduced motion asks us to drop. The
+     material still arrives — it just arrives by opacity alone. */
+  @media (prefers-reduced-motion: reduce) {
+    .glass[data-lit="false"]::before {
+      scale: 1;
+    }
+  }
+
+  /* ── Demo chrome ──────────────────────────────────────────────
+     The sticky header inside a demo site. Same material thinking as the
+     Evolvia header, two deliberate differences:
+
+     1. It spans the full width, so it does not get a 1px divider. A hard rule
+        announces "a bar ends here"; what actually happens is that content
+        passes underneath, so the edge is a short fade instead — content
+        dissolves into the chrome rather than being cut off by it. This is the
+        one place a border was doing a material's job.
+
+     2. Colours come from the demo's own tokens. DemoShell already re-points
+        --bg and --text per demo, so one class dresses four palettes and none
+        of them can drift.
+
+     Sized down from the site header on purpose: a smaller surface should read
+     as thinner glass — less blur, a shallower fade. */
+  .chrome {
+    position: relative;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.6);
+    backdrop-filter: blur(14px) saturate(1.6);
+  }
+  .chrome::after {
+    content: "";
+    position: absolute;
+    inset: 100% 0 auto 0;
+    height: 26px;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--bg) 72%, transparent),
+      transparent
+    );
+  }
+  @supports not (
+    (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+  ) {
+    .chrome {
+      background: var(--bg);
+    }
+  }
+  /* Same two preferences as the header. Without this the demos would keep
+     their translucency after the site header had given it up — and a demo is
+     the thing a visitor spends the longest looking at. */
+  @media (prefers-reduced-transparency: reduce) {
+    .chrome {
+      background: var(--bg);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+    .chrome::after {
+      display: none;
+    }
+  }
+  @media (prefers-contrast: more) {
+    .chrome {
+      background: var(--bg);
+      border-bottom: 1px solid var(--text);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+    .chrome::after {
+      display: none;
     }
   }
 

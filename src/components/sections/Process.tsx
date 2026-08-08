@@ -58,7 +58,7 @@ export function Process() {
                       <span className="shrink-0 text-[0.78rem] tabular-nums tracking-[0.1em] text-ink-fg/55">
                         {no}
                       </span>
-                      <h3 className="min-w-0 text-[clamp(1.6rem,3.1vw,2.3rem)] leading-[1.1] tracking-[-0.025em]">
+                      <h3 className="min-w-0 text-[clamp(1.6rem,3.1vw,2.3rem)] leading-[1.1]">
                         {step.title}
                       </h3>
                     </div>
@@ -101,7 +101,7 @@ export function Process() {
                     <span className="shrink-0 text-[0.78rem] tabular-nums tracking-[0.1em] text-text-muted">
                       {no}
                     </span>
-                    <h3 className="min-w-0 text-[clamp(1.2rem,2vw,1.5rem)] leading-[1.2] tracking-[-0.02em] text-text">
+                    <h3 className="min-w-0 text-[clamp(1.2rem,2vw,1.5rem)] leading-[1.2] text-text">
                       {step.title}
                     </h3>
                   </div>

@@ -225,7 +225,7 @@ export default function Page() {
                 </p>
                 <h1
                   style={SERIF}
-                  className="mt-6 text-[clamp(2.6rem,7.2vw,4.4rem)] font-normal leading-[1.05] tracking-[-0.025em]"
+                  className="mt-6 text-[clamp(2.6rem,7.2vw,4.4rem)] font-normal leading-[1.05]"
                 >
                   {HERO_LINES.map((line, i) => (
                     <span

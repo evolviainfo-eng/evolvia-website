@@ -54,7 +54,7 @@ export function SectionHead({
         <span aria-hidden className="h-px min-w-0 flex-1 bg-white/[0.11]" />
       </div>
 
-      <h2 className="mt-7 max-w-[22ch] text-balance text-[clamp(1.7rem,3.4vw,2.35rem)] font-semibold leading-[1.08] tracking-[-0.028em] text-[#E7E5E1]">
+      <h2 className="mt-7 max-w-[22ch] text-balance text-[clamp(1.7rem,3.4vw,2.35rem)] font-semibold leading-[1.08] text-[#E7E5E1]">
         {title}
       </h2>
 

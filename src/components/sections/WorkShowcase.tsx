@@ -78,7 +78,7 @@ export function WorkShowcase() {
                     href={demo.href}
                     target="_blank"
                     rel="noopener"
-                    className="mt-7 inline-flex h-12 w-fit items-center gap-2.5 rounded-pill bg-accent px-6 text-[0.95rem] font-medium text-accent-text transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0"
+                    className="mt-7 press inline-flex h-12 w-fit items-center gap-2.5 rounded-pill bg-accent px-6 text-[0.95rem] font-medium text-accent-text transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0"
                   >
                     Atidaryti demo svetainę
                     <svg

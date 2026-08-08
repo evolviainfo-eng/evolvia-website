@@ -3,8 +3,12 @@ import type { AnchorHTMLAttributes, ReactNode } from "react";
 
 type Variant = "primary" | "secondary";
 
+/* `press` is the pointer-DOWN response (globals.css). The base rule there
+   covers real <button> elements; this is an <a>, so it opts in by name.
+   The lift drops on press as well — a control that is lifted AND pushed reads
+   as neither. */
 const base =
-  "inline-flex items-center justify-center rounded-pill font-medium " +
+  "press inline-flex items-center justify-center rounded-pill font-medium " +
   "text-[0.95rem] leading-none whitespace-nowrap select-none " +
   "transition-[translate,background-color,color,border-color,opacity] " +
   "duration-[var(--d-ui)] ease-[var(--e-out)] will-change-transform " +

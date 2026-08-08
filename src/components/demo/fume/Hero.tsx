@@ -97,7 +97,7 @@ export function Hero() {
               under the bottom edge. */}
           <h1
             data-line
-            className="-mb-[0.08em] overflow-hidden pb-[0.08em] font-[family-name:var(--font-fume-display)] text-[clamp(3.4rem,10vw,4.5rem)] font-light leading-[1.02] tracking-[-0.012em] text-[#ede6da]"
+            className="-mb-[0.08em] overflow-hidden pb-[0.08em] font-[family-name:var(--font-fume-display)] text-[clamp(3.4rem,10vw,4.5rem)] font-light leading-[1.02] text-[#ede6da]"
           >
             <span>Fumé</span>
           </h1>
