@@ -47,9 +47,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/brand/evolvia-dark.jpg",
-        width: 2400,
-        height: 1500,
+        url: "/brand/lockup-dark.png",
+        width: 1600,
+        height: 900,
         alt: "evolvia. — web design",
       },
     ],
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: "Evolvia — Web dizainas Lietuvoje",
     description:
       "Svetainės, kurios atrodo brangiai. Pamatote svetainę gyvai — tik tada mokate.",
-    images: ["/brand/evolvia-dark.jpg"],
+    images: ["/brand/lockup-dark.png"],
   },
 };
 

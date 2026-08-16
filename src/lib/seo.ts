@@ -49,9 +49,9 @@ export function pageMetadata({
       type: "website",
       images: [
         {
-          url: "/brand/evolvia-dark.jpg",
-          width: 2400,
-          height: 1500,
+          url: "/brand/lockup-dark.png",
+          width: 1600,
+          height: 900,
           alt: "evolvia. — web design",
         },
       ],
@@ -60,7 +60,7 @@ export function pageMetadata({
       card: "summary_large_image",
       title: `${title} — Evolvia`,
       description,
-      images: ["/brand/evolvia-dark.jpg"],
+      images: ["/brand/lockup-dark.png"],
     },
   };
 }

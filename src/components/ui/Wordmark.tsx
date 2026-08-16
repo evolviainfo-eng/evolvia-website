@@ -1,28 +1,28 @@
 import { cn } from "@/lib/cn";
 
-/** The evolvia. wordmark, rendered as live text (never an image) so it stays
- *  pixel-sharp at any size.
+/** The real wordmark, from the brand artwork — not a reconstruction.
  *
- *  The period is a drawn circle, not a typed one. A typographic period is
- *  whatever the face makes it — small, and different in every font — while
- *  this is an exact ratio of the text it follows, so it is identical in the
- *  header, in the footer and at favicon size. That consistency is the whole
- *  point: the same shape appearing in enough places is what a visitor
- *  eventually recognises. See `.mark` in globals.css.
+ *  It used to be live text in Inter at weight 300 with a typed period. That
+ *  was wrong in three ways at once: the drawn mark is a good deal heavier,
+ *  its terminals are not Inter's, and its period is an oversized circle
+ *  sitting on the baseline rather than a punctuation glyph. Close enough to
+ *  look deliberate, far enough off to be a different logo.
  *
- *  It carries no colour of its own. `currentColor` means it agrees with
- *  whatever text it sits beside — light header, ink section, inside a demo —
- *  with no overrides anywhere. */
+ *  Shipped as a CSS mask rather than an <img>, which buys three things a
+ *  picture cannot: the ink is `currentColor`, so one file serves the light
+ *  theme, the dark theme and the ink sections with nothing to switch and
+ *  nothing to keep in sync; there is one request instead of two; and it can
+ *  never fall out of step with the text beside it.
+ *
+ *  The compact lockup includes its corner brackets, cropped — that is the
+ *  drawn artwork, and the brackets are the mark. The mask is 324×129 and is
+ *  used at a third of that or smaller, so it stays sharp past 3×. */
 export function Wordmark({ className }: { className?: string }) {
   return (
     <span
-      className={cn(
-        "wordmark inline-flex items-baseline gap-[0.06em] text-[1.25rem] leading-none text-text",
-        className,
-      )}
-    >
-      evolvia
-      <span className="mark" aria-hidden="true" />
-    </span>
+      role="img"
+      aria-label="evolvia."
+      className={cn("wordmark block h-[34px] w-[85px]", className)}
+    />
   );
 }

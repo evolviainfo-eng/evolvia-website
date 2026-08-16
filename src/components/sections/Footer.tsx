@@ -9,7 +9,7 @@ export function Footer() {
         <div className="py-[clamp(56px,8vw,88px)]">
           <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
             <div>
-              <Wordmark className="text-[1.5rem]" />
+              <Wordmark className="h-[38px] w-[95px]" />
               <p className="mt-3 text-[0.8125rem] font-medium uppercase tracking-[0.22em] text-text-muted">
                 web design
               </p>

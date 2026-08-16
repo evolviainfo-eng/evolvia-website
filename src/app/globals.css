@@ -702,6 +702,47 @@
     }
   }
 
+  /* ── Corner brackets ──────────────────────────────────────────
+     The brand's actual mark: two L-shaped brackets, top-left and
+     bottom-right, framing whatever they surround like crop marks on a
+     press sheet or the corners of a viewfinder. They belong to a studio
+     that frames other people's work, which is why they read as more than
+     decoration.
+
+     The geometry is measured off the 64px favicon rather than eyeballed,
+     and it lands on clean thirty-seconds: inset 5/32, arm 10/32, stroke
+     2/32 of the box. Expressed as percentages so the frame is identical
+     at any size — a hero, a card, a 16px icon.
+
+     Drawn with gradients on one pseudo-element per corner: no extra DOM,
+     no SVG file, and currentColor throughout. */
+  .frame {
+    position: relative;
+  }
+  .frame::before,
+  .frame::after {
+    content: "";
+    position: absolute;
+    width: 31.25%;
+    height: 31.25%;
+    max-width: 56px;
+    max-height: 56px;
+    pointer-events: none;
+    color: inherit;
+  }
+  .frame::before {
+    top: 15.625%;
+    left: 15.625%;
+    border-top: var(--frame-stroke, 2px) solid currentColor;
+    border-left: var(--frame-stroke, 2px) solid currentColor;
+  }
+  .frame::after {
+    right: 15.625%;
+    bottom: 15.625%;
+    border-right: var(--frame-stroke, 2px) solid currentColor;
+    border-bottom: var(--frame-stroke, 2px) solid currentColor;
+  }
+
   /* The mark. `currentColor` means it always agrees with the text it sits
      beside — in the header, on the ink section, inside a demo — without a
      single override anywhere. Baseline-aligned rather than centred, because
@@ -715,12 +756,15 @@
     vertical-align: baseline;
   }
 
-  /* Wordmark — rendered as live text so it stays razor-sharp at any size.
-     Matches the redesigned logo: light, refined, slightly open. */
+  /* The wordmark is the drawn artwork, painted through a mask so the ink is
+     currentColor. One file, every theme, and inside the ink sections too —
+     nothing to switch, nothing to keep in sync, and it can never disagree
+     with the text beside it. The source is 324×129 and is used at 108×43 or
+     smaller, so it holds past 3×. */
   .wordmark {
-    font-weight: 300;
-    letter-spacing: -0.005em;
-    font-feature-settings: "kern";
+    background: currentColor;
+    -webkit-mask: url("/brand/wordmark-mask.png") no-repeat center / contain;
+    mask: url("/brand/wordmark-mask.png") no-repeat center / contain;
   }
 }
 
