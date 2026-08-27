@@ -2,7 +2,18 @@
 
 export const site = {
   name: "evolvia.",
-  tagline: "web design",
+  tagline: "svetainių kūrimas",
+  /** The person behind the business, and the registration that proves it.
+   *  Shown in the footer, on /kontaktai and in the structured data.
+   *  The taxpayer code printed beside it on the same certificate is
+   *  deliberately NOT here: it identifies a person, not a business, and has
+   *  no place on a public page. */
+  legalName: "Martis Kuckailis",
+  activityNo: "1527221",
+  activitySince: "2026-06-23",
+  nace: "621090",
+  naceLabel: "Kita kompiuterių programavimo veikla",
+  linkedin: "https://www.linkedin.com/in/martis-kuckailis-47241236a",
   email: "info@evolvia.lt",
   phone: "+370 657 716 01",
   /** tel: href — no spaces, they break some dialers */

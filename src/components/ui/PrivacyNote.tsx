@@ -27,7 +27,7 @@ export function PrivacyNote({ className }: { className?: string }) {
       <p className="text-[0.8125rem] leading-relaxed text-text-muted">
         Jūsų duomenis naudojame tik atsakymui į šią užklausą. Slapukų
         nenaudojame ir jūsų neseka.{" "}
-        <span className="text-text">Kaip tvarkome duomenis — žemiau.</span>
+        <span className="text-text">Kaip tvarkome duomenis, aprašyta žemiau.</span>
       </p>
 
       <details className="group mt-3 border-t border-border pt-3">
@@ -41,7 +41,7 @@ export function PrivacyNote({ className }: { className?: string }) {
           <div>
             <dt className="font-medium text-text">Kas tvarko</dt>
             <dd>
-              Evolvia, {site.location}. Klausimai ir prašymai —{" "}
+              Evolvia, {site.location}. Klausimai ir prašymai:{" "}
               <a
                 href={`mailto:${site.email}`}
                 className="break-words text-text underline decoration-border underline-offset-4"
@@ -54,7 +54,7 @@ export function PrivacyNote({ className }: { className?: string }) {
           <div>
             <dt className="font-medium text-text">Kokie duomenys ir kam</dt>
             <dd>
-              Vardas, el. pašto adresas ir jūsų žinutės tekstas — tik tai, ką
+              Vardas, el. pašto adresas ir jūsų žinutės tekstas. Tik tai, ką
               patys įrašote. Naudojame atsakyti į užklausą ir, jei to prašote,
               paruošti pasiūlymą.
             </dd>
@@ -69,7 +69,7 @@ export function PrivacyNote({ className }: { className?: string }) {
           <div>
             <dt className="font-medium text-text">Kas dar mato</dt>
             <dd>
-              Formą aptarnauja „Formspree“ (JAV) — per jų sistemą žinutė
+              Formą aptarnauja „Formspree“ (JAV), per jų sistemą žinutė
               atkeliauja į mūsų pašto dėžutę. Svetainę talpina „Vercel“. Daugiau
               niekam neperduodame ir niekada nepardavinėjame.
             </dd>
@@ -85,7 +85,7 @@ export function PrivacyNote({ className }: { className?: string }) {
             <dt className="font-medium text-text">Jūsų teisės</dt>
             <dd>
               Galite susipažinti su savo duomenimis, juos ištaisyti, ištrinti
-              arba nesutikti su tvarkymu — užtenka parašyti mums. Jei atsakymas
+              arba nesutikti su tvarkymu. Užtenka parašyti mums. Jei atsakymas
               netenkina, galite kreiptis į Valstybinę duomenų apsaugos
               inspekciją (vdai.lrv.lt).
             </dd>
@@ -93,7 +93,7 @@ export function PrivacyNote({ className }: { className?: string }) {
           <div>
             <dt className="font-medium text-text">Lankomumo statistika</dt>
             <dd>
-              Matome tik tai, kiek kartų atidaryti puslapiai — tam naudojame
+              Matome tik tai, kiek kartų atidaryti puslapiai. Tam naudojame
               „Vercel Analytics“. Jis neįrašo nieko į jūsų naršyklę, nekuria
               jūsų profilio ir neseka jūsų kitose svetainėse. Nematome, kas jūs
               esate.
@@ -102,9 +102,9 @@ export function PrivacyNote({ className }: { className?: string }) {
           <div>
             <dt className="font-medium text-text">Slapukai</dt>
             <dd>
-              Nenaudojame — nei reklamos, nei stebėjimo. Į naršyklę įrašome
+              Nenaudojame nei reklamos, nei stebėjimo slapukų. Į naršyklę įrašome
               vienintelį dalyką: pasirinktą šviesią ar tamsią temą, ir tik tada,
-              kai patys ją perjungiate. Todėl ir sutikimo juostos čia nėra —
+              kai patys ją perjungiate. Todėl ir sutikimo juostos čia nėra:
               nėra ko sutikti.
             </dd>
           </div>

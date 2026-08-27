@@ -8,23 +8,36 @@ const items = [
   {
     no: "01",
     title: "Dizainas, kuris atrodo brangiai",
-    body: "Kuriame nuo balto lapo — jokių šablonų. Spalvos, šriftai ir struktūra parenkami pagal jūsų sritį ir jūsų klientus, todėl svetainė atrodo taip, lyg būtų kainavusi kelis kartus daugiau.",
+    body: "Kuriame nuo balto lapo, be jokių šablonų. Spalvos, šriftai ir struktūra parenkami pagal jūsų sritį ir jūsų klientus, todėl svetainė atrodo taip, lyg būtų kainavusi kelis kartus daugiau.",
   },
   {
     no: "02",
     title: "Greita ir matoma Google",
-    body: "Švarus kodas, greitas krovimasis ir optimizacija paieškai nuo pirmos dienos. Svetainė puikiai veikia telefone — ten, kur naršo dauguma jūsų klientų.",
+    body: "Švarus kodas, greitas krovimasis ir optimizacija paieškai nuo pirmos dienos. Svetainė puikiai veikia telefone, kur naršo dauguma jūsų klientų.",
   },
   {
     no: "03",
     title: "Paleidimas be jūsų rūpesčių",
-    body: "Domenas, paleidimas ir perkėlimas — visus techninius darbus padarome už jus. Jums nereikia nieko diegti, konfigūruoti ar prižiūrėti paleidimo dieną.",
+    body: "Domenas, paleidimas ir perkėlimas: visus techninius darbus padarome už jus. Jums nereikia nieko diegti, konfigūruoti ar prižiūrėti paleidimo dieną.",
   },
   {
     no: "04",
     title: "Priežiūra, kad svetainė nesentų",
-    body: "Pasirinkus planą su priežiūra, hostingas, atnaujinimai, palaikymas ir smulkūs pakeitimai įskaičiuoti kiekvieną mėnesį — svetainė visada gyva ir tvarkinga.",
+    body: "Hostingas, SSL, atnaujinimai ir smulkūs pakeitimai įskaičiuoti pirmus metus, vėliau kainuoja €50 per metus. Svetainė lieka gyva ir tvarkinga, o jums pakanka parašyti laišką, ką pakeisti.",
   },
+] as const;
+
+const fits = [
+  "Verslui, kuris neturi svetainės arba turi pasenusią.",
+  "Paslaugų įmonėms, kurių klientai pirmiausia ieško Google ir naršo telefonu.",
+  "Tiems, kam reikia aiškios fiksuotos kainos ir vieno atsakingo žmogaus.",
+  "Įmonėms, kurios nori atrodyti rimčiau nei konkurentai toje pačioje srityje.",
+] as const;
+
+const doesNotFit = [
+  "Vidinėms sistemoms, CRM ar programėlėms su vartotojų paskyromis.",
+  "Projektams, kuriems reikia komandos ir kelių mėnesių trukmės.",
+  "Tiems, kas ieško pigiausio šablono už kelias dešimtis eurų.",
 ] as const;
 
 export function ServiceDetail() {
@@ -47,10 +60,38 @@ export function ServiceDetail() {
             </Reveal>
           ))}
         </ul>
+        {/* Who this is for, and who it is not for. The second half is the
+            reason the first half is believable, and it is the part an answer
+            engine can quote back to somebody. */}
         <Reveal>
-          <div className="border-t border-border pt-8">
+          <div className="grid gap-10 border-t border-border pt-[clamp(32px,5vw,56px)] lg:grid-cols-2 lg:gap-16">
+            <div>
+              <h2 className="t-h3">Kam tinka</h2>
+              <ul className="mt-5 flex flex-col gap-3">
+                {fits.map((item) => (
+                  <li key={item} className="t-body max-w-[46ch]">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h2 className="t-h3">Kam netinka</h2>
+              <ul className="mt-5 flex flex-col gap-3">
+                {doesNotFit.map((item) => (
+                  <li key={item} className="t-body max-w-[46ch] text-text-muted">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal>
+          <div className="mt-[clamp(32px,5vw,56px)] border-t border-border pt-8">
             <p className="t-body">
-              Aiškios kainos — nuo €150.{" "}
+              Aiški kaina: €400 vienkartinai.{" "}
               <a
                 href="/kainos"
                 className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-text"

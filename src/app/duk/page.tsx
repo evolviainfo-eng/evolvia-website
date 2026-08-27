@@ -9,9 +9,9 @@ import { faqJsonLd } from "@/content/schema";
 import { faqItems } from "@/content/faq";
 
 export const metadata = pageMetadata({
-  title: "DUK — dažni klausimai",
+  title: "Svetainių kūrimas: dažni klausimai",
   description:
-    "Atsakymai apie svetainių kūrimą: kiek kainuoja svetainė, kaip greitai ji paruošiama, kas ją prižiūri ir ar būsite matomi Google. Viskas aiškiai ir be smulkaus šrifto.",
+    "Atsakymai apie svetainių kūrimą: kiek kainuoja svetainė, kas nutinka po pirmų metų, kaip greitai ji paruošiama, kas ją prižiūri ir ar būsite matomi Google.",
   path: "/duk",
 });
 
@@ -26,7 +26,7 @@ export default function DukPage() {
         <PageHeader
           eyebrow="D.U.K."
           title="Dažni klausimai."
-          lead="Viskas, ką klientai dažniausiai klausia prieš pradėdami — kainos, terminai, priežiūra ir matomumas Google."
+          lead="Viskas, ko klientai dažniausiai klausia prieš pradėdami: kaina, terminai, priežiūra ir matomumas Google."
         />
         <Faq standalone contactHref="/kontaktai" />
         <CtaBand />

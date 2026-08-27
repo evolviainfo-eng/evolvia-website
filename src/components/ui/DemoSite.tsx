@@ -88,6 +88,7 @@ export function DemoSite({
       <span className="demo-browser block overflow-hidden rounded-card border border-border bg-surface shadow-[var(--shadow-frame)] transition-transform duration-[var(--d-el)] ease-[var(--e-out)] group-hover:-translate-y-1">
         <Chrome url={demo.url} />
         <span
+          data-open
           className={cn(
             "work-frame relative block w-full overflow-hidden bg-surface-2",
             ratioClass,
@@ -96,6 +97,7 @@ export function DemoSite({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             data-settle
+            data-para
             src={`/work/shot-${demo.slug}.webp`}
             alt={`„${demo.name}“ demonstracinės svetainės vaizdas`}
             className="work-img absolute left-0 top-[-6%] h-[112%] w-full object-cover object-top"

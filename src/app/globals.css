@@ -79,6 +79,10 @@
      sells websites cannot have its own typeface be "whatever the visitor's
      OS happens to ship". */
   --font-stack: var(--font-inter), system-ui, sans-serif;
+  /* Headlines and the wordmark only. Everything else stays in the interface
+     face, because a display grotesk set at 15px is just a worse Inter. */
+  --font-display-stack: var(--font-display), var(--font-inter), system-ui,
+    sans-serif;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -364,6 +368,7 @@
   .t-display,
   .t-h2,
   .t-h3 {
+    font-family: var(--font-display-stack);
     letter-spacing: calc(1.14px - 0.056em);
     font-optical-sizing: auto;
     /* Balanced wrapping on short headings: no orphan word on its own line.
@@ -499,6 +504,12 @@
      display grows 2.8rem → 5rem the tracking tightens −0.026em → −0.042em and
      the leading tightens 1.11 → 1.04. The em bounds keep the endpoints exact;
      the px+vw middle term does the interpolating. */
+  .t-hero {
+    font-family: var(--font-display-stack);
+    letter-spacing: calc(1.14px - 0.056em);
+    text-wrap: balance;
+  }
+
   .t-display {
     font-size: clamp(2.5rem, 6vw, 4.625rem);
     font-weight: 400;
@@ -940,4 +951,148 @@ html.lenis body {
 }
 .lenis.lenis-smooth iframe {
   pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Scroll effects (Scrollfx.tsx writes the properties)
+
+   Every resting value below is the FINISHED state, so markup that is never
+   observed, or a browser where the loop never runs, renders the final
+   composition. The effect can only ever refine what is already correct.
+   ───────────────────────────────────────────────────────────── */
+@layer components {
+  [data-open] {
+    --open: 1;
+    /* A blind opening downward from under the browser chrome. Uncovering
+       from the bottom instead left an empty band above the picture, inside
+       a bordered frame, which reads as an image that failed to load. This
+       way the first thing revealed is the top of the page in the frame,
+       which is what a site actually shows first. */
+    clip-path: inset(0 0 calc((1 - var(--open)) * 100%) 0);
+    will-change: clip-path;
+  }
+
+  /* the picture inside travels the other way as the mask rises, so the two
+     edges are never moving together and the frame reads as depth rather
+     than as a rectangle growing */
+  [data-open] [data-para] {
+    scale: calc(1.06 - var(--open) * 0.06);
+  }
+
+  [data-para] {
+    --p: 0;
+    --open: 1;
+    --para-range: 2.6%;
+    /* two motions on one axis: the slow drift against the page, plus the
+       counter-travel while the frame above is still being uncovered */
+    /* Two motions on one axis: the slow drift against the page, and a
+       counter-travel while the blind is still opening. The blind moves
+       down, the picture moves up, so the two edges are never travelling
+       together. 4% is well inside what the 112%-tall image can give. */
+    translate: 0
+      calc(var(--p) * var(--para-range) * -1 + (1 - var(--open)) * 4%);
+    will-change: translate;
+  }
+
+  [data-drift] {
+    --p: 0;
+    --drift: 14px;
+    translate: 0 calc(var(--p) * var(--drift) * -1);
+  }
+
+  /* one figure on the site settles as it arrives */
+  [data-num] {
+    --set: 1;
+    display: inline-block;
+    scale: calc(1.035 - var(--set) * 0.035);
+    letter-spacing: calc(-0.045em + (1 - var(--set)) * 0.02em);
+    transform-origin: left center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-open],
+    [data-para],
+    [data-drift],
+    [data-num] {
+      clip-path: none;
+      translate: none;
+      scale: none;
+    }
+  }
+}
+
+/* The one event in "Kaip dirbame": the ink slab arrives as a band opening
+   from its own centre line rather than as a rectangle fading in. Scroll
+   driven (Scrollfx writes --grow), and its resting state is fully open, so
+   it is a finished slab if the loop never runs. */
+@layer components {
+  [data-grow] {
+    --grow: 1;
+  }
+
+  [data-grow] .process-ink {
+    transform-origin: center;
+    scale: 1 calc(0.28 + var(--grow) * 0.72);
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-grow] .process-ink {
+      scale: none;
+    }
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   Pointer response
+
+   Every one of these is a reply to the pointer, not decoration: nothing
+   here moves unless somebody is pointing at it, and all of it is behind
+   `hover: hover` so a phone never gets stuck in a hover state.
+   ───────────────────────────────────────────────────────────── */
+@media (hover: hover) and (pointer: fine) {
+  /* The portfolio recedes around whatever you are looking at. `:has` on the
+     container, so hovering one frame is what dims its neighbours, and the
+     dimming is opacity only: nothing moves, nothing reflows. */
+  .work-cast:has(figure:hover) figure:not(:hover) {
+    opacity: 0.45;
+  }
+
+  .work-cast figure {
+    transition: opacity var(--d-ui) var(--e-out);
+  }
+
+  /* The screenshot is a link, so it may answer the pointer. One value,
+     everywhere it is used. */
+  .work-frame .work-img {
+    transition: scale var(--d-el) var(--e-out);
+  }
+
+  /* The entry rule is `[data-open] [data-para]`, which is two attribute
+     selectors and therefore outranks a class-based hover rule. This has to
+     match at least as specifically or the zoom silently never applies. */
+  a:hover [data-open] [data-para] {
+    scale: 1.03;
+  }
+
+  /* A row of a list answers with a nudge and a brighter rule, which is the
+     smallest possible way of saying "this line is under your pointer". */
+  .row-hover {
+    transition:
+      border-color var(--d-ui) var(--e-out),
+      color var(--d-ui) var(--e-out);
+  }
+
+  .row-hover > * {
+    transition: translate var(--d-ui) var(--e-out);
+  }
+
+  .row-hover:hover {
+    border-color: color-mix(in oklab, var(--text) 45%, var(--border));
+  }
+
+  .row-hover:hover > * {
+    translate: 4px 0;
+  }
 }

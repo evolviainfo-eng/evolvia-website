@@ -11,7 +11,7 @@ export function Footer() {
             <div>
               <Wordmark className="h-[38px] w-[95px]" />
               <p className="mt-3 text-[0.8125rem] font-medium uppercase tracking-[0.22em] text-text-muted">
-                web design
+                {site.tagline}
               </p>
             </div>
 
@@ -60,7 +60,9 @@ export function Footer() {
             <p>
               © {site.year} Evolvia · {site.location}
             </p>
-            <p>Svetainės, kurios atrodo brangiai.</p>
+            <p>
+              {site.legalName} · Individuali veikla Nr. {site.activityNo}
+            </p>
           </div>
         </div>
       </Container>

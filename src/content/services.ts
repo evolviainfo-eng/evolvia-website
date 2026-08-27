@@ -19,6 +19,6 @@ export const services: Service[] = [
   },
   {
     title: "Telefonui pritaikyta",
-    body: "Tobula bet kuriame ekrane — dauguma klientų naršo telefonu.",
+    body: "Tobula bet kuriame ekrane, o dauguma klientų naršo telefonu.",
   },
 ];

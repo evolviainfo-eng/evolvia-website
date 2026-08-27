@@ -21,7 +21,7 @@ export default function NotFound() {
           <PageHeader
             eyebrow="404"
             title="Šio puslapio nebėra."
-            lead="Nuoroda pasenusi arba adresas neteisingas — puslapio, kurio ieškote, nėra."
+            lead="Nuoroda pasenusi arba adresas neteisingas. Puslapio, kurio ieškote, nėra."
           >
             <div className="mt-10 flex flex-wrap gap-4">
               <Button href="/" variant="primary" size="lg">

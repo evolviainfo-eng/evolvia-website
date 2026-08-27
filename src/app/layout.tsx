@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Schibsted_Grotesk } from "next/font/google";
 import Script from "next/script";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { Choreo } from "@/components/ui/Choreo";
+import { Scrollfx } from "@/components/ui/Scrollfx";
 import { Analytics } from "@vercel/analytics/next";
-import { site } from "@/content/site";
+import { businessJsonLd, webSiteJsonLd } from "@/content/schema";
 import "./globals.css";
 
 /* Inter is the cross-platform fallback (self-hosted by next/font).
@@ -16,31 +17,45 @@ const inter = Inter({
   display: "swap",
 });
 
+/* The display voice. Inter is the interface; it is not the brand, and a
+   system typeface set at 74px is the single clearest tell that a page was
+   assembled rather than designed. Schibsted Grotesk continues the wordmark's
+   skeleton (a light grotesk, cut terminals, closed apertures) while having a
+   character Inter deliberately does not.
+   latin-ext is not optional here: ą č ę ė į š ų ū ž. */
+const display = Schibsted_Grotesk({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500"],
+  variable: "--font-display",
+  display: "swap",
+});
+
 const SITE_URL = "https://evolvia.lt";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Evolvia — Web dizainas Lietuvoje",
-    template: "%s — Evolvia",
+    default: "Svetainių kūrimas Lietuvoje · Evolvia",
+    template: "%s · Evolvia",
   },
   description:
-    "Modernios svetainės Lietuvos verslui. Pamatote svetainę gyvai — tik tada mokate. Nuo pirmo eskizo iki paleidimo viskas padaroma už jus.",
+    "Svetainių kūrimas Lietuvos verslui už €400. Individualus dizainas, tekstai, paleidimas ir pirmi metai priežiūros vienoje kainoje. Svetainę pamatote gyvai prieš mokėdami.",
   keywords: [
-    "web dizainas",
     "svetainių kūrimas",
-    "interneto svetainės",
-    "Lietuva",
-    "Kaunas",
-    "modernios svetainės",
+    "svetainių kūrimas Lietuvoje",
+    "svetainių kūrimas Kaune",
+    "interneto svetainių kūrimas",
+    "svetainės kaina",
+    "verslo svetainė",
+    "el. parduotuvės kūrimas",
     "evolvia",
   ],
   authors: [{ name: "Evolvia" }],
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: "Evolvia — Web dizainas Lietuvoje",
+    title: "Svetainių kūrimas Lietuvoje · Evolvia",
     description:
-      "Svetainės, kurios atrodo brangiai. Pamatote svetainę gyvai — tik tada mokate.",
+      "Svetainių kūrimas Lietuvos verslui už €400. Svetainę pamatote gyvai, mokate tik tada, kai ji patinka.",
     url: SITE_URL,
     siteName: "Evolvia",
     locale: "lt_LT",
@@ -50,28 +65,29 @@ export const metadata: Metadata = {
         url: "/brand/lockup-dark.png",
         width: 1600,
         height: 900,
-        alt: "evolvia. — web design",
+        alt: "evolvia. · svetainių kūrimas",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Evolvia — Web dizainas Lietuvoje",
+    title: "Svetainių kūrimas Lietuvoje · Evolvia",
     description:
-      "Svetainės, kurios atrodo brangiai. Pamatote svetainę gyvai — tik tada mokate.",
+      "Svetainių kūrimas Lietuvos verslui už €400. Svetainę pamatote gyvai, mokate tik tada, kai ji patinka.",
     images: ["/brand/lockup-dark.png"],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#0a0a0a",
   width: "device-width",
   initialScale: 1,
 };
 
 /* Runs before first paint. Two jobs:
  *
- *  1. Apply a stored dark-mode preference, so the page never flashes light.
+ *  1. Paint the ground. The site is dark unless the visitor has chosen
+ *     light, so this runs before first paint and nothing flashes.
  *  2. Arm the choreography. The reveal system hides `data-rise` elements
  *     behind `html[data-choreo]`; if that attribute were set by React on
  *     mount, everything above the fold would paint visible and then snap
@@ -83,7 +99,7 @@ export const viewport: Viewport = {
  *  never strand anything at opacity 0.
  */
 const bootScript = `(function(){try{
-if(localStorage.getItem('theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}
+if(localStorage.getItem('theme')!=='light'){document.documentElement.setAttribute('data-theme','dark');}
 }catch(e){}
 try{
 if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
@@ -91,43 +107,32 @@ var d=document.documentElement;d.setAttribute('data-choreo','');
 setTimeout(function(){if(!window.__choreo){d.removeAttribute('data-choreo');}},4000);
 }catch(e){}})();`;
 
-// Sitewide structured data — who Evolvia is, where it works, what it costs.
-const businessJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: "Evolvia",
-  description:
-    "Modernios svetainės Lietuvos verslui — dizainas, programavimas, paleidimas ir priežiūra.",
-  url: SITE_URL,
-  email: site.email,
-  telephone: site.phone,
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Kaunas",
-    addressCountry: "LT",
-  },
-  areaServed: "Lietuva",
-  priceRange: "€150–€600",
-};
+// Sitewide structured data lives in content/schema.ts, derived from the
+// same files that own the prices and the registration. A search result or an
+// AI answer that quotes a number the site does not charge is worse than no
+// structured data at all.
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="lt" className={inter.variable} suppressHydrationWarning>
+    <html lang="lt" className={`${inter.variable} ${display.variable}`} suppressHydrationWarning>
       <body>
         <Script id="boot-init" strategy="beforeInteractive">
           {bootScript}
         </Script>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([businessJsonLd, webSiteJsonLd]),
+          }}
         />
         <a href="#main" className="skip-link">
           Pereiti į turinį
         </a>
         <SmoothScroll />
         <Choreo />
+        <Scrollfx />
         {children}
         {/* Cookieless page counting. It writes nothing to the visitor's
             device, so it needs no consent banner — but it does process the

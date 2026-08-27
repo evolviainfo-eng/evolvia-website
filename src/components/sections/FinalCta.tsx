@@ -32,7 +32,7 @@ export function FinalCta({
       const name = String(data.get("name") ?? "").trim();
       const email = String(data.get("email") ?? "").trim();
       const message = String(data.get("message") ?? "").trim();
-      const subject = `Užklausa iš svetainės — ${name || "naujas klientas"}`;
+      const subject = `Užklausa iš svetainės: ${name || "naujas klientas"}`;
       const body = `Vardas: ${name}\nEl. paštas: ${email}\n\n${message}`;
       window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
         subject,
@@ -67,7 +67,7 @@ export function FinalCta({
             <>
               <h2 className="t-display">Pradėkim.</h2>
               <p className="t-body mx-auto mt-6 max-w-[40ch]">
-                Parašykite — atsakysime per dieną.
+                Parašykite ir atsakysime per dieną.
               </p>
             </>
           )}
@@ -155,7 +155,7 @@ export function FinalCta({
                 className="text-center text-[0.9375rem] text-text-muted"
                 role="status"
               >
-                Ačiū! Gavome jūsų žinutę — atsakysime per dieną.
+                Ačiū! Gavome jūsų žinutę ir atsakysime per dieną.
               </p>
             )}
             {status === "mailto" && (
@@ -163,7 +163,7 @@ export function FinalCta({
                 className="text-center text-[0.9375rem] text-text-muted"
                 role="status"
               >
-                Atsidaro jūsų el. pašto programa. Jei ne — rašykite tiesiai{" "}
+                Atsidaro jūsų el. pašto programa. Jei ne, rašykite tiesiai{" "}
                 {site.email}.
               </p>
             )}

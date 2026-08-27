@@ -8,9 +8,9 @@ import { JsonLd } from "@/components/ui/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "Darbai — svetainių pavyzdžiai",
+  title: "Sukurtų svetainių pavyzdžiai",
   description:
-    "Keturios demonstracinės svetainės, kurias galite atidaryti ir išbandyti: statybos bendrovė su sąmatos skaičiuokle, restoranas su rezervacija, interjero studija ir el. parduotuvė su veikiančiu krepšeliu.",
+    "Keturios svetainės, kurias galite atidaryti ir išbandyti: statybos bendrovė su sąmatos skaičiuokle, restoranas su rezervacija, interjero studija ir el. parduotuvė su veikiančiu krepšeliu.",
   path: "/darbai",
 });
 
@@ -23,7 +23,7 @@ export default function DarbaiPage() {
         <PageHeader
           eyebrow="Darbai"
           title="Keturios svetainės, kurias galite išbandyti."
-          lead="Keturi pavyzdiniai darbai — kiekvienas su realiai veikiančia funkcija, kurią galite išbandyti patys."
+          lead="Keturi pavyzdiniai darbai, kiekvienas su realiai veikiančia funkcija, kurią galite išbandyti patys."
         >
           <DemoNote className="mt-8 max-w-[64ch]" />
         </PageHeader>

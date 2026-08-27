@@ -11,7 +11,30 @@ export default function robots(): MetadataRoute.Robots {
     // allowed to fetch a page in order to see that it says noindex. A
     // Disallow would do the opposite of what it looks like: the URLs could
     // still be indexed, just without the instruction not to.
-    rules: { userAgent: "*", allow: "/" },
+    // The answer engines are named explicitly rather than left to the
+    // wildcard. Same permission, but stated: a crawler looking for its own
+    // user-agent finds an allow rule instead of inferring one, and the list
+    // doubles as the record of which engines this site wants to be quoted by.
+    rules: [
+      { userAgent: "*", allow: "/" },
+      {
+        userAgent: [
+          "GPTBot",
+          "OAI-SearchBot",
+          "ChatGPT-User",
+          "ClaudeBot",
+          "Claude-User",
+          "Claude-SearchBot",
+          "PerplexityBot",
+          "Perplexity-User",
+          "Google-Extended",
+          "Applebot-Extended",
+          "CCBot",
+          "Bingbot",
+        ],
+        allow: "/",
+      },
+    ],
     sitemap: `${site.url}/sitemap.xml`,
     host: site.url,
   };

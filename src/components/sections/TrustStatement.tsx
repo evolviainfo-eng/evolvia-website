@@ -130,7 +130,7 @@ export function TrustStatement() {
               className="mx-auto mt-8 max-w-[46ch] text-[1.0625rem] leading-relaxed text-ink-fg/70 sm:text-[1.25rem]"
             >
               Jokios rizikos. Jokių prielaidų. Sukuriame realų eskizą jūsų
-              verslui — jei nepatinka, nieko nemokate.
+              verslui. Jei nepatinka, nieko nemokate.
             </motion.p>
           </div>
         </Container>

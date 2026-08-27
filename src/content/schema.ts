@@ -1,26 +1,95 @@
 import { faqItems } from "@/content/faq";
-import { payOptions, shopTier } from "@/content/pricing";
+import { plan, renewal, largerProjects } from "@/content/pricing";
+import { site } from "@/content/site";
 
 /* ─────────────────────────────────────────────────────────────
-   Structured data, generated from the content — never retyped.
+   Structured data, generated from the content, never retyped.
 
-   Both of these already existed, and both were written out by hand
-   a second time: the FAQ inside duk/page.tsx, the three prices
-   inside kainos/page.tsx. They happened to agree with the source
-   when checked, but "happened to agree" is the whole problem — the
-   first time a price changes in pricing.ts and not here, a search
-   result quotes a number the site does not charge. That is worse
-   than having no structured data at all.
+   Two audiences read this and neither of them reads the page: Google,
+   which builds the result snippet from it, and the answer engines
+   (ChatGPT, Claude, Perplexity, AI Overviews), which decide from it
+   whether there is a real, identifiable business here worth naming.
+   That is why the registration, the languages and the area served are
+   in here alongside the price.
 
-   One definition, derived from the files that own the facts.
+   Every fact is imported. The first time a price changes in pricing.ts
+   and not here, a search result quotes a number the site does not
+   charge, and that is worse than having no structured data at all.
    ───────────────────────────────────────────────────────────── */
 
-const SITE_URL = "https://evolvia.lt";
-const PROVIDER = { "@type": "ProfessionalService", name: "Evolvia" } as const;
+const SITE_URL = site.url;
 
-/** "€150" → "150". Prices are authored for humans; Offer wants a bare
+/** "€400" → "400". Prices are authored for humans; Offer wants a bare
  *  number and a separate currency. Read it back rather than maintain two. */
 const amount = (price: string) => price.replace(/\D/g, "");
+
+export const businessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": `${SITE_URL}/#business`,
+  name: "Evolvia",
+  legalName: site.legalName,
+  description:
+    "Evolvia kuria svetaines Lietuvos verslui. Individualus dizainas, programavimas, tekstai, paleidimas ir priežiūra vienoje fiksuotoje kainoje.",
+  url: SITE_URL,
+  email: site.email,
+  telephone: site.phone,
+  inLanguage: "lt-LT",
+  founder: {
+    "@type": "Person",
+    name: site.legalName,
+    jobTitle: "Svetainių kūrėjas",
+    sameAs: [site.linkedin],
+  },
+  sameAs: [site.linkedin],
+  foundingDate: site.activitySince,
+  identifier: {
+    "@type": "PropertyValue",
+    name: "Individualios veiklos pažyma",
+    value: site.activityNo,
+  },
+  isicV4: site.nace,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Kaunas",
+    addressCountry: "LT",
+  },
+  areaServed: [
+    { "@type": "Country", name: "Lietuva" },
+    { "@type": "City", name: "Kaunas" },
+    { "@type": "City", name: "Vilnius" },
+    { "@type": "City", name: "Klaipėda" },
+    { "@type": "City", name: "Šiauliai" },
+    { "@type": "City", name: "Panevėžys" },
+  ],
+  knowsAbout: [
+    "Svetainių kūrimas",
+    "Interneto svetainių dizainas",
+    "El. parduotuvių kūrimas",
+    "SEO optimizacija",
+    "Svetainių hostingas ir priežiūra",
+  ],
+  knowsLanguage: ["lt", "en"],
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "sales",
+    email: site.email,
+    telephone: site.phone,
+    availableLanguage: ["Lithuanian", "English"],
+    areaServed: "LT",
+  },
+  priceRange: "€400",
+};
+
+export const webSiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: "Evolvia",
+  inLanguage: "lt-LT",
+  publisher: { "@id": `${SITE_URL}/#business` },
+};
 
 export const faqJsonLd = {
   "@context": "https://schema.org",
@@ -36,26 +105,43 @@ export const serviceJsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Svetainių kūrimas",
-  serviceType: "Web design",
-  provider: PROVIDER,
-  areaServed: "Lietuva",
-  offers: [
-    ...payOptions.map((o) => ({
-      "@type": "Offer",
-      name: o.name,
-      price: amount(o.oneTime),
-      priceCurrency: "EUR",
-      description: `${o.oneTime} ${o.priceSuffix}. ${o.summary}`,
-      availability: "https://schema.org/InStock",
-    })),
-    {
-      "@type": "Offer",
-      name: shopTier.name,
-      price: amount(shopTier.oneTime),
-      priceCurrency: "EUR",
-      description: `${shopTier.oneTime} ${shopTier.priceSuffix}.`,
-      availability: "https://schema.org/InStock",
-    },
-  ],
+  serviceType: "Svetainių kūrimas",
+  description:
+    "Svetainių kūrimas Lietuvos verslui: individualus dizainas, programavimas, tekstai, optimizacija Google paieškai, paleidimas ir pirmi metai priežiūros.",
+  provider: { "@id": `${SITE_URL}/#business` },
+  areaServed: { "@type": "Country", name: "Lietuva" },
   url: `${SITE_URL}/kainos`,
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Kainos",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        name: plan.name,
+        price: amount(plan.oneTime),
+        priceCurrency: "EUR",
+        description: `${plan.oneTime} ${plan.priceSuffix} ${plan.summary} Po pirmų metų priežiūra ${renewal.price}.`,
+        availability: "https://schema.org/InStock",
+        itemOffered: {
+          "@type": "Service",
+          name: "Svetainės sukūrimas",
+          description: plan.includes.join(". ") + ".",
+        },
+      },
+      {
+        "@type": "Offer",
+        name: renewal.label,
+        price: amount(renewal.price),
+        priceCurrency: "EUR",
+        description: renewal.body,
+        availability: "https://schema.org/InStock",
+      },
+      {
+        "@type": "Offer",
+        name: largerProjects.name,
+        description: `${largerProjects.price}. ${largerProjects.summary}`,
+        availability: "https://schema.org/InStock",
+      },
+    ],
+  },
 };

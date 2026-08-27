@@ -83,7 +83,7 @@ export function Nav() {
         >
           <a
             href="/"
-            aria-label="evolvia. — į pradžią"
+            aria-label="evolvia. Į pradžią"
             className="press shrink-0 rounded-sharp px-2 outline-none"
           >
             <Wordmark />

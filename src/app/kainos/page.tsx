@@ -12,9 +12,9 @@ import { serviceJsonLd } from "@/content/schema";
 import { faqItems } from "@/content/faq";
 
 export const metadata = pageMetadata({
-  title: "Svetainės kaina — nuo €150",
+  title: "Svetainės kaina: €400",
   description:
-    "Kiek kainuoja svetainė? €150 + €50/mėn su priežiūra arba €400 vienkartinai be mėnesinio mokesčio. El. parduotuvė — €600. Aiškios kainos, jokių paslėptų mokesčių.",
+    "Kiek kainuoja svetainė? €400 vienkartinai su dizainu, tekstais, paleidimu ir pirmais metais priežiūros. Po pirmų metų €50 per metus. Jokių mėnesinių mokesčių.",
   path: "/kainos",
 });
 
@@ -30,7 +30,7 @@ function PricingFaq() {
           <Reveal className="md:sticky md:top-32 md:self-start">
             <h2 className="t-h2 max-w-[14ch]">Klausimai apie kainą.</h2>
             <p className="t-body mt-5 max-w-[34ch]">
-              Daugiau atsakymų —{" "}
+              Daugiau atsakymų rasite{" "}
               <a
                 href="/duk"
                 className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-text"
@@ -68,7 +68,7 @@ export default function KainosPage() {
         <PageHeader
           eyebrow="Kainos"
           title="Aiški kaina. Jokių staigmenų."
-          lead="Pirmiausia pamatote svetainę gyvai — mokate tik tada, kai ji jums patinka. Pasirenkate mokėjimo būdą: mažesnė pradžia su priežiūra arba viena suma iš karto."
+          lead="Svetainė kainuoja €400. Į kainą įeina visas darbas ir pirmi metai priežiūros. Pirmiausia pamatote svetainę gyvai, mokate tik tada, kai ji jums patinka."
         />
         <Pricing contactHref="/kontaktai" standalone />
         <PricingFaq />

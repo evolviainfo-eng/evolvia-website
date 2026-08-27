@@ -45,7 +45,7 @@ export function Faq({
                 >
                   Parašykite mums
                 </a>{" "}
-                — atsakysime per dieną.
+                ir atsakysime per dieną.
               </p>
             </div>
           )}
@@ -57,7 +57,7 @@ export function Faq({
               const panelId = `${baseId}-panel-${i}`;
               const btnId = `${baseId}-btn-${i}`;
               return (
-                <li key={item.q} className="border-b border-border">
+                <li key={item.q} className="row-hover border-b border-border">
                   <h3>
                     <button
                       id={btnId}
@@ -113,7 +113,7 @@ export function Faq({
               >
                 Parašykite mums
               </a>{" "}
-              — atsakysime per dieną.
+              ir atsakysime per dieną.
             </p>
           )}
         </div>

@@ -14,7 +14,7 @@ export function CtaBand() {
                 Nemokamas eskizas
               </p>
               <h2 className="mt-4 max-w-[16ch] text-balance font-normal leading-[1.08] [font-size:clamp(2.1rem,4.4vw,3.4rem)]">
-                Pamatykite savo svetainę gyvai — dar prieš mokėdami.
+                Pamatykite savo svetainę gyvai, dar prieš mokėdami.
               </h2>
             </div>
             <div className="flex shrink-0 flex-col items-start gap-4 md:items-end">

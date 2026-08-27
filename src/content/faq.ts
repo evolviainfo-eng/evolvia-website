@@ -1,4 +1,9 @@
-/** D.U.K. — polished from the client's own answers/direction. */
+/** D.U.K. — polished from the client's own answers and direction.
+ *
+ *  Every answer is written to survive being quoted on its own: it restates
+ *  its subject in the first sentence, so an answer engine lifting one line
+ *  out of the page still says "Evolvia" and "€400" rather than "it depends".
+ *  That is also simply better for a person skimming. */
 
 export interface FaqItem {
   q: string;
@@ -7,31 +12,39 @@ export interface FaqItem {
 
 export const faqItems: FaqItem[] = [
   {
-    q: "Kiek kainuoja ir kas įeina į kainą?",
-    a: "Standartinė svetainė — €150 + €50/mėn priežiūra arba €400 vienkartinai, be mėnesinio mokesčio. Pasirenkate mokėjimo būdą, svetainė ta pati. El. parduotuvė ar didesnė kelių puslapių svetainė — €600. Į kainą visada įeina dizainas, programavimas, paleidimas ir perkėlimas į jūsų domeną — jokių paslėptų mokesčių.",
+    q: "Kiek kainuoja svetainės sukūrimas?",
+    a: "Svetainės sukūrimas Evolvijoje kainuoja €400 vienkartinai. Į šią kainą įeina individualus dizainas, programavimas, tekstai, nuotraukų paruošimas, optimizacija Google paieškai, paleidimas jūsų domene ir pirmi metai priežiūros su hostingu. Jokių mėnesinių mokesčių ir jokių paslėptų priedų. El. parduotuvės ir didesnės kelių puslapių svetainės kainuojamos pagal apimtį.",
   },
   {
-    q: "Kuo skiriasi €150 + €50/mėn nuo €400 vienkartinio?",
-    a: "Tik mokėjimo būdu — svetainė, dizainas ir kokybė identiški. Su €150 + €50/mėn planu pradžioje mokate mažiau, o hostingas, atnaujinimai, palaikymas ir smulkūs pakeitimai įskaičiuoti kiekvieną mėnesį. Su €400 planu sumokate vieną kartą, pirmų metų hostingas jau įskaičiuotas ir neturite jokių mėnesinių įsipareigojimų.",
-  },
-  {
-    q: "Kaip greitai svetainė bus paruošta?",
-    a: "Greitai — paprastai per kelias darbo dienas. Pirmą gyvą eskizą pamatysite vos po poros dienų.",
+    q: "Kas nutinka po pirmų metų?",
+    a: "Po pirmų metų svetainės priežiūra kainuoja €50 per metus. Už tai lieka hostingas, SSL sertifikatas, atnaujinimai ir palaikymas, kad svetainė toliau veiktų ir būtų saugi. Jei nuspręsite netęsti, svetainės failai lieka jūsų ir galite ją perkelti kitur.",
   },
   {
     q: "Ar pamatysiu svetainę prieš mokėdamas?",
-    a: "Žinoma. Pirmiausia sukuriame gyvą eskizą — realią svetainę, ne paveikslėlį. Mokate tik tada, kai ji jums patinka.",
+    a: "Taip, svetainę pamatysite prieš sumokėdami. Pirmiausia sukuriame gyvą eskizą, tai yra reali veikianti svetainė naršyklėje, o ne paveikslėlis. Mokate tik tada, kai ji jums patinka.",
+  },
+  {
+    q: "Kaip greitai svetainė bus paruošta?",
+    a: "Svetainę paprastai paruošiame per kelias darbo dienas. Pirmą gyvą eskizą pamatote maždaug po poros dienų nuo pirmo laiško, o galutinis paleidimas priklauso tik nuo to, kaip greitai sutariame dėl tekstų ir nuotraukų.",
   },
   {
     q: "Ką man reikia paruošti, kad pradėtume?",
-    a: "Beveik nieko — užtenka vieno laiško. Tekstus, nuotraukas ir logotipą sutvarkome kartu: turite savų — puiku, neturite — padėsime.",
+    a: "Pradėti užtenka vieno laiško su keliais sakiniais apie jūsų verslą. Tekstus, nuotraukas ir logotipą sutvarkome kartu: turite savų, puiku, neturite, padedame juos paruošti. Nereikia jokio techninio pasiruošimo.",
   },
   {
     q: "Kas prižiūri svetainę po paleidimo?",
-    a: "Pasirinkus planą su priežiūra, viskuo pasirūpiname mes: hostingas, atnaujinimai, palaikymas ir smulkūs pakeitimai įeina į mėnesinį mokestį — jums nereikia galvoti apie jokius techninius dalykus.",
+    a: "Svetainę po paleidimo prižiūri Evolvia. Hostingas, SSL, atnaujinimai, palaikymas ir smulkūs pakeitimai įeina į kainą pirmus metus, o vėliau į €50 metinį mokestį. Jums nereikia galvoti apie techninius dalykus, pakanka parašyti laišką, ką pakeisti.",
   },
   {
     q: "Ar svetainė bus matoma Google?",
-    a: "Taip. Visas svetaines kuriame greitas ir optimizuotas paieškai — kad klientai rastų jus, o ne konkurentus.",
+    a: "Taip, svetainė ruošiama matomumui Google nuo pirmos dienos. Kiekvienoje svetainėje sutvarkome antraštes, meta aprašymus, adresų struktūrą, sitemap, robots.txt ir struktūrinius duomenis, o puslapiai kraunasi greitai, nes tai vienas iš Google vertinamų dalykų. Rezultatų negarantuojame per savaitę, bet pagrindas padaromas taip, kad jūsų rastų, o ne konkurentus.",
+  },
+  {
+    q: "Ar dirbate oficialiai ir ar gausiu sąskaitą?",
+    a: "Taip, Evolvia dirba oficialiai. Veiklą vykdo Martis Kuckailis pagal individualios veiklos pažymą Nr. 1527221 (EVRK 621090, kompiuterių programavimo veikla), registruotą Lietuvoje. Už atliktą darbą išrašoma sąskaita faktūra, kurią galite įtraukti į savo verslo išlaidas.",
+  },
+  {
+    q: "Kam tinka Evolvia svetainės?",
+    a: "Evolvia kuria svetaines Lietuvos verslui: nuo vieno žmogaus paslaugų verslo iki įmonių, kurioms reikia rimtos vizitinės svetainės ar el. parduotuvės. Dažniausiai tai statybų, interjero, autopaslaugų, grožio ir paslaugų sričių įmonės, kurios neturi svetainės arba turi pasenusią. Netinkame tada, kai reikia sudėtingos vidinės sistemos ar programėlės su vartotojų paskyromis.",
   },
 ];

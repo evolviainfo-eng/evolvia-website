@@ -19,9 +19,11 @@ import { cn } from "@/lib/cn";
    is a real visual moment; four animated widgets would have been
    noise. One thing happens, and it happens to the thing that matters.
 
-   Everything reveals under a travelling edge (`data-sweep`), the same
-   left-to-right gesture the seam makes in the dark section, so the
-   cascade reads as one hand rather than four effects.
+   The rows used to reveal under a travelling edge. Across a line of
+   text that gesture reads as a typewriter wiping the words on, which is
+   the opposite of solid, so they now arrive as blocks like everything
+   else on the site. The one thing that still animates on its own terms
+   is the slab, and it opens from its centre line rather than fading in.
 
    Server-rendered: the reveal is CSS, there is no client JS here, and
    nothing is hidden if it never runs.
@@ -34,9 +36,11 @@ export function Process() {
         <Reveal className="max-w-[640px]">
           <Eyebrow>Kaip dirbame</Eyebrow>
           <h2 className="t-h2 mt-4">Procesas be staigmenų.</h2>
-          <p className="t-body mt-5 max-w-[52ch]">
-            Keturi aiškūs žingsniai nuo pirmo laiško iki paleidimo. Realią
-            svetainę pamatote dar prieš mokėdami.
+          <p className="t-body mt-5 max-w-[54ch]">
+            Nuotraukos telefone, kainos lapelyje, atsiliepimai portale, darbo
+            laikas. Medžiaga jau yra, tik išbarstyta. Mūsų darbas yra ją
+            surinkti ir sudėlioti, o jūs realią svetainę pamatote dar prieš
+            mokėdami.
           </p>
         </Reveal>
 
@@ -49,11 +53,16 @@ export function Process() {
               return (
                 <li
                   key={step.title}
-                  data-sweep
+                  data-rise
+                  data-grow
                   style={{ "--i": i * 2 } as React.CSSProperties}
-                  className="my-[clamp(10px,1.6vw,20px)] min-w-0 rounded-card bg-ink-bg text-ink-fg"
+                  className="process-slab relative my-[clamp(10px,1.6vw,20px)] min-w-0 overflow-hidden rounded-card text-ink-fg"
                 >
-                  <div className="grid min-w-0 gap-x-[clamp(24px,5vw,72px)] gap-y-4 px-[clamp(20px,3.4vw,48px)] py-[clamp(30px,4.4vw,54px)] md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+                  <span
+                    aria-hidden="true"
+                    className="process-ink absolute inset-0 rounded-card bg-ink-bg"
+                  />
+                  <div className="relative grid min-w-0 gap-x-[clamp(24px,5vw,72px)] gap-y-4 px-[clamp(20px,3.4vw,48px)] py-[clamp(30px,4.4vw,54px)] md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
                     <div className="flex min-w-0 items-baseline gap-4">
                       <span className="shrink-0 text-[0.8125rem] tabular-nums tracking-[0.1em] text-ink-fg/55">
                         {no}
@@ -66,9 +75,6 @@ export function Process() {
                       <p className="max-w-[46ch] text-pretty text-[1.0625rem] leading-relaxed text-ink-fg/80 sm:text-[1.25rem]">
                         {step.body}
                       </p>
-                      <span className="mt-5 inline-block rounded-pill border border-ink-fg/30 px-3 py-1 text-[0.6875rem] font-medium uppercase tracking-[0.1em] text-ink-fg">
-                        Be rizikos
-                      </span>
                     </div>
                   </div>
                 </li>
@@ -84,12 +90,10 @@ export function Process() {
                   aria-hidden="true"
                   className="block h-px w-full bg-border"
                 />
-                {/* the sweep wrapper stays unclipped so the observer can see
-                    it; its single child is what the edge travels across */}
                 <div
-                  data-sweep
+                  data-rise
                   style={{ "--i": i * 2 + 1 } as React.CSSProperties}
-                  className="min-w-0"
+                  className="row-hover min-w-0"
                 >
                   <div
                     className={cn(

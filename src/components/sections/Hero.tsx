@@ -80,11 +80,11 @@ export function Hero() {
               className="inline-flex items-center gap-2 text-[0.8125rem] font-semibold uppercase tracking-[0.16em] text-text-muted"
             >
               <span className="inline-block h-px w-6 bg-text/30" />
-              web dizainas
+              svetainių kūrimas
             </p>
 
             {/* Line-level, never letter-level. */}
-            <h1 className="mt-6 font-normal text-text [font-size:clamp(2.6rem,5.4vw,4.6rem)] [line-height:1.04]">
+            <h1 className="t-hero mt-6 font-normal text-text [font-size:clamp(2.6rem,5.4vw,4.6rem)] [line-height:1.04]">
               <Line i={2}>Tavo konkurentai</Line>
               <Line i={3}>jau matomi.</Line>
               <Line i={4}>O tu?</Line>
@@ -95,8 +95,8 @@ export function Hero() {
               style={{ "--i": 7 } as React.CSSProperties}
               className="mt-6 max-w-[44ch] text-pretty text-[1.0625rem] leading-relaxed text-text-muted sm:text-[1.25rem]"
             >
-              Modernios svetainės Lietuvos verslui. Nuo pirmo eskizo iki
-              paleidimo — viskas padaroma už jus.
+              Svetainių kūrimas Lietuvos verslui. Nuo pirmo eskizo iki
+              paleidimo viskas padaroma už jus.
             </p>
 
             <div
@@ -131,7 +131,7 @@ export function Hero() {
             <div data-rise style={{ "--i": 5 } as React.CSSProperties}>
               <DemoSite demo={heroDemo} ratioClass="aspect-[16/10]" eager />
               <p className="mt-3 text-[0.8125rem] text-text-muted">
-                Demonstracinė svetainė — atsidaro ir veikia.
+                Demonstracinė svetainė, atsidaro ir veikia.
               </p>
             </div>
           </motion.div>

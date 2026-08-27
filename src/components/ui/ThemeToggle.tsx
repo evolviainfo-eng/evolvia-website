@@ -5,10 +5,11 @@ import { cn } from "@/lib/cn";
 
 type Theme = "dark" | "light";
 
-/** Flips the whole site between the dark default and a full light mode.
- *  Persists to localStorage; the no-flash script in layout applies it on load. */
+/** Flips the whole site between the dark ground and a full light mode.
+ *  Dark is the default; light is a stored preference. The no-flash script in
+ *  layout applies it before first paint. */
 export function ThemeToggle({ className }: { className?: string }) {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -16,9 +17,10 @@ export function ThemeToggle({ className }: { className?: string }) {
     try {
       stored = localStorage.getItem("theme");
     } catch {}
-    const attr = document.documentElement.getAttribute("data-theme");
-    const current: Theme =
-      attr === "dark" || stored === "dark" ? "dark" : "light";
+    // Dark unless the visitor has chosen light. One rule, and it matches
+    // the boot script exactly; two different rules is how the toggle ends up
+    // disagreeing with the page it is sitting on.
+    const current: Theme = stored === "light" ? "light" : "dark";
     // Keep the attribute in sync in case the init script didn't run.
     if (current === "dark")
       document.documentElement.setAttribute("data-theme", "dark");

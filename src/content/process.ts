@@ -14,7 +14,7 @@ export interface ProcessStep {
 export const processSteps: ProcessStep[] = [
   {
     title: "Užklausa el. paštu",
-    body: "Parašote, ką veikiate ir ko reikia — užtenka kelių sakinių. Norite aptarti balsu? Taip pat galima.",
+    body: "Parašote, ką veikiate ir ko reikia. Užtenka kelių sakinių. Norite aptarti balsu? Taip pat galima.",
   },
   {
     title: "Gyvas eskizas",
@@ -23,7 +23,7 @@ export const processSteps: ProcessStep[] = [
   },
   {
     title: "Apmokėjimas ir paleidimas",
-    body: "Patvirtinus — perkeliame į jūsų domeną ir paleidžiame.",
+    body: "Patvirtinus perkeliame į jūsų domeną ir paleidžiame.",
   },
   {
     title: "Priežiūra",

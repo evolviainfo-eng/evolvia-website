@@ -42,7 +42,7 @@ export const demos: Demo[] = [
     sector: "Statybos bendrovė",
     year: "2026",
     tagline:
-      "Statybų bendrovės svetainė — tvirta, struktūruota ir įtikinama nuo pirmo ekrano.",
+      "Statybų bendrovės svetainė: tvirta, struktūruota ir įtikinama nuo pirmo ekrano.",
     scope: ["Vizitinė svetainė", "Projektų galerija", "Sąmatos skaičiuoklė"],
     feature: "Veikianti sąmatos skaičiuoklė",
     url: "evolvia.lt/demo/konstrukta",
@@ -55,7 +55,7 @@ export const demos: Demo[] = [
     sector: "Restoranas · vyno baras",
     year: "2026",
     tagline:
-      "Restoranas su stalo rezervacija ir meniu — atmosfera juntama dar prieš atveriant duris.",
+      "Restoranas su stalo rezervacija ir meniu. Atmosfera juntama dar prieš atveriant duris.",
     scope: ["Meniu", "Stalo rezervacija", "Atmosferos fotografija"],
     feature: "Veikianti stalo rezervacija",
     url: "evolvia.lt/demo/fume",
@@ -68,7 +68,7 @@ export const demos: Demo[] = [
     sector: "Interjero studija",
     year: "2026",
     tagline:
-      "Interjero studijos portfolio — projektų indeksas, kuriame darbai kalba patys.",
+      "Interjero studijos portfolio: projektų indeksas, kuriame darbai kalba patys.",
     scope: ["Portfolio", "Projektų filtras", "Galerija"],
     feature: "Filtruojamas projektų indeksas",
     url: "evolvia.lt/demo/forma",
@@ -81,7 +81,7 @@ export const demos: Demo[] = [
     sector: "El. parduotuvė",
     year: "2026",
     tagline:
-      "Rankų darbo žvakių el. parduotuvė — katalogas, krepšelis ir apmokėjimas vienoje švarioje sistemoje.",
+      "Rankų darbo žvakių el. parduotuvė: katalogas, krepšelis ir apmokėjimas vienoje švarioje sistemoje.",
     scope: ["Prekių katalogas", "Krepšelis", "Užsakymo eiga"],
     feature: "Veikiantis krepšelis",
     url: "evolvia.lt/demo/skalsa",

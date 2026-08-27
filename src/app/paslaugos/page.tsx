@@ -2,15 +2,15 @@ import { Nav } from "@/components/sections/Nav";
 import { Footer } from "@/components/sections/Footer";
 import { PageHeader } from "@/components/sections/PageHeader";
 import { ServiceDetail } from "@/components/sections/ServiceDetail";
-import { BuildSequence } from "@/components/sections/BuildSequence";
+import { Process } from "@/components/sections/Process";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "Svetainių kūrimas — paslaugos",
+  title: "Svetainių kūrimo paslaugos",
   description:
-    "Svetainių kūrimo paslaugos Lietuvos verslui: unikalus dizainas, programavimas, optimizacija Google paieškai, paleidimas ir priežiūra. Nuo pirmo eskizo iki veikiančios svetainės — viskas padaroma už jus.",
+    "Svetainių kūrimas Lietuvos verslui: individualus dizainas, programavimas, tekstai, optimizacija Google paieškai, paleidimas ir priežiūra. Viena fiksuota kaina, vienas atsakingas žmogus.",
   path: "/paslaugos",
 });
 
@@ -22,11 +22,11 @@ export default function PaslaugosPage() {
       <main id="main">
         <PageHeader
           eyebrow="Paslaugos"
-          title="Viena kaina. Visa svetainė."
-          lead="Nuo pirmo eskizo iki veikiančios svetainės — dizainas, programavimas, paleidimas ir priežiūra vienose rankose. Jums lieka tik jūsų verslas."
+          title="Svetainių kūrimas nuo pradžios iki paleidimo."
+          lead="Evolvia yra svetainių kūrimo studija Kaune, dirbanti su visos Lietuvos verslu. Nuo pirmo eskizo iki veikiančios svetainės: dizainas, programavimas, tekstai, paleidimas ir priežiūra vienose rankose."
         />
         <ServiceDetail />
-        <BuildSequence />
+        <Process />
         <CtaBand />
       </main>
       <Footer />
