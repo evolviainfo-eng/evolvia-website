@@ -34,12 +34,6 @@ const fits = [
   "Įmonėms, kurios nori atrodyti rimčiau nei konkurentai toje pačioje srityje.",
 ] as const;
 
-const doesNotFit = [
-  "Vidinėms sistemoms, CRM ar programėlėms su vartotojų paskyromis.",
-  "Projektams, kuriems reikia komandos ir kelių mėnesių trukmės.",
-  "Tiems, kas ieško pigiausio šablono už kelias dešimtis eurų.",
-] as const;
-
 export function ServiceDetail() {
   return (
     <Section tone="secondary">
@@ -60,31 +54,16 @@ export function ServiceDetail() {
             </Reveal>
           ))}
         </ul>
-        {/* Who this is for, and who it is not for. The second half is the
-            reason the first half is believable, and it is the part an answer
-            engine can quote back to somebody. */}
         <Reveal>
-          <div className="grid gap-10 border-t border-border pt-[clamp(32px,5vw,56px)] lg:grid-cols-2 lg:gap-16">
-            <div>
-              <h2 className="t-h3">Kam tinka</h2>
-              <ul className="mt-5 flex flex-col gap-3">
-                {fits.map((item) => (
-                  <li key={item} className="t-body max-w-[46ch]">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h2 className="t-h3">Kam netinka</h2>
-              <ul className="mt-5 flex flex-col gap-3">
-                {doesNotFit.map((item) => (
-                  <li key={item} className="t-body max-w-[46ch] text-text-muted">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="border-t border-border pt-[clamp(32px,5vw,56px)]">
+            <h2 className="t-h3">Kam tinka</h2>
+            <ul className="mt-6 grid gap-3 lg:grid-cols-2 lg:gap-x-16">
+              {fits.map((item) => (
+                <li key={item} className="t-body max-w-[46ch]">
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
         </Reveal>
 

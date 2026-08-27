@@ -45,6 +45,6 @@ export const faqItems: FaqItem[] = [
   },
   {
     q: "Kam tinka Evolvia svetainės?",
-    a: "Evolvia kuria svetaines Lietuvos verslui: nuo vieno žmogaus paslaugų verslo iki įmonių, kurioms reikia rimtos vizitinės svetainės ar el. parduotuvės. Dažniausiai tai statybų, interjero, autopaslaugų, grožio ir paslaugų sričių įmonės, kurios neturi svetainės arba turi pasenusią. Netinkame tada, kai reikia sudėtingos vidinės sistemos ar programėlės su vartotojų paskyromis.",
+    a: "Evolvia kuria svetaines Lietuvos verslui: nuo vieno žmogaus paslaugų verslo iki įmonių, kurioms reikia rimtos vizitinės svetainės ar el. parduotuvės. Dažniausiai tai statybų, interjero, autopaslaugų, grožio ir paslaugų sričių įmonės, kurios neturi svetainės arba turi pasenusią.",
   },
 ];

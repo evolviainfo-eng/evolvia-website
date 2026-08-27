@@ -47,12 +47,6 @@ info@evolvia.lt, +370 657 716 01.
   rimtos vizitinės svetainės arba el. parduotuvės.
 - Tiems, kam svarbi aiški fiksuota kaina ir vienas atsakingas žmogus.
 
-## Kam netinka
-
-- Vidinėms sistemoms, CRM ar programėlėms su vartotojų paskyromis.
-- Projektams, kuriems reikia komandos ir kelių mėnesių trukmės.
-- Tiems, kas ieško pigiausio šablono už kelias dešimtis eurų.
-
 ## Puslapiai
 
 - [Pradžia](https://evolvia.lt/): kas yra Evolvia, pavyzdžiai, kaina.
