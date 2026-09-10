@@ -10,13 +10,17 @@ const priorities: Record<string, number> = {
   "/darbai": 0.8,
   "/duk": 0.7,
   "/kontaktai": 0.7,
+  "/darbai/minerda": 0.8,
 };
 
+/** Pages that are indexable but deliberately not in the footer navigation. */
+const extraPaths = ["/darbai/minerda"];
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  return pages.map((page) => ({
-    url: page.path === "/" ? site.url : `${site.url}${page.path}`,
+  return [...pages.map((p) => p.path), ...extraPaths].map((path) => ({
+    url: path === "/" ? site.url : `${site.url}${path}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
-    priority: priorities[page.path] ?? 0.5,
+    priority: priorities[path] ?? 0.5,
   }));
 }

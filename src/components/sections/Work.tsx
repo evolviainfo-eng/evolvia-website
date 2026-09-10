@@ -61,10 +61,10 @@ export function Work() {
   );
 
   return (
-    <Section id="darbai" tone="light">
+    <Section id="pavyzdziai" tone="light">
       <Container>
         <Reveal className="max-w-[680px]">
-          <Eyebrow>Darbai</Eyebrow>
+          <Eyebrow>Pavyzdžiai</Eyebrow>
           <h2 className="t-h2 mt-4">Pavyzdžiai, kuriuos galite išbandyti.</h2>
         </Reveal>
 

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { Chrome } from "@/components/ui/SiteFrame";
 import type { Demo } from "@/content/demos";
 
 /* The portfolio frame.
@@ -13,31 +14,6 @@ import type { Demo } from "@/content/demos";
  *  plausible `konstrukta.lt`: the frame must never imply the company owns a
  *  domain, because the company does not exist.
  */
-
-function Chrome({ url }: { url: string }) {
-  return (
-    <div className="flex items-center gap-2 border-b border-border bg-surface-2 px-3.5 py-2.5">
-      <span className="h-2.5 w-2.5 shrink-0 rounded-pill border border-border" />
-      <span className="h-2.5 w-2.5 shrink-0 rounded-pill border border-border" />
-      <span className="h-2.5 w-2.5 shrink-0 rounded-pill border border-border" />
-      <div className="mx-auto flex h-5 min-w-0 max-w-[64%] items-center gap-1.5 rounded-pill border border-border bg-surface px-3 text-[9px] tracking-[0.04em] text-text-muted">
-        <svg
-          viewBox="0 0 10 12"
-          className="h-[9px] w-[8px] shrink-0"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1.2}
-          aria-hidden="true"
-        >
-          <rect x="1.5" y="5" width="7" height="5.5" rx="1" />
-          <path d="M3 5V3.5a2 2 0 0 1 4 0V5" />
-        </svg>
-        <span className="truncate">{url}</span>
-      </div>
-      <span className="h-2.5 w-2.5 shrink-0" />
-    </div>
-  );
-}
 
 /** The mobile capture, hanging off the frame corner — responsyvumo įrodymas. */
 function PhoneMock({ demo }: { demo: Demo }) {

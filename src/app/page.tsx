@@ -2,6 +2,7 @@ import { Nav } from "@/components/sections/Nav";
 import { Hero } from "@/components/sections/Hero";
 import { Process } from "@/components/sections/Process";
 import { TrustStatement } from "@/components/sections/TrustStatement";
+import { CaseStudy } from "@/components/sections/CaseStudy";
 import { Work } from "@/components/sections/Work";
 import { Pricing } from "@/components/sections/Pricing";
 import { Faq } from "@/components/sections/Faq";
@@ -19,6 +20,7 @@ export default function Home() {
         <Hero />
         <Process />
         <TrustStatement />
+        <CaseStudy />
         <Work />
         <Pricing />
         <Faq />
