@@ -1,18 +1,6 @@
+import type { Locale } from "@/i18n/config";
+import { getFumeCopy } from "./copy";
 import { Eyebrow, H2, HAIRLINE, Note } from "./Type";
-
-const HOURS = [
-  { d: "Pirmadienis", h: "Nedirbame" },
-  { d: "Antradienis–Ketvirtadienis", h: "17:00–23:00" },
-  { d: "Penktadienis–Šeštadienis", h: "17:00–24:00" },
-  { d: "Sekmadienis", h: "17:00–22:00" },
-];
-
-const GOOD_TO_KNOW = [
-  "Stalas — visam vakarui",
-  "Prie baro rezervacijų nereikia",
-  "Vaikams — pusporcijos",
-  "Šuo prie baro laukiamas",
-];
 
 const linkCls =
   "border-b text-[rgba(237,230,218,0.88)] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#ede6da] hover:text-[#ede6da]";
@@ -20,7 +8,9 @@ const linkCls =
 const columnLabel =
   "font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase leading-none tracking-[0.26em] text-[#9c948a]";
 
-export function ContactFooter() {
+export function ContactFooter({ locale }: { locale: Locale }) {
+  const copy = getFumeCopy(locale).footer;
+
   return (
     <footer
       id="kontaktai"
@@ -35,14 +25,14 @@ export function ContactFooter() {
           className="grid gap-[clamp(36px,5vw,72px)] lg:grid-cols-12"
         >
           <div className="min-w-0 lg:col-span-5">
-            <Eyebrow>Kur mus rasti</Eyebrow>
-            <H2 className="mt-6">Užupis, Vilnius</H2>
+            <Eyebrow>{copy.eyebrow}</Eyebrow>
+            <H2 className="mt-6">{copy.title}</H2>
 
             <div
               className="mt-8 inline-flex rounded-[2px] border px-3 py-1.5 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.2em] text-[#9c948a]"
               style={{ borderColor: HAIRLINE }}
             >
-              Pavyzdiniai kontaktai
+              {copy.badge}
             </div>
 
             <address className="mt-5 not-italic">
@@ -51,7 +41,7 @@ export function ContactFooter() {
                   Užupis street would resolve to somebody's actual building —
                   the one contact detail here a stranger could act on. */}
               <p className="font-[family-name:var(--font-fume-ui)] text-[0.9375rem] leading-[1.9] text-[rgba(237,230,218,0.88)]">
-                Užupis, Vilnius
+                {copy.address}
               </p>
               <p className="mt-4 font-[family-name:var(--font-fume-ui)] text-[0.9375rem] leading-[1.9]">
                 <a
@@ -74,11 +64,11 @@ export function ContactFooter() {
           </div>
 
           <div className="min-w-0 lg:col-span-4 lg:col-start-7">
-            <p className={columnLabel}>Darbo laikas</p>
+            <p className={columnLabel}>{copy.hoursLabel}</p>
             <table className="mt-6 w-full border-collapse font-[family-name:var(--font-fume-ui)] text-[0.8125rem]">
-              <caption className="sr-only">Fumé savaitės darbo laikas</caption>
+              <caption className="sr-only">{copy.hoursCaption}</caption>
               <tbody>
-                {HOURS.map((r) => (
+                {copy.hours.map((r) => (
                   <tr
                     key={r.d}
                     style={{ borderColor: HAIRLINE }}
@@ -97,16 +87,13 @@ export function ContactFooter() {
                 ))}
               </tbody>
             </table>
-            <Note className="mt-5">
-              Virtuvė paskutinius užsakymus priima 22:30, sekmadieniais — 21:30.
-              Baras dirba iki uždarymo.
-            </Note>
+            <Note className="mt-5">{copy.hoursNote}</Note>
           </div>
 
           <div className="min-w-0 lg:col-span-2 lg:col-start-11">
-            <p className={columnLabel}>Naudinga žinoti</p>
+            <p className={columnLabel}>{copy.goodToKnowLabel}</p>
             <ul className="mt-6 space-y-3 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[rgba(237,230,218,0.8)]">
-              {GOOD_TO_KNOW.map((g) => (
+              {copy.goodToKnow.map((g) => (
                 <li key={g} className="min-w-0 text-pretty">
                   {g}
                 </li>
@@ -123,7 +110,7 @@ export function ContactFooter() {
             Fumé
           </span>
           <span className="font-[family-name:var(--font-fume-ui)] text-[0.8125rem] text-[#9c948a]">
-            Restoranas ir vyno baras · Vilnius
+            {copy.tagline}
           </span>
         </div>
       </div>

@@ -1,19 +1,18 @@
+import type { Locale } from "@/i18n/config";
+import { getKonstruktaCopy } from "./copy";
 import { CONTAINER, T_MICRO } from "./ui";
 
-const LINKS = [
-  { href: "#paslaugos", label: "Ką statome" },
-  { href: "#objektai", label: "Objektai" },
-  { href: "#eiga", label: "Eiga" },
-  { href: "#samata", label: "Sąmata" },
-  { href: "#kontaktai", label: "Kontaktai" },
-];
+/** The sections the links jump to, in order. Labels live in the dictionary
+ *  under the same ids. */
+const LINKS = ["paslaugos", "objektai", "eiga", "samata", "kontaktai"] as const;
 
 /** Thin sticky rule at the top of the document. Sits directly under Evolvia's
  *  honesty bar, so its offset is the published bar height. */
-export function KonstruktaNav() {
+export function KonstruktaNav({ locale }: { locale: Locale }) {
+  const c = getKonstruktaCopy(locale).nav;
   return (
     <nav
-      aria-label="Pagrindinė navigacija"
+      aria-label={c.label}
       className="chrome sticky z-50"
       style={{ top: "var(--demo-bar-h)" }}
     >
@@ -34,14 +33,14 @@ export function KonstruktaNav() {
             wordmark plus the CTA need ~780px of the ~704px available at
             exactly 768 — measured: the document went to 800px wide there. */}
         <ul className="ml-auto hidden min-w-0 items-center gap-6 lg:flex lg:gap-8">
-          {LINKS.map((l) => (
-            <li key={l.href}>
+          {LINKS.map((id) => (
+            <li key={id}>
               <a
-                href={l.href}
+                href={`#${id}`}
                 className="group relative block py-1 text-[0.6875rem] text-[#9A9791] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-[#E7E5E1] focus-visible:text-[#E7E5E1]"
               >
                 <span className="knst-mono uppercase tracking-[0.16em]">
-                  {l.label}
+                  {c.links[id]}
                 </span>
                 {/* the same rule-drawing-itself gesture the page uses at
                     section scale, here at 11px */}
@@ -58,8 +57,8 @@ export function KonstruktaNav() {
           href="#samata"
           className={`${T_MICRO} ml-auto shrink-0 border border-white/[0.22] px-3 py-2 tracking-[0.14em] text-[#E7E5E1] transition-[border-color,background-color] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-white/[0.5] hover:bg-white/[0.05] active:bg-white/[0.1] lg:ml-8`}
         >
-          <span className="sm:hidden">Sąmata</span>
-          <span className="hidden sm:inline">Skaičiuoti sąmatą</span>
+          <span className="sm:hidden">{c.ctaShort}</span>
+          <span className="hidden sm:inline">{c.ctaLong}</span>
         </a>
       </div>
     </nav>

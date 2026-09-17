@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { getFormaCopy } from "@/components/demo/forma/copy";
 import { MUTED, T_META } from "@/components/demo/forma/tokens";
 
 /** The page's one scroll moment: the opening photograph closes to a horizon.
@@ -22,6 +24,8 @@ import { MUTED, T_META } from "@/components/demo/forma/tokens";
  *  and GSAP must not write over that.
  */
 export function HeroPlate() {
+  const locale = useLocale();
+  const t = getFormaCopy(locale).hero;
   const frameRef = useRef<HTMLDivElement>(null);
   const plateRef = useRef<HTMLDivElement>(null);
 
@@ -71,7 +75,7 @@ export function HeroPlate() {
             src="/demo/forma/hero.webp"
             width={1800}
             height={1125}
-            alt="Šviesi svetainė su panoraminiu langu į medžius"
+            alt={t.imageAlt}
             loading="eager"
             fetchPriority="high"
             decoding="async"
@@ -83,8 +87,8 @@ export function HeroPlate() {
         className={`mt-3 flex flex-wrap justify-between gap-x-4 gap-y-1 ${T_META}`}
         style={{ color: MUTED }}
       >
-        <span>Dienos zona · privatus namas</span>
-        <span>Vilniaus r., 2025</span>
+        <span>{t.caption}</span>
+        <span>{t.captionPlace}</span>
       </figcaption>
     </figure>
   );

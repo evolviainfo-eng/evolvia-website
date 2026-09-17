@@ -9,7 +9,15 @@ import { useEffect, useRef, useState } from "react";
  *  desktop that is what somebody actually wants from an email address. The
  *  confirmation replaces the control in place rather than appearing as a
  *  toast somewhere else on the screen. */
-export function CopyLine({ value, href }: { value: string; href: string }) {
+export function CopyLine({
+  value,
+  href,
+  labels,
+}: {
+  value: string;
+  href: string;
+  labels: { copy: string; copied: string };
+}) {
   const [done, setDone] = useState(false);
   const timer = useRef<number | undefined>(undefined);
 
@@ -39,7 +47,7 @@ export function CopyLine({ value, href }: { value: string; href: string }) {
         onClick={copy}
         className="press text-[0.8125rem] text-text-muted opacity-0 transition-[opacity,color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:text-text focus-visible:opacity-100 group-hover/copy:opacity-100"
       >
-        {done ? "Nukopijuota" : "Kopijuoti"}
+        {done ? labels.copied : labels.copy}
       </button>
     </span>
   );

@@ -3,44 +3,14 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { getKonstruktaCopy } from "./copy";
 import { BAND, CONTAINER, SectionHead, T_BODY, T_MICRO } from "./ui";
-
-const PHASES = [
-  {
-    no: "01",
-    title: "Apžiūra ir sąmata",
-    body: "Atvažiuojame į sklypą, matuojame, klausiame apie biudžetą atvirai. Grįžtame su sąmata, kurioje matosi kiekviena eilutė — ne viena suma apačioje.",
-    time: "1–2 sav.",
-  },
-  {
-    no: "02",
-    title: "Projektas ir leidimai",
-    body: "Techninis projektas, derinimai su tinklais, statybą leidžiantis dokumentas. Popierius tvarkome patys — užsakovui lieka tik pasirašyti.",
-    time: "4–8 sav.",
-  },
-  {
-    no: "03",
-    title: "Pamatai ir konstrukcijos",
-    body: "Iškasos, pamatai, sienos, perdangos. Nuo šio etapo aikštelėje dirbama kasdien, o kas penktadienį gaunate nuotraukas ir savaitės ataskaitą.",
-    time: "6–12 sav.",
-  },
-  {
-    no: "04",
-    title: "Stogas, fasadas, inžinerija",
-    body: "Uždaromas kontūras, tada elektra, santechnika, vėdinimas. Objektas paruošiamas apdailai dar iki šalčių — grafikas tam ir daromas.",
-    time: "8–14 sav.",
-  },
-  {
-    no: "05",
-    title: "Apdaila ir perdavimas",
-    body: "Vidaus apdaila, sutvarkyta aplinka, statybos užbaigimo aktas, raktai ir aplankas su visomis medžiagų deklaracijomis.",
-    time: "6–10 sav.",
-  },
-];
 
 const HEAD = 7; // px — the travelling marker's edge
 
 export function Phases() {
+  const c = getKonstruktaCopy(useLocale()).phases;
   const scopeRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLSpanElement>(null);
   const headRef = useRef<HTMLSpanElement>(null);
@@ -92,7 +62,7 @@ export function Phases() {
           src="/demo/konstrukta/aerial.webp"
           width={1400}
           height={1050}
-          alt="Statybos aikštelė iš viršaus: paklota armatūra prieš betonavimą"
+          alt={c.alt}
           decoding="async"
           loading="lazy"
           className="h-[clamp(200px,30vw,400px)] w-full object-cover object-center"
@@ -102,9 +72,9 @@ export function Phases() {
       <div className={`${CONTAINER} ${BAND}`}>
         <SectionHead
           index="04"
-          label="Kaip dirbame"
-          title="Penki etapai su datomis, ne su pažadais."
-          lead="Trukmės nurodytos vidutiniam 180–220 m² objektui. Į sutartį įrašomos konkrečios jūsų objekto datos, o kiekvieno etapo pabaiga fiksuojama aktu."
+          label={c.label}
+          title={c.title}
+          lead={c.lead}
         />
 
         <div
@@ -129,7 +99,7 @@ export function Phases() {
           />
 
           <ol data-rise className="border-t border-white/[0.11]">
-            {PHASES.map((p) => (
+            {c.items.map((p) => (
               <li
                 key={p.no}
                 className="grid gap-x-8 gap-y-3 border-b border-white/[0.11] py-7 md:grid-cols-[48px_minmax(0,0.9fr)_minmax(0,1.4fr)_auto] md:items-baseline md:py-8"

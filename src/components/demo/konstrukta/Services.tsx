@@ -1,3 +1,5 @@
+import type { Locale } from "@/i18n/config";
+import { getKonstruktaCopy } from "./copy";
 import {
   BAND,
   CONTAINER,
@@ -8,43 +10,17 @@ import {
   Tag,
 } from "./ui";
 
-const SERVICES = [
-  {
-    no: "01",
-    title: "Karkasinė statyba",
-    body: "Medinis karkasas pjaunamas pagal gamyklinį brėžinį ir surenkamas aikštelėje. Uždaras kontūras — per 3–5 savaites nuo pamatų.",
-    specs: ["Mediena C24", "Žingsnis 600 mm", "U ≤ 0,13 W/m²K"],
-  },
-  {
-    no: "02",
-    title: "Mūrinė statyba",
-    body: "Keramzitblokių ir keraminių plytų mūras su monolitinėmis perdangomis. Sunkiau, lėčiau, bet šimtmečiui.",
-    specs: ["Keramzitblokis", "Monolitinė perdanga", "A++ klasė"],
-  },
-  {
-    no: "03",
-    title: "Renovacija ir fasadai",
-    body: "Senų namų apšiltinimas, tinkuojamos ir vėdinamos fasado sistemos, stogo keitimas. Pradedame nuo termovizinės nuotraukos, ne nuo katalogo.",
-    specs: ["Tinkuojama sistema", "Vėdinamas fasadas", "Termovizinis auditas"],
-  },
-  {
-    no: "04",
-    title: "Vidaus apdaila",
-    body: "Elektra, santechnika, vėdinimas, glaistymas, grindys, dažai. Ta pati komanda, kuri statė sienas — todėl nėra ko kaltinti.",
-    specs: ["Inžinerinės sistemos", "Apdailos darbai", "Objekto perdavimas"],
-  },
-];
-
-export function Services() {
+export function Services({ locale }: { locale: Locale }) {
+  const c = getKonstruktaCopy(locale).services;
   return (
     <section id="paslaugos" className={`${BAND} border-t border-white/[0.11]`}>
       <div className={CONTAINER}>
         <div className="grid gap-[clamp(32px,5vw,56px)] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.78fr)] lg:items-end">
           <SectionHead
             index="02"
-            label="Ką statome"
-            title="Keturios sritys. Nė viena — „taip pat galime“."
-            lead="Nesiimame darbų, kuriems neturime nei savo komandos, nei patikrinto subrangovo. Trumpesnis sąrašas — mažiau staigmenų grafike."
+            label={c.label}
+            title={c.title}
+            lead={c.lead}
           />
 
           <figure className="min-w-0">
@@ -52,18 +28,18 @@ export function Services() {
               src="/demo/konstrukta/frame.webp"
               width={1400}
               height={933}
-              alt="Medinis namo karkasas su pastoliais statybos aikštelėje"
+              alt={c.alt}
             />
             <figcaption
               className={`${T_MICRO} mt-3 max-w-[52ch] tracking-[0.12em] text-[#9A9791]`}
             >
-              Karkasas · Ringaudai · 11 darbo dienų iki uždaro kontūro
+              {c.caption}
             </figcaption>
           </figure>
         </div>
 
         <ol className="mt-[clamp(44px,6vw,72px)] border-t border-white/[0.11]">
-          {SERVICES.map((s, i) => (
+          {c.items.map((s, i) => (
             <li
               key={s.no}
               data-rise

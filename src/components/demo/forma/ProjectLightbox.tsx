@@ -15,6 +15,8 @@ import {
   useState,
   type CSSProperties,
 } from "react";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { getFormaCopy } from "@/components/demo/forma/copy";
 import {
   HAIR,
   MUTED,
@@ -26,6 +28,8 @@ import {
 
 export type FormaProjectKind = "butas" | "namas" | "komercine";
 
+/** One project as the page shows it: ProjectIndex joins its fixed facts with
+ *  the words for the page's language before handing it over. */
 export interface FormaProject {
   id: string;
   title: string;
@@ -96,6 +100,8 @@ export function ProjectLightbox({
   onClose: () => void;
   onNavigate: (next: number) => void;
 }) {
+  const locale = useLocale();
+  const t = getFormaCopy(locale).lightbox;
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const [shown, setShown] = useState(false);
@@ -342,7 +348,7 @@ export function ProjectLightbox({
           {many && (
             <div
               role="group"
-              aria-label="Peržiūros kadrai"
+              aria-label={t.strip}
               className="pointer-events-auto hidden items-center gap-1.5 sm:flex"
             >
               {items.map((it, i) => {
@@ -353,7 +359,7 @@ export function ProjectLightbox({
                     type="button"
                     onClick={() => onNavigate(i)}
                     aria-current={on ? "true" : undefined}
-                    aria-label={`Rodyti projektą ${it.title}`}
+                    aria-label={t.show(it.title)}
                     className="group inline-flex h-8 items-center px-0.5"
                   >
                     <span
@@ -374,10 +380,10 @@ export function ProjectLightbox({
             ref={closeRef}
             type="button"
             onClick={requestClose}
-            aria-label="Uždaryti projekto peržiūrą"
+            aria-label={t.close}
             className={`${CONTROL} gap-2.5 px-4 text-[0.8125rem] tracking-[0.04em]`}
           >
-            <span className="hidden sm:inline">Uždaryti</span>
+            <span className="hidden sm:inline">{t.closeShort}</span>
             <span aria-hidden="true" className="text-[1.0625rem] leading-none">
               ✕
             </span>
@@ -459,7 +465,7 @@ export function ProjectLightbox({
                 type="button"
                 onClick={() => go(-1)}
                 disabled={!many}
-                aria-label="Ankstesnis projektas"
+                aria-label={t.previous}
                 className={`${CONTROL} w-11 text-[0.9375rem] leading-none`}
               >
                 <span aria-hidden="true">←</span>
@@ -468,7 +474,7 @@ export function ProjectLightbox({
                 type="button"
                 onClick={() => go(1)}
                 disabled={!many}
-                aria-label="Kitas projektas"
+                aria-label={t.next}
                 className={`${CONTROL} w-11 text-[0.9375rem] leading-none`}
               >
                 <span aria-hidden="true">→</span>

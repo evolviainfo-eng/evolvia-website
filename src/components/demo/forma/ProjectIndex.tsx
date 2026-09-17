@@ -1,6 +1,10 @@
 "use client";
 
 import { useCallback, useMemo, useState, type CSSProperties } from "react";
+import type { Locale } from "@/i18n/config";
+import { useLocale } from "@/i18n/LocaleProvider";
+import type { FormaCopy } from "@/i18n/dictionaries/lt/forma";
+import { getFormaCopy } from "@/components/demo/forma/copy";
 import {
   ProjectLightbox,
   type FormaProject,
@@ -21,109 +25,97 @@ import {
   WRAP,
 } from "@/components/demo/forma/tokens";
 
+type ProjectId = keyof FormaCopy["projects"]["items"];
+
 /* Display order is deliberately mixed, so filtering visibly re-orders the
-   grid rather than just hiding rows. */
-const PROJECTS: FormaProject[] = [
+   grid rather than just hiding rows. Only the facts that need no words live
+   here; each project's title, place, scope, note and alt text are in the
+   dictionary under the same id. */
+const PROJECTS: {
+  id: ProjectId;
+  kind: FormaProjectKind;
+  area: string;
+  year: string;
+  src: string;
+  w: number;
+  h: number;
+}[] = [
   {
     id: "p-1",
-    title: "Butas Žvėryne",
     kind: "butas",
-    kindLabel: "Butas",
     area: "78 m²",
     year: "2025",
-    place: "Vilnius",
-    scope: "Pilnas projektas · autorinė priežiūra",
-    note: "Trijų kambarių butas tarpukario name. Nugriovėme vieną pertvarą ir atsirado ilga dienos zona su vaizdu į kiemo medžius. Baldai — pagal projektą, kad tilptų į nelygias sienas.",
     src: "/demo/forma/p-1.webp",
     w: 1400,
     h: 1050,
-    alt: "Neutralių tonų svetainė su sofa ir dienos šviesa",
   },
   {
     id: "p-5",
-    title: "Namas Sudervėje",
     kind: "namas",
-    kindLabel: "Namas",
     area: "186 m²",
     year: "2024",
-    place: "Vilniaus r.",
-    scope: "Pilnas projektas · autorinė priežiūra",
-    note: "Namas šeimai su dviem vaikais. Židinys — vienintelė sunki masė šviesioje erdvėje; visa kita atitraukta nuo sienų, kad grindys liktų vientisos.",
     src: "/demo/forma/p-5.webp",
     w: 1400,
     h: 788,
-    alt: "Šviesi svetainė su židiniu ir minkštais baldais",
   },
   {
     id: "p-2",
-    title: "Grožio studija Naujamiestyje",
     kind: "komercine",
-    kindLabel: "Komercinė",
     area: "54 m²",
     year: "2025",
-    place: "Vilnius",
-    scope: "Pilnas projektas",
-    note: "Studija pirmame gyvenamojo namo aukšte. Uosio grindys ir viena nišų linija palei sieną — kad įranga ir priemonės nekristų į akis, o klientė matytų tik šviesą ir save.",
     src: "/demo/forma/p-2.webp",
     w: 1400,
     h: 933,
-    alt: "Šviesi erdvė medinėmis grindimis ir dideliais langais",
   },
   {
     id: "p-3",
-    title: "Butas Šnipiškėse",
     kind: "butas",
-    kindLabel: "Butas",
     area: "92 m²",
     year: "2025",
-    place: "Vilnius",
-    scope: "Pilnas projektas · baldų projektavimas",
-    note: "Butas naujos statybos name, kur virtuvė ir svetainė yra viena erdvė. Sala projektuota pagal šeimos ūgį ir galiausiai tapo pagrindiniu namų stalu — valgomojo taip ir neprireikė.",
     src: "/demo/forma/p-3.webp",
     w: 1400,
     h: 933,
-    alt: "Virtuvė su sala ir aukštomis spintelėmis",
   },
   {
     id: "p-6",
-    title: "Svečių apartamentai Užupyje",
     kind: "komercine",
-    kindLabel: "Komercinė",
     area: "46 m²",
     year: "2024",
-    place: "Vilnius",
-    scope: "Pilnas projektas · autorinė priežiūra",
-    note: "Du nuomojami apartamentai senamiesčio pakraštyje. Šilta paletė ir tekstilė vietoj dekoro: kambarys turi atrodyti gyvenamas, o ne viešbutinis, ir turi būti išvalomas per keturiasdešimt minučių.",
     src: "/demo/forma/p-6.webp",
     w: 1400,
     h: 933,
-    alt: "Miegamasis šiltos paletės tonais su tekstile",
   },
   {
     id: "p-4",
-    title: "Namas Balsiuose",
     kind: "namas",
-    kindLabel: "Namas",
     area: "142 m²",
     year: "2023",
-    place: "Vilnius",
-    scope: "Konsultacija · pilnas projektas",
-    note: "Miegamasis su dviem langais į skirtingas puses — rytinį ir vakarinį. Spinta paslėpta už tos pačios sienos plokštumos, todėl kambaryje matosi tik lova ir šviesa.",
     src: "/demo/forma/p-4.webp",
     w: 1400,
     h: 933,
-    alt: "Miegamasis su dviem langais ir ramia lovos zona",
   },
 ];
 
-const FILTERS = [
-  { id: "visi", label: "Visi" },
-  { id: "butas", label: "Butai" },
-  { id: "namas", label: "Namai" },
-  { id: "komercine", label: "Komercinės" },
-] as const;
+/** The index in one language: the facts above joined with that language's
+ *  words. Built once per language, so the array a render reads is stable. */
+function projectsIn(locale: Locale): FormaProject[] {
+  const t = getFormaCopy(locale).projects;
+  return PROJECTS.map((p) => ({
+    ...p,
+    ...t.items[p.id],
+    kindLabel: t.kinds[p.kind],
+  }));
+}
 
-type FilterId = (typeof FILTERS)[number]["id"];
+const PROJECTS_BY_LOCALE: Record<Locale, FormaProject[]> = {
+  lt: projectsIn("lt"),
+  en: projectsIn("en"),
+};
+
+/* Chip labels are in the dictionary under the same ids. */
+const FILTERS = ["visi", "butas", "namas", "komercine"] as const;
+
+type FilterId = (typeof FILTERS)[number];
 
 const countOf = (id: FilterId) =>
   id === "visi"
@@ -132,14 +124,14 @@ const countOf = (id: FilterId) =>
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** An aria-label replaces the name a browser would compute from the button's
- *  contents, and every piece of card information lives inside that button — so
- *  the metadata has to be folded in, or a screen-reader user hears the title
- *  alone and loses the whole point of an index. */
-const cardLabel = (p: FormaProject) =>
-  `Atverti projektą ${p.title} — ${p.kindLabel}, ${p.area}, ${p.place}, ${p.year}. ${p.scope}`;
-
 export function ProjectIndex() {
+  const locale = useLocale();
+  /* Memoised only so the React Compiler lint treats the dictionary as the
+     immutable value it is. The render calls its functions (cardLabel,
+     announce), and on a plain call result the compiler assumes those calls
+     mutate it, which stops it from preserving closeLightbox below. */
+  const t = useMemo(() => getFormaCopy(locale), [locale]);
+  const projects = PROJECTS_BY_LOCALE[locale];
   const [filter, setFilter] = useState<FilterId>("visi");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [trigger, setTrigger] = useState<HTMLButtonElement | null>(null);
@@ -147,9 +139,9 @@ export function ProjectIndex() {
   const visible = useMemo(
     () =>
       filter === "visi"
-        ? PROJECTS
-        : PROJECTS.filter((p) => p.kind === (filter as FormaProjectKind)),
-    [filter],
+        ? projects
+        : projects.filter((p) => p.kind === (filter as FormaProjectKind)),
+    [filter, projects],
   );
 
   const closeLightbox = useCallback(() => {
@@ -164,36 +156,34 @@ export function ProjectIndex() {
         <div className={WRAP}>
           <div data-rise className="min-w-0">
             <p className={T_EYEBROW} style={{ color: MUTED }}>
-              Projektai
+              {t.sections.projects}
             </p>
             <div className="mt-5 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <h2 style={SERIF} className={`${T_H2} max-w-[18ch]`}>
-                Šeši darbai, kuriuos parodome pirmiausia.
+                {t.projects.title}
               </h2>
               <p
                 className={`min-w-0 max-w-[40ch] ${T_BODY}`}
                 style={{ color: MUTED }}
               >
-                Butai, namai ir nedidelės komercinės erdvės Vilniuje bei
-                aplinkui. Atverkite projektą — atsivers didelė nuotrauka ir
-                trumpas sprendimo paaiškinimas.
+                {t.projects.lead}
               </p>
             </div>
 
             <div className="mt-[clamp(30px,4vw,46px)] flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
               <div
                 role="group"
-                aria-label="Filtruoti projektus pagal tipą"
+                aria-label={t.projects.filterLabel}
                 className="flex min-w-0 flex-wrap gap-2"
               >
                 {FILTERS.map((f) => {
-                  const on = f.id === filter;
+                  const on = f === filter;
                   return (
                     <button
-                      key={f.id}
+                      key={f}
                       type="button"
                       aria-pressed={on}
-                      onClick={() => setFilter(f.id)}
+                      onClick={() => setFilter(f)}
                       className={[
                         "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[0.8125rem] leading-none transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] active:translate-y-px",
                         on
@@ -201,13 +191,13 @@ export function ProjectIndex() {
                           : "border-[rgba(26,25,23,0.18)] hover:border-[#1A1917] hover:bg-[rgba(26,25,23,0.05)]",
                       ].join(" ")}
                     >
-                      {f.label}
+                      {t.projects.filters[f]}
                       <span
                         className={`tabular-nums text-[0.6875rem] ${
                           on ? "text-[#F4F1EC]/65" : "text-[#5E5952]"
                         }`}
                       >
-                        {countOf(f.id)}
+                        {countOf(f)}
                       </span>
                     </button>
                   );
@@ -218,13 +208,14 @@ export function ProjectIndex() {
                   layout — so a sighted visitor sees the filter took effect even
                   when the grid is below the fold */}
               <p className={`shrink-0 ${T_NUM}`} style={{ color: MUTED }}>
-                Rodoma {pad(visible.length)} / {pad(PROJECTS.length)}
+                {t.projects.showing} {pad(visible.length)} /{" "}
+                {pad(PROJECTS.length)}
               </p>
             </div>
           </div>
 
           <p aria-live="polite" className="sr-only">
-            Rodoma {visible.length} iš {PROJECTS.length} projektų.
+            {t.projects.announce(visible.length, PROJECTS.length)}
           </p>
 
           {visible.length === 0 ? (
@@ -236,21 +227,20 @@ export function ProjectIndex() {
                 style={SERIF}
                 className="max-w-[24ch] text-[clamp(1.25rem,2.6vw,1.875rem)] leading-[1.16] text-pretty"
               >
-                Šios rūšies darbų viešai kol kas nerodome.
+                {t.projects.emptyTitle}
               </p>
               <p
                 className={`mt-3 max-w-[46ch] ${T_BODY}`}
                 style={{ color: MUTED }}
               >
-                Archyve jų yra — parašykite ir atsiųsime tinkamiausius jūsų
-                erdvei.
+                {t.projects.emptyBody}
               </p>
               <button
                 type="button"
                 onClick={() => setFilter("visi")}
                 className="mt-6 press inline-flex h-11 items-center rounded-full border border-[rgba(26,25,23,0.18)] px-5 text-[0.8125rem] leading-none transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-px"
               >
-                Rodyti visus darbus
+                {t.projects.showAll}
               </button>
             </div>
           ) : (
@@ -271,7 +261,7 @@ export function ProjectIndex() {
                       setTrigger(e.currentTarget);
                       setOpenIndex(i);
                     }}
-                    aria-label={cardLabel(p)}
+                    aria-label={t.projects.cardLabel(p)}
                     className="group block w-full min-w-0 text-left"
                   >
                     <span className="block overflow-hidden bg-[rgba(26,25,23,0.06)]">

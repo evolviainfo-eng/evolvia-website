@@ -5,18 +5,22 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { faqItems } from "@/content/faq";
 import { site } from "@/content/site";
+import { fill } from "@/i18n/fill";
+import type { Dictionary } from "@/i18n/dictionaries/lt";
 import { cn } from "@/lib/cn";
 
 export function Faq({
+  t,
   standalone = false,
   contactHref = "#kontaktai",
 }: {
+  t: Dictionary["faq"];
   /** true on /duk — the PageHeader already carries the heading. */
   standalone?: boolean;
   contactHref?: string;
 }) {
+  const faqItems = t.items;
   const [open, setOpen] = useState<number | null>(null);
   const reduce = useReducedMotion();
   const baseId = useId();
@@ -35,17 +39,17 @@ export function Faq({
           {/* sticky editorial heading */}
           {!standalone && (
             <div className="md:sticky md:top-32 md:self-start">
-              <Eyebrow>D.U.K.</Eyebrow>
-              <h2 className="t-h2 mt-4">Dažni klausimai.</h2>
+              <Eyebrow>{t.eyebrow}</Eyebrow>
+              <h2 className="t-h2 mt-4">{t.title}</h2>
               <p className="t-body mt-5 max-w-[34ch]">
-                Nerandate atsakymo?{" "}
+                {t.askBefore}{" "}
                 <a
                   href={contactHref}
                   className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-text"
                 >
-                  Parašykite mums
+                  {t.askLink}
                 </a>{" "}
-                ir atsakysime per dieną.
+                {t.askAfter}
               </p>
             </div>
           )}
@@ -106,20 +110,20 @@ export function Faq({
 
           {standalone && (
             <p className="t-body mt-8">
-              Nerandate atsakymo?{" "}
+              {t.askBefore}{" "}
               <a
                 href={contactHref}
                 className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-text"
               >
-                Parašykite mums
+                {t.askLink}
               </a>{" "}
-              ir atsakysime per dieną.
+              {t.askAfter}
             </p>
           )}
         </div>
 
         {/* fallback contact for crawlers / no-JS clarity */}
-        <p className="sr-only">Klausimai: {site.email}</p>
+        <p className="sr-only">{fill(t.srContact, { email: site.email })}</p>
       </Container>
     </Section>
   );

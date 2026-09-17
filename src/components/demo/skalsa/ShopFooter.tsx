@@ -1,9 +1,13 @@
+import type { Locale } from "@/i18n/config";
+import { getSkalsaCopy } from "./copy";
+
+/* Nuorodų tekstai žodyne, po tuo pačiu `id`. */
 const LINKS = [
-  { href: "#katalogas", label: "Katalogas" },
-  { href: "#rinkiniai", label: "Rinkiniai" },
-  { href: "#dirbtuve", label: "Dirbtuvė" },
-  { href: "#pristatymas", label: "Pristatymas ir grąžinimas" },
-];
+  { href: "#katalogas", id: "katalogas" },
+  { href: "#rinkiniai", id: "rinkiniai" },
+  { href: "#dirbtuve", id: "dirbtuve" },
+  { href: "#pristatymas", id: "pristatymas" },
+] as const;
 
 /* Ta pati linija, kurią brėžia antraštės nuoroda — kad visas puslapis
    į pelę atsakytų vienu gestu. */
@@ -11,7 +15,9 @@ const LINK =
   "relative inline-block text-[0.9375rem] text-[#241E19] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-[#241E19] after:transition-transform after:duration-[var(--d-ui)] after:ease-[var(--e-out)] hover:after:scale-x-100";
 
 /** Parduotuvės pabaiga. Kontaktai — sąmoningai pavyzdiniai. */
-export function ShopFooter() {
+export function ShopFooter({ locale }: { locale: Locale }) {
+  const t = getSkalsaCopy(locale).footer;
+
   return (
     <footer className="bg-[#F1EAE0]">
       <div className="mx-auto max-w-[1180px] px-5 py-[clamp(56px,7vw,96px)] sm:px-8">
@@ -27,20 +33,19 @@ export function ShopFooter() {
               Skalsa
             </p>
             <p className="mt-4 max-w-[36ch] text-[0.9375rem] leading-[1.65] text-pretty text-[#6E6257]">
-              Maža dirbtuvė, kurioje sojų vaško žvakės liejamos rankomis
-              nedidelėmis partijomis. Siunčiame po visą Lietuvą.
+              {t.blurb}
             </p>
           </div>
 
-          <nav aria-label="Puslapio apačia" className="min-w-0">
+          <nav aria-label={t.navLabel} className="min-w-0">
             <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
-              Parduotuvė
+              {t.shop}
             </p>
             <ul className="mt-5 grid justify-items-start gap-3">
               {LINKS.map((l) => (
                 <li key={l.href} className="min-w-0">
                   <a href={l.href} className={LINK}>
-                    {l.label}
+                    {t.links[l.id]}
                   </a>
                 </li>
               ))}
@@ -49,7 +54,7 @@ export function ShopFooter() {
 
           <div className="min-w-0">
             <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
-              Pavyzdiniai kontaktai
+              {t.contacts}
             </p>
             <ul className="mt-5 grid justify-items-start gap-3 text-[0.9375rem]">
               <li className="min-w-0">
@@ -65,21 +70,21 @@ export function ShopFooter() {
                   labas@skalsa.demo
                 </a>
               </li>
-              <li className="text-[#6E6257]">Dirbtuvė Vilniuje</li>
-              <li className="text-[#6E6257]">I–V 10:00–17:00</li>
+              <li className="text-[#6E6257]">{t.workshop}</li>
+              <li className="text-[#6E6257]">{t.hours}</li>
             </ul>
           </div>
         </div>
 
         <div className="mt-12 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3 border-t border-[rgba(36,30,25,0.13)] pt-6">
           <p className="min-w-0 text-[0.8125rem] text-[#6E6257]">
-            © 2026 Skalsa · Sojų vaškas, medvilninis dagtis, perdirbamas stiklas
+            {t.legal}
           </p>
           <a
             href="#virsus"
             className="shrink-0 text-[0.8125rem] text-[#6E6257] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] hover:text-[#241E19]"
           >
-            Į viršų
+            {t.toTop}
           </a>
         </div>
       </div>

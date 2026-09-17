@@ -1,4 +1,6 @@
 import { cn } from "@/lib/cn";
+import { getDictionary } from "@/i18n";
+import type { Locale } from "@/i18n/config";
 
 /** The note above the work.
  *
@@ -14,7 +16,14 @@ import { cn } from "@/lib/cn";
  *  the closing strip repeats it in full. That is the context where someone
  *  could actually be misled; a portfolio page labelled "pavyzdiniai darbai"
  *  is not. */
-export function DemoNote({ className }: { className?: string }) {
+export function DemoNote({
+  locale,
+  className,
+}: {
+  locale: Locale;
+  className?: string;
+}) {
+  const t = getDictionary(locale).demoNote;
   return (
     <p
       className={cn(
@@ -22,9 +31,7 @@ export function DemoNote({ className }: { className?: string }) {
         className,
       )}
     >
-      <strong className="font-medium text-text">Tai pavyzdiniai darbai.</strong>{" "}
-      Svetaines galite atidaryti ir paspaudinėti: išbandykite skaičiuoklę,
-      rezervaciją ar krepšelį. Tokios kokybės ir tikėkitės.
+      <strong className="font-medium text-text">{t.strong}</strong> {t.body}
     </p>
   );
 }

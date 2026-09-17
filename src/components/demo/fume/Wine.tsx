@@ -1,27 +1,13 @@
+import type { Locale } from "@/i18n/config";
+import { getFumeCopy } from "./copy";
 import { Body, Eyebrow, H2, HAIRLINE, Note, Shot } from "./Type";
-
-const WINES = [
-  {
-    n: "Nerello Mascalese",
-    r: "Etna Rosso · Sicilija, Italija",
-    g: 9,
-    b: 46,
-  },
-  { n: "Riesling Trocken", r: "Mozelis · Vokietija", g: 8, b: 39 },
-  {
-    n: "Chenin Blanc",
-    r: "Savennières, Luara · Prancūzija",
-    g: 10,
-    b: 52,
-  },
-  { n: "Blaufränkisch", r: "Burgenlandas · Austrija", g: 8, b: 42 },
-  { n: "Tempranillo Reserva", r: "Rioja Alta · Ispanija", g: 9, b: 48 },
-];
 
 const PRICE_COL =
   "w-[3.4rem] shrink-0 text-right font-[family-name:var(--font-fume-display)] text-[1.0625rem] leading-[1.3] tabular-nums";
 
-export function Wine() {
+export function Wine({ locale }: { locale: Locale }) {
+  const { wine: copy, price } = getFumeCopy(locale);
+
   return (
     <section
       id="vynas"
@@ -30,17 +16,13 @@ export function Wine() {
       <div className="grid items-start gap-[clamp(36px,5vw,72px)] lg:grid-cols-12">
         <div className="min-w-0 lg:col-span-6">
           <div data-rise>
-            <Eyebrow>Vyno kortelė</Eyebrow>
+            <Eyebrow>{copy.eyebrow}</Eyebrow>
             <H2 className="mt-6">
-              Apie 120 pozicijų.
+              {copy.title[0]}
               <br />
-              Štai penkios.
+              {copy.title[1]}
             </H2>
-            <Body className="mt-5 max-w-[46ch]">
-              Kortelė sukasi apie mažus šeimos vynuogynus ir mažas partijas.
-              Visą sąrašą rasite prie stalo — arba tiesiog paklauskite, ką
-              atidarėme šįvakar.
-            </Body>
+            <Body className="mt-5 max-w-[46ch]">{copy.lead}</Body>
           </div>
 
           <div
@@ -52,13 +34,17 @@ export function Wine() {
               className="flex items-baseline gap-x-3 border-b pb-2.5 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.18em] text-[#9c948a]"
               style={{ borderColor: HAIRLINE }}
             >
-              <span className="min-w-0 flex-1">Taurėmis ir buteliais</span>
-              <span className="w-[3.4rem] shrink-0 text-right">Taurė</span>
-              <span className="w-[3.4rem] shrink-0 text-right">Butelis</span>
+              <span className="min-w-0 flex-1">{copy.columns.wines}</span>
+              <span className="w-[3.4rem] shrink-0 text-right">
+                {copy.columns.glass}
+              </span>
+              <span className="w-[3.4rem] shrink-0 text-right">
+                {copy.columns.bottle}
+              </span>
             </div>
 
             <ul>
-              {WINES.map((w) => (
+              {copy.list.map((w) => (
                 <li
                   key={w.n}
                   style={{ borderColor: HAIRLINE }}
@@ -74,14 +60,14 @@ export function Wine() {
                     <span
                       className={`${PRICE_COL} text-[rgba(237,230,218,0.9)]`}
                     >
-                      <span className="sr-only">Taurė: </span>
-                      {w.g}&nbsp;€
+                      <span className="sr-only">{copy.srGlass}</span>
+                      {price(w.g)}
                     </span>
                     <span
                       className={`${PRICE_COL} text-[rgba(237,230,218,0.9)]`}
                     >
-                      <span className="sr-only">Butelis: </span>
-                      {w.b}&nbsp;€
+                      <span className="sr-only">{copy.srBottle}</span>
+                      {price(w.b)}
                     </span>
                   </p>
                   <p className="mt-1.5 max-w-[46ch] font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[#9c948a]">
@@ -95,10 +81,7 @@ export function Wine() {
               style={{ borderColor: HAIRLINE }}
               className="mt-6 border-t pt-5"
             >
-              <Note>
-                Dešimt vietų prie baro laikome nerezervuotų — vien taurei vyno
-                užeiti galima be išankstinio susitarimo.
-              </Note>
+              <Note>{copy.note}</Note>
             </div>
           </div>
         </div>
@@ -112,7 +95,7 @@ export function Wine() {
             src="/demo/fume/wine.webp"
             w={1200}
             h={800}
-            alt="Raudonas vynas pilamas į taurę prieblandoje"
+            alt={copy.pourAlt}
             settle
           />
           <Shot
@@ -121,7 +104,7 @@ export function Wine() {
             w={1100}
             h={893}
             ratio="5 / 4"
-            alt="Vyno pylimas į taurę švariame fone"
+            alt={copy.studioAlt}
           />
         </div>
       </div>

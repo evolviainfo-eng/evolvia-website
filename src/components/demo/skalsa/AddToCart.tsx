@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { getSkalsaCopy } from "./copy";
 import { useShop } from "./ShopProvider";
 
 /** „Į krepšelį“ — trumpam pereina į patvirtinimo būseną.
@@ -22,6 +24,8 @@ export function AddToCart({
   variant?: "solid" | "quiet";
 }) {
   const { add } = useShop();
+  const locale = useLocale();
+  const t = getSkalsaCopy(locale).addToBasket;
   const [added, setAdded] = useState(false);
   const timer = useRef<number | null>(null);
 
@@ -55,9 +59,7 @@ export function AddToCart({
     <button
       type="button"
       onClick={onClick}
-      aria-label={
-        added ? `${name} — pridėta į krepšelį` : `Įdėti „${name}“ į krepšelį`
-      }
+      aria-label={added ? t.addedLabel(name) : t.addLabel(name)}
       className={`${base} ${skin}`}
     >
       <span aria-hidden="true" className="grid place-items-center">
@@ -66,14 +68,14 @@ export function AddToCart({
             added ? "-translate-y-[7px] opacity-0" : "opacity-100"
           }`}
         >
-          Į krepšelį
+          {t.label}
         </span>
         <span
           className={`${label} flex items-center gap-2 whitespace-nowrap ${
             added ? "opacity-100" : "translate-y-[7px] opacity-0"
           }`}
         >
-          Pridėta
+          {t.added}
           <Check size={12} />
         </span>
       </span>

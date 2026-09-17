@@ -3,7 +3,10 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { SiteFrame, FrameHint } from "@/components/ui/SiteFrame";
-import { minerda as c, minerdaShots } from "@/content/cases";
+import { getMinerda, minerdaShots } from "@/content/cases";
+import { getDictionary } from "@/i18n";
+import { fill } from "@/i18n/fill";
+import { localizePath, type Locale } from "@/i18n/config";
 
 /* Darbai, on the homepage.
  *
@@ -29,27 +32,30 @@ import { minerda as c, minerdaShots } from "@/content/cases";
  * invented to do.
  */
 
-export function CaseStudy() {
+export function CaseStudy({ locale }: { locale: Locale }) {
+  const d = getDictionary(locale);
+  const t = d.minerda;
+  const c = getMinerda(locale);
   return (
     <Section id="darbai" tone="secondary">
       <Container>
         <Reveal className="max-w-[660px]">
-          <Eyebrow>Darbai</Eyebrow>
-          <h2 className="t-h2 mt-4 text-balance">
-            Minerda. Svetainė įlenkimų šalinimo studijai Kaune.
-          </h2>
+          <Eyebrow>{d.caseStudy.eyebrow}</Eyebrow>
+          <h2 className="t-h2 mt-4 text-balance">{t.title}</h2>
           <p className="t-body mt-6 max-w-[56ch] text-pretty">{c.summary}</p>
         </Reveal>
 
         <Reveal delay={0.14} className="mt-[clamp(40px,6vw,72px)]">
           <SiteFrame
             src={minerdaShots.home}
-            alt="Minerda svetainės pagrindinis puslapis"
+            alt={t.homeAlt}
             url={c.domain}
             href={c.url}
             ratioClass="aspect-[16/10]"
             sizes="(min-width: 1120px) 1072px, 100vw"
-            overlay={<FrameHint>Atidaryti minerda.lt</FrameHint>}
+            overlay={
+              <FrameHint>{fill(t.openDomain, { domain: c.domain })}</FrameHint>
+            }
           />
         </Reveal>
 
@@ -63,11 +69,11 @@ export function CaseStudy() {
             </p>
 
             <a
-              href={`/darbai/${c.slug}`}
+              href={localizePath(`/darbai/${c.slug}`, locale)}
               className="group inline-flex shrink-0 items-center gap-2 text-[0.9375rem] font-medium text-text"
             >
               <span className="relative">
-                Žiūrėti visą projektą
+                {t.viewProject}
                 <span
                   aria-hidden="true"
                   className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-100 bg-text transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:scale-x-0"

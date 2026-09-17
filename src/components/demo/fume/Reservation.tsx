@@ -7,57 +7,15 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { getFumeCopy } from "./copy";
 import { Body, Eyebrow, H2, HAIRLINE, Note } from "./Type";
 
-/* ── Calendar vocabulary ─────────────────────────────────────────────── */
+/* ── Calendar ────────────────────────────────────────────────────────── */
 
-const WD_SHORT = ["Sk", "Pr", "An", "Tr", "Kt", "Pn", "Št"];
-const WD_LONG = [
-  "sekmadienis",
-  "pirmadienis",
-  "antradienis",
-  "trečiadienis",
-  "ketvirtadienis",
-  "penktadienis",
-  "šeštadienis",
-];
-const WD_ACC = [
-  "sekmadienį",
-  "pirmadienį",
-  "antradienį",
-  "trečiadienį",
-  "ketvirtadienį",
-  "penktadienį",
-  "šeštadienį",
-];
-const MONTH_GEN = [
-  "sausio",
-  "vasario",
-  "kovo",
-  "balandžio",
-  "gegužės",
-  "birželio",
-  "liepos",
-  "rugpjūčio",
-  "rugsėjo",
-  "spalio",
-  "lapkričio",
-  "gruodžio",
-];
-const MONTH_SHORT = [
-  "Sau",
-  "Vas",
-  "Kov",
-  "Bal",
-  "Geg",
-  "Bir",
-  "Lie",
-  "Rgp",
-  "Rgs",
-  "Spa",
-  "Lap",
-  "Grd",
-];
+/* Day and month names, and every date the widget prints, come from the copy
+   as fixed word lists (not Intl), so the text is the same on the server and
+   in every browser. */
 
 const TIMES = [
   "17:00",
@@ -206,28 +164,6 @@ function subscribe(onStoreChange: () => void) {
   return () => window.clearInterval(id);
 }
 
-function longDate(d: Day) {
-  return `${WD_LONG[d.wd]}, ${MONTH_GEN[d.month]} ${d.day} d.`;
-}
-
-/** Accusative — "laukiame jūsų penktadienį", not "…penktadienis". */
-function whenDate(d: Day) {
-  return `${WD_ACC[d.wd]}, ${MONTH_GEN[d.month]} ${d.day} d.`;
-}
-
-function guestsLabel(n: number) {
-  return n === 1 ? "1 svečias" : `${n} svečiai`;
-}
-
-/** Lithuanian numeral agreement: 1 laikas · 2–9 laikai · 10–20 laikų. */
-function freeLabel(n: number) {
-  const last = n % 10;
-  const tens = Math.floor(n / 10) % 10;
-  if (last === 1 && tens !== 1) return `Laisvas ${n} laikas`;
-  if (last === 0 || tens === 1) return `Laisva ${n} laikų`;
-  return `Laisvi ${n} laikai`;
-}
-
 /* ── Shared control styling ──────────────────────────────────────────── */
 
 const chipBase =
@@ -262,13 +198,16 @@ type Errors = Partial<Record<"time" | "name" | "phone", string>>;
 
 type Booking = {
   dateLabel: string;
-  dateAcc: string;
+  /** The date as it reads inside the confirmation sentence (Lithuanian puts
+   *  it in the accusative there). */
+  dateInSentence: string;
   time: string;
   guests: number;
   name: string;
 };
 
 export function Reservation() {
+  const copy = getFumeCopy(useLocale()).reservation;
   const snap = useSyncExternalStore<Snapshot | null>(
     subscribe,
     clientSnapshot,
@@ -325,11 +264,9 @@ export function Reservation() {
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const next: Errors = {};
-    if (!time) next.time = "Pasirinkite laiką.";
-    if (name.trim().length < 2)
-      next.name = "Įrašykite, kieno vardu rezervuoti.";
-    if (phone.replace(/\D/g, "").length < 8)
-      next.phone = "Įrašykite telefono numerį.";
+    if (!time) next.time = copy.errors.time;
+    if (name.trim().length < 2) next.name = copy.errors.name;
+    if (phone.replace(/\D/g, "").length < 8) next.phone = copy.errors.phone;
     setErrors(next);
 
     // A failed submit has to *take* you to the problem. Left alone, focus
@@ -343,8 +280,8 @@ export function Reservation() {
     if (!day || !time) return;
 
     setBooking({
-      dateLabel: longDate(day),
-      dateAcc: whenDate(day),
+      dateLabel: copy.dateLabel(day),
+      dateInSentence: copy.dateInSentence(day),
       time,
       guests,
       name: name.trim(),
@@ -368,10 +305,10 @@ export function Reservation() {
   }, [days, day]);
 
   const helper = !day
-    ? "Perbraukti laikai užimti."
+    ? copy.helper.noDay
     : freeCount === 0
-      ? "Laisvų laikų šiam vakarui nebeliko."
-      : `${freeLabel(freeCount)} · perbraukti — užimti.`;
+      ? copy.helper.full
+      : copy.helper.free(freeCount);
 
   return (
     <section id="rezervacija" className="bg-[#141210] py-[var(--sec)]">
@@ -379,37 +316,25 @@ export function Reservation() {
         <div className="grid items-start gap-[clamp(36px,5vw,72px)] lg:grid-cols-12">
           {/* ── Left: what booking here actually means ── */}
           <div data-rise className="min-w-0 lg:col-span-4">
-            <Eyebrow>Rezervacija</Eyebrow>
-            <H2 className="mt-6">Rezervuokite stalą</H2>
-            <Body className="mt-5 max-w-[40ch]">
-              Stalas lieka jūsų visam vakarui — antro serviravimo nedarome.
-              Pasirinkite vakarą ir laiką, o likusia dalimi pasirūpinsime mes.
-            </Body>
+            <Eyebrow>{copy.eyebrow}</Eyebrow>
+            <H2 className="mt-6">{copy.title}</H2>
+            <Body className="mt-5 max-w-[40ch]">{copy.lead}</Body>
 
             <dl
               className="mt-9 space-y-4 border-t pt-6 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-relaxed"
               style={{ borderColor: HAIRLINE }}
             >
               <div>
-                <dt className="text-[#ede6da]">Pirmadieniais nedirbame</dt>
-                <dd className="text-[#9c948a]">
-                  Salė ilsisi, virtuvė ruošia naują kortelę.
-                </dd>
+                <dt className="text-[#ede6da]">{copy.facts.closed.dt}</dt>
+                <dd className="text-[#9c948a]">{copy.facts.closed.dd}</dd>
               </div>
               <div>
-                <dt className="text-[#ede6da]">
-                  Virtuvė iki 22:30, sekmadieniais — 21:30
-                </dt>
-                <dd className="text-[#9c948a]">
-                  Paskutinį stalą sodiname 22:00, sekmadieniais — 21:00. Vynas
-                  pilamas ilgiau.
-                </dd>
+                <dt className="text-[#ede6da]">{copy.facts.kitchen.dt}</dt>
+                <dd className="text-[#9c948a]">{copy.facts.kitchen.dd}</dd>
               </div>
               <div>
-                <dt className="text-[#ede6da]">Daugiau nei aštuoni?</dt>
-                <dd className="text-[#9c948a]">
-                  Parašykite mums — didesnes kompanijas deriname atskirai.
-                </dd>
+                <dt className="text-[#ede6da]">{copy.facts.groups.dt}</dt>
+                <dd className="text-[#9c948a]">{copy.facts.groups.dd}</dd>
               </div>
             </dl>
           </div>
@@ -438,14 +363,17 @@ export function Reservation() {
                   style={{ "--n": 1 } as React.CSSProperties}
                   className="mt-5 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.24em] text-[#C0703A]"
                 >
-                  Rezervacija patvirtinta
+                  {copy.done.title}
                 </p>
                 <p
                   style={{ "--n": 2 } as React.CSSProperties}
                   className="mt-4 text-balance font-[family-name:var(--font-fume-display)] text-[clamp(1.5rem,3.4vw,1.875rem)] font-light leading-[1.2] text-[#ede6da]"
                 >
-                  Laukiame jūsų {booking.dateAcc},{" "}
-                  <span className="italic">{booking.time}</span>.
+                  {copy.done.lead}
+                  {booking.dateInSentence}
+                  {copy.done.join}
+                  <span className="italic">{booking.time}</span>
+                  {copy.done.end}
                 </p>
 
                 <dl
@@ -455,10 +383,10 @@ export function Reservation() {
                   }
                 >
                   {[
-                    ["Data", booking.dateLabel],
-                    ["Laikas", booking.time],
-                    ["Svečiai", guestsLabel(booking.guests)],
-                    ["Vardas", booking.name],
+                    [copy.labels.date, booking.dateLabel],
+                    [copy.labels.time, booking.time],
+                    [copy.labels.guests, copy.guests(booking.guests)],
+                    [copy.labels.name, booking.name],
                   ].map(([k, v]) => (
                     <div key={k} className="min-w-0">
                       <dt className="text-[0.6875rem] uppercase tracking-[0.18em] text-[#9c948a]">
@@ -470,7 +398,7 @@ export function Reservation() {
                   {note.trim() && (
                     <div className="min-w-0 sm:col-span-2">
                       <dt className="text-[0.6875rem] uppercase tracking-[0.18em] text-[#9c948a]">
-                        Pastaba
+                        {copy.labels.note}
                       </dt>
                       <dd className="mt-1.5 break-words text-[#ede6da]">
                         {note.trim()}
@@ -485,10 +413,7 @@ export function Reservation() {
                     { borderColor: HAIRLINE, "--n": 4 } as React.CSSProperties
                   }
                 >
-                  <Note>
-                    Tai demonstracinė forma. Rezervacija nebuvo atlikta ir jokie
-                    duomenys niekur neišsiųsti — Fumé neegzistuoja.
-                  </Note>
+                  <Note>{copy.done.note}</Note>
 
                   <button
                     type="button"
@@ -496,7 +421,7 @@ export function Reservation() {
                     className={`${chipBase} mt-6 inline-flex h-11 items-center px-6 text-[0.8125rem] tracking-[0.04em] text-[#ede6da] hover:-translate-y-[1px] hover:border-[#ede6da] hover:bg-[rgba(237,230,218,0.06)] active:translate-y-0 active:bg-[rgba(237,230,218,0.12)]`}
                     style={{ borderColor: HAIRLINE }}
                   >
-                    Rinktis iš naujo
+                    {copy.done.again}
                   </button>
                 </div>
               </div>
@@ -506,7 +431,7 @@ export function Reservation() {
                   {/* ── Date ── */}
                   <fieldset className="min-w-0 border-0 p-0">
                     <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]">
-                      Vakaras
+                      {copy.labels.evening}
                     </legend>
                     <div
                       className="grid grid-cols-4 gap-1.5 sm:grid-cols-7 sm:gap-2"
@@ -524,12 +449,13 @@ export function Reservation() {
                         : days.map((d, i) => {
                             const on = d.iso === day?.iso;
                             const open = bookable(d);
+                            const date = copy.dateLabel(d);
                             const when =
                               i === 0
-                                ? "Šiandien"
+                                ? copy.day.today
                                 : i === 1
-                                  ? "Rytoj"
-                                  : MONTH_SHORT[d.month];
+                                  ? copy.day.tomorrow
+                                  : copy.monthShort[d.month];
                             return (
                               <button
                                 key={d.iso}
@@ -539,12 +465,14 @@ export function Reservation() {
                                 aria-pressed={on}
                                 aria-label={
                                   d.closed
-                                    ? `${longDate(d)} — nedirbame`
+                                    ? copy.dayAria(date, copy.closedAria)
                                     : d.late
-                                      ? `${longDate(d)} — šiandien laikų nebeliko`
-                                      : i < 2
-                                        ? `${longDate(d)} — ${when.toLowerCase()}`
-                                        : longDate(d)
+                                      ? copy.dayAria(date, copy.lateAria)
+                                      : i === 1
+                                        ? copy.dayAria(date, copy.day.tomorrowSpoken)
+                                        : i === 0
+                                          ? copy.dayAria(date, when.toLowerCase())
+                                          : date
                                 }
                                 onClick={() => setDateIso(d.iso)}
                                 className={`${chipBase} flex h-[74px] min-w-0 flex-col items-center justify-center gap-1 px-1 ${
@@ -552,16 +480,16 @@ export function Reservation() {
                                 }`}
                               >
                                 <span className="text-[0.6875rem] uppercase tracking-[0.14em]">
-                                  {WD_SHORT[d.wd]}
+                                  {copy.weekdayShort[d.wd]}
                                 </span>
                                 <span className="text-[1.0625rem] leading-none tabular-nums">
                                   {d.day}
                                 </span>
                                 <span className="text-[0.6875rem] uppercase tracking-[0.06em] sm:text-[0.6875rem]">
                                   {d.closed
-                                    ? "Nedirbame"
+                                    ? copy.day.closed
                                     : d.late
-                                      ? "Jau vėlu"
+                                      ? copy.day.late
                                       : when}
                                 </span>
                               </button>
@@ -577,7 +505,7 @@ export function Reservation() {
                     className="mt-8 min-w-0 border-0 p-0"
                   >
                     <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]">
-                      Laikas
+                      {copy.labels.time}
                     </legend>
                     <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-6 sm:gap-2">
                       {slots.map((t, i) => {
@@ -590,7 +518,7 @@ export function Reservation() {
                             disabled={busy || !day}
                             aria-disabled={busy || !day}
                             aria-pressed={on}
-                            aria-label={busy ? `${t} — užimta` : t}
+                            aria-label={busy ? copy.takenAria(t) : t}
                             onClick={() => {
                               setTimeChoice(t);
                               setErrors((p) => ({ ...p, time: undefined }));
@@ -620,11 +548,10 @@ export function Reservation() {
                         style={{ borderColor: HAIRLINE }}
                       >
                         <p className="font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[#ede6da]">
-                          Šis vakaras jau pilnas.
+                          {copy.full.title}
                         </p>
                         <Note className="mt-1.5 max-w-[46ch]">
-                          Vietos prie baro lieka nerezervuotos — arba rinkitės
-                          kitą vakarą.
+                          {copy.full.note}
                         </Note>
                         {nextOpen && (
                           <button
@@ -632,7 +559,7 @@ export function Reservation() {
                             onClick={() => setDateIso(nextOpen.iso)}
                             className={`${chipBase} ${chipOff} mt-4 inline-flex h-11 items-center px-5 text-[0.8125rem] tracking-[0.03em]`}
                           >
-                            Rinktis {whenDate(nextOpen)}
+                            {copy.full.pick(nextOpen)}
                           </button>
                         )}
                       </div>
@@ -647,7 +574,7 @@ export function Reservation() {
                   {/* ── Guests ── */}
                   <fieldset className="mt-8 min-w-0 border-0 p-0">
                     <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]">
-                      Svečiai
+                      {copy.labels.guests}
                     </legend>
                     <div className="grid grid-cols-8 gap-1">
                       {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
@@ -655,7 +582,7 @@ export function Reservation() {
                           key={n}
                           type="button"
                           aria-pressed={n === guests}
-                          aria-label={guestsLabel(n)}
+                          aria-label={copy.guests(n)}
                           onClick={() => setGuests(n)}
                           className={`${chipBase} h-11 min-w-0 text-[0.9375rem] tabular-nums ${
                             n === guests ? chipOn : chipOff
@@ -674,7 +601,7 @@ export function Reservation() {
                         htmlFor="fume-name"
                         className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]"
                       >
-                        Vardas
+                        {copy.labels.name}
                       </label>
                       <input
                         ref={nameRef}
@@ -691,7 +618,7 @@ export function Reservation() {
                         aria-describedby={
                           errors.name ? "fume-name-err" : undefined
                         }
-                        placeholder="Vardas Pavardė"
+                        placeholder={copy.namePlaceholder}
                         className={fieldCls}
                         style={{
                           borderColor: errors.name
@@ -715,7 +642,7 @@ export function Reservation() {
                         htmlFor="fume-phone"
                         className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]"
                       >
-                        Telefonas
+                        {copy.labels.phone}
                       </label>
                       <input
                         ref={phoneRef}
@@ -757,9 +684,9 @@ export function Reservation() {
                         htmlFor="fume-note"
                         className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]"
                       >
-                        Pastaba{" "}
+                        {copy.labels.note}{" "}
                         <span className="normal-case tracking-normal">
-                          (nebūtina)
+                          {copy.optional}
                         </span>
                       </label>
                       <textarea
@@ -768,7 +695,7 @@ export function Reservation() {
                         rows={3}
                         value={note}
                         onChange={(e) => setNote(e.target.value)}
-                        placeholder="Alergijos, gimtadienis, vieta prie lango…"
+                        placeholder={copy.notePlaceholder}
                         className={`${fieldCls} resize-y`}
                         style={{ borderColor: HAIRLINE }}
                       />
@@ -782,7 +709,7 @@ export function Reservation() {
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                       {/* accent 3 of 4 */}
                       <button type="submit" className={emberBtn}>
-                        Rezervuoti
+                        {copy.submit}
                       </button>
                       {/* The evening is always preselected, so the only thing
                           left to ask for is the hour. */}
@@ -791,14 +718,11 @@ export function Reservation() {
                         className="min-w-0 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[rgba(237,230,218,0.88)]"
                       >
                         {day && time
-                          ? `${longDate(day)}, ${time} · ${guestsLabel(guests)}`
-                          : "Pasirinkite laiką."}
+                          ? `${copy.dateLabel(day)}, ${time} · ${copy.guests(guests)}`
+                          : copy.summaryEmpty}
                       </p>
                     </div>
-                    <Note className="mt-4 max-w-[52ch]">
-                      Demonstracinė forma — paspaudus nieko neišsiunčiame ir
-                      niekur neįrašome.
-                    </Note>
+                    <Note className="mt-4 max-w-[52ch]">{copy.formNote}</Note>
                   </div>
                 </div>
               </form>

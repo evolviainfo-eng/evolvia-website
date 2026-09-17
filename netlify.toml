@@ -15,3 +15,8 @@
   for = "/demo/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/en/demo/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

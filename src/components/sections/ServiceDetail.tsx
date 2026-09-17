@@ -1,40 +1,19 @@
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
+import { getDictionary } from "@/i18n";
+import { localizePath, type Locale } from "@/i18n/config";
 
 /** /paslaugos — the four services as a numbered editorial list (not cards).
  *  Headings are claims, bodies are specific; every fact matches the offer. */
-const items = [
-  {
-    no: "01",
-    title: "Dizainas, kuris atrodo brangiai",
-    body: "Kuriame nuo balto lapo, be jokių šablonų. Spalvos, šriftai ir struktūra parenkami pagal jūsų sritį ir jūsų klientus, todėl svetainė atrodo taip, lyg būtų kainavusi kelis kartus daugiau.",
-  },
-  {
-    no: "02",
-    title: "Greita ir matoma Google",
-    body: "Švarus kodas, greitas krovimasis ir optimizacija paieškai nuo pirmos dienos. Svetainė puikiai veikia telefone, kur naršo dauguma jūsų klientų.",
-  },
-  {
-    no: "03",
-    title: "Paleidimas be jūsų rūpesčių",
-    body: "Domenas, paleidimas ir perkėlimas: visus techninius darbus padarome už jus. Jums nereikia nieko diegti, konfigūruoti ar prižiūrėti paleidimo dieną.",
-  },
-  {
-    no: "04",
-    title: "Priežiūra, kad svetainė nesentų",
-    body: "Hostingas, SSL, atnaujinimai ir smulkūs pakeitimai įskaičiuoti pirmus metus, vėliau kainuoja €50 per metus. Svetainė lieka gyva ir tvarkinga, o jums pakanka parašyti laišką, ką pakeisti.",
-  },
-] as const;
+export function ServiceDetail({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale).pages.services;
+  const items = t.items.map((item, i) => ({
+    ...item,
+    no: String(i + 1).padStart(2, "0"),
+  }));
+  const fits = t.fits;
 
-const fits = [
-  "Verslui, kuris neturi svetainės arba turi pasenusią.",
-  "Paslaugų įmonėms, kurių klientai pirmiausia ieško Google ir naršo telefonu.",
-  "Tiems, kam reikia aiškios fiksuotos kainos ir vieno atsakingo žmogaus.",
-  "Įmonėms, kurios nori atrodyti rimčiau nei konkurentai toje pačioje srityje.",
-] as const;
-
-export function ServiceDetail() {
   return (
     <Section tone="secondary">
       <Container>
@@ -56,7 +35,7 @@ export function ServiceDetail() {
         </ul>
         <Reveal>
           <div className="border-t border-border pt-[clamp(32px,5vw,56px)]">
-            <h2 className="t-h3">Kam tinka</h2>
+            <h2 className="t-h3">{t.fitsTitle}</h2>
             <ul className="mt-6 grid gap-3 lg:grid-cols-2 lg:gap-x-16">
               {fits.map((item) => (
                 <li key={item} className="t-body max-w-[46ch]">
@@ -70,19 +49,19 @@ export function ServiceDetail() {
         <Reveal>
           <div className="mt-[clamp(32px,5vw,56px)] border-t border-border pt-8">
             <p className="t-body">
-              Aiški kaina: €400 vienkartinai.{" "}
+              {t.priceLine}{" "}
               <a
-                href="/kainos"
+                href={localizePath("/kainos", locale)}
                 className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-text"
               >
-                Žiūrėti kainas
+                {t.priceLink}
               </a>{" "}
-              arba{" "}
+              {t.or}{" "}
               <a
-                href="/darbai"
+                href={localizePath("/darbai", locale)}
                 className="text-text underline decoration-border underline-offset-4 transition-colors hover:decoration-text"
               >
-                pavyzdžius
+                {t.examplesLink}
               </a>
               .
             </p>

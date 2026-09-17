@@ -1,13 +1,15 @@
+import type { Locale } from "@/i18n/config";
 import { AddToCart } from "./AddToCart";
-import { PRODUCTS, eur } from "./data";
+import { getSkalsaCopy } from "./copy";
+import { eur, getProducts } from "./data";
 
-/* Pirmas katalogo įrašas keliauja ir į nuotraukos kortelę — kaina ir
-   pavadinimas imami iš to paties šaltinio, todėl nesusimaišys. */
-const FEATURED = PRODUCTS[0];
+export function Hero({ locale }: { locale: Locale }) {
+  const copy = getSkalsaCopy(locale);
+  const t = copy.hero;
+  /* Pirmas katalogo įrašas keliauja ir į nuotraukos kortelę — kaina ir
+     pavadinimas imami iš to paties šaltinio, todėl nesusimaišys. */
+  const featured = getProducts(locale)[0];
 
-const FACTS = ["Sojų vaškas", "45 val. degimo", "Liejama Vilniuje"];
-
-export function Hero() {
   return (
     <section className="relative">
       <span id="virsus" aria-hidden="true" className="absolute -top-[30px]" />
@@ -18,7 +20,7 @@ export function Hero() {
               data-rise
               className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]"
             >
-              Rankų darbo žvakės · liejame Vilniuje
+              {t.eyebrow}
             </p>
             <h1
               className="mt-5 text-[clamp(2.5rem,6vw,4.625rem)] leading-[1.02] text-balance text-[#241E19]"
@@ -32,14 +34,14 @@ export function Hero() {
                 style={{ "--i": 1 } as React.CSSProperties}
                 className="block overflow-hidden pb-[0.14em] -mb-[0.14em]"
               >
-                <span>Vakaras, kuris</span>
+                <span>{t.title[0]}</span>
               </span>
               <span
                 data-line
                 style={{ "--i": 2 } as React.CSSProperties}
                 className="block overflow-hidden pb-[0.14em] -mb-[0.14em]"
               >
-                <span>kvepia namais.</span>
+                <span>{t.title[1]}</span>
               </span>
             </h1>
           </div>
@@ -50,9 +52,7 @@ export function Hero() {
             className="min-w-0 lg:pb-2"
           >
             <p className="max-w-[46ch] text-[1.0625rem] leading-[1.65] text-pretty text-[#6E6257]">
-              Sojų vaškas, medvilninis dagtis ir perdirbtas stiklas. Liejame
-              mažomis partijomis, todėl žvakė dega ilgai, tolygiai ir be aitraus
-              dūmo.
+              {t.lead}
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -60,19 +60,19 @@ export function Hero() {
                 href="#katalogas"
                 className="group press inline-flex h-12 items-center gap-2.5 rounded-full bg-[#241E19] pl-7 pr-6 text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#3A3129] active:translate-y-0"
               >
-                Apsipirkti
+                {t.shop}
                 <Arrow />
               </a>
               <a
                 href="#dirbtuve"
                 className="press inline-flex h-12 items-center rounded-full border border-[rgba(36,30,25,0.13)] px-7 text-[0.9375rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0] active:translate-y-0"
               >
-                Kaip liejame
+                {t.how}
               </a>
             </div>
 
             <ul className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[rgba(36,30,25,0.13)] pt-5 text-[0.8125rem] uppercase tracking-[0.14em] text-[#6E6257]">
-              {FACTS.map((f, i) => (
+              {t.facts.map((f, i) => (
                 <li key={f} className="flex items-center gap-5">
                   {i > 0 && (
                     <span
@@ -96,7 +96,7 @@ export function Hero() {
           <img
             data-settle
             src="/demo/skalsa/hero.webp"
-            alt="Trys degančios sojų vaško žvakės ant medinio stalo"
+            alt={t.imageAlt}
             width={1800}
             height={1286}
             decoding="async"
@@ -116,13 +116,14 @@ export function Hero() {
                   fontWeight: 500,
                 }}
               >
-                {FEATURED.name}
+                {featured.name}
               </p>
               <p className="mt-1 text-[0.8125rem] tabular-nums text-[#6E6257]">
-                {eur(FEATURED.price)} · {FEATURED.burn} val.
+                {eur(featured.price, locale)} ·{" "}
+                {copy.units.hours(featured.burn)}
               </p>
             </div>
-            <AddToCart id={FEATURED.id} name={FEATURED.name} variant="quiet" />
+            <AddToCart id={featured.id} name={featured.name} variant="quiet" />
           </div>
         </div>
       </div>

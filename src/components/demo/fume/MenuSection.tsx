@@ -1,118 +1,41 @@
+import type { Locale } from "@/i18n/config";
+import type { FumeCopy } from "@/i18n/dictionaries/lt/fume";
+import { getFumeCopy } from "./copy";
 import { Body, Eyebrow, H2, HAIRLINE, Note, Shot } from "./Type";
 
-type Item = { n: string; d: string; p: number };
+type CourseCopy = FumeCopy["menu"]["courses"][number];
 
-const COURSES: { title: string; note: string; items: Item[] }[] = [
-  {
-    title: "Pradžiai",
-    note: "Skirta dalintis",
-    items: [
-      {
-        n: "Duona ant anglių su lašinių sviestu",
-        d: "svogūnų pelenai, jūros druska",
-        p: 6,
-      },
-      {
-        n: "Keptos porų širdelės",
-        d: "dūmų grietinėlė, skrudinti lazdyno riešutai",
-        p: 11,
-      },
-      {
-        n: "Sūdyta menkė",
-        d: "burokėlis, grietinė, krapų aliejus",
-        p: 12,
-      },
-      {
-        n: "Rūkyto ungurio tartinė",
-        d: "ruginė duona, obuolys, krienai",
-        p: 14,
-      },
-      {
-        n: "Jautienos tartaras",
-        d: "kepta duona, kaulų čiulpai, kaparėliai",
-        p: 15,
-      },
-    ],
-  },
-  {
-    title: "Pagrindiniai",
-    note: "Visi — nuo atviros ugnies",
-    items: [
-      {
-        n: "Ugnyje keptas kopūstas",
-        d: "lęšiai, rūkyta grietinė, graikiniai riešutai",
-        p: 19,
-      },
-      {
-        n: "Ant alksnio anglių kepta lašiša",
-        d: "pastarnokas, sviesto ir citrinos padažas",
-        p: 24,
-      },
-      {
-        n: "Ėrienos petys, troškintas dvylika valandų",
-        d: "baltosios pupelės, mėtų aliejus",
-        p: 28,
-      },
-      {
-        n: "Ant anglių keptas jautienos šonkaulis",
-        d: "keptas topinambas, juodųjų česnakų padažas",
-        p: 32,
-      },
-    ],
-  },
-  {
-    title: "Desertai",
-    note: "Prie jų siūlome saldų vyną taurėmis",
-    items: [
-      { n: "Deginto cukraus kremas", d: "šaltalankiai, medaus krekeris", p: 9 },
-      {
-        n: "Šokoladinis pyragas su dūmų druska",
-        d: "grietinėlės ledai",
-        p: 10,
-      },
-      {
-        n: "Lietuviškų sūrių rinkinys",
-        d: "medus, riešutinė duona",
-        p: 14,
-      },
-    ],
-  },
-];
-
+/** Layout only. Each plate's alt text is the entry at the same position in
+ *  the copy's `plateAlts`. */
 const PLATES = [
   {
     src: "/demo/fume/dish-1.webp",
     w: 1100,
     h: 732,
-    alt: "Ant anglių kepta jautiena juodoje lėkštėje",
     cls: "sm:col-start-1 sm:col-span-7",
   },
   {
     src: "/demo/fume/dish-5.webp",
     w: 1100,
     h: 733,
-    alt: "Sezoninių daržovių patiekalas",
     cls: "max-sm:w-[82%] max-sm:ml-auto sm:col-start-9 sm:col-span-4 sm:mt-[clamp(32px,6vw,84px)]",
   },
   {
     src: "/demo/fume/dish-3.webp",
     w: 1100,
     h: 732,
-    alt: "Žuvies patiekalas šviesiame padaže",
     cls: "sm:col-start-2 sm:col-span-5",
   },
   {
     src: "/demo/fume/dish-7.webp",
     w: 1100,
     h: 729,
-    alt: "Lašiša juodame dubenyje",
     cls: "max-sm:w-[82%] sm:col-start-8 sm:col-span-4 sm:mt-[clamp(24px,4vw,60px)]",
   },
   {
     src: "/demo/fume/dish-6.webp",
     w: 1100,
     h: 735,
-    alt: "Desertų eilė ant medinio stalo",
     cls: "sm:col-start-3 sm:col-span-8",
   },
 ];
@@ -124,7 +47,12 @@ const PLATES = [
  *
  *  The leaders are hidden below 640px — at that width a name needs the whole
  *  measure, and dots would be filling a gap of two characters. */
-function Course({ title, note, items }: (typeof COURSES)[number]) {
+function Course({
+  title,
+  note,
+  items,
+  price,
+}: CourseCopy & { price: FumeCopy["price"] }) {
   return (
     <div>
       <div
@@ -155,7 +83,7 @@ function Course({ title, note, items }: (typeof COURSES)[number]) {
                 className="fume-leader hidden min-w-[2rem] flex-1 sm:block"
               />
               <span className="w-[3.4rem] shrink-0 text-right font-[family-name:var(--font-fume-display)] text-[1.0625rem] leading-[1.3] tabular-nums text-[rgba(237,230,218,0.9)]">
-                {it.p}&nbsp;€
+                {price(it.p)}
               </span>
             </p>
             <p className="mt-1.5 max-w-[46ch] font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[#9c948a]">
@@ -168,7 +96,9 @@ function Course({ title, note, items }: (typeof COURSES)[number]) {
   );
 }
 
-export function MenuSection() {
+export function MenuSection({ locale }: { locale: Locale }) {
+  const { menu: copy, price } = getFumeCopy(locale);
+
   return (
     <section id="meniu" className="bg-[#141210] py-[var(--sec)]">
       <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
@@ -176,24 +106,20 @@ export function MenuSection() {
           {/* accent 2 of 4 — the one warm mark on the printed page */}
           <span aria-hidden className="block h-px w-9 bg-[#C0703A]" />
           <div className="mt-5">
-            <Eyebrow>Meniu</Eyebrow>
+            <Eyebrow>{copy.eyebrow}</Eyebrow>
           </div>
-          <H2 className="mt-5">Sezoninė kortelė</H2>
-          <Body className="mt-5 max-w-[52ch]">
-            Kortelę perrašome kas tris–keturias savaites. Jei turite alergijų ar
-            nevalgote mėsos — pasakykite salės vadovui, pritaikysime beveik
-            viską.
-          </Body>
+          <H2 className="mt-5">{copy.title}</H2>
+          <Body className="mt-5 max-w-[52ch]">{copy.lead}</Body>
         </div>
 
         <div className="mx-auto mt-[clamp(40px,6vw,72px)] max-w-[760px] space-y-[clamp(40px,5vw,64px)]">
-          {COURSES.map((c, i) => (
+          {copy.courses.map((c, i) => (
             <div
               key={c.title}
               data-rise
               style={{ "--i": i } as React.CSSProperties}
             >
-              <Course {...c} />
+              <Course {...c} price={price} />
             </div>
           ))}
         </div>
@@ -202,10 +128,7 @@ export function MenuSection() {
           style={{ borderColor: HAIRLINE }}
           className="mx-auto mt-8 max-w-[760px] border-t pt-5"
         >
-          <Note>
-            Aptarnavimas į kainą neįskaičiuotas. Degustacinis vakaras — penki
-            patiekalai, 58 € asmeniui — vyksta trečiadieniais, iš anksto.
-          </Note>
+          <Note>{copy.footnote}</Note>
         </div>
 
         {/* Photography sits apart from the list: not cards, no captions —
@@ -214,13 +137,13 @@ export function MenuSection() {
           data-rise
           className="mt-[clamp(56px,8vw,112px)] grid grid-cols-1 gap-[clamp(16px,2.5vw,28px)] sm:grid-cols-12"
         >
-          {PLATES.map((p) => (
+          {PLATES.map((p, i) => (
             <Shot
               key={p.src}
               src={p.src}
               w={p.w}
               h={p.h}
-              alt={p.alt}
+              alt={copy.plateAlts[i]}
               className={p.cls}
             />
           ))}

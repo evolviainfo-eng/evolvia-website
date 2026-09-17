@@ -1,17 +1,9 @@
+import type { Locale } from "@/i18n/config";
+import { getKonstruktaCopy } from "./copy";
 import { BAND, CONTAINER, Plate, SectionHead, SpecRow, T_MICRO } from "./ui";
 
-const PASS: Array<[string, string]> = [
-  ["Įsteigta", "2009 m."],
-  ["Teisinė forma", "UAB"],
-  ["Veikla", "Generalinė ranga"],
-  ["Teritorija", "Kaunas · 60 km spinduliu"],
-  ["Komanda", "12 nuolatinių darbuotojų"],
-  ["Objektų nuo 2009", "40"],
-  ["Konstrukcijų garantija", "5 metai"],
-  ["Objekto apžiūra", "Nemokama"],
-];
-
-export function Company() {
+export function Company({ locale }: { locale: Locale }) {
+  const c = getKonstruktaCopy(locale).company;
   return (
     <section id="bendrove" className={`${BAND} border-t border-white/[0.11]`}>
       <div className={CONTAINER}>
@@ -19,13 +11,13 @@ export function Company() {
           <div className="min-w-0">
             <SectionHead
               index="01"
-              label="Bendrovė"
-              title="Viena komanda, viena atsakomybė."
-              lead="Konstrukta dirba Kaune nuo 2009-ųjų. Imamės objekto kaip generalinis rangovas: patys sudarome grafiką, patys samdome subrangovus ir patys atsakome, jei kas nors nukrypsta. Užsakovas turi vieną numerį ir vieną žmogų, kuris žino visą objektą."
+              label={c.label}
+              title={c.title}
+              lead={c.lead}
             />
 
             <dl className="mt-10 border-t border-white/[0.11]">
-              {PASS.map(([k, v]) => (
+              {c.facts.map(([k, v]) => (
                 <SpecRow key={k} k={k} v={v} />
               ))}
             </dl>
@@ -36,13 +28,12 @@ export function Company() {
               src="/demo/konstrukta/texture.webp"
               width={1200}
               height={743}
-              alt="Baltos betono formos — konstrukcijos paviršiaus tekstūra"
+              alt={c.alt}
             />
             <figcaption
               className={`${T_MICRO} mt-3 max-w-[52ch] tracking-[0.12em] text-[#9A9791]`}
             >
-              Monolitas be apdailos · paviršius paliekamas matomas tik tada, kai
-              klojinys to vertas
+              {c.caption}
             </figcaption>
           </figure>
         </div>

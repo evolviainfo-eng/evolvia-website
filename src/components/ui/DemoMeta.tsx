@@ -9,10 +9,13 @@ import { cn } from "@/lib/cn";
  *  frame is invisible on a phone. */
 export function DemoMeta({
   demo,
+  openLabel,
   as: Tag = "figcaption",
   className,
 }: {
   demo: Demo;
+  /** "Atidaryti demo" in the page's language. */
+  openLabel: string;
   as?: "figcaption" | "div";
   className?: string;
 }) {
@@ -43,7 +46,7 @@ export function DemoMeta({
           className="group inline-flex items-center gap-2 text-[0.9375rem] font-medium text-text"
         >
           <span className="relative">
-            Atidaryti demo
+            {openLabel}
             <span
               aria-hidden="true"
               className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-100 bg-text transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:scale-x-0"

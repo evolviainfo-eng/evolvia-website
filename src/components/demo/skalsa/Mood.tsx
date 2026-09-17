@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { getSkalsaCopy } from "./copy";
 
 /** Vienintelis tikras slinkimo momentas visame puslapyje.
  *
@@ -14,6 +16,8 @@ import { useEffect, useRef } from "react";
  *  (pilnoje) būsenoje, o nuotrauka — vietoje. Sekcija atrodo užbaigta.
  */
 export function Mood() {
+  const locale = useLocale();
+  const t = getSkalsaCopy(locale).mood;
   const root = useRef<HTMLElement>(null);
   const glow = useRef<HTMLDivElement>(null);
   const drift = useRef<HTMLImageElement>(null);
@@ -100,7 +104,7 @@ export function Mood() {
       <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
         <div data-rise className="max-w-[26ch]">
           <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[rgba(250,246,240,0.58)]">
-            Vakaras
+            {t.eyebrow}
           </p>
           <p
             className="mt-5 text-[clamp(1.5rem,3vw,2.5rem)] leading-[1.14] tracking-[-0.03em] text-balance"
@@ -109,7 +113,7 @@ export function Mood() {
               fontWeight: 500,
             }}
           >
-            Viena žvakė vakarui — ne dekoras, o ženklas, kad diena baigėsi.
+            {t.quote}
           </p>
         </div>
 
@@ -123,7 +127,7 @@ export function Mood() {
             <img
               ref={drift}
               src="/demo/skalsa/mood-1.webp"
-              alt="Žvakių eilė ant lygaus paviršiaus su atspindžiu"
+              alt={t.rowAlt}
               width={1400}
               height={1120}
               decoding="async"
@@ -135,7 +139,7 @@ export function Mood() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/demo/skalsa/mood-2.webp"
-              alt="Žvakių grupė tamsiame kambaryje"
+              alt={t.groupAlt}
               width={1400}
               height={1400}
               decoding="async"

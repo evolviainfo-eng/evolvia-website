@@ -1,3 +1,7 @@
+import "server-only";
+import { getDictionary } from "@/i18n";
+import { localizePath, type Locale } from "@/i18n/config";
+
 /** Darbai — demonstration websites.
  *
  *  HONESTY IS THE POINT. None of these businesses exist. Every one of them is
@@ -7,18 +11,21 @@
  *  permanent banner on the demo itself. They are also noindex — a fictional
  *  company must never turn up in search results looking real.
  *
- *  The portfolio artwork is no longer declared here: DemoSite derives it from
- *  the slug (`/work/shot-<slug>.webp`), because it is now a real screenshot of
- *  the real page rather than a hand-built mock that could drift from it.
- *  Those captures are the ONE colour moment on an otherwise monochrome site —
- *  the work carries colour, the chrome stays mono.
+ *  The portfolio artwork is not declared here: DemoSite derives it from the
+ *  slug and language (`/work/shot-<slug>[-en].webp`), because it is a real
+ *  screenshot of the real page rather than a hand-built mock that could
+ *  drift from it. Those captures are the ONE colour moment on an otherwise
+ *  monochrome site — the work carries colour, the chrome stays mono.
+ *
+ *  Words (sector, tagline, scope, feature) come from the dictionary; this
+ *  file holds only what reads the same in every language.
  */
 
 export interface Demo {
   name: string;
-  /** URL slug — the live demo lives at /demo/{slug}. */
+  /** URL slug — the live demo lives at /demo/{slug} (and /en/demo/{slug}). */
   slug: string;
-  label: "Demo" | "Koncepcija";
+  label: string;
   /** Real-data caption meta: sector + year read as editorial furniture. */
   sector: string;
   year: string;
@@ -32,61 +39,39 @@ export interface Demo {
    *  the demo — never "konstrukta.lt", which would imply a real company. */
   url: string;
   href: string;
+  /** The portfolio captures, in the page's language. */
+  shot: string;
+  shotMobile: string;
 }
 
-export const demos: Demo[] = [
-  {
-    name: "Konstrukta",
-    slug: "konstrukta",
-    label: "Koncepcija",
-    sector: "Statybos bendrovė",
-    year: "2026",
-    tagline:
-      "Statybų bendrovės svetainė: tvirta, struktūruota ir įtikinama nuo pirmo ekrano.",
-    scope: ["Vizitinė svetainė", "Projektų galerija", "Sąmatos skaičiuoklė"],
-    feature: "Veikianti sąmatos skaičiuoklė",
-    url: "evolvia.lt/demo/konstrukta",
-    href: "/demo/konstrukta",
-  },
-  {
-    name: "Fumé",
-    slug: "fume",
-    label: "Demo",
-    sector: "Restoranas · vyno baras",
-    year: "2026",
-    tagline:
-      "Restoranas su stalo rezervacija ir meniu. Atmosfera juntama dar prieš atveriant duris.",
-    scope: ["Meniu", "Stalo rezervacija", "Atmosferos fotografija"],
-    feature: "Veikianti stalo rezervacija",
-    url: "evolvia.lt/demo/fume",
-    href: "/demo/fume",
-  },
-  {
-    name: "Forma",
-    slug: "forma",
-    label: "Demo",
-    sector: "Interjero studija",
-    year: "2026",
-    tagline:
-      "Interjero studijos portfolio: projektų indeksas, kuriame darbai kalba patys.",
-    scope: ["Portfolio", "Projektų filtras", "Galerija"],
-    feature: "Filtruojamas projektų indeksas",
-    url: "evolvia.lt/demo/forma",
-    href: "/demo/forma",
-  },
-  {
-    name: "Skalsa",
-    slug: "skalsa",
-    label: "Koncepcija",
-    sector: "El. parduotuvė",
-    year: "2026",
-    tagline:
-      "Rankų darbo žvakių el. parduotuvė: katalogas, krepšelis ir apmokėjimas vienoje švarioje sistemoje.",
-    scope: ["Prekių katalogas", "Krepšelis", "Užsakymo eiga"],
-    feature: "Veikiantis krepšelis",
-    url: "evolvia.lt/demo/skalsa",
-    href: "/demo/skalsa",
-  },
-];
+type Slug = "konstrukta" | "fume" | "forma" | "skalsa";
 
-export const demoBySlug = (slug: string) => demos.find((d) => d.slug === slug);
+const base: { slug: Slug; name: string; kind: "demo" | "concept"; year: string }[] =
+  [
+    { slug: "konstrukta", name: "Konstrukta", kind: "concept", year: "2026" },
+    { slug: "fume", name: "Fumé", kind: "demo", year: "2026" },
+    { slug: "forma", name: "Forma", kind: "demo", year: "2026" },
+    { slug: "skalsa", name: "Skalsa", kind: "concept", year: "2026" },
+  ];
+
+export function getDemos(locale: Locale): Demo[] {
+  const d = getDictionary(locale).demos;
+  const suffix = locale === "lt" ? "" : `-${locale}`;
+  return base.map((b) => {
+    const href = localizePath(`/demo/${b.slug}`, locale);
+    return {
+      name: b.name,
+      slug: b.slug,
+      year: b.year,
+      label: d.labels[b.kind],
+      ...d.items[b.slug],
+      url: `evolvia.lt${href}`,
+      href,
+      shot: `/work/shot-${b.slug}${suffix}.webp`,
+      shotMobile: `/work/shot-${b.slug}${suffix}-m.webp`,
+    };
+  });
+}
+
+export const demoBySlug = (locale: Locale, slug: string) =>
+  getDemos(locale).find((d) => d.slug === slug);

@@ -1,41 +1,39 @@
+import type { Locale } from "@/i18n/config";
+import { getSkalsaCopy } from "./copy";
+
+/* Žingsnių pavadinimai, tekstai ir alt — žodyne, ta pačia tvarka. */
 const STEPS = [
   {
     n: "01",
-    title: "Lydome",
-    body: "Grynas sojų vaškas lydomas iki 65 °C. Be parafino, be dažiklių — todėl vaškas lieka pieno spalvos, o ne balintai baltas.",
     img: "/demo/skalsa/studio-1.webp",
     w: 1300,
     h: 968,
-    alt: "Dirbtuvėje liejamas išlydytas vaškas į stiklinį indą",
   },
   {
     n: "02",
-    title: "Maišome ranka",
-    body: "Kvapiąjį aliejų įmaišome, kai vaškas atvėsta iki 52 °C. Dvi minutės ranka — mišiniui to užtenka, ir kvapas neišgaruoja pirmą vakarą.",
     img: "/demo/skalsa/studio-2.webp",
     w: 1300,
     h: 965,
-    alt: "Dvi poros rankų dirbtuvėje ruošia žvakes",
   },
   {
     n: "03",
-    title: "Brandiname",
-    body: "Sustingusi žvakė ilsisi dešimt dienų, tik tada gauna etiketę ir 5 mm dagtį. Pirmą kartą uždekite dviem valandoms — vaškas turi ištirpti iki kraštų.",
     img: "/demo/skalsa/match.webp",
     w: 1200,
     h: 803,
-    alt: "Degtukas uždega medvilninį žvakės dagtį",
   },
 ];
 
-export function Studio() {
+export function Studio({ locale }: { locale: Locale }) {
+  const t = getSkalsaCopy(locale).studio;
+  const steps = STEPS.map((s, i) => ({ ...s, ...t.steps[i] }));
+
   return (
     <section data-sk-sec="dirbtuve" className="relative">
       <span id="dirbtuve" aria-hidden="true" className="absolute -top-[30px]" />
       <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
         <div data-rise className="max-w-[54ch]">
           <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
-            Dirbtuvė
+            {t.eyebrow}
           </p>
           <h2
             className="mt-4 text-[clamp(1.875rem,3.4vw,2.5rem)] leading-[1.08] text-balance"
@@ -44,16 +42,15 @@ export function Studio() {
               fontWeight: 500,
             }}
           >
-            Trys žingsniai, jokių skubotų partijų.
+            {t.title}
           </h2>
           <p className="mt-5 max-w-[52ch] text-[1.0625rem] leading-[1.65] text-pretty text-[#6E6257]">
-            Vienu kartu išliejame apie keturiasdešimt žvakių. Tiek telpa ant
-            stalo, tiek spėjame patikrinti rankomis.
+            {t.lead}
           </p>
         </div>
 
         <ol className="mt-[clamp(40px,6vw,72px)] grid gap-x-6 gap-y-[clamp(40px,5vw,64px)] md:grid-cols-3">
-          {STEPS.map((s, i) => (
+          {steps.map((s, i) => (
             <li
               key={s.n}
               data-rise

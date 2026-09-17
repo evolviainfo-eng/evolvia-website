@@ -1,22 +1,20 @@
+import type { Locale } from "@/i18n/config";
+import { getFumeCopy } from "./copy";
 import { Body, Eyebrow, H2, HAIRLINE, Rule, Shot } from "./Type";
 
-const FACTS = [
-  { k: "34", v: "vietos salėje" },
-  { k: "~120", v: "pozicijų vyno kortelėje" },
-  { k: "17:00", v: "atsidaro durys" },
-];
+export function Intro({ locale }: { locale: Locale }) {
+  const copy = getFumeCopy(locale).intro;
 
-export function Intro() {
   return (
     <section className="mx-auto max-w-[1240px] px-5 pt-[var(--sec)] sm:px-8">
       <div className="grid items-start gap-[clamp(32px,5vw,64px)] lg:grid-cols-12">
         <div className="min-w-0 lg:col-span-5">
           <div data-rise>
-            <Eyebrow>Užupis, Vilnius</Eyebrow>
+            <Eyebrow>{copy.eyebrow}</Eyebrow>
             <H2 className="mt-6">
-              Vakaras, kuris
+              {copy.title[0]}
               <br />
-              neskuba.
+              {copy.title[1]}
             </H2>
           </div>
 
@@ -25,23 +23,14 @@ export function Intro() {
             style={{ "--i": 1 } as React.CSSProperties}
             className="mt-7 space-y-5"
           >
-            <Body className="max-w-[46ch]">
-              Fumé — mažas restoranas su vyno baru senojoje Užupio kalvio
-              dirbtuvėje. Trisdešimt keturios vietos, viena atviros ugnies
-              virtuvė ir vienas serviravimas per vakarą: rezervuotas stalas
-              lieka jūsų iki uždarymo.
-            </Body>
-            <Body className="max-w-[46ch]">
-              Meniu keičiasi pagal sezoną ir pagal tai, ką tą savaitę atveža
-              ūkininkai. Nerasite jo išspausdinto metams į priekį — tai ne
-              kortelė, o pokalbis su tuo, kas šiuo metu geriausia.
-            </Body>
+            <Body className="max-w-[46ch]">{copy.body[0]}</Body>
+            <Body className="max-w-[46ch]">{copy.body[1]}</Body>
 
             <dl
               style={{ borderColor: HAIRLINE }}
               className="!mt-10 grid grid-cols-3 gap-x-4 gap-y-4 border-t pt-6"
             >
-              {FACTS.map((f, i) => (
+              {copy.facts.map((f, i) => (
                 <div
                   key={f.k}
                   style={{ borderColor: HAIRLINE }}
@@ -64,7 +53,7 @@ export function Intro() {
           src="/demo/fume/room-hall.webp"
           w={1400}
           h={933}
-          alt="Padengta Fumé salė šiltoje vakaro šviesoje"
+          alt={copy.photoAlt}
           rise={1}
           settle
         />

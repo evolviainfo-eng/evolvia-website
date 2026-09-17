@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/Button";
 import { DemoSite } from "@/components/ui/DemoSite";
 import { DemoNote } from "@/components/ui/DemoNote";
 import { DemoMeta } from "@/components/ui/DemoMeta";
-import { demos } from "@/content/demos";
+import { getDemos } from "@/content/demos";
+import { getDictionary } from "@/i18n";
+import { localizePath, type Locale } from "@/i18n/config";
 
 /* Darbai, floating.
  *
@@ -32,7 +34,10 @@ const CAST = [
   { width: "lg:w-full", drift: "6px" },
 ] as const;
 
-export function Work() {
+export function Work({ locale }: { locale: Locale }) {
+  const d = getDictionary(locale);
+  const t = d.work;
+  const demos = getDemos(locale);
   const left = demos.filter((_, i) => i % 2 === 0);
   const right = demos.filter((_, i) => i % 2 === 1);
 
@@ -50,10 +55,11 @@ export function Work() {
           >
             <DemoSite
               demo={demo}
+              labels={d.demos}
               ratioClass={offset === 0 ? "aspect-[16/11]" : "aspect-[4/3]"}
               eager={offset === 0 && i === 0}
             />
-            <DemoMeta demo={demo} />
+            <DemoMeta demo={demo} openLabel={d.demos.open} />
           </figure>
         );
       })}
@@ -64,13 +70,13 @@ export function Work() {
     <Section id="pavyzdziai" tone="light">
       <Container>
         <Reveal className="max-w-[680px]">
-          <Eyebrow>Pavyzdžiai</Eyebrow>
-          <h2 className="t-h2 mt-4">Pavyzdžiai, kuriuos galite išbandyti.</h2>
+          <Eyebrow>{t.eyebrow}</Eyebrow>
+          <h2 className="t-h2 mt-4">{t.title}</h2>
         </Reveal>
 
         <div className="mt-6 max-w-[680px]">
           {/* the sentence that keeps this honest never waits on an observer */}
-          <DemoNote />
+          <DemoNote locale={locale} />
         </div>
 
         <div className="work-cast mt-[clamp(48px,7vw,96px)] grid gap-[clamp(56px,9vw,120px)] lg:grid-cols-2 lg:items-start lg:gap-x-[clamp(32px,4vw,72px)]">
@@ -83,8 +89,12 @@ export function Work() {
         </div>
 
         <Reveal className="mt-[clamp(56px,8vw,112px)] flex justify-center">
-          <Button href="/darbai" variant="secondary" size="lg">
-            Visi pavyzdžiai
+          <Button
+            href={localizePath("/darbai", locale)}
+            variant="secondary"
+            size="lg"
+          >
+            {t.all}
           </Button>
         </Reveal>
       </Container>

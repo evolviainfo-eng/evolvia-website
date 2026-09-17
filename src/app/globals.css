@@ -639,6 +639,14 @@
     }
   }
 
+  /* ── Language switch ────────────────────────────────────────────
+     Styled in components/ui/LanguageSwitch.tsx. The one thing a class
+     cannot say: on the demo honesty bar, which is ink in both themes, the
+     focus ring has to be light, not the theme's accent. */
+  .ink-switch .lang-flag:focus-visible {
+    outline-color: #f5f5f7;
+  }
+
   /* Scale is travel, and travel is what reduced motion asks us to drop. The
      material still arrives — it just arrives by opacity alone. */
   @media (prefers-reduced-motion: reduce) {
@@ -1095,4 +1103,16 @@ html.lenis body {
   .row-hover:hover > * {
     translate: 4px 0;
   }
+}
+
+/* ── The bilingual 404 ────────────────────────────────────────────
+   One static 404.html answers for every language, so it carries all of
+   them. RootShell's head script marks the address's language on
+   <html data-locale> before paint; everything tagged for another language
+   stays out of the page. No attribute (no script) means the default,
+   Lithuanian. !important because these wrappers also carry layout
+   utilities (flex, min-h) that would otherwise put them back. */
+:root:not([data-locale]) [data-locale-only]:not([data-locale-only="lt"]),
+:root[data-locale="en"] [data-locale-only]:not([data-locale-only="en"]) {
+  display: none !important;
 }

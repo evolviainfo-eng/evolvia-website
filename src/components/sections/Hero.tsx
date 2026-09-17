@@ -9,14 +9,15 @@ import {
 } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { DemoSite } from "@/components/ui/DemoSite";
-import { demos } from "@/content/demos";
+import { DemoSite, type DemoSiteLabels } from "@/components/ui/DemoSite";
+import type { Demo } from "@/content/demos";
+import type { Dictionary } from "@/i18n/dictionaries/lt";
 
 /* The hero frame used to be a hand-built mock of a fictional "atelier.lt".
    It now shows a real demo — the e-shop, the one the homepage work section
    doesn't already carry — so the first thing a visitor sees is a website they
-   can actually open. */
-const heroDemo = demos.find((d) => d.slug === "skalsa") ?? demos[0];
+   can actually open. The page picks it and hands it in, already in the
+   page's language. */
 
 /** One line of the headline, revealed by sliding up out of its mask.
  *
@@ -27,20 +28,35 @@ const heroDemo = demos.find((d) => d.slug === "skalsa") ?? demos[0];
  *  CSS version is gated behind `html[data-choreo]`, which the boot script
  *  sets before paint and a watchdog removes if the observer never arrives.
  *  Worst case the headline is simply visible.
+ *
+ *  On desktop a line is exactly as wide as its words and never wraps. At
+ *  the full 74px size the text column is 521px, and a first line like
+ *  "Tavo konkurentai" (547px) or "Your competitors" (550px) used to break
+ *  into two, stranding "Tavo" / "Your" on a line of its own. Sized to its
+ *  words, the line runs at most ~30px into the 64px gutter before the demo
+ *  frame. Below lg the column is the full width and lines wrap as before.
  */
 function Line({ children, i }: { children: string; i: number }) {
   return (
     <span
       data-line
       style={{ "--i": i } as React.CSSProperties}
-      className="block overflow-hidden pb-[0.14em] -mb-[0.14em]"
+      className="block overflow-hidden pb-[0.14em] -mb-[0.14em] lg:w-max"
     >
-      <span>{children}</span>
+      <span className="lg:whitespace-nowrap">{children}</span>
     </span>
   );
 }
 
-export function Hero() {
+export function Hero({
+  t,
+  demo,
+  demoLabels,
+}: {
+  t: Dictionary["hero"];
+  demo: Demo;
+  demoLabels: DemoSiteLabels;
+}) {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
 
@@ -80,14 +96,16 @@ export function Hero() {
               className="inline-flex items-center gap-2 text-[0.8125rem] font-semibold uppercase tracking-[0.16em] text-text-muted"
             >
               <span className="inline-block h-px w-6 bg-text/30" />
-              svetainių kūrimas
+              {t.eyebrow}
             </p>
 
             {/* Line-level, never letter-level. */}
             <h1 className="t-hero mt-6 font-normal text-text [font-size:clamp(2.6rem,5.4vw,4.6rem)] [line-height:1.04]">
-              <Line i={2}>Tavo konkurentai</Line>
-              <Line i={3}>jau matomi.</Line>
-              <Line i={4}>O tu?</Line>
+              {t.lines.map((line, i) => (
+                <Line key={line} i={i + 2}>
+                  {line}
+                </Line>
+              ))}
             </h1>
 
             <p
@@ -95,8 +113,7 @@ export function Hero() {
               style={{ "--i": 7 } as React.CSSProperties}
               className="mt-6 max-w-[44ch] text-pretty text-[1.0625rem] leading-relaxed text-text-muted sm:text-[1.25rem]"
             >
-              Svetainių kūrimas Lietuvos verslui. Nuo pirmo eskizo iki
-              paleidimo viskas padaroma už jus.
+              {t.lead}
             </p>
 
             <div
@@ -110,7 +127,7 @@ export function Hero() {
                 size="lg"
                 className="w-full sm:w-auto"
               >
-                Gauti nemokamą eskizą
+                {t.primary}
               </Button>
               <Button
                 href="#darbai"
@@ -118,7 +135,7 @@ export function Hero() {
                 size="lg"
                 className="w-full sm:w-auto"
               >
-                Pamatyti darbus
+                {t.secondary}
               </Button>
             </div>
           </motion.div>
@@ -129,9 +146,14 @@ export function Hero() {
               the CSS transform `data-rise` needs, and the two would fight. */}
           <motion.div style={deviceStyle} className="min-w-0 lg:pl-4">
             <div data-rise style={{ "--i": 5 } as React.CSSProperties}>
-              <DemoSite demo={heroDemo} ratioClass="aspect-[16/10]" eager />
+              <DemoSite
+                demo={demo}
+                labels={demoLabels}
+                ratioClass="aspect-[16/10]"
+                eager
+              />
               <p className="mt-3 text-[0.8125rem] text-text-muted">
-                Demonstracinė svetainė, atsidaro ir veikia.
+                {t.caption}
               </p>
             </div>
           </motion.div>

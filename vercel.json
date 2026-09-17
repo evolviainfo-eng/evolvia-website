@@ -41,6 +41,15 @@
           "value": "noindex, nofollow"
         }
       ]
+    },
+    {
+      "source": "/en/demo/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ]
 }

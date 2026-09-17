@@ -10,9 +10,7 @@ import {
 } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { SeamField } from "@/components/ui/SeamField";
-
-const STATEMENT = "Pamatote svetainę gyvai. Tik tada mokate.";
-const WORDS = STATEMENT.split(" ");
+import type { Dictionary } from "@/i18n/dictionaries/lt";
 
 // Words reveal across the first half of the scroll, the sub-line follows
 // right after — and everything HOLDS fully visible for the rest of the pin
@@ -56,7 +54,8 @@ function Word({
   );
 }
 
-export function TrustStatement() {
+export function TrustStatement({ t }: { t: Dictionary["trust"] }) {
+  const WORDS = t.statement.split(" ");
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
 
@@ -74,7 +73,7 @@ export function TrustStatement() {
     <section
       ref={ref}
       className="relative min-h-[220vh] bg-ink-bg text-ink-fg"
-      aria-label="Pamatote svetainę gyvai. Tik tada mokate."
+      aria-label={t.statement}
     >
       <div className="sticky top-0 flex min-h-[100svh] items-center overflow-hidden py-24">
         {/* The floor the shader sits on — and the whole background when there
@@ -97,7 +96,7 @@ export function TrustStatement() {
 
         <Container className="relative">
           <div className="mx-auto max-w-[760px] text-center">
-            <p className="t-eyebrow text-ink-fg/55">Be rizikos</p>
+            <p className="t-eyebrow text-ink-fg/55">{t.eyebrow}</p>
 
             <h2
               aria-hidden="true"
@@ -129,8 +128,7 @@ export function TrustStatement() {
               style={reduce ? undefined : { opacity: subOpacity, y: subY }}
               className="mx-auto mt-8 max-w-[46ch] text-[1.0625rem] leading-relaxed text-ink-fg/70 sm:text-[1.25rem]"
             >
-              Jokios rizikos. Jokių prielaidų. Sukuriame realų eskizą jūsų
-              verslui. Jei nepatinka, nieko nemokate.
+              {t.sub}
             </motion.p>
           </div>
         </Container>

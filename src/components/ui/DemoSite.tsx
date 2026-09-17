@@ -1,5 +1,6 @@
 import { cn } from "@/lib/cn";
 import { Chrome } from "@/components/ui/SiteFrame";
+import { fill } from "@/i18n/fill";
 import type { Demo } from "@/content/demos";
 
 /* The portfolio frame.
@@ -13,9 +14,21 @@ import type { Demo } from "@/content/demos";
  *  The address in the chrome is deliberately `evolvia.lt/demo/…` and not a
  *  plausible `konstrukta.lt`: the frame must never imply the company owns a
  *  domain, because the company does not exist.
+ *
+ *  Plain component, no dictionary import: the hero renders it from a client
+ *  component, so its words arrive as props.
  */
 
-/** The mobile capture, hanging off the frame corner — responsyvumo įrodymas. */
+export type DemoSiteLabels = {
+  /** Hover label on the frame ("Atidaryti demo"). */
+  open: string;
+  /** Accessible name, with {name}. */
+  frameLabel: string;
+  /** Screenshot alt text, with {name}. */
+  frameAlt: string;
+};
+
+/** The mobile capture, hanging off the frame corner — proof it responds. */
 function PhoneMock({ demo }: { demo: Demo }) {
   return (
     <span
@@ -26,7 +39,7 @@ function PhoneMock({ demo }: { demo: Demo }) {
         <span className="relative block aspect-[9/18.5] overflow-hidden rounded-card bg-black">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={`/work/shot-${demo.slug}-m.webp`}
+            src={demo.shotMobile}
             alt=""
             className="absolute inset-0 h-full w-full object-cover object-top"
             loading="lazy"
@@ -40,12 +53,14 @@ function PhoneMock({ demo }: { demo: Demo }) {
 
 export function DemoSite({
   demo,
+  labels,
   ratioClass = "aspect-[16/10]",
   phone = false,
   eager = false,
   className,
 }: {
   demo: Demo;
+  labels: DemoSiteLabels;
   ratioClass?: string;
   /** Show the overlapping mobile capture (desktop only). */
   phone?: boolean;
@@ -58,7 +73,7 @@ export function DemoSite({
       href={demo.href}
       target="_blank"
       rel="noopener"
-      aria-label={`Atidaryti demonstracinę „${demo.name}“ svetainę naujame lange`}
+      aria-label={fill(labels.frameLabel, { name: demo.name })}
       className={cn("group relative block", className)}
     >
       <span className="demo-browser block overflow-hidden rounded-card border border-border bg-surface shadow-[var(--shadow-frame)] transition-transform duration-[var(--d-el)] ease-[var(--e-out)] group-hover:-translate-y-1">
@@ -74,8 +89,8 @@ export function DemoSite({
           <img
             data-settle
             data-para
-            src={`/work/shot-${demo.slug}.webp`}
-            alt={`„${demo.name}“ demonstracinės svetainės vaizdas`}
+            src={demo.shot}
+            alt={fill(labels.frameAlt, { name: demo.name })}
             className="work-img absolute left-0 top-[-6%] h-[112%] w-full object-cover object-top"
             loading={eager ? "eager" : "lazy"}
             fetchPriority={eager ? "high" : undefined}
@@ -88,7 +103,7 @@ export function DemoSite({
             className="pointer-events-none absolute bottom-4 left-4 inline-flex translate-y-1.5 items-center gap-2 rounded-pill bg-white/95 px-4 py-2 text-[0.8125rem] font-medium text-neutral-900 opacity-0 shadow-[var(--shadow-card)] transition-[opacity,translate] duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"
             aria-hidden="true"
           >
-            Atidaryti demo
+            {labels.open}
             <svg
               viewBox="0 0 12 12"
               className="h-3 w-3"

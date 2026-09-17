@@ -1,7 +1,11 @@
+import type { Locale } from "@/i18n/config";
 import { AddToCart, Check } from "./AddToCart";
-import { BUNDLES, eur } from "./data";
+import { getSkalsaCopy } from "./copy";
+import { eur, getBundles } from "./data";
 
-export function Bundles() {
+export function Bundles({ locale }: { locale: Locale }) {
+  const t = getSkalsaCopy(locale).bundles;
+
   return (
     <section data-sk-sec="rinkiniai" className="relative bg-[#F1EAE0]">
       <span
@@ -12,7 +16,7 @@ export function Bundles() {
       <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
         <div data-rise className="max-w-[50ch]">
           <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
-            Rinkiniai
+            {t.eyebrow}
           </p>
           <h2
             className="mt-4 text-[clamp(1.875rem,3.4vw,2.5rem)] leading-[1.08] text-balance"
@@ -21,7 +25,7 @@ export function Bundles() {
               fontWeight: 500,
             }}
           >
-            Kai reikia dovanos, o ne prekės.
+            {t.title}
           </h2>
         </div>
 
@@ -35,7 +39,7 @@ export function Bundles() {
             <img
               data-settle
               src="/demo/skalsa/flat.webp"
-              alt="Žvakių asortimentas, degtukai ir lininis maišelis iš viršaus"
+              alt={t.imageAlt}
               width={1300}
               height={1242}
               decoding="async"
@@ -45,7 +49,7 @@ export function Bundles() {
           </div>
 
           <ul className="grid min-w-0 gap-6">
-            {BUNDLES.map((b, i) => (
+            {getBundles(locale).map((b, i) => (
               <li
                 key={b.id}
                 data-rise
@@ -64,7 +68,7 @@ export function Bundles() {
                   </h3>
                   <div className="shrink-0 text-right">
                     <span className="block text-[1.0625rem] tabular-nums">
-                      {eur(b.price)}
+                      {eur(b.price, locale)}
                     </span>
                     {b.note && (
                       <span className="mt-1 block text-[0.8125rem] tabular-nums text-[#6E6257]">

@@ -2,7 +2,8 @@ import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
-import { processSteps } from "@/content/process";
+import { getDictionary } from "@/i18n";
+import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 
 /* ─────────────────────────────────────────────────────────────
@@ -29,19 +30,16 @@ import { cn } from "@/lib/cn";
    nothing is hidden if it never runs.
    ───────────────────────────────────────────────────────────── */
 
-export function Process() {
+export function Process({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale).process;
+  const processSteps = t.steps;
   return (
     <Section id="procesas" tone="secondary">
       <Container>
         <Reveal className="max-w-[640px]">
-          <Eyebrow>Kaip dirbame</Eyebrow>
-          <h2 className="t-h2 mt-4">Procesas be staigmenų.</h2>
-          <p className="t-body mt-5 max-w-[54ch]">
-            Nuotraukos telefone, kainos lapelyje, atsiliepimai portale, darbo
-            laikas. Medžiaga jau yra, tik išbarstyta. Mūsų darbas yra ją
-            surinkti ir sudėlioti, o jūs realią svetainę pamatote dar prieš
-            mokėdami.
-          </p>
+          <Eyebrow>{t.eyebrow}</Eyebrow>
+          <h2 className="t-h2 mt-4">{t.title}</h2>
+          <p className="t-body mt-5 max-w-[54ch]">{t.lead}</p>
         </Reveal>
 
         <ol className="mt-[clamp(44px,6vw,80px)] flex flex-col">

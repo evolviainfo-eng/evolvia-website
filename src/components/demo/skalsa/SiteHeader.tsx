@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { getSkalsaCopy } from "./copy";
 import { useShop } from "./ShopProvider";
 
 /* Aktyvi ir užvesta nuoroda naudoja tą patį brūkšnį — būsena atrodo kaip
@@ -9,12 +11,13 @@ import { useShop } from "./ShopProvider";
 const NAV =
   "relative inline-block py-1 text-[0.8125rem] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:bg-[#241E19] after:transition-transform after:duration-[var(--d-ui)] after:ease-[var(--e-out)] hover:text-[#241E19] hover:after:scale-x-100";
 
+/* Nuorodų tekstai žodyne, po tuo pačiu `id`. */
 const LINKS = [
-  { href: "#katalogas", id: "katalogas", label: "Katalogas" },
-  { href: "#rinkiniai", id: "rinkiniai", label: "Rinkiniai" },
-  { href: "#dirbtuve", id: "dirbtuve", label: "Dirbtuvė" },
-  { href: "#pristatymas", id: "pristatymas", label: "Pristatymas" },
-];
+  { href: "#katalogas", id: "katalogas" },
+  { href: "#rinkiniai", id: "rinkiniai" },
+  { href: "#dirbtuve", id: "dirbtuve" },
+  { href: "#pristatymas", id: "pristatymas" },
+] as const;
 
 /** Lipni mini-antraštė. Sėdi tiksliai po Evolvia sąžiningumo juosta.
  *
@@ -25,6 +28,8 @@ const LINKS = [
  */
 export function SiteHeader() {
   const { count, openCart } = useShop();
+  const locale = useLocale();
+  const t = getSkalsaCopy(locale).header;
   const [stuck, setStuck] = useState(false);
   const [active, setActive] = useState("");
 
@@ -73,7 +78,7 @@ export function SiteHeader() {
           Skalsa
         </a>
 
-        <nav aria-label="Pagrindinė" className="hidden min-w-0 flex-1 md:block">
+        <nav aria-label={t.navLabel} className="hidden min-w-0 flex-1 md:block">
           <ul className="flex items-center gap-7">
             {LINKS.map((l) => (
               <li key={l.href}>
@@ -86,7 +91,7 @@ export function SiteHeader() {
                       : "text-[#6E6257] after:scale-x-0"
                   }`}
                 >
-                  {l.label}
+                  {t.links[l.id]}
                 </a>
               </li>
             ))}
@@ -95,20 +100,16 @@ export function SiteHeader() {
 
         <div className="ml-auto flex shrink-0 items-center gap-3">
           <span className="hidden text-[0.8125rem] text-[#6E6257] lg:inline">
-            Nemokamas pristatymas nuo 40 €
+            {t.freeDelivery}
           </span>
           <button
             type="button"
             onClick={openCart}
-            aria-label={
-              count > 0
-                ? `Atidaryti krepšelį — prekių: ${count}`
-                : "Atidaryti krepšelį — tuščias"
-            }
+            aria-label={t.openBasket(count)}
             className="group press inline-flex h-10 items-center gap-2.5 rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] pl-3.5 pr-2.5 text-[0.8125rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0] active:translate-y-0"
           >
             <Bag />
-            <span className="hidden sm:inline">Krepšelis</span>
+            <span className="hidden sm:inline">{t.basket}</span>
             {/* `key` pririštas prie skaičiaus: pasikeitus jam ženkliukas
                 persimontuoja ir krūpteli. Jokios būsenos tam nereikia. */}
             <span

@@ -39,7 +39,7 @@ const ShopContext = createContext<ShopValue | null>(null);
 
 export function useShop(): ShopValue {
   const ctx = useContext(ShopContext);
-  if (!ctx) throw new Error("useShop: trūksta <ShopProvider>");
+  if (!ctx) throw new Error("useShop: missing <ShopProvider>");
   return ctx;
 }
 

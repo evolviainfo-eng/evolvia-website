@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef, useState, type FormEvent } from "react";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { getFormaCopy } from "@/components/demo/forma/copy";
 import {
   MUTED,
   SERIF,
@@ -21,6 +23,8 @@ const FIELD =
 const LABEL = `block ${T_META}`;
 
 export function ContactForm() {
+  const locale = useLocale();
+  const t = getFormaCopy(locale).form;
   const [sent, setSent] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const resetRef = useRef<HTMLButtonElement>(null);
@@ -41,12 +45,10 @@ export function ContactForm() {
           style={SERIF}
           className="max-w-[20ch] text-[clamp(1.5rem,3vw,1.875rem)] leading-[1.15] tracking-[-0.015em] text-balance"
         >
-          Ačiū — bet nieko neišsiuntėme.
+          {t.sentTitle}
         </p>
         <p className={`mt-4 max-w-[46ch] ${T_BODY}`} style={{ color: MUTED }}>
-          Tai demonstracinė svetainė, todėl užklausa niekur nekeliavo. Tikroje
-          svetainėje ši forma per kelias sekundes atsidurtų studijos pašte, o
-          jūs gautumėte patvirtinimą.
+          {t.sentBody}
         </p>
         <button
           ref={resetRef}
@@ -57,7 +59,7 @@ export function ContactForm() {
           }}
           className="mt-7 press inline-flex h-12 items-center rounded-full border border-[rgba(26,25,23,0.24)] px-6 text-[0.9375rem] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-0 active:opacity-80"
         >
-          Pildyti iš naujo
+          {t.again}
         </button>
       </div>
     );
@@ -77,7 +79,7 @@ export function ContactForm() {
             htmlFor="forma-vardas"
             style={{ color: MUTED }}
           >
-            Vardas
+            {t.name}
           </label>
           <input
             id="forma-vardas"
@@ -85,7 +87,7 @@ export function ContactForm() {
             type="text"
             required
             autoComplete="name"
-            placeholder="Kaip į jus kreiptis"
+            placeholder={t.namePlaceholder}
             className={FIELD}
           />
         </div>
@@ -95,7 +97,7 @@ export function ContactForm() {
             htmlFor="forma-pastas"
             style={{ color: MUTED }}
           >
-            El. paštas
+            {t.email}
           </label>
           <input
             id="forma-pastas"
@@ -103,7 +105,7 @@ export function ContactForm() {
             type="email"
             required
             autoComplete="email"
-            placeholder="vardas@pastas.lt"
+            placeholder={t.emailPlaceholder}
             className={FIELD}
           />
         </div>
@@ -113,7 +115,7 @@ export function ContactForm() {
             htmlFor="forma-tipas"
             style={{ color: MUTED }}
           >
-            Objektas
+            {t.type}
           </label>
           {/* `appearance-none` strips the native arrow along with the native
               styling, so the affordance has to be drawn back — without it the
@@ -125,10 +127,10 @@ export function ContactForm() {
               defaultValue="butas"
               className={`${FIELD} cursor-pointer appearance-none pr-7`}
             >
-              <option value="butas">Butas</option>
-              <option value="namas">Namas</option>
-              <option value="komercine">Komercinė erdvė</option>
-              <option value="nezinau">Dar nežinau</option>
+              <option value="butas">{t.types.butas}</option>
+              <option value="namas">{t.types.namas}</option>
+              <option value="komercine">{t.types.komercine}</option>
+              <option value="nezinau">{t.types.nezinau}</option>
             </select>
             <span
               aria-hidden="true"
@@ -143,14 +145,14 @@ export function ContactForm() {
             htmlFor="forma-plotas"
             style={{ color: MUTED }}
           >
-            Plotas, m²
+            {t.area}
           </label>
           <input
             id="forma-plotas"
             name="plotas"
             type="text"
             inputMode="numeric"
-            placeholder="pvz. 74"
+            placeholder={t.areaPlaceholder}
             className={FIELD}
           />
         </div>
@@ -162,13 +164,13 @@ export function ContactForm() {
           htmlFor="forma-zinute"
           style={{ color: MUTED }}
         >
-          Trumpai apie erdvę
+          {t.message}
         </label>
         <textarea
           id="forma-zinute"
           name="zinute"
           rows={3}
-          placeholder="Kada planuojate pradėti, kas erdvėje netinka, ko norėtumėte."
+          placeholder={t.messagePlaceholder}
           className={`${FIELD} h-auto resize-none py-3 leading-[1.65]`}
         />
       </div>
@@ -178,13 +180,13 @@ export function ContactForm() {
           type="submit"
           className="press inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-[#1A1917] px-7 text-[0.9375rem] text-[#F4F1EC] transition-[translate,opacity] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:opacity-90 active:translate-y-0 active:opacity-75"
         >
-          Siųsti užklausą
+          {t.submit}
         </button>
         <p
           className={`min-w-0 max-w-[34ch] ${T_SMALL}`}
           style={{ color: MUTED }}
         >
-          Atsakome per vieną darbo dieną. Pirmas pokalbis — nemokamas.
+          {t.note}
         </p>
       </div>
     </form>

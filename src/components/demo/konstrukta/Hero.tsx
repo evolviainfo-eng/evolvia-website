@@ -1,13 +1,9 @@
+import type { Locale } from "@/i18n/config";
+import { getKonstruktaCopy } from "./copy";
 import { CONTAINER, T_MICRO } from "./ui";
 
-const FACTS = [
-  "Nuo 2009",
-  "Kaunas ir apskritis",
-  "40 objektų",
-  "12 žmonių komanda",
-];
-
-export function Hero() {
+export function Hero({ locale }: { locale: Locale }) {
+  const c = getKonstruktaCopy(locale).hero;
   return (
     <section id="top" className="relative isolate overflow-hidden">
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -15,7 +11,7 @@ export function Hero() {
         src="/demo/konstrukta/hero.webp"
         width={1800}
         height={1199}
-        alt="Statybos aikštelė vakare: apšviestas besistatančio pastato karkasas ir kranas"
+        alt={c.alt}
         decoding="async"
         loading="eager"
         fetchPriority="high"
@@ -40,12 +36,12 @@ export function Hero() {
             already sets the break; the measure needs no help. */}
         <div data-rise>
           <p className={`${T_MICRO} tracking-[0.22em] text-[#9A9791]`}>
-            Generalinis rangovas · Kaunas
+            {c.eyebrow}
           </p>
           <h1 className="mt-6 text-[clamp(2.5rem,6vw,4.625rem)] font-semibold leading-[0.98] text-[#E7E5E1]">
-            Statome tai,
+            {c.title[0]}
             <br />
-            kas išlieka.
+            {c.title[1]}
           </h1>
         </div>
 
@@ -54,8 +50,7 @@ export function Hero() {
           style={{ "--i": 1 } as React.CSSProperties}
           className="mt-7 max-w-[54ch] text-pretty text-[1.0625rem] leading-[1.62] text-[rgba(231,229,225,0.78)] sm:text-[1.0625rem]"
         >
-          Karkasinė ir mūrinė statyba, renovacija, vidaus apdaila. Vienas
-          rangovas, vienas grafikas — nuo iškasos iki statybos užbaigimo akto.
+          {c.lead}
         </p>
 
         <div
@@ -67,13 +62,13 @@ export function Hero() {
             href="#samata"
             className="inline-flex h-12 items-center justify-center bg-[#E8B14C] px-7 text-[0.9375rem] font-semibold tracking-[0.005em] text-[#121316] transition-[translate,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#F2BE5F] active:translate-y-0 active:bg-[#D9A343]"
           >
-            Skaičiuoti sąmatą
+            {c.primary}
           </a>
           <a
             href="#objektai"
             className="inline-flex h-12 items-center justify-center border border-white/[0.22] px-7 text-[0.9375rem] text-[#E7E5E1] transition-[translate,border-color,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-white/[0.5] hover:bg-white/[0.04] active:translate-y-0 active:bg-white/[0.08]"
           >
-            Peržiūrėti objektus
+            {c.secondary}
           </a>
         </div>
       </div>
@@ -86,7 +81,7 @@ export function Hero() {
         <ul
           className={`${CONTAINER} flex flex-wrap items-center gap-x-5 gap-y-1.5 py-4 sm:gap-x-8`}
         >
-          {FACTS.map((f, i) => (
+          {c.facts.map((f, i) => (
             <li
               key={f}
               className={`${T_MICRO} flex items-center gap-5 text-[#9A9791] sm:gap-8`}

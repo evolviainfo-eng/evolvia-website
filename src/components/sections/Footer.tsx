@@ -1,8 +1,13 @@
 import { Container } from "@/components/ui/Container";
 import { Wordmark } from "@/components/ui/Wordmark";
-import { pages, site } from "@/content/site";
+import { site } from "@/content/site";
+import { getDictionary } from "@/i18n";
+import { fill } from "@/i18n/fill";
+import { localizePath, type Locale } from "@/i18n/config";
 
-export function Footer() {
+export function Footer({ locale }: { locale: Locale }) {
+  const d = getDictionary(locale);
+  const t = d.footer;
   return (
     <footer className="border-t border-border bg-bg text-text">
       <Container>
@@ -11,29 +16,29 @@ export function Footer() {
             <div>
               <Wordmark className="h-[38px] w-[95px]" />
               <p className="mt-3 text-[0.8125rem] font-medium uppercase tracking-[0.22em] text-text-muted">
-                {site.tagline}
+                {t.tagline}
               </p>
             </div>
 
             <div className="flex flex-col gap-10 sm:flex-row sm:gap-20">
               <nav
                 className="flex flex-col gap-3"
-                aria-label="Poraštės navigacija"
+                aria-label={t.nav}
               >
-                {pages.map((page) => (
+                {t.pages.map((page) => (
                   <a
                     key={page.path}
-                    href={page.path}
+                    href={localizePath(page.path, locale)}
                     className="text-[0.9375rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
                   >
                     {page.label}
                   </a>
                 ))}
                 <a
-                  href="/kontaktai#privatumas"
+                  href={localizePath("/kontaktai#privatumas", locale)}
                   className="text-[0.9375rem] text-text-muted transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text"
                 >
-                  Privatumas
+                  {t.privacy}
                 </a>
               </nav>
               <div className="flex flex-col gap-3">
@@ -50,7 +55,7 @@ export function Footer() {
                   {site.phone}
                 </a>
                 <p className="text-[0.9375rem] text-text-muted">
-                  {site.location}
+                  {d.location}
                 </p>
               </div>
             </div>
@@ -58,10 +63,11 @@ export function Footer() {
 
           <div className="mt-16 flex flex-col gap-2 border-t border-border pt-8 text-[0.8125rem] text-text-muted sm:flex-row sm:items-center sm:justify-between">
             <p>
-              © {site.year} Evolvia · {site.location}
+              © {site.year} Evolvia · {d.location}
             </p>
             <p>
-              {site.legalName} · Individuali veikla Nr. {site.activityNo}
+              {site.legalName} ·{" "}
+              {fill(t.registration, { no: site.activityNo })}
             </p>
           </div>
         </div>

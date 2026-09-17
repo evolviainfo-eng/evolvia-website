@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 import { motion, useTransform } from "framer-motion";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { LanguageSwitch } from "@/components/ui/LanguageSwitch";
 import { useSheet } from "@/lib/useSheet";
-import { navLinks } from "@/content/site";
+import { localizePath, type Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries/lt";
 import { cn } from "@/lib/cn";
 
 /** Floating glass header.
@@ -22,11 +23,26 @@ import { cn } from "@/lib/cn";
  *  Nothing about the capsule's geometry animates. Only the material does,
  *  on its own layer, because animating width or height would reflow the page
  *  on every scroll event.
+ *
+ *  The language switch sits beside the theme toggle on every width. On a
+ *  phone it stays in the bar rather than in the menu: it is the one control
+ *  a visitor who landed in the wrong language needs before anything else.
  */
-export function Nav() {
+export function Nav({
+  locale,
+  path,
+  t,
+  theme,
+}: {
+  locale: Locale;
+  /** The current page as a language-neutral path ("/kainos"); null on the
+   *  404, which has no counterpart in the other language. */
+  path: string | null;
+  t: Dictionary["nav"];
+  theme: Dictionary["theme"];
+}) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement | null>(null);
   // The menu drops from under the header and leaves the same way. Enter and
   // exit share one path — a panel that arrives from above and dismisses
@@ -82,8 +98,8 @@ export function Nav() {
           )}
         >
           <a
-            href="/"
-            aria-label="evolvia. Į pradžią"
+            href={localizePath("/", locale)}
+            aria-label={t.home}
             className="press shrink-0 rounded-sharp px-2 outline-none"
           >
             <Wordmark />
@@ -91,12 +107,12 @@ export function Nav() {
 
           {/* desktop links */}
           <div className="hidden items-center gap-8 md:flex">
-            {navLinks.map((link) => {
-              const active = pathname === link.href;
+            {t.links.map((link) => {
+              const active = path === link.path;
               return (
                 <a
-                  key={link.href}
-                  href={link.href}
+                  key={link.path}
+                  href={localizePath(link.path, locale)}
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "group relative py-1 text-[0.9375rem] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-text",
@@ -125,24 +141,36 @@ export function Nav() {
           </div>
 
           <div className="hidden shrink-0 items-center gap-2 md:flex">
-            <ThemeToggle />
-            <Button href="/kontaktai" variant="primary">
-              Susisiekti
+            <LanguageSwitch
+              locale={locale}
+              path={path}
+              label={t.language}
+              names={t.languageNames}
+            />
+            <ThemeToggle labels={theme} />
+            <Button href={localizePath("/kontaktai", locale)} variant="primary">
+              {t.contact}
             </Button>
           </div>
 
           {/* mobile controls */}
           <div className="flex shrink-0 items-center gap-1 md:hidden">
-            <ThemeToggle />
+            <LanguageSwitch
+              locale={locale}
+              path={path}
+              label={t.language}
+              names={t.languageNames}
+            />
+            <ThemeToggle labels={theme} />
             <button
               type="button"
-              aria-label={open ? "Uždaryti meniu" : "Atidaryti meniu"}
+              aria-label={open ? t.closeMenu : t.openMenu}
               aria-expanded={open}
-              aria-controls="mobile-menu"
+              aria-controls={`mobile-menu-${locale}`}
               onClick={() => setOpen((v) => !v)}
               className="relative z-50 flex h-10 w-10 items-center justify-center"
             >
-              <span className="sr-only">Meniu</span>
+              <span className="sr-only">{t.menu}</span>
               <span className="relative block h-4 w-6">
                 <span
                   className={cn(
@@ -172,7 +200,7 @@ export function Nav() {
           moving, which is when grabbing matters most. */}
       <motion.button
         type="button"
-        aria-label="Uždaryti meniu"
+        aria-label={t.closeMenu}
         tabIndex={open ? 0 : -1}
         onClick={() => setOpen(false)}
         style={{ opacity: scrim }}
@@ -183,7 +211,7 @@ export function Nav() {
       />
 
       <motion.div
-        id="mobile-menu"
+        id={`mobile-menu-${locale}`}
         ref={(node) => {
           panelRef.current = node;
           sheet.measure(node);
@@ -207,11 +235,11 @@ export function Nav() {
           open ? "" : "pointer-events-none",
         )}
       >
-        <nav className="flex flex-col px-6" aria-label="Pagrindinė navigacija">
-          {navLinks.map((link) => (
+        <nav className="flex flex-col px-6" aria-label={t.mainNav}>
+          {t.links.map((link) => (
             <a
-              key={link.href}
-              href={link.href}
+              key={link.path}
+              href={localizePath(link.path, locale)}
               onClick={() => setOpen(false)}
               className="press border-b border-border py-5 text-2xl font-medium tracking-[-0.02em] text-text [--press:0.985]"
             >
@@ -221,13 +249,13 @@ export function Nav() {
         </nav>
         <div className="px-6 pt-6">
           <Button
-            href="/kontaktai"
+            href={localizePath("/kontaktai", locale)}
             variant="primary"
             size="lg"
             className="w-full"
             onClick={() => setOpen(false)}
           >
-            Susisiekti
+            {t.contact}
           </Button>
         </div>
 

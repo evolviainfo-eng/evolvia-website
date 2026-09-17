@@ -1,6 +1,9 @@
+import type { Locale } from "@/i18n/config";
+import { getKonstruktaCopy } from "./copy";
 import { CONTAINER, T_MICRO } from "./ui";
 
-export function KonstruktaFooter() {
+export function KonstruktaFooter({ locale }: { locale: Locale }) {
+  const c = getKonstruktaCopy(locale).footer;
   return (
     <footer className="border-t border-white/[0.11]">
       <div
@@ -17,13 +20,13 @@ export function KonstruktaFooter() {
           >
             ↑
           </span>
-          <span className="sr-only">Grįžti į viršų</span>
+          <span className="sr-only">{c.backToTop}</span>
         </a>
 
         <p
           className={`${T_MICRO} min-w-0 break-words tracking-[0.14em] text-[#9A9791]`}
         >
-          Pavyzdiniai kontaktai · +370 600 00000 · info@konstrukta.demo
+          {c.contacts}
         </p>
       </div>
     </footer>

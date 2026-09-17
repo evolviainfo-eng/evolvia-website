@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { DemoBar } from "@/components/demo/DemoBar";
 import { DemoFooter } from "@/components/demo/DemoFooter";
+import type { Locale } from "@/i18n/config";
+import { LocaleProvider } from "@/i18n/LocaleProvider";
 
 /** Perceived lightness of a `#rrggbb` string, 0–1. Used only to decide which
  *  `color-scheme` a demo should declare. */
@@ -27,12 +29,15 @@ function isLight(hex: string): boolean {
  *  that to actually hold — see the comments on the injected stylesheet.
  */
 export function DemoShell({
+  locale,
   slug,
   bg,
   fg,
   children,
   className,
 }: {
+  /** The language the demo is shown in; the bar and footer follow it. */
+  locale: Locale;
   slug: string;
   bg: string;
   fg: string;
@@ -55,7 +60,7 @@ export function DemoShell({
           bars an anchor has to land under: the honesty bar plus the demo's
           own sticky header. */}
       <style>{`html{background:${bg};color-scheme:${scheme};scroll-padding-top:calc(var(--demo-bar-h) + 76px)}body{background:${bg};color:${fg}}`}</style>
-      <DemoBar slug={slug} />
+      <DemoBar locale={locale} slug={slug} />
       <div
         className={className}
         style={
@@ -77,8 +82,8 @@ export function DemoShell({
           } as React.CSSProperties
         }
       >
-        {children}
-        <DemoFooter slug={slug} />
+        <LocaleProvider locale={locale}>{children}</LocaleProvider>
+        <DemoFooter locale={locale} slug={slug} />
       </div>
     </>
   );

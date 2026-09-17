@@ -1,72 +1,41 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type { Locale } from "@/i18n/config";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { getKonstruktaCopy } from "./copy";
 import { BAND, CONTAINER, SectionHead, T_MICRO, T_SM } from "./ui";
 
 /* ── Model ──────────────────────────────────────────────────────────────
    Every group carries a €/m² band, not a single rate — the output has to
    be a range, because a real quote is. Multipliers are shown next to the
    options so the visitor can see what the calculator is doing to them.
+   Only numbers live here: every label and note comes from the dictionary,
+   keyed by the same ids.
    ────────────────────────────────────────────────────────────────────── */
 
 const MIN_AREA = 30;
 const MAX_AREA = 400;
 
 const TYPES = [
-  { id: "namas", label: "Namas", mul: 1, note: "×1,00" },
-  { id: "butas", label: "Butas", mul: 0.92, note: "×0,92" },
-  { id: "komercija", label: "Komercinės patalpos", mul: 1.12, note: "×1,12" },
+  { id: "namas", mul: 1 },
+  { id: "butas", mul: 0.92 },
+  { id: "komercija", mul: 1.12 },
 ] as const;
 
 const FINISHES = [
-  { id: "standartine", label: "Standartinė", mul: 1, note: "×1,00" },
-  { id: "aukstesne", label: "Aukštesnė", mul: 1.24, note: "×1,24" },
-  { id: "premium", label: "Premium", mul: 1.6, note: "×1,60" },
+  { id: "standartine", mul: 1 },
+  { id: "aukstesne", mul: 1.24 },
+  { id: "premium", mul: 1.6 },
 ] as const;
 
 const WORKS = [
-  {
-    id: "pamatai",
-    label: "Pamatai",
-    note: "Iškasos, pamatas, hidroizoliacija",
-    lo: 180,
-    hi: 260,
-  },
-  {
-    id: "karkasas",
-    label: "Karkasas ir sienos",
-    note: "Konstrukcijos, perdangos",
-    lo: 320,
-    hi: 470,
-  },
-  {
-    id: "stogas",
-    label: "Stogas",
-    note: "Santvaros, danga, lietaus sistema",
-    lo: 150,
-    hi: 230,
-  },
-  {
-    id: "fasadas",
-    label: "Fasadas",
-    note: "Apšiltinimas, apdaila, langai",
-    lo: 130,
-    hi: 200,
-  },
-  {
-    id: "apdaila",
-    label: "Vidaus apdaila",
-    note: "Nuo glaistymo iki grindų",
-    lo: 380,
-    hi: 620,
-  },
-  {
-    id: "inzinerija",
-    label: "Inžinerija",
-    note: "Elektra, santechnika, vėdinimas",
-    lo: 210,
-    hi: 320,
-  },
+  { id: "pamatai", lo: 180, hi: 260 },
+  { id: "karkasas", lo: 320, hi: 470 },
+  { id: "stogas", lo: 150, hi: 230 },
+  { id: "fasadas", lo: 130, hi: 200 },
+  { id: "apdaila", lo: 380, hi: 620 },
+  { id: "inzinerija", lo: 210, hi: 320 },
 ] as const;
 
 type TypeId = (typeof TYPES)[number]["id"];
@@ -88,18 +57,26 @@ export type EstimatePayload = {
   message: string;
 };
 
-/** 84200 → "84 200" (non-breaking thin grouping, deterministic on server
- *  and client — Intl would be a hydration gamble). */
-const fmt = (n: number) =>
+/** Digit grouping and decimal mark per language, written out by hand so the
+ *  server and the client agree to the character (Intl would be a hydration
+ *  gamble). Lithuanian groups with a no-break space, English with a comma. */
+const NUMBER_FORMAT: Record<Locale, { group: string; decimal: string }> = {
+  lt: { group: "\u00a0", decimal: "," },
+  en: { group: ",", decimal: "." },
+};
+
+/** 84200 → "84 200" (lt) / "84,200" (en). */
+const fmt = (n: number, locale: Locale) =>
   Math.round(n)
     .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    .replace(/\B(?=(\d{3})+(?!\d))/g, NUMBER_FORMAT[locale].group);
+
+/** A price multiplier as shown next to its option: 0.92 → "×0,92" (lt) /
+ *  "×0.92" (en). */
+const fmtMul = (m: number, locale: Locale) =>
+  `×${m.toFixed(2).replace(".", NUMBER_FORMAT[locale].decimal)}`;
 
 const round100 = (n: number) => Math.round(n / 100) * 100;
-
-/** 1–6 groups only, so two forms cover it correctly. */
-const groupsLabel = (n: number) =>
-  n === 1 ? "1 darbų grupė" : `${n} darbų grupės`;
 
 const RANGE_CSS = `
 .knst-range{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;cursor:pointer;display:block}
@@ -122,6 +99,14 @@ const RANGE_CSS = `
 `;
 
 export function Estimator() {
+  const locale = useLocale();
+  const copy = getKonstruktaCopy(locale);
+  const c = copy.estimator;
+  const workCopy = c.works;
+  /** "180–260" in the page's number format. */
+  const range = (lo: number, hi: number) =>
+    `${fmt(lo, locale)}–${fmt(hi, locale)}`;
+
   const [type, setType] = useState<TypeId>("namas");
   const [finish, setFinish] = useState<FinishId>("standartine");
   const [area, setArea] = useState(180);
@@ -169,7 +154,6 @@ export function Estimator() {
       const f = FINISH_SCOPED.has(w.id) ? finishMul : 1;
       return {
         id: w.id,
-        label: w.label,
         lo: Math.round(typeMul * w.lo * f),
         hi: Math.round(typeMul * w.hi * f),
       };
@@ -190,27 +174,26 @@ export function Estimator() {
     };
   }, [works, type, finish, area]);
 
-  const typeLabel = TYPES.find((t) => t.id === type)!.label;
-  const finishLabel = FINISHES.find((f) => f.id === finish)!.label;
+  const typeLabel = copy.objectTypes[type];
+  const finishLabel = c.finishes[finish];
 
   /* The level is only ever part of the quote if one of the groups it prices
      is actually ticked — otherwise the honest answer is "not included". */
   const finishApplies = WORKS.some(
     (w) => works[w.id] && FINISH_SCOPED.has(w.id),
   );
-  const finishSummary = finishApplies ? finishLabel : "Neįskaičiuota";
+  const finishSummary = finishApplies ? finishLabel : c.finishNotIncluded;
 
   const handOff = () => {
     if (result.empty) return;
-    const message = [
-      `Objekto tipas: ${typeLabel}`,
-      `Plotas: ${area} m²`,
-      `Darbai: ${result.chosen.map((w) => w.label).join(", ")}`,
-      `Apdailos lygis: ${finishSummary}`,
-      `Preliminari sąmata: ${fmt(result.totalLo)}–${fmt(result.totalHi)} € (${fmt(result.perLo)}–${fmt(result.perHi)} €/m²)`,
-      "",
-      "Norėčiau tikslios sąmatos po objekto apžiūros.",
-    ].join("\n");
+    const message = c.message({
+      type: typeLabel,
+      area,
+      works: result.chosen.map((w) => workCopy[w.id].label),
+      finish: finishSummary,
+      total: c.price(range(result.totalLo, result.totalHi)),
+      perM2: c.pricePerM2(range(result.perLo, result.perHi)),
+    });
 
     const payload: EstimatePayload = { typeLabel, area, message };
     window.dispatchEvent(new CustomEvent(ESTIMATE_EVENT, { detail: payload }));
@@ -228,9 +211,9 @@ export function Estimator() {
       <div className={CONTAINER}>
         <SectionHead
           index="05"
-          label="Sąmatos skaičiuoklė"
-          title="Pasitikrinkite tvarką prieš skambindami."
-          lead="Įrašykite plotą, pažymėkite darbų grupes — intervalas atsinaujina iškart. Tai tie patys įkainiai, nuo kurių pradedame skaičiuoti tikrą sąmatą."
+          label={c.label}
+          title={c.title}
+          lead={c.lead}
         />
 
         <div
@@ -244,9 +227,13 @@ export function Estimator() {
             onSubmit={(e) => e.preventDefault()}
           >
             <Segmented
-              legend="Objekto tipas"
+              legend={c.typeLegend}
               name="knst-type"
-              options={TYPES}
+              options={TYPES.map((t) => ({
+                id: t.id,
+                label: copy.objectTypes[t.id],
+                note: fmtMul(t.mul, locale),
+              }))}
               value={type}
               onChange={(v) => setType(v as TypeId)}
             />
@@ -258,7 +245,7 @@ export function Estimator() {
                   htmlFor="knst-area"
                   className={`${T_MICRO} text-[#9A9791]`}
                 >
-                  Plotas, m²
+                  {c.areaLabel}
                 </label>
                 <div className="flex items-center gap-2">
                   <input
@@ -286,7 +273,7 @@ export function Estimator() {
                 step={5}
                 value={area}
                 onChange={(e) => setBoth(Number(e.target.value))}
-                aria-label="Objekto plotas kvadratiniais metrais"
+                aria-label={c.areaSlider}
                 className="knst-range mt-5"
                 style={{ "--knst-p": `${pct}%` } as React.CSSProperties}
               />
@@ -301,11 +288,12 @@ export function Estimator() {
             {/* Darbų apimtis */}
             <fieldset className="min-w-0">
               <legend className={`${T_MICRO} text-[#9A9791]`}>
-                Darbų apimtis
+                {c.worksLegend}
               </legend>
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
                 {WORKS.map((w) => {
                   const on = works[w.id];
+                  const t = workCopy[w.id];
                   return (
                     <label
                       key={w.id}
@@ -350,15 +338,15 @@ export function Estimator() {
                       </span>
                       <span className="min-w-0">
                         <span className="block text-[0.9375rem] leading-[1.35] text-[#E7E5E1]">
-                          {w.label}
+                          {t.label}
                         </span>
                         <span className="mt-1 block text-[0.8125rem] leading-[1.4] text-[#9A9791]">
-                          {w.note}
+                          {t.note}
                         </span>
                         <span
                           className={`${T_MICRO} mt-2 block tracking-[0.1em] text-[#9A9791]`}
                         >
-                          {w.lo}–{w.hi} €/m²
+                          {c.pricePerM2(range(w.lo, w.hi))}
                         </span>
                       </span>
                     </label>
@@ -368,12 +356,16 @@ export function Estimator() {
             </fieldset>
 
             <Segmented
-              legend="Apdailos lygis"
+              legend={c.finishLevel}
               name="knst-finish"
-              options={FINISHES}
+              options={FINISHES.map((f) => ({
+                id: f.id,
+                label: c.finishes[f.id],
+                note: fmtMul(f.mul, locale),
+              }))}
               value={finish}
               onChange={(v) => setFinish(v as FinishId)}
-              hint="Lygis keičia tik vidaus apdailos ir inžinerijos įkainius — konstrukcijos kainuoja tiek pat."
+              hint={c.finishHint}
             />
           </form>
 
@@ -392,7 +384,7 @@ export function Estimator() {
               <div className="p-5 sm:p-7">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                   <p className={`${T_MICRO} tracking-[0.2em] text-[#9A9791]`}>
-                    Preliminari sąmata
+                    {c.resultTitle}
                   </p>
                   <p className={`${T_MICRO} tracking-[0.12em] text-[#9A9791]`}>
                     {typeLabel} · {area} m²
@@ -402,33 +394,33 @@ export function Estimator() {
                 <div aria-live="polite" aria-atomic="true" className="mt-6">
                   {result.empty ? (
                     <p className="knst-mono text-[clamp(1.5rem,4.6vw,1.875rem)] leading-none text-[#9A9791]">
-                      — €
+                      {c.emptyTotal}
                     </p>
                   ) : (
                     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                       <span
                         className={`${T_MICRO} tracking-[0.16em] text-[#9A9791]`}
                       >
-                        nuo
+                        {c.from}
                       </span>
                       <span className="knst-mono text-[clamp(1.5rem,4.6vw,1.875rem)] leading-none tracking-[-0.01em] text-[#E7E5E1]">
-                        {fmt(result.totalLo)} €
+                        {c.price(fmt(result.totalLo, locale))}
                       </span>
                       <span
                         className={`${T_MICRO} tracking-[0.16em] text-[#9A9791]`}
                       >
-                        iki
+                        {c.to}
                       </span>
                       <span className="knst-mono text-[clamp(1.5rem,4.6vw,1.875rem)] leading-none tracking-[-0.01em] text-[#E7E5E1]">
-                        {fmt(result.totalHi)} €
+                        {c.price(fmt(result.totalHi, locale))}
                       </span>
                     </div>
                   )}
 
                   <p className="knst-mono mt-4 text-[0.8125rem] leading-[1.5] text-[#9A9791]">
                     {result.empty
-                      ? "Pažymėkite bent vieną darbų grupę."
-                      : `${fmt(result.perLo)}–${fmt(result.perHi)} €/m² · ${groupsLabel(result.chosen.length)}`}
+                      ? c.emptyPrompt
+                      : `${c.pricePerM2(range(result.perLo, result.perHi))} · ${c.groups(result.chosen.length)}`}
                   </p>
                 </div>
 
@@ -438,19 +430,17 @@ export function Estimator() {
                     even read. */}
                 <div className="mt-7 border-t border-white/[0.11] pt-5">
                   <div className="flex items-baseline justify-between gap-4">
-                    <p className={`${T_MICRO} text-[#9A9791]`}>Sudėtis</p>
+                    <p className={`${T_MICRO} text-[#9A9791]`}>{c.breakdown}</p>
                     <p
                       className={`${T_MICRO} shrink-0 tracking-[0.12em] text-[#9A9791]`}
                     >
-                      Jūsų atveju, €/m²
+                      {c.breakdownUnit}
                     </p>
                   </div>
 
                   {result.empty ? (
                     <p className={`mt-4 max-w-[46ch] ${T_SM} text-[#9A9791]`}>
-                      Nepažymėta nė viena grupė, todėl sąmatoje kol kas nėra nė
-                      vienos eilutės. Pažymėkite kairėje — intervalas atsiras
-                      iškart.
+                      {c.breakdownEmpty}
                     </p>
                   ) : (
                     <ul className="mt-4 space-y-3">
@@ -458,10 +448,10 @@ export function Estimator() {
                         <li key={w.id} className="min-w-0">
                           <div className="flex items-baseline justify-between gap-4">
                             <span className="min-w-0 text-[0.8125rem] leading-[1.45] text-[#E7E5E1]">
-                              {w.label}
+                              {workCopy[w.id].label}
                             </span>
                             <span className="knst-mono shrink-0 text-[0.6875rem] leading-[1.45] text-[#9A9791]">
-                              {fmt(w.lo)}–{fmt(w.hi)}
+                              {range(w.lo, w.hi)}
                             </span>
                           </div>
                           <span
@@ -483,19 +473,17 @@ export function Estimator() {
 
                 <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-white/[0.11] pt-4">
                   <span className={`${T_MICRO} text-[#9A9791]`}>
-                    Apdailos lygis
+                    {c.finishLevel}
                   </span>
                   <span className="shrink-0 text-[0.8125rem] leading-[1.45] text-[#E7E5E1]">
-                    {result.empty ? "—" : finishSummary}
+                    {result.empty ? c.finishNone : finishSummary}
                   </span>
                 </div>
 
                 <p
                   className={`mt-6 border-t border-white/[0.11] pt-4 text-pretty ${T_SM} text-[#9A9791]`}
                 >
-                  Įkainiai su PVM. Tiksli kaina — po objekto apžiūros ir
-                  techninio projekto peržiūros. Į skaičių neįeina sklypo darbai,
-                  baldai ir projektavimas.
+                  {c.disclaimer}
                 </p>
 
                 {result.empty ? (
@@ -505,12 +493,12 @@ export function Estimator() {
                       disabled
                       className="mt-6 inline-flex h-12 w-full cursor-not-allowed items-center justify-center border border-white/[0.11] bg-white/[0.02] px-6 text-[0.9375rem] font-semibold text-[#9A9791] opacity-70"
                     >
-                      Gauti tikslią sąmatą
+                      {c.cta}
                     </button>
                     <p
                       className={`${T_MICRO} mt-3 tracking-[0.12em] text-[#9A9791]`}
                     >
-                      Pažymėkite darbus, kad galėtumėte tęsti
+                      {c.ctaDisabledNote}
                     </p>
                   </>
                 ) : (
@@ -520,12 +508,12 @@ export function Estimator() {
                       onClick={handOff}
                       className="mt-6 inline-flex h-12 w-full items-center justify-center bg-[#E7E5E1] px-6 text-[0.9375rem] font-semibold text-[#121316] transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0 active:opacity-80"
                     >
-                      Gauti tikslią sąmatą
+                      {c.cta}
                     </a>
                     <p
                       className={`${T_MICRO} mt-3 tracking-[0.12em] text-[#9A9791]`}
                     >
-                      Parametrai persikels į užklausos formą
+                      {c.ctaNote}
                     </p>
                   </>
                 )}

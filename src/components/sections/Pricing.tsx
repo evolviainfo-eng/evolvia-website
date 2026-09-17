@@ -3,7 +3,8 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
-import { plan, renewal, largerProjects, pricingNote } from "@/content/pricing";
+import { getDictionary } from "@/i18n";
+import type { Locale } from "@/i18n/config";
 
 /* Kainos, as a ledger rather than a card.
  *
@@ -18,25 +19,26 @@ import { plan, renewal, largerProjects, pricingNote } from "@/content/pricing";
  * checklist, and year two is one line under a rule instead of a strip
  * that looks like a footer. */
 export function Pricing({
+  locale,
   contactHref = "#kontaktai",
   standalone = false,
 }: {
+  locale: Locale;
   contactHref?: string;
   /** true on /kainos, where the page header already says all of this once. */
   standalone?: boolean;
 }) {
+  const t = getDictionary(locale).pricing;
+  const { plan, renewal } = t;
+  const largerProjects = t.larger;
   return (
     <Section id="kainos" tone="secondary">
       <Container>
         {!standalone && (
           <Reveal className="max-w-[680px]">
-            <Eyebrow>Kainos</Eyebrow>
-            <h2 className="t-h2 mt-4 text-balance">
-              Viena svetainė. Viena kaina.
-            </h2>
-            <p className="t-body mt-5 max-w-[46ch]">
-              Sutariame prieš pradedant darbą, ir ji nesikeičia.
-            </p>
+            <Eyebrow>{t.eyebrow}</Eyebrow>
+            <h2 className="t-h2 mt-4 text-balance">{t.title}</h2>
+            <p className="t-body mt-5 max-w-[46ch]">{t.lead}</p>
           </Reveal>
         )}
 
@@ -52,7 +54,7 @@ export function Pricing({
                   data-num
                   className="font-light leading-[0.82] text-text tabular-nums [font-size:clamp(5rem,12vw,9.5rem)]"
                 >
-                  {plan.oneTime}
+                  {plan.price}
                 </span>
               </p>
               <p className="mt-6 max-w-[26ch] text-[1.0625rem] text-text">
@@ -63,7 +65,7 @@ export function Pricing({
               </p>
               <div className="mt-9">
                 <Button href={contactHref} variant="primary" size="lg">
-                  {plan.cta.label}
+                  {plan.cta}
                 </Button>
               </div>
             </div>
@@ -106,7 +108,7 @@ export function Pricing({
                 href={contactHref}
                 className="mt-3 inline-block text-[0.9375rem] font-medium text-text underline decoration-border underline-offset-[6px] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:decoration-text"
               >
-                {largerProjects.price}. {largerProjects.cta.label}
+                {largerProjects.price}. {largerProjects.cta}
               </a>
             </div>
           </div>
@@ -114,7 +116,7 @@ export function Pricing({
 
         <Reveal>
           <p className="t-body mt-10 max-w-[62ch] text-[0.9375rem]">
-            {pricingNote}
+            {t.note}
           </p>
         </Reveal>
       </Container>

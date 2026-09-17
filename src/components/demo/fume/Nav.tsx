@@ -1,14 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { getFumeCopy } from "./copy";
 import { HAIRLINE } from "./Type";
 
+/** `key` picks the link's word from the copy. */
 const LINKS = [
-  { href: "#meniu", label: "Meniu" },
-  { href: "#vynas", label: "Vynas" },
-  { href: "#erdve", label: "Erdvė" },
-  { href: "#kontaktai", label: "Kontaktai" },
-];
+  { href: "#meniu", key: "menu" },
+  { href: "#vynas", key: "wine" },
+  { href: "#erdve", key: "space" },
+  { href: "#kontaktai", key: "contact" },
+] as const;
 
 const IDS = LINKS.map((l) => l.href.slice(1));
 
@@ -25,6 +28,7 @@ const IDS = LINKS.map((l) => l.href.slice(1));
  *  The current section is read from a 4%-tall band across the middle of the
  *  viewport, so the underline changes over exactly when the eye does. */
 export function Nav() {
+  const copy = getFumeCopy(useLocale()).nav;
   const [lifted, setLifted] = useState(false);
   const [active, setActive] = useState<string | null>(null);
 
@@ -58,7 +62,7 @@ export function Nav() {
 
   return (
     <nav
-      aria-label="Pagrindinė navigacija"
+      aria-label={copy.label}
       /* The material arrives on lift, same as the site header: at the top of
          a demo there is nothing behind the bar worth blurring. */
       className={`sticky z-50 transition-opacity duration-[var(--d-ui)] ease-[var(--e-out)] ${
@@ -86,7 +90,7 @@ export function Nav() {
                     on ? "text-[#ede6da]" : "text-[#9c948a]"
                   }`}
                 >
-                  {l.label}
+                  {copy.links[l.key]}
                 </a>
               </li>
             );
@@ -98,7 +102,7 @@ export function Nav() {
           className="ml-auto inline-flex h-9 shrink-0 items-center rounded-[2px] border px-4 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] tracking-[0.06em] text-[#ede6da] transition-[border-color,background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[#ede6da] hover:bg-[rgba(237,230,218,0.06)] active:translate-y-0 md:ml-8"
           style={{ borderColor: HAIRLINE }}
         >
-          Rezervuoti
+          {copy.book}
         </a>
       </div>
     </nav>

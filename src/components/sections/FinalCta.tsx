@@ -6,6 +6,9 @@ import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { PrivacyNote } from "@/components/ui/PrivacyNote";
 import { site } from "@/content/site";
+import { fill } from "@/i18n/fill";
+import { validityProps } from "@/i18n/validity";
+import type { Dictionary } from "@/i18n/dictionaries/lt";
 
 const fieldBase =
   "w-full rounded-card border border-border bg-surface px-4 py-3.5 text-text " +
@@ -15,12 +18,28 @@ const fieldBase =
 type Status = "idle" | "sending" | "sent" | "mailto" | "error";
 
 export function FinalCta({
+  t,
+  privacy,
+  location,
   standalone = false,
 }: {
+  t: Dictionary["contact"];
+  privacy: Dictionary["privacy"];
+  /** "Kaunas, Lietuva" in the page's language, for the privacy notice. */
+  location: string;
   /** true on /kontaktai — the PageHeader already carries the heading. */
   standalone?: boolean;
 }) {
   const [status, setStatus] = useState<Status>("idle");
+
+  /* The browser's validation bubble, in the page's language. */
+  const v = t.validation;
+  const nameValidity = validityProps({ missing: v.nameMissing });
+  const emailValidity = validityProps({
+    missing: v.emailMissing,
+    invalid: v.emailInvalid,
+  });
+  const messageValidity = validityProps({ missing: v.messageMissing });
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -32,8 +51,10 @@ export function FinalCta({
       const name = String(data.get("name") ?? "").trim();
       const email = String(data.get("email") ?? "").trim();
       const message = String(data.get("message") ?? "").trim();
-      const subject = `Užklausa iš svetainės: ${name || "naujas klientas"}`;
-      const body = `Vardas: ${name}\nEl. paštas: ${email}\n\n${message}`;
+      const subject = fill(t.mailto.subject, {
+        name: name || t.mailto.fallbackName,
+      });
+      const body = fill(t.mailto.body, { name, email, message });
       window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
         subject,
       )}&body=${encodeURIComponent(body)}`;
@@ -65,10 +86,8 @@ export function FinalCta({
         <Reveal className="mx-auto max-w-[680px] text-center">
           {!standalone && (
             <>
-              <h2 className="t-display">Pradėkim.</h2>
-              <p className="t-body mx-auto mt-6 max-w-[40ch]">
-                Parašykite ir atsakysime per dieną.
-              </p>
+              <h2 className="t-display">{t.title}</h2>
+              <p className="t-body mx-auto mt-6 max-w-[40ch]">{t.lead}</p>
             </>
           )}
           <div
@@ -97,7 +116,7 @@ export function FinalCta({
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label htmlFor="name" className="sr-only">
-                  Vardas
+                  {t.nameLabel}
                 </label>
                 <input
                   id="name"
@@ -105,13 +124,14 @@ export function FinalCta({
                   type="text"
                   autoComplete="name"
                   required
-                  placeholder="Vardas"
+                  placeholder={t.namePlaceholder}
+                  {...nameValidity}
                   className={fieldBase}
                 />
               </div>
               <div>
                 <label htmlFor="email" className="sr-only">
-                  El. paštas
+                  {t.emailLabel}
                 </label>
                 <input
                   id="email"
@@ -119,21 +139,23 @@ export function FinalCta({
                   type="email"
                   autoComplete="email"
                   required
-                  placeholder="El. paštas"
+                  placeholder={t.emailPlaceholder}
+                  {...emailValidity}
                   className={fieldBase}
                 />
               </div>
             </div>
             <div>
               <label htmlFor="message" className="sr-only">
-                Žinutė
+                {t.messageLabel}
               </label>
               <textarea
                 id="message"
                 name="message"
                 rows={4}
                 required
-                placeholder="Trumpai apie jūsų verslą ir ko ieškote"
+                placeholder={t.messagePlaceholder}
+                {...messageValidity}
                 className={`${fieldBase} resize-none`}
               />
             </div>
@@ -141,21 +163,21 @@ export function FinalCta({
             <input
               type="hidden"
               name="_subject"
-              value="Nauja užklausa iš evolvia.lt"
+              value={t.notificationSubject}
             />
             <button
               type="submit"
               disabled={status === "sending"}
               className="inline-flex h-[52px] items-center justify-center rounded-pill bg-accent px-8 text-base font-medium text-accent-text transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0 disabled:opacity-60"
             >
-              {status === "sending" ? "Siunčiama…" : "Siųsti užklausą"}
+              {status === "sending" ? t.sending : t.submit}
             </button>
             {status === "sent" && (
               <p
                 className="text-center text-[0.9375rem] text-text-muted"
                 role="status"
               >
-                Ačiū! Gavome jūsų žinutę ir atsakysime per dieną.
+                {t.sent}
               </p>
             )}
             {status === "mailto" && (
@@ -163,8 +185,7 @@ export function FinalCta({
                 className="text-center text-[0.9375rem] text-text-muted"
                 role="status"
               >
-                Atsidaro jūsų el. pašto programa. Jei ne, rašykite tiesiai{" "}
-                {site.email}.
+                {fill(t.mailtoOpening, { email: site.email })}
               </p>
             )}
             {status === "error" && (
@@ -172,13 +193,17 @@ export function FinalCta({
                 className="text-center text-[0.9375rem] text-text-muted"
                 role="status"
               >
-                Nepavyko išsiųsti. Parašykite tiesiai {site.email}.
+                {fill(t.error, { email: site.email })}
               </p>
             )}
           </form>
 
           {/* At the point of collection, not linked away from it. */}
-          <PrivacyNote className="mx-auto mt-10 max-w-[560px]" />
+          <PrivacyNote
+            t={privacy}
+            location={location}
+            className="mx-auto mt-10 max-w-[560px]"
+          />
         </Reveal>
       </Container>
     </Section>

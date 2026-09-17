@@ -1,7 +1,9 @@
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { DemoSite } from "@/components/ui/DemoSite";
-import { demos } from "@/content/demos";
+import { getDemos } from "@/content/demos";
+import { getDictionary } from "@/i18n";
+import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 
 /** /darbai — the full demo set as editorial rows: big frame + meta rail,
@@ -12,7 +14,9 @@ import { cn } from "@/lib/cn";
  *  is expressed entirely with `data-rise` / `data-settle` and the `--i`
  *  offset — no timeline code, and it degrades to plain visible content when
  *  JS or motion is off. */
-export function WorkShowcase() {
+export function WorkShowcase({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale).demos;
+  const demos = getDemos(locale);
   return (
     <Section tone="light">
       <Container>
@@ -30,6 +34,7 @@ export function WorkShowcase() {
                 >
                   <DemoSite
                     demo={demo}
+                    labels={t}
                     ratioClass="aspect-[16/10]"
                     phone
                     eager={i === 0}
@@ -80,7 +85,7 @@ export function WorkShowcase() {
                     rel="noopener"
                     className="mt-7 press inline-flex h-12 w-fit items-center gap-2.5 rounded-pill bg-accent px-6 text-[0.9375rem] font-medium text-accent-text transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0"
                   >
-                    Atidaryti demo svetainę
+                    {t.openSite}
                     <svg
                       viewBox="0 0 12 12"
                       className="h-3 w-3"
@@ -94,7 +99,7 @@ export function WorkShowcase() {
                     </svg>
                   </a>
                   <p className="mt-3 text-[0.8125rem] text-text-muted">
-                    {demo.feature} · atsidaro naujame lange
+                    {demo.feature} · {t.newWindow}
                   </p>
                 </figcaption>
               </figure>

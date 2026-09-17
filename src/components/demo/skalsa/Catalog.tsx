@@ -1,7 +1,12 @@
+import type { Locale } from "@/i18n/config";
 import { AddToCart } from "./AddToCart";
-import { PRODUCTS, eur } from "./data";
+import { getSkalsaCopy } from "./copy";
+import { eur, getProducts } from "./data";
 
-export function Catalog() {
+export function Catalog({ locale }: { locale: Locale }) {
+  const copy = getSkalsaCopy(locale);
+  const t = copy.catalog;
+
   return (
     <section
       data-sk-sec="katalogas"
@@ -15,7 +20,7 @@ export function Catalog() {
       <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
         <div data-rise className="max-w-[52ch]">
           <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
-            Katalogas
+            {t.eyebrow}
           </p>
           <h2
             className="mt-4 text-[clamp(1.875rem,3.4vw,2.5rem)] leading-[1.08] text-balance"
@@ -24,17 +29,15 @@ export function Catalog() {
               fontWeight: 500,
             }}
           >
-            Šeši kvapai. Vienas vaškas.
+            {t.title}
           </h2>
           <p className="mt-5 max-w-[54ch] text-[1.0625rem] leading-[1.65] text-pretty text-[#6E6257]">
-            Kvapą deriname taip, kad jis neužgožtų kambario, o tik pailgintų
-            vakarą. Visos žvakės pilamos į perdirbamą stiklą — indą galima
-            išplauti ir naudoti toliau.
+            {t.lead}
           </p>
         </div>
 
         <ul className="mt-[clamp(40px,6vw,72px)] grid gap-x-6 gap-y-[clamp(40px,5vw,64px)] sm:grid-cols-2 lg:grid-cols-3">
-          {PRODUCTS.map((p, i) => (
+          {getProducts(locale).map((p, i) => (
             <li
               key={p.id}
               data-rise
@@ -65,7 +68,7 @@ export function Catalog() {
                   {p.name}
                 </h3>
                 <span className="shrink-0 text-[0.9375rem] tabular-nums">
-                  {eur(p.price)}
+                  {eur(p.price, locale)}
                 </span>
               </div>
 
@@ -75,7 +78,7 @@ export function Catalog() {
 
               <div className="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-4 border-t border-[rgba(36,30,25,0.13)] pt-5">
                 <p className="text-[0.8125rem] uppercase tracking-[0.14em] text-[#6E6257]">
-                  {p.burn} val. · {p.weight} g
+                  {copy.units.specs(p.burn, p.weight)}
                 </p>
                 <AddToCart id={p.id} name={p.name} variant="quiet" />
               </div>

@@ -3,31 +3,27 @@
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type FormEvent,
 } from "react";
 import { motion, useTransform } from "framer-motion";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { useSheetGesture } from "./useSheetGesture";
-import { CATALOG, FREE_SHIPPING_FROM, PRODUCTS, eur } from "./data";
+import { FREE_SHIPPING_FROM, eur, getCatalog, getProducts } from "./data";
 import { Check } from "./AddToCart";
+import { getSkalsaCopy } from "./copy";
 import { useShop } from "./ShopProvider";
+import { validityProps, type ValidityMessages } from "@/i18n/validity";
 
 type Step = "cart" | "checkout" | "done";
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-const STEPS: { key: Step; label: string }[] = [
-  { key: "cart", label: "Krepšelis" },
-  { key: "checkout", label: "Duomenys" },
-  { key: "done", label: "Patvirtinimas" },
-];
-
-/* Tuščias krepšelis irgi turi ką pasiūlyti — du katalogo įrašai, tos pačios
-   kainos, tas pats „pridėti“. Jokių „populiariausių“: tai būtų prasimanytas
-   faktas apie neegzistuojančią parduotuvę. */
-const SUGGESTED = [PRODUCTS[0], PRODUCTS[2]];
+/* Žingsnių pavadinimai žodyne, po tuo pačiu raktu. */
+const STEPS: Step[] = ["cart", "checkout", "done"];
 
 export function CartDrawer() {
   const {
@@ -49,6 +45,20 @@ export function CartDrawer() {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+
+  /* The words come after the state and refs: declared above them, the React
+     Compiler gives up memoising `close` (react-hooks/preserve-manual-memoization). */
+  const locale = useLocale();
+  const copy = getSkalsaCopy(locale);
+  const t = copy.basket;
+  const catalog = useMemo(() => getCatalog(locale), [locale]);
+  /* Tuščias krepšelis irgi turi ką pasiūlyti — du katalogo įrašai, tos pačios
+     kainos, tas pats „pridėti“. Jokių „populiariausių“: tai būtų prasimanytas
+     faktas apie neegzistuojančią parduotuvę. */
+  const suggested = useMemo(() => {
+    const products = getProducts(locale);
+    return [products[0], products[2]];
+  }, [locale]);
 
   /* Vieninteliai uždarymo vartai — kad kitas atidarymas visada prasidėtų
      nuo krepšelio, o ne nuo pusiau užpildytos užsakymo formos. */
@@ -138,8 +148,8 @@ export function CartDrawer() {
     ? 1
     : Math.max(0.015, Math.min(subtotal / FREE_SHIPPING_FROM, 1));
 
-  const stepIndex = STEPS.findIndex((s) => s.key === step);
-  const title = step === "cart" ? "Krepšelis" : "Užsakymas";
+  const stepIndex = STEPS.indexOf(step);
+  const title = step === "cart" ? t.dialog.cart : t.dialog.order;
 
   return (
     <div
@@ -199,16 +209,15 @@ export function CartDrawer() {
                 fontWeight: 500,
               }}
             >
-              {step === "cart" &&
-                (count > 0 ? `Krepšelis (${count})` : "Krepšelis")}
-              {step === "checkout" && "Užsakymo santrauka"}
-              {step === "done" && "Užsakymas nepateiktas"}
+              {step === "cart" && t.heading.cart(count)}
+              {step === "checkout" && t.heading.checkout}
+              {step === "done" && t.heading.done}
             </h2>
             <button
               ref={closeRef}
               type="button"
               onClick={close}
-              aria-label="Uždaryti krepšelį"
+              aria-label={t.close}
               className="press inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[#241E19] transition-[background-color,border-color,rotate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:rotate-90 hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
             >
               <svg
@@ -236,7 +245,7 @@ export function CartDrawer() {
                   i < stepIndex ? "done" : i === stepIndex ? "now" : "next";
                 return (
                   <li
-                    key={s.key}
+                    key={s}
                     className="flex min-w-0 flex-1 items-center gap-2 last:flex-none"
                   >
                     <span
@@ -245,7 +254,7 @@ export function CartDrawer() {
                         state === "next" ? "text-[#A79C90]" : "text-[#241E19]"
                       }`}
                     >
-                      {s.label}
+                      {t.steps[s]}
                     </span>
                     {i < STEPS.length - 1 && (
                       <span
@@ -283,18 +292,17 @@ export function CartDrawer() {
                   fontWeight: 500,
                 }}
               >
-                Krepšelis kol kas tuščias.
+                {t.empty.title}
               </p>
               <p className="mt-3 max-w-[32ch] text-[0.9375rem] leading-[1.6] text-pretty text-[#6E6257]">
-                Kiekviena žvakė liejama rankomis, todėl partijos nedidelės.
-                Nemokamas pristatymas nuo {FREE_SHIPPING_FROM} €.
+                {t.empty.body(FREE_SHIPPING_FROM)}
               </p>
               <a
                 href="#katalogas"
                 onClick={close}
                 className="group mt-7 press inline-flex h-11 w-fit items-center gap-2.5 rounded-full bg-[#241E19] pl-6 pr-5 text-[0.8125rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-0"
               >
-                Žiūrėti katalogą
+                {t.empty.browse}
                 <svg
                   width="14"
                   height="10"
@@ -315,15 +323,15 @@ export function CartDrawer() {
               </a>
 
               <p className="mt-10 border-t border-[rgba(36,30,25,0.13)] pt-6 text-[0.6875rem] uppercase tracking-[0.14em] text-[#6E6257]">
-                Galima pradėti nuo šių
+                {t.empty.suggest}
               </p>
               <ul className="mt-4 grid gap-3">
-                {SUGGESTED.map((p) => (
+                {suggested.map((p) => (
                   <li key={p.id}>
                     <button
                       type="button"
                       onClick={() => add(p.id)}
-                      aria-label={`Įdėti „${p.name}“ į krepšelį`}
+                      aria-label={copy.addToBasket.addLabel(p.name)}
                       className="group flex w-full items-center gap-3.5 rounded-[10px] border border-[rgba(36,30,25,0.13)] bg-[#F1EAE0] p-2.5 text-left transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#EDE4D8]"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -341,7 +349,8 @@ export function CartDrawer() {
                           {p.name}
                         </span>
                         <span className="mt-1 block text-[0.8125rem] tabular-nums text-[#6E6257]">
-                          {eur(p.price)} · {p.burn} val.
+                          {eur(p.price, locale)} ·{" "}
+                          {copy.units.hours(p.burn)}
                         </span>
                       </span>
                       <span
@@ -360,7 +369,7 @@ export function CartDrawer() {
           {step === "cart" && count > 0 && (
             <ul className="divide-y divide-[rgba(36,30,25,0.13)]">
               {lines.map((line, i) => {
-                const item = CATALOG[line.id];
+                const item = catalog[line.id];
                 if (!item) return null;
                 return (
                   <li
@@ -389,7 +398,7 @@ export function CartDrawer() {
                         <button
                           type="button"
                           onClick={() => remove(line.id)}
-                          aria-label={`Pašalinti „${item.name}“ iš krepšelio`}
+                          aria-label={t.remove(item.name)}
                           className="-mr-1 -mt-1 press inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[#6E6257] transition-[background-color,color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:bg-[#F1EAE0] hover:text-[#B4562F]"
                         >
                           <svg
@@ -422,8 +431,8 @@ export function CartDrawer() {
                             onClick={() => bump(line.id, -1)}
                             label={
                               line.qty > 1
-                                ? `Sumažinti „${item.name}“ kiekį`
-                                : `Pašalinti „${item.name}“ iš krepšelio`
+                                ? t.decrease(item.name)
+                                : t.remove(item.name)
                             }
                             side="left"
                           >
@@ -437,7 +446,7 @@ export function CartDrawer() {
                           </span>
                           <QtyButton
                             onClick={() => bump(line.id, 1)}
-                            label={`Padidinti „${item.name}“ kiekį`}
+                            label={t.increase(item.name)}
                             side="right"
                             disabled={line.qty >= 99}
                           >
@@ -445,7 +454,7 @@ export function CartDrawer() {
                           </QtyButton>
                         </div>
                         <span className="shrink-0 text-[0.9375rem] tabular-nums">
-                          {eur(item.price * line.qty)}
+                          {eur(item.price * line.qty, locale)}
                         </span>
                       </div>
                     </div>
@@ -459,7 +468,7 @@ export function CartDrawer() {
             <form id="skalsa-order" onSubmit={onSubmit} className="py-5">
               <ul className="divide-y divide-[rgba(36,30,25,0.13)] border-y border-[rgba(36,30,25,0.13)]">
                 {lines.map((line) => {
-                  const item = CATALOG[line.id];
+                  const item = catalog[line.id];
                   if (!item) return null;
                   return (
                     <li
@@ -471,7 +480,7 @@ export function CartDrawer() {
                         <span className="text-[#6E6257]"> × {line.qty}</span>
                       </span>
                       <span className="shrink-0 text-[0.9375rem] tabular-nums">
-                        {eur(item.price * line.qty)}
+                        {eur(item.price * line.qty, locale)}
                       </span>
                     </li>
                   );
@@ -481,26 +490,30 @@ export function CartDrawer() {
               <div className="mt-7 grid gap-4">
                 <Field
                   id="skalsa-name"
-                  label="Vardas ir pavardė"
+                  label={t.fields.name}
                   autoComplete="name"
+                  messages={{ missing: t.validation.name }}
                 />
                 <Field
                   id="skalsa-email"
-                  label="El. paštas"
+                  label={t.fields.email}
                   type="email"
                   autoComplete="email"
+                  messages={{
+                    missing: t.validation.email,
+                    invalid: t.validation.emailInvalid,
+                  }}
                 />
                 <Field
                   id="skalsa-city"
-                  label="Miestas ir pristatymo adresas"
+                  label={t.fields.address}
                   autoComplete="street-address"
+                  messages={{ missing: t.validation.address }}
                 />
               </div>
 
               <p className="mt-7 border-l-2 border-[#B4562F] pl-4 text-[0.8125rem] leading-[1.6] text-pretty text-[#6E6257]">
-                Tai demonstracinė parduotuvė. Paspaudus „Patvirtinti užsakymą“
-                niekas nebus pateikta, apmokėta ar išsiųsta — nei prekės, nei
-                jūsų duomenys niekur nekeliauja.
+                {t.demoNote}
               </p>
             </form>
           )}
@@ -520,22 +533,19 @@ export function CartDrawer() {
                   fontWeight: 500,
                 }}
               >
-                Taip atrodytų patvirtinimas.
+                {t.done.title}
               </p>
               <p className="mt-3 text-[0.9375rem] leading-[1.65] text-pretty text-[#6E6257]">
-                Čia baigiasi demonstracija: užsakymas nebuvo pateiktas,
-                mokėjimas neįvyko ir jokie duomenys nebuvo išsiųsti. Tikroje
-                parduotuvėje šioje vietoje pirkėjas gautų užsakymo numerį ir
-                laišką, o jūs — pranešimą apie naują užsakymą.
+                {t.done.body}
               </p>
               <dl className="mt-7 border-t border-[rgba(36,30,25,0.13)] pt-5 text-[0.8125rem]">
                 <div className="flex items-baseline justify-between gap-3 py-1">
-                  <dt className="text-[#6E6257]">Prekės</dt>
-                  <dd className="tabular-nums">{count} vnt.</dd>
+                  <dt className="text-[#6E6257]">{t.done.items}</dt>
+                  <dd className="tabular-nums">{t.done.count(count)}</dd>
                 </div>
                 <div className="flex items-baseline justify-between gap-3 py-1">
-                  <dt className="text-[#6E6257]">Suma</dt>
-                  <dd className="tabular-nums">{eur(total)}</dd>
+                  <dt className="text-[#6E6257]">{t.done.total}</dt>
+                  <dd className="tabular-nums">{eur(total, locale)}</dd>
                 </div>
               </dl>
             </div>
@@ -551,7 +561,7 @@ export function CartDrawer() {
               aria-valuemin={0}
               aria-valuemax={FREE_SHIPPING_FROM}
               aria-valuenow={Math.min(Math.round(subtotal), FREE_SHIPPING_FROM)}
-              aria-label={`Iki nemokamo pristatymo — riba ${FREE_SHIPPING_FROM} €`}
+              aria-label={copy.progressLabel(FREE_SHIPPING_FROM)}
             >
               <span
                 aria-hidden="true"
@@ -568,27 +578,29 @@ export function CartDrawer() {
                   <span aria-hidden="true" className="text-[#B4562F]">
                     <Check size={11} />
                   </span>
-                  Pristatymas nemokamas.
+                  {t.freeNow}
                 </>
               ) : (
-                `Nemokamas pristatymas nuo ${FREE_SHIPPING_FROM} € — trūksta ${eur(missing)}.`
+                t.freeFrom(FREE_SHIPPING_FROM, eur(missing, locale))
               )}
             </p>
 
             <dl className="mt-5 text-[0.9375rem]">
               <div className="flex items-baseline justify-between gap-3 py-1">
-                <dt className="text-[#6E6257]">Tarpinė suma</dt>
-                <dd className="tabular-nums">{eur(subtotal)}</dd>
+                <dt className="text-[#6E6257]">{t.subtotal}</dt>
+                <dd className="tabular-nums">{eur(subtotal, locale)}</dd>
               </div>
               <div className="flex items-baseline justify-between gap-3 py-1">
-                <dt className="text-[#6E6257]">Pristatymas</dt>
+                <dt className="text-[#6E6257]">{t.delivery}</dt>
                 <dd className="tabular-nums">
-                  {freeShipping ? "Nemokamas" : eur(shipping)}
+                  {freeShipping ? t.deliveryFree : eur(shipping, locale)}
                 </dd>
               </div>
               <div className="mt-2 flex items-baseline justify-between gap-3 border-t border-[rgba(36,30,25,0.13)] pt-3">
-                <dt className="text-[0.9375rem]">Iš viso</dt>
-                <dd className="text-[1.0625rem] tabular-nums">{eur(total)}</dd>
+                <dt className="text-[0.9375rem]">{t.total}</dt>
+                <dd className="text-[1.0625rem] tabular-nums">
+                  {eur(total, locale)}
+                </dd>
               </div>
             </dl>
 
@@ -597,7 +609,7 @@ export function CartDrawer() {
               onClick={() => setStep("checkout")}
               className="group mt-5 press inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
             >
-              Pereiti prie užsakymo
+              {t.toCheckout}
               <svg
                 width="14"
                 height="10"
@@ -622,27 +634,29 @@ export function CartDrawer() {
         {step === "checkout" && (
           <div className="shrink-0 border-t border-[rgba(36,30,25,0.13)] px-5 pb-6 pt-5 sm:px-6">
             <div className="flex items-baseline justify-between gap-3">
-              <span className="text-[0.9375rem]">Iš viso</span>
+              <span className="text-[0.9375rem]">{t.total}</span>
               <span className="text-[1.0625rem] tabular-nums">
-                {eur(total)}
+                {eur(total, locale)}
               </span>
             </div>
             <p className="mt-1 text-[0.8125rem] text-[#6E6257]">
-              Įskaitant pristatymą: {freeShipping ? "nemokamas" : eur(shipping)}
+              {t.includesDelivery(
+                freeShipping ? t.includesFree : eur(shipping, locale),
+              )}
             </p>
             <button
               type="submit"
               form="skalsa-order"
               className="mt-4 press inline-flex h-12 w-full items-center justify-center rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
             >
-              Patvirtinti užsakymą
+              {t.placeOrder}
             </button>
             <button
               type="button"
               onClick={() => setStep("cart")}
               className="mt-2.5 press inline-flex h-11 w-full items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[0.8125rem] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
             >
-              Grįžti į krepšelį
+              {t.back}
             </button>
           </div>
         )}
@@ -654,14 +668,14 @@ export function CartDrawer() {
               onClick={() => setStep("cart")}
               className="press inline-flex h-12 w-full items-center justify-center rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
             >
-              Grįžti į krepšelį
+              {t.back}
             </button>
             <button
               type="button"
               onClick={close}
               className="mt-2.5 press inline-flex h-11 w-full items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[0.8125rem] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
             >
-              Tęsti apsipirkimą
+              {t.keepShopping}
             </button>
           </div>
         )}
@@ -704,11 +718,14 @@ function Field({
   label,
   type = "text",
   autoComplete,
+  messages,
 }: {
   id: string;
   label: string;
   type?: string;
   autoComplete?: string;
+  /** What the browser's validation bubble says, in the page's language. */
+  messages: ValidityMessages;
 }) {
   return (
     <div>
@@ -724,6 +741,7 @@ function Field({
         type={type}
         required
         autoComplete={autoComplete}
+        {...validityProps(messages)}
         className="mt-2 h-11 w-full rounded-[6px] border border-[rgba(36,30,25,0.13)] bg-[#F1EAE0] px-3.5 text-[0.9375rem] text-[#241E19] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] focus:border-[rgba(36,30,25,0.4)] focus:bg-[#FAF6F0]"
       />
     </div>

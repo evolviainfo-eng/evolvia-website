@@ -8,7 +8,13 @@ type Theme = "dark" | "light";
 /** Flips the whole site between the dark ground and a full light mode.
  *  Dark is the default; light is a stored preference. The no-flash script in
  *  layout applies it before first paint. */
-export function ThemeToggle({ className }: { className?: string }) {
+export function ThemeToggle({
+  labels,
+  className,
+}: {
+  labels: { toLight: string; toDark: string; light: string; dark: string };
+  className?: string;
+}) {
   const [theme, setTheme] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
 
@@ -46,8 +52,8 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       onClick={toggle}
-      aria-label={isDark ? "Įjungti šviesų režimą" : "Įjungti tamsų režimą"}
-      title={isDark ? "Šviesus režimas" : "Tamsus režimas"}
+      aria-label={isDark ? labels.toLight : labels.toDark}
+      title={isDark ? labels.light : labels.dark}
       className={cn(
         "flex h-10 w-10 items-center justify-center rounded-pill border border-border text-text transition-[translate,border-color,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-text",
         className,
