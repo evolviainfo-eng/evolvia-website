@@ -2,6 +2,28 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.evolviaweb.com"
+        }
+      ],
+      "destination": "https://www.evolvia.lt/en",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "evolviaweb.com"
+        }
+      ],
+      "destination": "https://www.evolvia.lt/en",
+      "permanent": true
+    },
+    {
       "source": "/kontaktas.html",
       "destination": "/#kontaktai",
       "permanent": true
