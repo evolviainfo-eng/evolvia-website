@@ -24,6 +24,28 @@
       "permanent": true
     },
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.evolviaweb.com"
+        }
+      ],
+      "destination": "https://www.evolvia.lt/en",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "evolviaweb.com"
+        }
+      ],
+      "destination": "https://www.evolvia.lt/en",
+      "permanent": true
+    },
+    {
       "source": "/kontaktas.html",
       "destination": "/#kontaktai",
       "permanent": true
