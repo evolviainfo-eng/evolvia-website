@@ -4,11 +4,11 @@ import { useEffect, useRef } from "react";
 
 /* A code-like trace behind the pointer (after carterogunsola.com). The ground is an invisible 14 px grid; as the pointer moves,
    a few cells near it light up for a moment, most as a 1.5 px dot, some as
-   a mono glyph, and fade out in about 1.1 s. Nothing is drawn and no frame
+   a mono glyph, and fade out in about 0.9 s. Nothing is drawn and no frame
    loop runs while the pointer is still, so it costs nothing at rest.
    Off for touch screens and for reduced motion. Sits behind the content. */
 const CELL = 14;
-const LIFE = 1100;
+const LIFE = 900;
 const GLYPHS = ["0", "1", "+", "/", ":", "_", "{", "}", "<", ">", "=", "*", ";", "."];
 type Spark = { x: number; y: number; t0: number; g: string | null; a: number };
 
@@ -34,7 +34,7 @@ export function PointerField() {
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const plex = getComputedStyle(document.documentElement).getPropertyValue("--font-plex").trim();
-      ctx.font = `13px ${plex || "ui-monospace"}, ui-monospace, monospace`;
+      ctx.font = `12px ${plex || "ui-monospace"}, ui-monospace, monospace`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
     };
@@ -74,16 +74,16 @@ export function PointerField() {
       ly = y;
       if (speed < 2) return;
       const now = performance.now();
-      const n = Math.min(10, 3 + Math.floor(speed / 8));
+      const n = Math.min(8, 2 + Math.floor(speed / 10));
       for (let i = 0; i < n; i++) {
-        const r = 8 + Math.random() * 84;
+        const r = 8 + Math.random() * 72;
         const a = Math.random() * Math.PI * 2;
         const cx = Math.round((x + Math.cos(a) * r) / CELL) * CELL;
         const cy = Math.round((y + Math.sin(a) * r) / CELL) * CELL;
         const key = cx + ":" + cy;
         if (sparks.has(key)) continue;
-        const glyph = Math.random() < 0.6 ? GLYPHS[(Math.random() * GLYPHS.length) | 0] : null;
-        sparks.set(key, { x: cx, y: cy, t0: now, g: glyph, a: 0.55 + Math.random() * 0.3 });
+        const glyph = Math.random() < 0.5 ? GLYPHS[(Math.random() * GLYPHS.length) | 0] : null;
+        sparks.set(key, { x: cx, y: cy, t0: now, g: glyph, a: 0.4 + Math.random() * 0.25 });
       }
       if (sparks.size > 220) {
         const first = sparks.keys().next().value;
