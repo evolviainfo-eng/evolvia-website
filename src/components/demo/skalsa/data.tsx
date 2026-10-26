@@ -1,9 +1,9 @@
 import { localeInfo, type Locale } from "@/i18n/config";
 import { getSkalsaCopy } from "./copy";
 
-/** Skalsa — katalogo duomenys.
+/** Skalsa, katalogo duomenys.
  *
- *  Išgalvota dirbtuvė. Kainos, kvapai ir degimo trukmės yra pavyzdiniai —
+ *  Išgalvota dirbtuvė. Kainos, kvapai ir degimo trukmės yra pavyzdiniai ,
  *  bendri visiems komponentams, kad krepšelis ir katalogas visada sutaptų.
  *
  *  Čia gyvena tik tai, kas nuo kalbos nepriklauso: id, kainos, trukmės,
@@ -29,7 +29,7 @@ interface ProductData {
 
 export interface Product extends ProductData {
   name: string;
-  /** Trumpas kvapo aprašas — viena eilutė po pavadinimu. */
+  /** Trumpas kvapo aprašas, viena eilutė po pavadinimu. */
   scent: string;
   alt: string;
 }

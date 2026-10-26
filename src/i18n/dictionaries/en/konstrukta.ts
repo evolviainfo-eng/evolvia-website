@@ -35,10 +35,25 @@ export const konstruktaEn: KonstruktaCopy = {
     },
     ctaShort: "Estimate",
     ctaLong: "Get an estimate",
+    menu: "Menu",
+  },
+
+  photos: {
+    flank: "Timber roof trusses seen from below against a blue sky",
+    phases: "A builder tying a reinforcement mesh before the concrete pour",
+    svcFrame: "A timber house frame with scaffolding against a blue sky",
+    svcMasonry: "A mason laying a block on mortar",
+    svcFacade: "A renewed brick façade and roof edge against the sky",
+    svcInterior: "A bright finished living room with oak floors",
+  },
+
+  flank: {
+    left: "Timber",
+    right: "Masonry",
   },
 
   hero: {
-    alt: "A building site in the evening: the lit frame of a building going up, and a crane",
+    alt: "A finished two-storey house with timber cladding and large windows under a blue sky",
     eyebrow: "General contractor · Kaunas",
     title: ["We build", "what lasts."],
     lead: "Timber-frame and masonry construction, renovation, interior finishing. One contractor, one schedule, from excavation to the completion certificate.",
@@ -61,7 +76,7 @@ export const konstruktaEn: KonstruktaCopy = {
       ["Structural warranty", "5 years"],
       ["Site visit", "Free"],
     ],
-    alt: "White concrete forms: the surface texture of a structure",
+    alt: "An exposed concrete column and cantilevered slab against a pale sky",
     caption:
       "Unfinished in-situ concrete · we leave the surface exposed only when the formwork deserves it",
   },
@@ -76,7 +91,7 @@ export const konstruktaEn: KonstruktaCopy = {
       {
         no: "01",
         title: "Timber-frame construction",
-        body: "The timber frame is cut to the factory drawing and assembled on site. A weathertight shell 3–5 weeks after the foundations.",
+        body: "The timber frame is cut to the factory drawing and assembled on site. A weathertight shell 3-5 weeks after the foundations.",
         specs: ["C24 timber", "600 mm centres", "U ≤ 0.13 W/m²K"],
       },
       {
@@ -108,7 +123,7 @@ export const konstruktaEn: KonstruktaCopy = {
       ringaudai: {
         title: "Detached house, Ringaudai",
         body: "A timber-frame house with a half-sunken terrace. The plot has a 2.4 m fall, so the foundations were stepped and no soil had to be taken off site.",
-        alt: "A finished modern detached house with a dark façade",
+        alt: "A detached house with dark timber cladding and a pitched roof",
         specs: [
           ["Area", "186 m²"],
           ["Year", "2024"],
@@ -120,7 +135,7 @@ export const konstruktaEn: KonstruktaCopy = {
       domeikava: {
         title: "House with panoramic windows, Domeikava",
         body: "A masonry house with a south wall that is almost entirely glass. The floor slab is cast in situ, as nothing else would have carried the 4.8 m span over the living room.",
-        alt: "A house with large windows and a well-kept lawn in front",
+        alt: "A modern brick house with large windows and a lawn",
         specs: [
           ["Area", "214 m²"],
           ["Year", "2023"],
@@ -132,7 +147,7 @@ export const konstruktaEn: KonstruktaCopy = {
       aleksotas: {
         title: "Office building, Kaunas, Aleksotas",
         body: "A three-storey commercial building for small businesses. The façade is exposed concrete, so the formwork was bought new rather than hired.",
-        alt: "A concrete public building with rhythmic rows of windows",
+        alt: "An office building: exposed concrete and a pale façade with timber shutters",
         specs: [
           ["Area", "640 m²"],
           ["Year", "2025"],
@@ -144,7 +159,7 @@ export const konstruktaEn: KonstruktaCopy = {
       garliava: {
         title: "In-situ floor slabs, Garliava",
         body: "Structural work on another contractor's site. Poured in three stages, each in a single day, so there are no cold joints.",
-        alt: "An in-situ concrete floor slab, photographed from below",
+        alt: "An in-situ concrete frame with floor slabs, photographed from below",
         specs: [
           ["Area", "1,240 m² of slabs"],
           ["Year", "2025"],
@@ -160,37 +175,37 @@ export const konstruktaEn: KonstruktaCopy = {
     alt: "A building site from above: reinforcement laid out before the concrete pour",
     label: "How we work",
     title: "Five stages with dates, not promises.",
-    lead: "Durations are for a typical 180–220 m² project. The contract sets out the actual dates for your project, and each stage ends with a signed certificate.",
+    lead: "Durations are for a typical 180-220 m² project. The contract sets out the actual dates for your project, and each stage ends with a signed certificate.",
     items: [
       {
         no: "01",
         title: "Site visit and quote",
         body: "We visit the site, take measurements and ask openly about the budget. Then we come back with a quote that shows every line, not a single total at the bottom.",
-        time: "1–2 weeks",
+        time: "1-2 weeks",
       },
       {
         no: "02",
         title: "Design and permits",
         body: "Technical design, utility approvals, the building permit. We handle the paperwork; all the client has to do is sign.",
-        time: "4–8 weeks",
+        time: "4-8 weeks",
       },
       {
         no: "03",
         title: "Foundations and structure",
         body: "Excavation, foundations, walls, floor slabs. From this stage on there is work on site every day, and every Friday you get photos and a weekly report.",
-        time: "6–12 weeks",
+        time: "6-12 weeks",
       },
       {
         no: "04",
         title: "Roof, façade, building services",
         body: "The shell is made weathertight, then come the electrics, plumbing and ventilation. The building is ready for finishing before the frosts arrive. That is what the schedule is for.",
-        time: "8–14 weeks",
+        time: "8-14 weeks",
       },
       {
         no: "05",
         title: "Finishing and handover",
         body: "Interior finishing, tidied grounds, the completion certificate, the keys and a folder with the declarations for every material used.",
-        time: "6–10 weeks",
+        time: "6-10 weeks",
       },
     ],
   },
@@ -240,23 +255,23 @@ export const konstruktaEn: KonstruktaCopy = {
     resultTitle: "Preliminary estimate",
     from: "from",
     to: "to",
-    emptyTotal: "€ –",
+    emptyTotal: "€ -",
     emptyPrompt: "Tick at least one work package.",
     groups: (n) => (n === 1 ? "1 work package" : `${n} work packages`),
     breakdown: "Breakdown",
     breakdownUnit: "Your project, €/m²",
     breakdownEmpty:
       "No work package is ticked, so the estimate has no lines yet. Tick one on the left and the range appears straight away.",
-    finishNone: "–",
+    finishNone: "-",
     finishNotIncluded: "Not included",
     disclaimer:
       "Rates include VAT. The exact price comes after a site visit and a review of the technical design. The figure does not include external works, furniture or design fees.",
     cta: "Get an exact quote",
     ctaDisabledNote: "Tick a work package to continue",
     ctaNote: "Details carry over to the enquiry form",
-    /** "84,200" → "€84,200"; "84,200–128,400" → "€84,200–128,400". */
+    /** "84,200" → "€84,200"; "84,200-128,400" → "€84,200-128,400". */
     price: (amount) => `€${amount}`,
-    /** "180–260" → "€180–260/m²". */
+    /** "180-260" → "€180-260/m²". */
     pricePerM2: (amount) => `€${amount}/m²`,
     message: (d) =>
       [
@@ -274,6 +289,8 @@ export const konstruktaEn: KonstruktaCopy = {
     label: "Craft",
     title: "Quality shows where nobody is looking.",
     lead: "Four details from ordinary working days. Nothing staged for the camera, just what a tidy site looks like.",
+    prev: "Previous detail",
+    next: "Next detail",
     shots: {
       cut: {
         alt: "Cutting concrete with a diamond blade, dust rising",
@@ -312,9 +329,9 @@ export const konstruktaEn: KonstruktaCopy = {
     ],
     hoursTitle: "Working hours",
     hours: [
-      ["Mon–Thu", "8:00–17:00"],
-      ["Fri", "8:00–15:00"],
-      ["Sat–Sun", "Closed"],
+      ["Mon-Thu", "8:00-17:00"],
+      ["Fri", "8:00-15:00"],
+      ["Sat-Sun", "Closed"],
     ],
     note: "Calls are answered by the site manager, not a receptionist. If you can't get through, it means we're up on a roof. Send us a message and we'll call you back the same day.",
   },

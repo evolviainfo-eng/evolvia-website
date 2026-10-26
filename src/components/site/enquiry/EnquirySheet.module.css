@@ -1,0 +1,108 @@
+/* The enquiry sheet. Desktop: the page dims to 64 % black and a 560 px
+   panel slides in from the right edge (0.42 s, the site's ease-out), flat
+   surface, one hairline on its open side. Phone (860 px and under): the
+   panel is the whole screen and rises from below. The header (title and
+   close) stays put while the form scrolls under it. */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+}
+.root[data-shown] { pointer-events: auto; }
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.64);
+  opacity: 0;
+  transition: opacity 0.36s var(--ease-ui);
+}
+.root[data-shown] .scrim { opacity: 1; }
+
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(560px, 100%);
+  display: flex;
+  flex-direction: column;
+  background: var(--ink-2);
+  box-shadow: inset 1px 0 0 var(--line-2), -40px 0 120px -40px rgba(0, 0, 0, 0.9);
+  color: var(--fg);
+  transform: translateX(100%);
+  transition: transform 0.42s var(--ease-out);
+  will-change: transform;
+}
+.root[data-shown] .panel { transform: none; }
+
+.head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 72px;
+  padding: env(safe-area-inset-top, 0px) 20px 0 40px;
+  border-bottom: 1px solid var(--line);
+}
+.title {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  outline: none;
+}
+.close {
+  appearance: none;
+  border: 0;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--fg-2);
+  cursor: pointer;
+  transition: background-color 0.15s var(--ease-ui), color 0.15s var(--ease-ui);
+}
+.close:hover { background: var(--surface-3); color: var(--fg); }
+.close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 28px 40px calc(40px + env(safe-area-inset-bottom, 0px));
+  scrollbar-width: thin;
+  scrollbar-color: var(--fg-4) transparent;
+}
+.lead {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--fg-2);
+  max-width: 40ch;
+  margin-bottom: 28px;
+  text-wrap: pretty;
+}
+/* Once sent, the success note speaks for itself. */
+.body:has([data-enquiry-done]) .lead { display: none; }
+
+@media (max-width: 860px) {
+  .panel {
+    width: 100%;
+    box-shadow: none;
+    transform: translateY(100%);
+  }
+  .head { height: auto; min-height: 60px; padding: env(safe-area-inset-top, 0px) max(8px, env(safe-area-inset-right, 0px)) 0 max(20px, env(safe-area-inset-left, 0px)); }
+  .body { padding: 24px max(20px, env(safe-area-inset-right, 0px)) calc(32px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px)); }
+  .lead { margin-bottom: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel, .scrim { transition: none; }
+}

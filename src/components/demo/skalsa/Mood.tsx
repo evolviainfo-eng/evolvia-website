@@ -1,153 +1,51 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { useLocale } from "@/i18n/LocaleProvider";
+import type { Locale } from "@/i18n/config";
 import { getSkalsaCopy } from "./copy";
 
-/** Vienintelis tikras slinkimo momentas visame puslapyje.
+/** The one move borrowed from Rahasya Fragrances: one full-bleed mood
+ *  photograph with a short story set in its corner, a name, a few lines and
+ *  a plain "Discover" link. Nothing else on the photo, nothing moving.
  *
- *  Puslapis iki šios vietos yra kreminis; čia jis pritemsta, ir kol juosta
- *  slenka pro akis, žvakės šiluma iš tamsos užauga iki pilnos — šviesa,
- *  kurios pats produktas ir yra. Slinkimas valdo tik dvi savybes (permatomumą
- *  ir mastelį) viename elemente, plius vieną nuotraukos poslinkį; jokio pin,
- *  jokio scrub'o ant išdėstymo, todėl 1366×768 nieko nesulaužo.
- *
- *  Be JS arba su „prefers-reduced-motion“ švytėjimas lieka savo natūralioje
- *  (pilnoje) būsenoje, o nuotrauka — vietoje. Sekcija atrodo užbaigta.
- */
-export function Mood() {
-  const locale = useLocale();
-  const t = getSkalsaCopy(locale).mood;
-  const root = useRef<HTMLElement>(null);
-  const glow = useRef<HTMLDivElement>(null);
-  const drift = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    const el = root.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let cancelled = false;
-    let ctx: { revert: () => void } | null = null;
-
-    void (async () => {
-      const [gsapMod, stMod] = await Promise.all([
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
-      if (cancelled) return;
-      const gsap = gsapMod.gsap;
-      gsap.registerPlugin(stMod.ScrollTrigger);
-
-      ctx = gsap.context(() => {
-        if (glow.current) {
-          gsap.fromTo(
-            glow.current,
-            { opacity: 0.14, scale: 0.78 },
-            {
-              opacity: 1,
-              scale: 1,
-              ease: "none",
-              scrollTrigger: {
-                trigger: el,
-                start: "top 88%",
-                end: "center 56%",
-                scrub: true,
-              },
-            },
-          );
-        }
-        if (drift.current) {
-          gsap.fromTo(
-            drift.current,
-            { yPercent: -3 },
-            {
-              yPercent: 3,
-              ease: "none",
-              scrollTrigger: {
-                trigger: el,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: true,
-              },
-            },
-          );
-        }
-      }, el);
-    })();
-
-    return () => {
-      cancelled = true;
-      ctx?.revert();
-    };
-  }, []);
+ *  This is the only full-bleed photograph on the page, because it is the
+ *  only one wide enough (1800 px) to fill a desktop without being blown up.
+ *  The text sits bottom right, on the right half's grid line, over the dark table edge, with a light brown
+ *  veil rising from that corner so the words never sit on a flame. */
+export function Mood({ locale }: { locale: Locale }) {
+  const copy = getSkalsaCopy(locale);
+  const t = copy.mood;
 
   return (
     <section
-      ref={root}
-      className="sk-dark relative isolate overflow-hidden bg-[#1C1712] text-[#FAF6F0]"
+      data-sk-tone="dark"
+      className="group relative h-[90svh] min-h-[520px] overflow-clip text-[#F2EFEA] lg:h-[clamp(620px,100svh,1100px)]"
     >
-      <div
-        ref={glow}
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-[38%] -z-10 h-[86%] w-[136%] -translate-x-1/2 -translate-y-1/2"
-      >
+      <div className="absolute inset-0 overflow-hidden bg-[#2A1410]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/demo/skalsa/hero.webp"
+          alt={copy.hero.imageAlt}
+          width={1800}
+          height={1286}
+          decoding="async"
+          loading="lazy"
+          className="sk-zoom h-full w-full object-cover object-[35%_50%]"
+        />
         <div
-          className="sk-breathe h-full w-full"
-          style={{
-            background:
-              "radial-gradient(closest-side, rgba(196,101,52,0.42), rgba(180,86,47,0.14) 58%, rgba(180,86,47,0) 78%)",
-          }}
+          aria-hidden="true"
+          className="absolute inset-0 bg-[linear-gradient(to_top,rgba(42,20,16,0.62),rgba(42,20,16,0)_55%)] lg:bg-[linear-gradient(to_top_left,rgba(42,20,16,0.62),rgba(42,20,16,0)_50%)]"
         />
       </div>
 
-      <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
-        <div data-rise className="max-w-[26ch]">
-          <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[rgba(250,246,240,0.58)]">
-            {t.eyebrow}
-          </p>
-          <p
-            className="mt-5 text-[clamp(1.5rem,3vw,2.5rem)] leading-[1.14] tracking-[-0.03em] text-balance"
-            style={{
-              fontFamily: "var(--font-skalsa-display)",
-              fontWeight: 500,
-            }}
-          >
-            {t.quote}
-          </p>
-        </div>
-
-        <div
-          data-rise
-          style={{ "--i": 1, "--rise-y": "28px" } as React.CSSProperties}
-          className="mt-[clamp(36px,5vw,64px)] grid gap-4 md:grid-cols-12 md:items-end"
-        >
-          <div className="min-w-0 overflow-hidden rounded-[10px] bg-[#241E19] md:col-span-7">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              ref={drift}
-              src="/demo/skalsa/mood-1.webp"
-              alt={t.rowAlt}
-              width={1400}
-              height={1120}
-              decoding="async"
-              loading="lazy"
-              className="aspect-[5/4] h-full w-full scale-[1.09] object-cover"
-            />
-          </div>
-          <div className="min-w-0 overflow-hidden rounded-[10px] bg-[#241E19] md:col-span-5">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/demo/skalsa/mood-2.webp"
-              alt={t.groupAlt}
-              width={1400}
-              height={1400}
-              decoding="async"
-              loading="lazy"
-              className="aspect-square h-full w-full object-cover"
-            />
-          </div>
-        </div>
+      <div
+        data-rise
+        className="absolute inset-x-0 bottom-0 px-[30px] pb-[40px] lg:left-1/2 lg:px-[60px] lg:pb-[60px]"
+      >
+        <h2 className="sk-serif text-[1.75rem] leading-[1.1]">{t.eyebrow}</h2>
+        <p className="mt-4 max-w-[36ch] text-[1rem] leading-[1.55] text-pretty">
+          {t.quote}
+        </p>
+        <a href="#katalogas" className="sk-link mt-6 inline-block">
+          {copy.discover}
+        </a>
       </div>
     </section>
   );

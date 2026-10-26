@@ -9,7 +9,7 @@ import {
 } from "react";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { getFumeCopy } from "./copy";
-import { Body, Eyebrow, H2, HAIRLINE, Note } from "./Type";
+import { Body, H2, HAIRLINE, Label, Note, RULE } from "./Type";
 
 /* ── Calendar ────────────────────────────────────────────────────────── */
 
@@ -34,7 +34,7 @@ const TIMES = [
 /** The evening the visitor can actually book, per weekday.
  *
  *  Sunday closes at 22:00 and the kitchen takes its last order at 21:30 (see
- *  the hours table in the footer), so the last table sits at 21:00 — nine
+ *  the hours table in the footer), so the last table sits at 21:00: nine
  *  slots, not eleven. Every other open evening seats until 22:00.
  *
  *  Always a *prefix* of TIMES, which is what lets a slot index mean the same
@@ -55,7 +55,7 @@ type Day = {
   day: number;
   month: number;
   wd: number;
-  /** Monday — salė ilsisi. */
+  /** Monday: salė ilsisi. */
   closed: boolean;
   /** Today, and the last table of the night has already been seated. */
   late: boolean;
@@ -99,7 +99,7 @@ function buildSnapshot(): Snapshot {
   return { days, past };
 }
 
-/** FNV-1a. Occupancy has to be *derived* from the date, never random —
+/** FNV-1a. Occupancy has to be *derived* from the date, never random:
  *  otherwise the same evening would show different free tables on every
  *  re-render, which no real booking widget does. */
 function hash(s: string): number {
@@ -133,7 +133,7 @@ function occupancy(d: Day, past: number, isToday: boolean): boolean[] {
    which the server and the browser can disagree about across a midnight or a
    timezone. So the snapshot is published as an external store: the server
    snapshot is `null`, the client snapshot is a cached object. React swaps them
-   after hydration — no mismatch, and no setState inside an effect.
+   after hydration: no mismatch, and no setState inside an effect.
 
    The store also ticks. The evening moves on while the page sits open, and a
    widget still offering 19:00 at 21:40 is the fastest way to read as a
@@ -169,30 +169,33 @@ function subscribe(onStoreChange: () => void) {
 const chipBase =
   "rounded-[2px] border font-[family-name:var(--font-fume-ui)] transition-[border-color,color,background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)]";
 
-/* Chosen state is cream, not ember. Against the hairline default it reads as
-   "selected" perfectly well, and it keeps the page's four accent marks for the
-   things that are actually accents.
+/* Hairline cells; the chosen one is filled paper with charcoal figures
+   (Studenterkilden's selected cell, inverted for the dark page). Copper is
+   kept for the frame and the submit button.
    Pressed states darken rather than move: a 25-chip grid that lifts under the
    pointer reads as a toy. */
 const chipOn =
-  "border-[#ede6da] bg-[rgba(237,230,218,0.08)] text-[#ede6da] active:bg-[rgba(237,230,218,0.16)]";
+  "border-[#efe7dc] bg-[#efe7dc] text-[#1b1714] active:bg-[#d9cfc1]";
 const chipOff =
-  "border-[rgba(237,230,218,0.14)] text-[#9c948a] hover:border-[rgba(237,230,218,0.45)] hover:text-[#ede6da] active:bg-[rgba(237,230,218,0.12)]";
+  "border-[rgba(239,231,220,0.16)] text-[#c4b8a9] hover:border-[rgba(239,231,220,0.5)] hover:text-[#efe7dc] active:bg-[rgba(239,231,220,0.1)]";
 const chipDead =
-  "cursor-not-allowed border-[rgba(237,230,218,0.07)] text-[rgba(156,148,138,0.5)]";
+  "cursor-not-allowed border-[rgba(239,231,220,0.07)] text-[rgba(174,162,148,0.45)]";
 
-/* The one ember-filled control on the page, and the ember-bordered quiet one
-   next to it in the empty state. */
-const emberBtn =
-  "inline-flex h-12 shrink-0 items-center justify-center rounded-[2px] bg-[#C0703A] px-7 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] font-medium tracking-[0.03em] text-[#0c0b0a] transition-[background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#CE7B41] active:translate-y-0 active:bg-[#B0642F]";
+/* The submit is the copper reservation button, the same one as in the nav,
+   the hero and the menu card (`.fume-btn--cu` in FumePage). */
+const submitBtn = "fume-btn fume-btn--cu shrink-0";
+
+/* Legends and labels are the page's small spaced capitals. */
+const legendCls = "fume-label mb-3 block";
+const labelCls = "fume-label mb-2 block";
 
 /* Placeholders carry the only formatting guidance these fields give, so they
-   sit at the palette's muted token (6.5:1 on #0c0b0a) — no alpha. */
+   sit at the palette's muted token (6.5:1 on #0c0b0a), no alpha. */
 const fieldCls =
-  "w-full rounded-[2px] border bg-transparent px-3 py-3 font-[family-name:var(--font-fume-ui)] text-[0.9375rem] text-[#ede6da] placeholder:text-[#9c948a] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] focus:border-[#ede6da]";
+  "w-full rounded-[2px] border bg-transparent px-3 py-3 font-[family-name:var(--font-fume-ui)] text-[0.9375rem] text-[#efe7dc] placeholder:text-[#a59a8d] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] focus:border-[#efe7dc]";
 
 const errCls =
-  "font-[family-name:var(--font-fume-ui)] text-[0.8125rem] text-[#e3b08a]";
+  "font-[family-name:var(--font-fume-ui)] text-[0.875rem] text-[#e3b08a]";
 
 type Errors = Partial<Record<"time" | "name" | "phone", string>>;
 
@@ -242,7 +245,7 @@ export function Reservation() {
     );
   }, [days, dateIso]);
 
-  // The evening's own slot list and its occupancy travel together — a Sunday
+  // The evening's own slot list and its occupancy travel together: a Sunday
   // has nine slots, and tonight's have a floor under them.
   const { slots, taken } = useMemo(() => {
     if (!day || !snap) return { slots: TIMES, taken: TIMES.map(() => false) };
@@ -297,7 +300,7 @@ export function Reservation() {
   const freeCount = taken.filter((t) => !t).length;
 
   // An evening can legitimately run out: late on a busy Tuesday the only slot
-  // left may already be taken. That is a designed state, not a dead end — the
+  // left may already be taken. That is a designed state, not a dead end: the
   // next open evening is offered by name.
   const nextOpen = useMemo(() => {
     if (!days || !day) return null;
@@ -311,63 +314,69 @@ export function Reservation() {
       : copy.helper.free(freeCount);
 
   return (
-    <section id="rezervacija" className="bg-[#141210] py-[var(--sec)]">
-      <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
-        <div className="grid items-start gap-[clamp(36px,5vw,72px)] lg:grid-cols-12">
-          {/* ── Left: what booking here actually means ── */}
-          <div data-rise className="min-w-0 lg:col-span-4">
-            <Eyebrow>{copy.eyebrow}</Eyebrow>
-            <H2 className="mt-6">{copy.title}</H2>
-            <Body className="mt-5 max-w-[40ch]">{copy.lead}</Body>
+    <section id="rezervacija" className="py-[var(--sec)]">
+      <div className="mx-auto max-w-[1080px] px-4 sm:px-8">
+        {/* The header is Zimmerl's calm centred block; the widget below it is
+            unchanged in behaviour, restyled only. */}
+        <div
+          data-group
+          className="mx-auto flex max-w-[720px] flex-col items-center text-center"
+        >
+          <Label>{copy.eyebrow}</Label>
+          <H2 className="mt-6">{copy.title}</H2>
+          <Body lines className="mt-8 max-w-[48ch]">
+            {copy.lead}
+          </Body>
+        </div>
 
-            <dl
-              className="mt-9 space-y-4 border-t pt-6 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-relaxed"
-              style={{ borderColor: HAIRLINE }}
-            >
-              <div>
-                <dt className="text-[#ede6da]">{copy.facts.closed.dt}</dt>
-                <dd className="text-[#9c948a]">{copy.facts.closed.dd}</dd>
-              </div>
-              <div>
-                <dt className="text-[#ede6da]">{copy.facts.kitchen.dt}</dt>
-                <dd className="text-[#9c948a]">{copy.facts.kitchen.dd}</dd>
-              </div>
-              <div>
-                <dt className="text-[#ede6da]">{copy.facts.groups.dt}</dt>
-                <dd className="text-[#9c948a]">{copy.facts.groups.dd}</dd>
-              </div>
-            </dl>
-          </div>
-
-          {/* ── Right: the working widget ── */}
-          <div
-            data-rise
-            style={{ "--i": 1, borderColor: HAIRLINE } as React.CSSProperties}
-            className="min-w-0 rounded-[2px] border bg-[#0c0b0a] p-4 sm:p-7 lg:col-span-8"
+        {/* What booking here actually means: three short notes in a ruled
+            row over the widget (stacked on a phone), so neither column is
+            left beside a void. */}
+        <div data-group className="mx-auto mt-[var(--gap)] max-w-[880px]">
+          <dl
+            className="grid border-t font-[family-name:var(--font-fume-ui)] text-[0.9375rem] leading-[1.6] sm:grid-cols-3"
+            style={{ borderColor: RULE }}
           >
+            {[copy.facts.closed, copy.facts.kitchen, copy.facts.groups].map(
+              (f, i) => (
+                <div
+                  key={f.dt}
+                  className={`min-w-0 py-5 sm:px-6 sm:py-7 ${
+                    i > 0 ? "max-sm:border-t sm:border-l" : "sm:pl-0"
+                  } ${i === 2 ? "sm:pr-0" : ""}`}
+                  style={{ borderColor: HAIRLINE }}
+                >
+                  <dt className="text-[#efe7dc]">{f.dt}</dt>
+                  <dd className="mt-1 text-[#b9ad9f]">{f.dd}</dd>
+                </div>
+              ),
+            )}
+          </dl>
+
+          {/* ── The working widget ── */}
+          <div className="fume-frame mt-6 min-w-0 bg-[#231e1a] px-3 py-5 sm:mt-8 sm:p-10">
             {booking ? (
               /* The confirmation is the one place on the page that arrives
                  without being scrolled to, so it gets its own short gesture:
-                 five parts, one --d-step apart, the same rhythm the scroll
-                 reveals use. */
+                 five parts, 100 ms apart, the same rhythm the scroll groups
+                 use. */
               <div className="fume-arrive">
-                {/* accent 4 of 4 */}
                 <span
                   aria-hidden
-                  className="block h-px w-9 bg-[#C0703A]"
+                  className="block h-px w-9 bg-[#b8794a]"
                   style={{ "--n": 0 } as React.CSSProperties}
                 />
                 <p
                   ref={doneRef}
                   tabIndex={-1}
                   style={{ "--n": 1 } as React.CSSProperties}
-                  className="mt-5 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.24em] text-[#C0703A]"
+                  className="fume-label mt-5 text-[#efe7dc]"
                 >
                   {copy.done.title}
                 </p>
                 <p
                   style={{ "--n": 2 } as React.CSSProperties}
-                  className="mt-4 text-balance font-[family-name:var(--font-fume-display)] text-[clamp(1.5rem,3.4vw,1.875rem)] font-light leading-[1.2] text-[#ede6da]"
+                  className="mt-4 text-balance font-[family-name:var(--font-fume-display)] text-[clamp(1.5rem,3.4vw,1.875rem)] font-light leading-[1.2] text-[#efe7dc]"
                 >
                   {copy.done.lead}
                   {booking.dateInSentence}
@@ -377,7 +386,7 @@ export function Reservation() {
                 </p>
 
                 <dl
-                  className="mt-8 grid gap-x-8 gap-y-4 border-t pt-6 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] sm:grid-cols-2"
+                  className="mt-8 grid gap-x-8 gap-y-4 border-t pt-6 font-[family-name:var(--font-fume-ui)] text-[0.9375rem] sm:grid-cols-2"
                   style={
                     { borderColor: HAIRLINE, "--n": 3 } as React.CSSProperties
                   }
@@ -389,18 +398,18 @@ export function Reservation() {
                     [copy.labels.name, booking.name],
                   ].map(([k, v]) => (
                     <div key={k} className="min-w-0">
-                      <dt className="text-[0.6875rem] uppercase tracking-[0.18em] text-[#9c948a]">
+                      <dt className="fume-label text-[0.75rem] text-[#c4b8a9]">
                         {k}
                       </dt>
-                      <dd className="mt-1.5 break-words text-[#ede6da]">{v}</dd>
+                      <dd className="mt-1.5 break-words text-[#efe7dc]">{v}</dd>
                     </div>
                   ))}
                   {note.trim() && (
                     <div className="min-w-0 sm:col-span-2">
-                      <dt className="text-[0.6875rem] uppercase tracking-[0.18em] text-[#9c948a]">
+                      <dt className="fume-label text-[0.75rem] text-[#c4b8a9]">
                         {copy.labels.note}
                       </dt>
-                      <dd className="mt-1.5 break-words text-[#ede6da]">
+                      <dd className="mt-1.5 break-words text-[#efe7dc]">
                         {note.trim()}
                       </dd>
                     </div>
@@ -418,7 +427,7 @@ export function Reservation() {
                   <button
                     type="button"
                     onClick={reset}
-                    className={`${chipBase} mt-6 inline-flex h-11 items-center px-6 text-[0.8125rem] tracking-[0.04em] text-[#ede6da] hover:-translate-y-[1px] hover:border-[#ede6da] hover:bg-[rgba(237,230,218,0.06)] active:translate-y-0 active:bg-[rgba(237,230,218,0.12)]`}
+                    className={`${chipBase} mt-6 inline-flex h-11 items-center px-6 text-[0.875rem] tracking-[0.04em] text-[#efe7dc] hover:-translate-y-[1px] hover:border-[#efe7dc] hover:bg-[rgba(239,231,220,0.06)] active:translate-y-0 active:bg-[rgba(239,231,220,0.12)]`}
                     style={{ borderColor: HAIRLINE }}
                   >
                     {copy.done.again}
@@ -430,11 +439,11 @@ export function Reservation() {
                 <div ref={formTopRef} tabIndex={-1}>
                   {/* ── Date ── */}
                   <fieldset className="min-w-0 border-0 p-0">
-                    <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]">
+                    <legend className={legendCls}>
                       {copy.labels.evening}
                     </legend>
                     <div
-                      className="grid grid-cols-4 gap-1.5 sm:grid-cols-7 sm:gap-2"
+                      className="grid grid-cols-4 gap-1 sm:grid-cols-7 sm:gap-2"
                       aria-busy={days === null}
                     >
                       {days === null
@@ -469,23 +478,29 @@ export function Reservation() {
                                     : d.late
                                       ? copy.dayAria(date, copy.lateAria)
                                       : i === 1
-                                        ? copy.dayAria(date, copy.day.tomorrowSpoken)
+                                        ? copy.dayAria(
+                                            date,
+                                            copy.day.tomorrowSpoken,
+                                          )
                                         : i === 0
-                                          ? copy.dayAria(date, when.toLowerCase())
+                                          ? copy.dayAria(
+                                              date,
+                                              when.toLowerCase(),
+                                            )
                                           : date
                                 }
                                 onClick={() => setDateIso(d.iso)}
-                                className={`${chipBase} flex h-[74px] min-w-0 flex-col items-center justify-center gap-1 px-1 ${
+                                className={`${chipBase} flex h-[74px] min-w-0 flex-col items-center justify-center gap-1 px-0.5 ${
                                   !open ? chipDead : on ? chipOn : chipOff
                                 }`}
                               >
-                                <span className="text-[0.6875rem] uppercase tracking-[0.14em]">
+                                <span className="text-[0.75rem] uppercase tracking-[0.1em]">
                                   {copy.weekdayShort[d.wd]}
                                 </span>
                                 <span className="text-[1.0625rem] leading-none tabular-nums">
                                   {d.day}
                                 </span>
-                                <span className="text-[0.6875rem] uppercase tracking-[0.06em] sm:text-[0.6875rem]">
+                                <span className="max-w-full truncate text-[0.75rem] uppercase tracking-normal sm:tracking-[0.04em]">
                                   {d.closed
                                     ? copy.day.closed
                                     : d.late
@@ -504,7 +519,7 @@ export function Reservation() {
                     tabIndex={-1}
                     className="mt-8 min-w-0 border-0 p-0"
                   >
-                    <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]">
+                    <legend className={legendCls}>
                       {copy.labels.time}
                     </legend>
                     <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-6 sm:gap-2">
@@ -538,7 +553,7 @@ export function Reservation() {
                     </div>
                     <p
                       aria-live="polite"
-                      className="mt-2.5 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] text-[#9c948a]"
+                      className="mt-2.5 font-[family-name:var(--font-fume-ui)] text-[0.875rem] text-[#b9ad9f]"
                     >
                       {helper}
                     </p>
@@ -547,7 +562,7 @@ export function Reservation() {
                         className="mt-4 rounded-[2px] border p-4"
                         style={{ borderColor: HAIRLINE }}
                       >
-                        <p className="font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[#ede6da]">
+                        <p className="font-[family-name:var(--font-fume-ui)] text-[0.9375rem] leading-[1.6] text-[#efe7dc]">
                           {copy.full.title}
                         </p>
                         <Note className="mt-1.5 max-w-[46ch]">
@@ -557,7 +572,7 @@ export function Reservation() {
                           <button
                             type="button"
                             onClick={() => setDateIso(nextOpen.iso)}
-                            className={`${chipBase} ${chipOff} mt-4 inline-flex h-11 items-center px-5 text-[0.8125rem] tracking-[0.03em]`}
+                            className={`${chipBase} ${chipOff} mt-4 inline-flex h-11 items-center px-5 text-[0.875rem] tracking-[0.03em]`}
                           >
                             {copy.full.pick(nextOpen)}
                           </button>
@@ -573,10 +588,10 @@ export function Reservation() {
 
                   {/* ── Guests ── */}
                   <fieldset className="mt-8 min-w-0 border-0 p-0">
-                    <legend className="mb-3 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]">
+                    <legend className={legendCls}>
                       {copy.labels.guests}
                     </legend>
-                    <div className="grid grid-cols-8 gap-1">
+                    <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-8 sm:gap-1">
                       {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                         <button
                           key={n}
@@ -599,7 +614,7 @@ export function Reservation() {
                     <div className="min-w-0">
                       <label
                         htmlFor="fume-name"
-                        className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]"
+                        className={labelCls}
                       >
                         {copy.labels.name}
                       </label>
@@ -640,7 +655,7 @@ export function Reservation() {
                     <div className="min-w-0">
                       <label
                         htmlFor="fume-phone"
-                        className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]"
+                        className={labelCls}
                       >
                         {copy.labels.phone}
                       </label>
@@ -682,7 +697,7 @@ export function Reservation() {
                     <div className="min-w-0 sm:col-span-2">
                       <label
                         htmlFor="fume-note"
-                        className="mb-2 block font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.22em] text-[#9c948a]"
+                        className={labelCls}
                       >
                         {copy.labels.note}{" "}
                         <span className="normal-case tracking-normal">
@@ -707,15 +722,14 @@ export function Reservation() {
                     style={{ borderColor: HAIRLINE }}
                   >
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                      {/* accent 3 of 4 */}
-                      <button type="submit" className={emberBtn}>
+                                            <button type="submit" className={submitBtn}>
                         {copy.submit}
                       </button>
                       {/* The evening is always preselected, so the only thing
                           left to ask for is the hour. */}
                       <p
                         aria-live="polite"
-                        className="min-w-0 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[rgba(237,230,218,0.88)]"
+                        className="min-w-0 font-[family-name:var(--font-fume-ui)] text-[0.9375rem] leading-[1.6] text-[rgba(239,231,220,0.9)]"
                       >
                         {day && time
                           ? `${copy.dateLabel(day)}, ${time} · ${copy.guests(guests)}`

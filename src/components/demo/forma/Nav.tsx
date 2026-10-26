@@ -1,73 +1,116 @@
-import type { Locale } from "@/i18n/config";
+"use client";
+
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { getFormaCopy } from "@/components/demo/forma/copy";
-import { INK, MUTED } from "@/components/demo/forma/tokens";
 
 /* Labels come from the dictionary's section names. */
 const LINKS = [
-  { href: "#projektai", section: "projects", always: true },
-  { href: "#paslaugos", section: "services", always: false },
-  { href: "#procesas", section: "process", always: false },
+  { href: "#studija", section: "studio", phone: false },
+  { href: "#projektai", section: "projects", phone: true },
+  { href: "#paslaugos", section: "services", phone: false },
+  { href: "#procesas", section: "process", phone: false },
 ] as const;
 
-/** Slim sticky header. Sits directly under Evolvia's honesty bar, which
- *  publishes its own height as --demo-bar-h.
+/* True on the client, false in the server HTML. */
+const noop = () => () => {};
+const useLive = () =>
+  useSyncExternalStore(
+    noop,
+    () => true,
+    () => false,
+  );
+
+/** TARQ's header: the wordmark left, the section words centred in one row,
+ *  the contact link right. Transparent with white words over the hero
+ *  photograph at the very top, warm-grey paper with ink words from the
+ *  first pixel of scroll, hidden while scrolling down.
  *
- *  Section links are underlined rather than pilled: the rule draws itself in
- *  from the left, the same gesture every hairline on this page makes. The one
- *  filled control is the call to action, so there is never a question about
- *  which of the four is the button. */
-export function FormaNav({ locale }: { locale: Locale }) {
+ *  Without JS the header is `position:absolute` over the hero and simply
+ *  scrolls away with it, so white words never land on paper. With JS it is
+ *  fixed (one rAF-throttled scroll listener).
+ *  The paper ground is a pseudo-element that fades by opacity; the words
+ *  change colour in the same frame. All of it lives in FormaPage's
+ *  stylesheet under `.f-head`. */
+export function FormaNav() {
+  const locale = useLocale();
   const t = getFormaCopy(locale);
+  const live = useLive();
+  const [solid, setSolid] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
+  /* Paper ground as soon as the page leaves the very top, so hero words
+     never slide under transparent nav words. The header steps out of the
+     way while the visitor scrolls down and returns on the first scroll up,
+     so it never sits over a heading, a photograph or the form. */
+  useEffect(() => {
+    let last = window.scrollY;
+    let raf = 0;
+    const read = () => {
+      raf = 0;
+      const y = window.scrollY;
+      setSolid(y > 4);
+      if (Math.abs(y - last) < 6) return;
+      setHidden(y > last && y > 240);
+      last = y;
+    };
+    const onScroll = () => {
+      if (!raf) raf = window.requestAnimationFrame(read);
+    };
+    raf = window.requestAnimationFrame(read);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
-    <header className="chrome sticky z-40" style={{ top: "var(--demo-bar-h)" }}>
-      <div className="mx-auto flex h-[56px] w-full max-w-[1240px] items-center justify-between gap-4 px-5 sm:h-[68px] sm:px-8">
+    <header
+      className="f-head"
+      data-live={live ? "" : undefined}
+      data-solid={solid ? "" : undefined}
+      data-hidden={hidden ? "" : undefined}
+      onFocusCapture={() => setHidden(false)}
+    >
+      <div className="mx-auto grid h-full w-full max-w-[1440px] grid-cols-[1fr_auto] items-center gap-4 px-[var(--f-pad)] lg:grid-cols-[1fr_auto_1fr]">
         <a
           href="#top"
-          className="group flex min-w-0 items-baseline gap-3"
           aria-label={t.nav.home}
+          className="f-ext justify-self-start text-[1.125rem] uppercase leading-none tracking-[0.04em] transition-opacity duration-[var(--d-tap)] hover:opacity-70"
         >
-          <span
-            style={{ fontFamily: "var(--font-forma-display)" }}
-            className="text-[1.5rem] leading-none tracking-[-0.01em] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] group-hover:opacity-70 group-active:opacity-50 sm:text-[1.5rem]"
-          >
-            Forma
-          </span>
-          <span
-            className="hidden truncate text-[0.6875rem] uppercase tracking-[0.2em] md:inline"
-            style={{ color: MUTED }}
-          >
-            {t.nav.tagline}
-          </span>
+          Forma
         </a>
 
         <nav
           aria-label={t.nav.label}
-          className="flex min-w-0 items-center gap-1 sm:gap-2"
+          className="flex min-w-0 items-center justify-end gap-6 lg:justify-center lg:gap-12"
         >
           {LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className={`${
-                l.always ? "group inline-flex" : "group hidden sm:inline-flex"
-              } relative h-9 items-center px-2 text-[0.8125rem] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] active:opacity-60`}
+              className={`${l.phone ? "inline-flex" : "hidden lg:inline-flex"} f-ul h-10 items-center text-[0.9375rem]`}
             >
               {t.sections[l.section]}
-              <span
-                aria-hidden="true"
-                className="absolute inset-x-2 bottom-[7px] h-px origin-left scale-x-0 transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:scale-x-100 group-focus-visible:scale-x-100"
-                style={{ background: INK }}
-              />
             </a>
           ))}
           <a
             href="#kontaktai"
-            className="ml-1 press inline-flex h-9 shrink-0 items-center rounded-full border border-[rgba(26,25,23,0.28)] px-4 text-[0.8125rem] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-0 active:opacity-80"
+            className="f-arrow inline-flex h-10 items-center gap-1.5 text-[0.9375rem] lg:hidden"
           >
             {t.sections.contact}
+            <span aria-hidden="true">↘</span>
           </a>
         </nav>
+
+        <a
+          href="#kontaktai"
+          className="f-arrow hidden h-10 items-center gap-1.5 justify-self-end text-[0.9375rem] lg:inline-flex"
+        >
+          {t.sections.contact}
+          <span aria-hidden="true">↘</span>
+        </a>
       </div>
     </header>
   );

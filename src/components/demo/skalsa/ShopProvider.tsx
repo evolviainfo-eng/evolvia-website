@@ -26,7 +26,7 @@ interface ShopValue {
   freeShipping: boolean;
   add: (id: string) => void;
   setQty: (id: string, qty: number) => void;
-  /** Relative change. Prefer this over setQty for +/- controls — see below. */
+  /** Relative change. Prefer this over setQty for +/- controls, see below. */
   bump: (id: string, delta: number) => void;
   remove: (id: string) => void;
   clear: () => void;
@@ -43,12 +43,12 @@ export function useShop(): ShopValue {
   return ctx;
 }
 
-/** Visa parduotuvės būsena — viename kliento komponente.
+/** Visa parduotuvės būsena, viename kliento komponente.
  *
  *  Jokio localStorage ir jokio backendo: tai demonstracinė parduotuvė, todėl
  *  krepšelis gyvuoja tik tol, kol atidarytas puslapis. Sekcijos ateina kaip
  *  serveryje atvaizduoti `children`, tad turinys lieka HTML'e. Antraštė ir
- *  stalčius įdedami puslapyje, o ne čia — kad išvengtume ciklinio importo.
+ *  stalčius įdedami puslapyje, o ne čia, kad išvengtume ciklinio importo.
  */
 export function ShopProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);

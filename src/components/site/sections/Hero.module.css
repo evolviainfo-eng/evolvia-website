@@ -1,0 +1,955 @@
+/* Hero: a centred two-tone headline over the "Kelias iki svetainės" window
+   on a flat slab. The window is two columns: a rail with the four real
+   steps and the price, and a pane showing one step at a time (its number
+   and name, one sentence, the object). Two attributes on .shell drive it:
+   data-view (which view shows) and data-step (active step). The scene flips
+   them; these rules do the crossfades: 0.5 s opacity, the incoming object
+   rises 12 px, no blur anywhere. */
+
+.hero.hero {
+  padding-top: calc(var(--nav-h) + clamp(24px, 4.6vh, 64px));
+  padding-bottom: 0;
+  overflow: clip;
+  isolation: isolate;
+}
+
+/* ── Intro hidden state (html.js only, CSS fallback at 2.8 s) ── */
+:global(html.js) .hero [data-hi]:not([data-hi-done]) {
+  opacity: 0;
+  animation: heroShow 0s linear 2.8s forwards;
+}
+@keyframes heroShow {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Top stack ───────────────────────────────────────── */
+.top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+/* Two lines on desktop and at 1024: each phrase on its own line (the width
+   of the longer one in Geist 400 at 76 px is about 1100 px). */
+.h1 {
+  max-width: 1120px;
+  margin-inline: auto;
+}
+.sub {
+  max-width: 34em;
+  margin-top: clamp(14px, 2.4vh, 22px);
+}
+.actions {
+  justify-content: center;
+  margin-top: clamp(20px, 3.4vh, 32px);
+}
+/* One line that says what the window below is. */
+.note {
+  margin-top: clamp(20px, 3.6vh, 34px);
+  font-size: 14px;
+  line-height: 1.45;
+  letter-spacing: -0.004em;
+  color: var(--fg-2);
+  text-wrap: balance;
+}
+
+/* ── Stage: a flat slab, hairline, top corners 20 ───── */
+.stage {
+  position: relative;
+  width: calc(100% - 48px);
+  max-width: 1392px;
+  margin: clamp(18px, 3vh, 32px) auto 0;
+  padding: clamp(20px, 3vh, 36px) clamp(16px, 3vw, 40px) 0;
+  perspective: 1600px;
+}
+.stageBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--surface);
+  box-shadow: inset 0 1px 0 var(--line-2), inset 1px 0 0 var(--line), inset -1px 0 0 var(--line);
+}
+
+/* ── Window shell: the scroll settle (GSAP) transforms this ─ */
+.shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin-inline: auto;
+  will-change: transform;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 72px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 72px), transparent);
+}
+.win {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  text-align: left;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.win :global(.win-body) {
+  flex: 1;
+  min-height: 0;
+}
+.shell :global(.win-addr) :global(.glyph-lock) {
+  color: var(--fg-3);
+  transition: color 0.4s var(--ease-ui);
+}
+.shell[data-live] :global(.win-addr) :global(.glyph-lock) {
+  color: var(--fg);
+}
+.addrChip {
+  height: 20px;
+  transition: outline-color 0.4s var(--ease-ui), color 0.4s var(--ease-ui), background-color 0.4s var(--ease-ui);
+}
+.shell[data-live] .addrChip {
+  outline-color: transparent;
+  color: var(--fg);
+  background: color-mix(in srgb, var(--fg) 7%, transparent);
+}
+
+.g16 {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.25;
+}
+
+.wbody {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  height: 100%;
+}
+
+/* ── Rail: the four steps are the subject ────────────── */
+.rail {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 18px 16px 20px;
+  border-right: 1px solid var(--line);
+  background: color-mix(in srgb, var(--fg) 1.5%, transparent);
+}
+.railTitle {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--fg);
+}
+.steps {
+  position: relative;
+  display: grid;
+  margin-top: 8px;
+}
+/* The active indicator: 2 px on the rail's left edge, sliding between
+   48 px rows. */
+.hl {
+  position: absolute;
+  left: -16px;
+  top: 0;
+  width: 2px;
+  height: 48px;
+  border-radius: 0 2px 2px 0;
+  background: var(--fg);
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.4s var(--ease-ui);
+}
+.shell[data-step="2"] .hl {
+  transform: translateY(48px);
+}
+.shell[data-step="3"] .hl {
+  transform: translateY(96px);
+}
+.shell[data-step="4"] .hl {
+  transform: translateY(144px);
+}
+.shell[data-step="0"] .hl {
+  opacity: 0;
+}
+.stepRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+  padding: 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--fg-3);
+  white-space: nowrap;
+  transition: color 0.4s var(--ease-ui);
+}
+.stepLbl {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Done steps read in the second tone with their tick; the active one in
+   the first. */
+.stepRow:has([data-status="done"]) {
+  color: var(--fg-2);
+}
+.shell[data-step="1"] .stepRow[data-st="1"],
+.shell[data-step="2"] .stepRow[data-st="2"],
+.shell[data-step="3"] .stepRow[data-st="3"],
+.shell[data-step="4"] .stepRow[data-st="4"] {
+  color: var(--fg);
+}
+
+/* The step circle: the Status primitive at 24 px with the number inside.
+   Isolated, so the number's difference blend only sees the circle: on the
+   half fill it reads dark, on the ring it keeps its grey. The tick replaces
+   it when the step is done. */
+.circ {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  isolation: isolate;
+  color: var(--fg);
+}
+.circ :global(.status),
+.circ :global(.status) svg {
+  width: 24px;
+  height: 24px;
+}
+.circ :global(.status) {
+  grid-area: 1 / 1;
+}
+.num {
+  grid-area: 1 / 1;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--fg-2);
+  mix-blend-mode: difference;
+  transition: opacity 0.3s var(--ease-ui), color 0.4s var(--ease-ui);
+}
+.shell[data-step="1"] .stepRow[data-st="1"] .num,
+.shell[data-step="2"] .stepRow[data-st="2"] .num,
+.shell[data-step="3"] .stepRow[data-st="3"] .num,
+.shell[data-step="4"] .stepRow[data-st="4"] .num,
+.shell[data-step="1"] .schip[data-st="1"] .num,
+.shell[data-step="2"] .schip[data-st="2"] .num,
+.shell[data-step="3"] .schip[data-st="3"] .num,
+.shell[data-step="4"] .schip[data-st="4"] .num {
+  color: var(--fg);
+}
+.circ :global(.status[data-status="done"]) + .num {
+  opacity: 0;
+}
+/* The step in progress: a bright ring around its number, not a half
+   fill (the number cut by the fill read as a glitch). */
+.circ :global(.status[data-status="half"] .status-half) {
+  opacity: 0;
+}
+.circ :global(.status[data-status="half"] .status-ring) {
+  stroke: var(--fg);
+}
+.circ :global(.status[data-status="half"]) + .num {
+  color: var(--fg);
+  mix-blend-mode: normal;
+}
+
+.railPrice {
+  display: grid;
+  gap: 4px;
+  margin-top: 18px;
+  padding: 18px 4px 0;
+  border-top: 1px solid var(--line);
+}
+.price {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  color: var(--fg);
+}
+.priceNote {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--fg-2);
+}
+
+/* ── Strip (phone) ───────────────────────────────────── */
+.strip {
+  display: none;
+}
+.schip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 10px 0 6px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg-2);
+  white-space: nowrap;
+  flex: none;
+  transition: background-color 0.4s var(--ease-ui), box-shadow 0.4s var(--ease-ui), color 0.4s var(--ease-ui);
+}
+.schip .circ,
+.schip .circ :global(.status),
+.schip .circ :global(.status) svg {
+  width: 20px;
+  height: 20px;
+}
+.schip .num {
+  font-size: 11px;
+}
+.shell[data-step="1"] .schip[data-st="1"],
+.shell[data-step="2"] .schip[data-st="2"],
+.shell[data-step="3"] .schip[data-st="3"],
+.shell[data-step="4"] .schip[data-st="4"] {
+  color: var(--fg);
+  background: color-mix(in srgb, var(--fg) 7%, transparent);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+
+/* ── Pane: one step at a time ────────────────────────── */
+.views {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+}
+/* Crossfade 0.5 s both ways. The outgoing view keeps its place while it
+   fades; its object jumps back to the start position only once hidden. */
+.view {
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  padding: 28px 36px 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), visibility 0s linear 0.5s;
+}
+.view .obj {
+  transform: translateY(12px);
+  transition: transform 0s linear 0.5s;
+}
+.shell[data-view="1"] .view[data-v="1"],
+.shell[data-view="2"] .view[data-v="2"],
+.shell[data-view="3"] .view[data-v="3"],
+.shell[data-view="4"] .view[data-v="4"] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), visibility 0s;
+}
+.shell[data-view="1"] .view[data-v="1"] .obj,
+.shell[data-view="2"] .view[data-v="2"] .obj,
+.shell[data-view="3"] .view[data-v="3"] .obj,
+.shell[data-view="4"] .view[data-v="4"] .obj {
+  transform: none;
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.vhead {
+  min-width: 0;
+  margin-bottom: 18px;
+}
+.vtitle {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  color: var(--fg);
+}
+.vtitle :global(.tnum) {
+  color: var(--fg-2);
+}
+.vdesc {
+  max-width: 44em;
+  margin-top: 6px;
+  font-size: 16px;
+  line-height: 1.45;
+  letter-spacing: -0.006em;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+/* The step's object, centred with air around it. */
+.obj {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+}
+.obj > * {
+  min-width: 0;
+}
+
+/* Controls inside the window: 36 px tall, 8 px radius. */
+.views .ub {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.dot {
+  color: var(--fg-3);
+}
+
+/* Swap: two labels in one cell; [data-ok] on an ancestor shows the second.
+   Opacity only. */
+.swap {
+  display: inline-grid;
+  align-items: center;
+  justify-items: start;
+}
+.sa,
+.sb {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.sb {
+  opacity: 0;
+}
+[data-ok] .sa {
+  opacity: 0;
+}
+[data-ok] .sb {
+  opacity: 1;
+  transition-delay: 0.12s;
+}
+
+/* typed characters and the travelling caret */
+.ch {
+  white-space: pre-wrap;
+}
+.caret {
+  display: inline-block;
+  width: 1px;
+  height: 1.1em;
+  margin-right: -1px;
+  vertical-align: -0.18em;
+  background: var(--fg);
+  animation: blink 1.06s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ── View 1: composer ────────────────────────────────── */
+.mail {
+  width: min(560px, 100%);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--fg) 2.5%, transparent);
+  box-shadow: inset 0 0 0 1px var(--line-2), inset 0 1px 0 var(--hi);
+}
+.mhd {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fg);
+  transition: border-color 0.4s var(--ease-ui);
+}
+.mail[data-ok] .mhd {
+  border-bottom-color: transparent;
+}
+.mhd .g16 {
+  color: var(--fg-2);
+}
+.mhd :global(.status),
+.mhd :global(.status) svg,
+.approve :global(.status),
+.approve :global(.status) svg {
+  width: 18px;
+  height: 18px;
+}
+.mhd :global(.status) {
+  color: var(--fg);
+}
+.mhd :global(.mono) {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--fg-2);
+}
+.mbody {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s var(--ease-ui);
+}
+.mail[data-ok] .mbody {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+.mbodyIn {
+  min-height: 0;
+  overflow: hidden;
+}
+.field {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 44px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+}
+.field :global(.chip-mono) {
+  height: 24px;
+  font-size: 13px;
+}
+.fl {
+  width: 44px;
+  flex: none;
+  font-size: 14px;
+  color: #8f8f8e;
+}
+.fv {
+  letter-spacing: -0.006em;
+  color: var(--fg);
+}
+.mtext {
+  min-height: 96px;
+  padding: 14px 16px 10px;
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: -0.006em;
+  color: var(--fg);
+}
+.inlineChip {
+  height: 22px;
+  margin: 0 2px;
+  vertical-align: 1px;
+  font-size: 13px;
+}
+.mfoot {
+  display: flex;
+  justify-content: flex-end;
+  padding: 6px 16px 16px;
+}
+
+/* ── View 2: live draft ──────────────────────────────── */
+.live {
+  width: min(620px, 100%);
+}
+.browser {
+  border-radius: 12px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--fg) 2.5%, transparent);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+.bbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--fg-2);
+}
+.bbar > :global(.glyph-lock) {
+  color: var(--fg-3);
+}
+.burl {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.vp {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+  background: #151515;
+}
+.shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: translateY(-30%);
+}
+.skel {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: #151515;
+}
+.skel i {
+  position: absolute;
+  display: block;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.07);
+}
+.sk1 {
+  left: 4%;
+  right: 4%;
+  top: 16px;
+  height: 16px;
+}
+.sk2 {
+  left: 4%;
+  width: 60%;
+  bottom: 88px;
+  height: 30px;
+}
+.sk3 {
+  left: 4%;
+  width: 40%;
+  bottom: 48px;
+  height: 30px;
+}
+.sk4 {
+  right: 4%;
+  width: 84px;
+  bottom: 48px;
+  height: 22px;
+}
+.thumb {
+  position: absolute;
+  right: 3px;
+  top: 4px;
+  width: 3px;
+  height: 34%;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(110%);
+}
+.v2foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 14px;
+}
+.cap {
+  min-width: 0;
+  font-size: 14px;
+  color: var(--fg-2);
+}
+.v2btns {
+  display: inline-flex;
+  gap: 8px;
+  flex: none;
+}
+.approve :global(.status) {
+  color: #0b0b0b;
+}
+.approve :global(.status-tick) {
+  stroke: #f5f5f4;
+}
+
+/* ── Views 3 and 4: lists ────────────────────────────── */
+.list {
+  width: min(560px, 100%);
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  height: 44px;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+  letter-spacing: -0.006em;
+}
+.row :global(.status),
+.row :global(.status) svg {
+  width: 18px;
+  height: 18px;
+  color: var(--fg);
+}
+.rl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--fg-3);
+  white-space: nowrap;
+  transition: color 0.4s var(--ease-ui);
+}
+.row[data-done] .rl {
+  color: var(--fg);
+}
+.rowChip {
+  height: 22px;
+  font-size: 13px;
+}
+.rm {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+
+.svc {
+  gap: 14px;
+}
+.svcL {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--fg);
+}
+.badge {
+  margin-left: auto;
+}
+.svc :global(.chip) {
+  height: 24px;
+  font-size: 13px;
+  color: var(--fg-2);
+}
+.svc[data-ok] :global(.chip) {
+  color: var(--fg);
+}
+.svc :global(.toggle) {
+  width: 36px;
+  height: 20px;
+}
+.svc :global(.toggle)::after {
+  width: 16px;
+  height: 16px;
+}
+.svc :global(.toggle[data-on])::after {
+  transform: translateX(16px);
+}
+
+.tline {
+  margin-top: 20px;
+}
+.tlBar {
+  display: grid;
+  grid-template-columns: 40fr 60fr;
+  gap: 4px;
+  height: 8px;
+}
+.tl1 {
+  border-radius: 4px;
+  background: var(--fg);
+  transform-origin: 0 50%;
+}
+.tl2 {
+  border-radius: 4px;
+  border: 1px dashed var(--line-3);
+}
+.tlLbls {
+  display: grid;
+  grid-template-columns: 40fr 60fr;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--fg);
+}
+.tlLbls > span + span {
+  color: var(--fg-2);
+}
+.file {
+  gap: 8px;
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+  border-bottom: 0;
+}
+.fileV {
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+
+/* ── Breakpoints ─────────────────────────────────────── */
+@media (max-width: 1023px) {
+  .stage {
+    width: calc(100% - 2 * var(--gutter));
+  }
+  .wbody {
+    grid-template-columns: 256px minmax(0, 1fr);
+  }
+  .view {
+    padding: 24px;
+  }
+}
+
+/* Tablet and phone: no rail, the steps become a strip of chips. */
+@media (max-width: 799px) {
+  .win {
+    height: 420px;
+  }
+  .wbody {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 48px minmax(0, 1fr);
+  }
+  .rail {
+    display: none;
+  }
+  .strip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .strip::-webkit-scrollbar {
+    display: none;
+  }
+  .view {
+    padding: 16px;
+  }
+  .vhead {
+    margin-bottom: 12px;
+  }
+  .vtitle {
+    font-size: 19px;
+  }
+  .vdesc {
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  .obj {
+    align-items: start;
+  }
+  .shell {
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 40px), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 40px), transparent);
+  }
+  .mhd {
+    height: 44px;
+    font-size: 14px;
+  }
+  .field {
+    height: 40px;
+    font-size: 15px;
+  }
+  .mtext {
+    min-height: 0;
+    padding: 12px 14px 8px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .mfoot {
+    padding: 4px 14px 14px;
+  }
+  .vp {
+    height: 164px;
+  }
+  .v2foot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .v2btns {
+    justify-content: flex-end;
+  }
+  .row {
+    height: 40px;
+    font-size: 15px;
+  }
+  .tline {
+    margin-top: 14px;
+  }
+  .tlLbls {
+    font-size: 12.5px;
+  }
+  .file {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .h1 {
+    max-width: 360px;
+  }
+  .actions {
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+  .actions > :global(.btn) {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0 12px;
+  }
+  .note {
+    margin-top: 18px;
+    max-width: 30em;
+  }
+  .stage {
+    width: 100%;
+    margin-top: 20px;
+    padding: 16px 16px 0;
+    perspective: 1200px;
+  }
+  .stageBg {
+    border-radius: 16px 16px 0 0;
+    box-shadow: inset 0 1px 0 var(--line-2);
+  }
+  .shell :global(.win-addr) {
+    min-width: 0;
+  }
+  .shell :global(.win-bar) {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .actions > :global(.btn) {
+    font-size: 14px;
+    padding: 0 8px;
+  }
+}
+
+@media (max-width: 519px) {
+  /* Four labelled chips do not fit a phone: only the step in progress
+     keeps its name, the others are their numbered circles. */
+  .schip .slbl {
+    display: none;
+  }
+  .shell[data-step="1"] .schip[data-st="1"] .slbl,
+  .shell[data-step="2"] .schip[data-st="2"] .slbl,
+  .shell[data-step="3"] .schip[data-st="3"] .slbl,
+  .shell[data-step="4"] .schip[data-st="4"] .slbl {
+    display: inline;
+  }
+  .schip {
+    padding-right: 6px;
+  }
+  /* Care rows: the toggle already says "on", so the chip goes and the
+     service names fit; the year bar splits evenly so both labels hold
+     one line. */
+  .badge {
+    display: none;
+  }
+  .svc :global(.toggle) {
+    margin-left: auto;
+  }
+  .tlBar,
+  .tlLbls {
+    grid-template-columns: 1fr 1fr;
+  }
+  .shell[data-step="1"] .schip[data-st="1"],
+  .shell[data-step="2"] .schip[data-st="2"],
+  .shell[data-step="3"] .schip[data-st="3"],
+  .shell[data-step="4"] .schip[data-st="4"] {
+    padding-right: 10px;
+  }
+}

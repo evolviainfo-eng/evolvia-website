@@ -1,0 +1,47 @@
+/* The 404. One screen: the message left in the chapter grammar, the
+   missing address in mono (technical text), two actions, then a hairline
+   index of the site's pages. Type: .t-hero title, .t-lead lead, 13 px mono
+   address, 16 px / 500 index labels with 14 px notes.
+
+   Language: the head script sets html[data-locale="en"] on /en/...
+   addresses before paint; the blocks of the other language are hidden. */
+
+:global(html[data-locale="en"]) .lt { display: none !important; }
+:global(html:not([data-locale="en"])) .en { display: none !important; }
+
+.main { min-height: 100svh; display: grid; }
+.block { display: grid; align-content: center; padding-top: calc(var(--nav-h) + clamp(48px, 9vh, 120px)); padding-bottom: clamp(56px, 9vh, 112px); }
+
+.message { max-width: 44rem; }
+.title { max-width: 14ch; }
+.lead { margin-top: 24px; max-width: 32em; }
+
+.address { margin-top: 20px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font-family: var(--f-mono); font-size: 13px; line-height: 1.5; min-height: 20px; }
+.addressLabel { color: var(--fg-2); }
+.addressValue { color: var(--fg); overflow-wrap: anywhere; }
+
+.actions { margin-top: 32px; gap: 12px; }
+
+.index { margin-top: clamp(56px, 9vh, 96px); border-top: 1px solid var(--line); padding-top: 24px; }
+.indexTitle { font-size: 14px; font-weight: 500; color: var(--fg-2); letter-spacing: -0.005em; }
+.indexList { margin-top: 16px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; }
+.indexLink { display: grid; gap: 6px; padding: 8px 0; text-decoration: none; border-radius: 6px; }
+.indexLabel { display: inline-flex; align-items: baseline; gap: 6px; font-size: 16px; font-weight: 500; letter-spacing: -0.012em; color: var(--fg); }
+.arrow { color: var(--fg-3); font-weight: 400; opacity: 0; transform: translateX(-4px); transition: opacity 0.2s var(--ease-ui), transform 0.2s var(--ease-ui); }
+.indexLink:hover .arrow, .indexLink:focus-visible .arrow { opacity: 1; transform: none; }
+.indexNote { font-size: 14px; line-height: 1.45; color: var(--fg-2); transition: color 0.16s var(--ease-ui); }
+.indexLink:hover .indexNote { color: var(--fg); }
+
+@media (max-width: 1023px) {
+  .indexList { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 8px; }
+}
+@media (max-width: 640px) {
+  .block { align-content: start; padding-top: calc(var(--nav-h) + 56px); padding-bottom: 64px; }
+  .actions :global(.btn) { flex: 1 1 100%; }
+  .index { margin-top: 56px; padding-top: 20px; }
+  .indexList { grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: 8px; }
+  .indexList li + li { border-top: 1px solid var(--line); }
+  .indexLink { grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 12px; min-height: 52px; padding: 14px 0; }
+  .arrow { opacity: 1; transform: none; }
+  .indexNote { text-align: right; font-size: 13px; }
+}

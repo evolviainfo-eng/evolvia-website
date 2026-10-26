@@ -1,43 +1,65 @@
-/* Forma — the demo's own small system.
+/* Forma, the demo's own small system (round 8, after TARQ Studio).
  *
- * Two ink tones, one hairline, one type scale. Hard-coded hex is correct here:
- * a demo owns its palette and must not inherit the site tokens, which flip with
+ * Warm grey paper, near-black ink, one sand tone for the dark contact
+ * ground. No accent colour, no gradients. Hard-coded hex is correct here: a
+ * demo owns its palette and must not inherit the site tokens, which flip with
  * the visitor's dark-mode toggle.
  *
- * These are plain strings, never merged — so nothing here carries a colour that
- * a call site would then have to fight. */
+ * Contrast, measured: MUTED on PAPER 4.97:1 (small text), DIM on PAPER
+ * 3.32:1 (only for words 24px and up: inactive filter words), SAND on INK
+ * 12.1:1, SAND_MUTED on INK 6.2:1. */
 
-export const PAPER = "#F4F1EC";
-export const BAND = "#EAE5DD";
-export const INK = "#1A1917";
-/** The one secondary tone. 5.4:1 on paper, 5.0:1 on the band — AA at 11px. */
-export const MUTED = "#5E5952";
-/** The one hairline. Every rule, border and divider on the page uses it. */
-export const HAIR = "rgba(26,25,23,0.16)";
+export const PAPER = "#DFDDDC";
+export const INK = "#171717";
+export const SAND = "#D9D4C2";
+export const MUTED = "#5F5B58";
+export const DIM = "#7A7673";
+export const SAND_MUTED = "#9C978C";
+/** The one hairline on paper: ink at 25%. */
+export const HAIR = "rgba(23,23,23,0.25)";
+/** The hairline on the dark contact ground. */
+export const HAIR_DARK = "rgba(217,212,194,0.22)";
 
-export const SERIF = { fontFamily: "var(--font-forma-display)" } as const;
+/** Page frame: 40px side margin at 1440, 16px on a phone, 1360px of content. */
+export const WRAP =
+  "mx-auto w-full max-w-[1440px] px-[var(--f-pad)]";
 
-export const WRAP = "mx-auto w-full max-w-[1240px] px-5 sm:px-8";
-/** One vertical rhythm for every band on the page. */
-export const SECTION = "py-[clamp(80px,11vw,144px)]";
+/* ── Type ──────────────────────────────────────────────────────────
+   One grotesk (Archivo) in two widths, and one serif italic used only as
+   punctuation: parentheses and numerals. Never a heading.
+   `f-ext` (in FormaPage's stylesheet) sets the 125% width axis.
 
-/* ── Type scale — four body steps and two headings, nothing off it ────
-   Every constant below is used whole: none of them is ever concatenated with
-   a second `text-*` or `tracking-*`, because two arbitrary values of the same
-   utility on one element have no defined winner. Sizes belong to the step,
-   headings state their own. */
-/** Caps meta — figure captions, table keys, indices, timings. */
-export const T_META = "text-[0.6875rem] uppercase tracking-[0.2em]";
-/** The section label. Same size, opened up so it reads as a marker. */
-export const T_EYEBROW = "text-[0.6875rem] uppercase tracking-[0.24em]";
-/** Figures that must stay in sentence case — prices, counters, ratios. */
-export const T_NUM = "text-[0.6875rem] tabular-nums tracking-[0.04em]";
-export const T_SMALL = "text-[0.8125rem] leading-[1.65]";
-export const T_BODY = "text-[0.9375rem] leading-[1.72]";
-export const T_LEAD = "text-[1.0625rem] leading-[1.68]";
-/** Section heading. 48.8px at 1440 — well inside the 72px ceiling. */
-export const T_H2 =
-  "min-w-0 font-normal text-[clamp(2rem,4.4vw,3.05rem)] leading-[1.06] tracking-[-0.02em] text-balance";
-/** Card heading — shape only; the call site states the size for its column. */
-export const T_H3 =
-  "min-w-0 font-normal leading-[1.16] tracking-[-0.01em] text-pretty";
+   The scale, desktop / phone (px):
+     84 / 40   section titles (extended caps)
+     60 / 34   hero project name (serif italic, tracked)
+     36 / 22   filter words
+     24 / 18   step and service names (extended caps), contact sentence
+     20 / 18   hero intro (light)
+     18 / 16   rows: project names, years, links, prices
+     16 / 16   body (light, justified only from 1024px)
+     14 / 14   notes, counts, footer (MUTED, 4.97:1)
+   Nothing smaller than 12. */
+
+/** Section titles: extended uppercase, 84px at 1440, 40px on a phone. */
+export const T_TITLE =
+  "f-ext min-w-0 font-normal uppercase text-[clamp(2.5rem,5.85vw,5.25rem)] leading-[1] tracking-[0]";
+/** Small extended caps: process step titles, service names. */
+export const T_CAPS =
+  "f-ext font-normal uppercase text-[clamp(1.125rem,1.67vw,1.5rem)] leading-[0.95]";
+/** Body: light, justified on desktop, 16/22.4. */
+export const T_BODY =
+  "f-just text-[1rem] font-light leading-[1.4]";
+/** Body that is never justified: narrow columns, where justification
+ *  opens rivers (process steps, phone). */
+export const T_BODY_RAG = "text-[1rem] font-light leading-[1.45]";
+/** The hero's intro over the photograph. */
+export const T_LEAD =
+  "text-[clamp(1.125rem,1.4vw,1.25rem)] font-light leading-[1.4]";
+/** The first sentence of a block: same size, regular weight. */
+export const T_BODY_STRONG = "text-[1rem] font-normal leading-[1.4]";
+/** Labels, nav, project names. */
+export const T_LABEL = "text-[0.9375rem] font-normal leading-[1.3]";
+export const T_ROW = "text-[clamp(1rem,1.25vw,1.125rem)] font-normal leading-[1.3]";
+export const T_SMALL = "text-[0.875rem] font-normal leading-[1.45]";
+/** Instrument Serif italic. Only for ( ), 01 02 03 and the hero name. */
+export const T_ITALIC = "f-it font-normal";

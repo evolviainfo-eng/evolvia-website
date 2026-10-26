@@ -1,0 +1,78 @@
+/* /duk. Type scale used here (site.css tokens): h1 .t-hero 44 to 76 px;
+   group titles .t-h3 20 to 26 px; questions 17 px / 500 (16 px phone);
+   answers 16 px / 1.65; notes 14 px; closing .t-h2 and .t-lead.
+   Rhythm: header, groups and closing are three sections with one hairline
+   between each; inside the groups section the rows are separated by space
+   only (72 to 120 px), so no two rules ever stack. */
+
+.head { padding-top: calc(var(--nav-h) + clamp(48px, 6.5vw, 96px)); padding-bottom: clamp(56px, 6vw, 80px); }
+.title { max-width: none; }
+.lead { margin-top: 24px; max-width: 34em; }
+
+.groups { display: grid; row-gap: clamp(72px, 8vw, 120px); padding-block: clamp(64px, 7vw, 104px); }
+.grid { scroll-margin-top: calc(var(--nav-h) + 24px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); column-gap: 64px; }
+.side { min-width: 0; }
+.sticky { position: sticky; top: calc(var(--nav-h) + 32px); display: grid; gap: 10px; }
+.gTitle { max-width: 14ch; text-wrap: balance; }
+.gNote { max-width: 26em; font-size: 14px; line-height: 1.5; color: var(--fg-2); }
+
+.list { min-width: 0; border-bottom: 1px solid var(--line); }
+.item { border-top: 1px solid var(--line); interpolate-size: allow-keywords; }
+.item::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition: block-size 0.3s var(--ease-ui), content-visibility 0.3s var(--ease-ui) allow-discrete;
+}
+.item[open]::details-content { block-size: auto; }
+
+.q {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  min-height: 64px;
+  padding: 14px 0;
+  list-style: none;
+  cursor: pointer;
+  color: var(--fg);
+  border-radius: 6px;
+}
+.q::-webkit-details-marker { display: none; }
+.q::marker { content: ""; }
+.q:focus-visible { outline-offset: 2px; }
+.qt { font-size: 17px; font-weight: 500; line-height: 1.4; letter-spacing: -0.012em; color: var(--fg-2); transition: color 0.16s var(--ease-ui); text-wrap: pretty; }
+.q:hover .qt, .item[open] .qt { color: var(--fg); }
+.pm { display: inline-grid; place-items: center; width: 24px; height: 24px; color: var(--fg-3); transition: color 0.16s var(--ease-ui), transform 0.24s var(--ease-ui); }
+.pm svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+.q:hover .pm, .item[open] .pm { color: var(--fg); }
+.item[open] .pm { transform: rotate(45deg); }
+
+.answer { padding: 0 48px 26px 0; }
+.a { max-width: 62ch; font-size: 16px; line-height: 1.65; color: var(--fg-2); text-wrap: pretty; }
+
+.close { padding-block: clamp(88px, 9vw, 136px); }
+.closeIn { margin-bottom: 0; }
+.closeSide { display: grid; gap: 28px; padding-top: 6px; max-width: 34em; }
+.actions { gap: 12px; }
+.reach { color: var(--fg-3); }
+.link { color: var(--fg-2); text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--line-3); text-underline-offset: 3px; transition: color 0.16s var(--ease-ui), text-decoration-color 0.16s var(--ease-ui); }
+.link:hover { color: var(--fg); text-decoration-color: currentColor; }
+.sep { margin: 0 8px; color: var(--fg-4); }
+
+@media (max-width: 1023px) {
+  .grid { grid-template-columns: minmax(0, 1fr); row-gap: 28px; }
+  .sticky { position: static; }
+  .gTitle { max-width: none; }
+}
+@media (max-width: 640px) {
+  .head { padding-top: calc(var(--nav-h) + 48px); padding-bottom: 48px; }
+  .lead { margin-top: 20px; }
+  .groups { row-gap: 56px; padding-block: 48px; }
+  .q { min-height: 56px; gap: 16px; }
+  .qt { font-size: 16px; }
+  .answer { padding-right: 0; padding-bottom: 22px; }
+  .a { font-size: 15px; }
+  .actions :global(.btn) { flex: 1 1 100%; }
+  .reach { display: grid; gap: 4px; }
+  .sep { display: none; }
+}

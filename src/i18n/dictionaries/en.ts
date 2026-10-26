@@ -348,7 +348,7 @@ export const en: Dictionary = {
     rows: [
       {
         term: "What data, and why",
-        body: "Your name, email address and the text of your message. Only what you type in yourself. We use it to reply to your enquiry and, if you ask for one, to prepare a quote.",
+        body: "Your name, email address, phone number (if you give one), business name, current website (if you have one) and the text of your message. Only what you type in yourself. We use it to reply to your enquiry and, if you ask for one, to prepare a quote.",
       },
       {
         term: "Legal basis",
@@ -372,7 +372,7 @@ export const en: Dictionary = {
       },
       {
         term: "Cookies",
-        body: "We use no advertising or tracking cookies. The only things we store in your browser are two choices of yours: light or dark theme, and the site language, and only when you switch them yourself. That is why there is no consent banner here: there is nothing to consent to.",
+        body: "We use no advertising or tracking cookies. The only thing we store in your browser is one choice of yours, the site language, and only when you switch it yourself. That is why there is no consent banner here: there is nothing to consent to.",
       },
     ],
   },

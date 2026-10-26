@@ -66,7 +66,7 @@ export const fumeEn: FumeCopy = {
     lead: "An open-fire kitchen and a wine bar. Thirty-four seats in Užupis.",
     book: "Book a table",
     menu: "Evening menu",
-    meta: ["Užupis, Vilnius", "Tuesday–Sunday", "Doors from 17:00"],
+    meta: ["Užupis, Vilnius", "Tuesday-Sunday", "Doors from 17:00"],
   },
 
   intro: {
@@ -196,6 +196,14 @@ export const fumeEn: FumeCopy = {
     ],
   },
 
+  card: {
+    title: "Tonight's menu",
+    open: "The full menu",
+    close: "Close the menu",
+    from: (price: string) => `from ${price}`,
+    book: "Book a table",
+  },
+
   wine: {
     eyebrow: "Wine list",
     title: ["About 120 wines.", "Here are five."],
@@ -238,6 +246,12 @@ export const fumeEn: FumeCopy = {
     windowAlt: "The glowing bar counter, seen through the glass from the street",
     lampsAlt: "Pendant lights above the dining tables",
     lampsCaption: "Later in the evening, only the candles and these lamps stay lit.",
+    slider: {
+      label: "Photographs of the room",
+      slide: "photograph",
+      prev: "Previous photograph",
+      next: "Next photograph",
+    },
   },
 
   reservation: {
@@ -349,9 +363,9 @@ export const fumeEn: FumeCopy = {
     hoursCaption: "Fumé's weekly opening hours",
     hours: [
       { d: "Monday", h: "Closed" },
-      { d: "Tuesday–Thursday", h: "17:00–23:00" },
-      { d: "Friday–Saturday", h: "17:00–24:00" },
-      { d: "Sunday", h: "17:00–22:00" },
+      { d: "Tuesday-Thursday", h: "17:00-23:00" },
+      { d: "Friday-Saturday", h: "17:00-24:00" },
+      { d: "Sunday", h: "17:00-22:00" },
     ],
     hoursNote:
       "The kitchen takes last orders at 22:30, on Sundays at 21:30. The bar serves until we close.",

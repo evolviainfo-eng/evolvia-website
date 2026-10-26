@@ -20,10 +20,8 @@ import { getFormaCopy } from "@/components/demo/forma/copy";
 import {
   HAIR,
   MUTED,
-  SERIF,
   T_BODY,
-  T_META,
-  T_NUM,
+  T_SMALL,
 } from "@/components/demo/forma/tokens";
 
 export type FormaProjectKind = "butas" | "namas" | "komercine";
@@ -44,12 +42,15 @@ export interface FormaProject {
   w: number;
   h: number;
   alt: string;
+  /** The project's second view, shown in the card's passe-partout hover.
+   *  The lightbox shows the cover only. */
+  second?: { src: string; w: number; h: number };
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 /** Keys that would scroll the page behind the dialog. Arrow left/right are
- *  handled separately — they navigate the gallery. */
+ *  handled separately, they navigate the gallery. */
 const SCROLL_KEYS = new Set([
   " ",
   "PageUp",
@@ -63,11 +64,12 @@ const SCROLL_KEYS = new Set([
 const FOCUSABLE =
   'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])';
 
-/** Every control in here is the same object: a paper disc that fills with ink.
+/** Every control in here is the same object: a square hairline box that
+ *  fills with ink (no radius anywhere on this page, as on TARQ).
  *  Stated once so the close, the arrows and any future control cannot drift
  *  apart. Size and shape only carry a colour that no call site overrides. */
 const CONTROL =
-  "pointer-events-auto inline-flex h-11 shrink-0 items-center justify-center rounded-full border border-[rgba(26,25,23,0.18)] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-px disabled:pointer-events-none disabled:border-[rgba(26,25,23,0.10)] disabled:text-[rgba(26,25,23,0.28)]";
+  "pointer-events-auto inline-flex h-11 shrink-0 items-center justify-center border border-[rgba(23,23,23,0.25)] transition-[translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#171717] hover:bg-[#171717] hover:text-[#DFDDDC] active:translate-y-px disabled:pointer-events-none disabled:border-[rgba(23,23,23,0.10)] disabled:text-[rgba(23,23,23,0.28)]";
 
 /** Full-screen project view.
  *
@@ -83,7 +85,7 @@ const CONTROL =
  *  moves, nothing is restored, nothing can jump.
  */
 /** Apple's momentum projection (Designing Fluid Interfaces sample code).
- *  Exponential decay, not the textbook v²/2a — a flick should land where a
+ *  Exponential decay, not the textbook v²/2a, a flick should land where a
  *  scroll would land. */
 function projectMomentum(velocity: number, decelerationRate = 0.998) {
   return ((velocity / 1000) * decelerationRate) / (1 - decelerationRate);
@@ -121,7 +123,7 @@ export function ProjectLightbox({
     [index, items.length, many, onNavigate],
   );
 
-  /* enter — two frames so the closed state is painted before it transitions */
+  /* enter, two frames so the closed state is painted before it transitions */
   useEffect(() => {
     let second = 0;
     const first = requestAnimationFrame(() => {
@@ -133,7 +135,7 @@ export function ProjectLightbox({
     };
   }, []);
 
-  /* leave — unmount only once the panel has finished travelling */
+  /* leave, unmount only once the panel has finished travelling */
   useEffect(() => {
     if (!leaving) return;
     const el = panelRef.current;
@@ -141,7 +143,7 @@ export function ProjectLightbox({
       onClose();
       return;
     }
-    // transitionend bubbles — a button's own hover transition finishing must
+    // transitionend bubbles, a button's own hover transition finishing must
     // not be mistaken for the panel having left
     const done = (e: TransitionEvent) => {
       if (e.target !== el || e.propertyName !== "opacity") return;
@@ -265,7 +267,7 @@ export function ProjectLightbox({
   const reduce = !!useReducedMotion();
   const dragX = useMotionValue(0);
   const dragY = useMotionValue(0);
-  /* Pulling down fades the picture out as it goes — continuous feedback the
+  /* Pulling down fades the picture out as it goes, continuous feedback the
      whole way, so it is obvious what the gesture is about to do. */
   const dragFade = useTransform(dragY, [0, 260], [1, 0.45], { clamp: true });
 
@@ -281,7 +283,7 @@ export function ProjectLightbox({
         requestClose();
       }
       // Whatever happened, the picture comes home from where it actually is,
-      // carrying the velocity it had — no seam between drag and animation.
+      // carrying the velocity it had, no seam between drag and animation.
       animate(dragX, 0, {
         type: "spring",
         bounce: 0.18,
@@ -322,21 +324,21 @@ export function ProjectLightbox({
       <div
         aria-hidden="true"
         onClick={requestClose}
-        className="absolute inset-0 bg-[rgba(244,241,236,0.97)] backdrop-blur-[8px] transition-opacity duration-[var(--d-ui)] ease-[var(--e-out)]"
+        className="absolute inset-0 bg-[rgba(223,221,220,0.98)] transition-opacity duration-[var(--d-ui)] ease-[var(--e-out)]"
         style={{ opacity: active ? 1 : 0 }}
       />
 
       {/* The panel sits on top of the backdrop, so it is transparent to the
-          pointer and only its real parts opt back in — that way a click on any
+          pointer and only its real parts opt back in, that way a click on any
           empty area of the overlay reaches the backdrop and closes. */}
       <div
         ref={panelRef}
         style={panelStyle}
-        className="pointer-events-none relative flex h-full w-full flex-col text-[#1A1917]"
+        className="pointer-events-none relative flex h-full w-full flex-col text-[#171717]"
       >
         <div className="flex shrink-0 items-center justify-between gap-4 px-5 py-3 sm:px-8 sm:py-4">
           <span
-            className={`pointer-events-auto ${T_NUM}`}
+            className={`pointer-events-auto tabular-nums ${T_SMALL}`}
             style={{ color: MUTED }}
           >
             {pad(index + 1)} / {pad(items.length)}
@@ -364,10 +366,10 @@ export function ProjectLightbox({
                   >
                     <span
                       aria-hidden="true"
-                      className={`block h-[2px] transition-[width,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] ${
+                      className={`block h-[2px] w-8 origin-left bg-[#171717] transition-[transform,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] ${
                         on
-                          ? "w-8 bg-[#1A1917]"
-                          : "w-4 bg-[rgba(26,25,23,0.28)] group-hover:bg-[rgba(26,25,23,0.6)]"
+                          ? "opacity-100"
+                          : "scale-x-50 opacity-30 group-hover:opacity-60"
                       }`}
                     />
                   </button>
@@ -392,7 +394,7 @@ export function ProjectLightbox({
 
         <div className="flex min-h-0 flex-1 items-center justify-center px-5 sm:px-8">
           {/* Grabbable: throw it sideways to change project, down to close.
-              A spring, not a transition — a picture you can catch mid-flight
+              A spring, not a transition, a picture you can catch mid-flight
               has to animate from wherever it currently is. The decision at
               release comes from the PROJECTED endpoint, so a flick throws and
               a nudge springs back. */}
@@ -410,7 +412,7 @@ export function ProjectLightbox({
             dragElastic={0.55}
             dragMomentum={false}
             onDragEnd={(_, info) => onFling(info.offset, info.velocity)}
-            /* X and Y are independent motion values, never one 2D distance —
+            /* X and Y are independent motion values, never one 2D distance , 
                a single spring on the diagonal desyncs the moment the two axes
                carry different velocities. */
             style={{
@@ -430,13 +432,12 @@ export function ProjectLightbox({
             <div className="pointer-events-auto min-w-0">
               <h2
                 id={titleId}
-                style={SERIF}
                 className="text-[clamp(1.5rem,3.2vw,1.875rem)] font-normal leading-[1.1] text-balance"
               >
                 {project.title}
               </h2>
               <p
-                className={`mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 ${T_META}`}
+                className={`mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 ${T_SMALL}`}
                 style={{ color: MUTED }}
               >
                 <span>{project.kindLabel}</span>
@@ -448,7 +449,7 @@ export function ProjectLightbox({
                 <span>{project.year}</span>
               </p>
               {/* The note is the only prose this feature carries, and the grid
-                  above shows it nowhere — so it renders at every width. Short
+                  above shows it nowhere, so it renders at every width. Short
                   viewports are handled by bounding it, not by hiding it; the
                   image row is `flex-1 min-h-0` and gives the height back. */}
               <p

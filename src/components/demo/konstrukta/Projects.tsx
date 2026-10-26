@@ -1,95 +1,125 @@
 import type { Locale } from "@/i18n/config";
 import { getKonstruktaCopy } from "./copy";
-import {
-  BAND,
-  CONTAINER,
-  Plate,
-  SectionHead,
-  SpecRow,
-  T_BODY,
-  T_MICRO,
-} from "./ui";
+import { BAND, SectionHead, SpecRow, T_H3, T_TEXT, WRAP } from "./ui";
 
-/** Reference number and photo per project. The words (title, text, alt,
- *  spec table) live in the dictionary under the same id. */
+/** Photo and placement per project. The words (title, text, alt, spec
+ *  table) live in the dictionary under the same id.
+ *
+ *  `place` is Haven's staggered scatter: images of different widths, left
+ *  and right, the right column dropped below the left one so no two ever
+ *  share a row line. Below 1024px one clean full-width column. */
 const PROJECTS = [
   {
     id: "ringaudai",
-    no: "OBJ-24-07",
-    img: { src: "/demo/konstrukta/project-1.webp", w: 1400, h: 1050 },
+    img: { src: "/demo/konstrukta/proj-ringaudai.webp", w: 1800, h: 1200 },
+    place: "lg:w-[86%]",
   },
   {
     id: "domeikava",
-    no: "OBJ-23-02",
-    img: { src: "/demo/konstrukta/project-2.webp", w: 1400, h: 788 },
+    img: { src: "/demo/konstrukta/proj-domeikava.webp", w: 1800, h: 1200 },
+    place: "lg:ml-auto",
   },
   {
     id: "aleksotas",
-    no: "OBJ-25-01",
-    img: { src: "/demo/konstrukta/project-3.webp", w: 1400, h: 860 },
+    img: { src: "/demo/konstrukta/proj-aleksotas.webp", w: 1350, h: 1800 },
+    place: "",
   },
   {
     id: "garliava",
-    no: "OBJ-25-06",
-    img: { src: "/demo/konstrukta/project-4.webp", w: 1400, h: 1106 },
+    img: { src: "/demo/konstrukta/proj-garliava.webp", w: 1200, h: 1800 },
+    place: "lg:ml-auto lg:w-[84%]",
   },
 ] as const;
 
+/** Four finished buildings, in Haven's scatter. Every image is capped at
+ *  700px (half its pixel width) and settles from 1.08 to 1 as it crosses
+ *  the screen; on desktop the right column drifts a little against the
+ *  left (Motion.tsx, data-k-drift). Pointing at a project lifts a 20 %
+ *  veil and enlarges the image to 1.03 (CSS, hover devices only). The
+ *  name, year, story and spec table are always printed under the image,
+ *  so touch loses nothing. */
 export function Projects({ locale }: { locale: Locale }) {
   const c = getKonstruktaCopy(locale).projects;
   return (
-    <section
-      id="objektai"
-      className={`${BAND} border-t border-white/[0.11] bg-[#1A1C20]`}
-    >
-      <div className={CONTAINER}>
-        <SectionHead
-          index="03"
-          label={c.label}
-          title={c.title}
-          lead={c.lead}
-        />
+    <section id="objektai" className={BAND}>
+      <div className={WRAP}>
+        <SectionHead label={c.label} title={c.title} lead={c.lead} />
 
-        <div className="mt-[clamp(40px,6vw,72px)] flex flex-col gap-[clamp(48px,6vw,80px)]">
-          {PROJECTS.map((p, i) => {
-            const t = c.items[p.id];
-            return (
-              <article
-                key={p.no}
-                data-rise
-                style={{ "--i": i + 1 } as React.CSSProperties}
-                className="grid gap-7 border-t border-white/[0.11] pt-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-12"
-              >
-                <Plate
-                  src={p.img.src}
-                  width={p.img.w}
-                  height={p.img.h}
-                  alt={t.alt}
-                  className="min-w-0"
-                />
-
-                <div className="min-w-0">
-                  <p className={`${T_MICRO} tracking-[0.2em] text-[#9A9791]`}>
-                    {p.no}
-                  </p>
-                  <h3 className="mt-3 text-balance text-[1.25rem] font-semibold leading-[1.2] tracking-[-0.02em] text-[#E7E5E1] md:text-[1.25rem]">
-                    {t.title}
-                  </h3>
-                  <p
-                    className={`mt-4 max-w-[52ch] text-pretty ${T_BODY} text-[#9A9791]`}
+        {/* Two independent columns, the right one dropped, so the gaps
+            between projects stay even and the scatter never leaves one
+            column empty for a screen. */}
+        <div className="mt-[clamp(56px,7vw,112px)] grid gap-y-20 lg:grid-cols-2 lg:items-start lg:gap-x-[clamp(56px,9vw,150px)]">
+          {[
+            [0, 2],
+            [1, 3],
+          ].map((col, ci) => (
+            <ol
+              key={ci}
+              className={`grid min-w-0 gap-y-20 lg:gap-y-[clamp(96px,9vw,144px)] ${ci === 1 ? "lg:pt-[clamp(140px,13vw,200px)]" : ""}`}
+            >
+              {col.map((i) => {
+                const p = PROJECTS[i];
+                const t = c.items[p.id];
+                /* Row 1 of every spec table is the year. */
+                const year = t.specs[1]?.[1];
+                return (
+                  <li
+                    key={p.id}
+                    data-k-drift={ci === 1 ? "" : undefined}
+                    className={`w-full min-w-0 max-w-[700px] ${p.place}`}
                   >
-                    {t.body}
-                  </p>
+                    <article className="k-proj">
+                      <div
+                        className="relative overflow-hidden bg-[#F5F5F5]"
+                        style={{ aspectRatio: `${p.img.w} / ${p.img.h}` }}
+                      >
+                        <div className="k-proj-zoom absolute inset-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={p.img.src}
+                            width={p.img.w}
+                            height={p.img.h}
+                            alt={t.alt}
+                            decoding="async"
+                            loading="lazy"
+                            data-k-settle
+                            className="absolute inset-0 h-full w-full object-cover"
+                          />
+                        </div>
+                        <div
+                          aria-hidden
+                          className="k-proj-veil absolute inset-0 bg-[rgba(17,17,17,0.2)]"
+                        />
+                      </div>
 
-                  <dl className="mt-7 border-t border-white/[0.11]">
-                    {t.specs.map(([k, v]) => (
-                      <SpecRow key={k} k={k} v={v} />
-                    ))}
-                  </dl>
-                </div>
-              </article>
-            );
-          })}
+                      <div className="mt-5 flex items-baseline justify-between gap-6">
+                        <h3
+                          className={`min-w-0 text-balance ${T_H3} text-[#111111]`}
+                        >
+                          {t.title}
+                        </h3>
+                        {year ? (
+                          <span className="k-num shrink-0 text-[1rem] text-[#111111]">
+                            {year}
+                          </span>
+                        ) : null}
+                      </div>
+                      <p
+                        className={`mt-3 max-w-[54ch] text-pretty ${T_TEXT} text-[#5E5E5E]`}
+                      >
+                        {t.body}
+                      </p>
+                      <dl className="mt-6 border-t border-[#E2E2E2]">
+                        {t.specs.map(([k, v]) => (
+                          <SpecRow key={k} k={k} v={v} />
+                        ))}
+                      </dl>
+                    </article>
+                  </li>
+                );
+              })}
+            </ol>
+          ))}
         </div>
       </div>
     </section>

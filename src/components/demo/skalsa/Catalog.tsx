@@ -1,91 +1,42 @@
 import type { Locale } from "@/i18n/config";
-import { AddToCart } from "./AddToCart";
 import { getSkalsaCopy } from "./copy";
 import { eur, getProducts } from "./data";
+import { CatalogRow, type RowItem } from "./CatalogRow";
 
+/** The shop: the reference's "Curated for you" row. A 20 px label top
+ *  left, Prev / Next as plain text top right, then the six candles side by
+ *  side as square photographs on the gutter grid, each with one small line
+ *  of name and price, its scent, and the add action. No cards, borders,
+ *  badges or stars. Four in view on a desktop, 1.2 on a phone, where the
+ *  row is simply swiped. */
 export function Catalog({ locale }: { locale: Locale }) {
   const copy = getSkalsaCopy(locale);
   const t = copy.catalog;
+  const items: RowItem[] = getProducts(locale).map((p) => ({
+    id: p.id,
+    name: p.name,
+    scent: p.scent,
+    price: eur(p.price, locale),
+    specs: copy.units.specs(p.burn, p.weight),
+    img: p.img,
+    w: p.w,
+    h: p.h,
+    alt: p.alt,
+  }));
 
   return (
     <section
-      data-sk-sec="katalogas"
-      className="relative border-t border-[rgba(36,30,25,0.13)]"
+      id="katalogas"
+      data-sk-tone="light"
+      className="pt-[clamp(80px,8vw,120px)]"
     >
-      <span
-        id="katalogas"
-        aria-hidden="true"
-        className="absolute -top-[30px]"
+      <CatalogRow
+        title={t.title}
+        label={t.eyebrow}
+        prev={t.prev}
+        next={t.next}
+        items={items}
       />
-      <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
-        <div data-rise className="max-w-[52ch]">
-          <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
-            {t.eyebrow}
-          </p>
-          <h2
-            className="mt-4 text-[clamp(1.875rem,3.4vw,2.5rem)] leading-[1.08] text-balance"
-            style={{
-              fontFamily: "var(--font-skalsa-display)",
-              fontWeight: 500,
-            }}
-          >
-            {t.title}
-          </h2>
-          <p className="mt-5 max-w-[54ch] text-[1.0625rem] leading-[1.65] text-pretty text-[#6E6257]">
-            {t.lead}
-          </p>
-        </div>
-
-        <ul className="mt-[clamp(40px,6vw,72px)] grid gap-x-6 gap-y-[clamp(40px,5vw,64px)] sm:grid-cols-2 lg:grid-cols-3">
-          {getProducts(locale).map((p, i) => (
-            <li
-              key={p.id}
-              data-rise
-              style={{ "--i": i % 3 } as React.CSSProperties}
-              className="group flex min-w-0 flex-col"
-            >
-              <div className="overflow-hidden rounded-[10px] bg-[#F1EAE0]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={p.img}
-                  alt={p.alt}
-                  width={p.w}
-                  height={p.h}
-                  decoding="async"
-                  loading="lazy"
-                  className="aspect-square h-auto w-full object-cover transition-[scale] duration-[var(--d-el)] ease-[var(--e-out)] group-hover:scale-[1.04]"
-                />
-              </div>
-
-              <div className="mt-5 flex items-baseline justify-between gap-4">
-                <h3
-                  className="min-w-0 text-[1.0625rem] leading-tight tracking-[-0.015em] break-words"
-                  style={{
-                    fontFamily: "var(--font-skalsa-display)",
-                    fontWeight: 500,
-                  }}
-                >
-                  {p.name}
-                </h3>
-                <span className="shrink-0 text-[0.9375rem] tabular-nums">
-                  {eur(p.price, locale)}
-                </span>
-              </div>
-
-              <p className="mt-2 flex-1 max-w-[38ch] text-[0.9375rem] leading-[1.55] text-pretty text-[#6E6257]">
-                {p.scent}
-              </p>
-
-              <div className="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-4 border-t border-[rgba(36,30,25,0.13)] pt-5">
-                <p className="text-[0.8125rem] uppercase tracking-[0.14em] text-[#6E6257]">
-                  {copy.units.specs(p.burn, p.weight)}
-                </p>
-                <AddToCart id={p.id} name={p.name} variant="quiet" />
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
     </section>
   );
 }

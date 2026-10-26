@@ -1,0 +1,94 @@
+/* Shared by /kainos and /paslaugos. Type: h1 .t-hero 44 to 76 px, chapter
+   .t-h2 32 to 50 px, lead .t-lead 17 to 20 px, questions 17 px / 500
+   (16 px phone), answers 16 px / 1.65. */
+
+/* ── Head ───────────────────────────────────────────── */
+.head { padding-top: calc(var(--nav-h) + clamp(56px, 7vw, 104px)); }
+.title { max-width: 15ch; }
+.lead { margin-top: 28px; max-width: 36em; }
+.actions { margin-top: 36px; gap: 12px; }
+
+/* ── Questions ──────────────────────────────────────── */
+.qGrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); column-gap: 64px; }
+.qSide { min-width: 0; }
+.qSticky { position: sticky; top: calc(var(--nav-h) + 40px); display: grid; gap: 20px; }
+.qSticky :global(.t-h2) { max-width: 11ch; }
+.qMore { max-width: 24em; }
+.qList { min-width: 0; border-bottom: 1px solid var(--line); }
+.qItem { border-top: 1px solid var(--line); interpolate-size: allow-keywords; }
+.qItem::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition: block-size 0.3s var(--ease-ui), content-visibility 0.3s var(--ease-ui) allow-discrete;
+}
+.qItem[open]::details-content { block-size: auto; }
+.q {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  min-height: 64px;
+  padding: 14px 0;
+  list-style: none;
+  cursor: pointer;
+  color: var(--fg);
+  border-radius: 6px;
+}
+.q::-webkit-details-marker { display: none; }
+.q::marker { content: ""; }
+.q:focus-visible { outline-offset: 2px; }
+.qt { font-size: 17px; font-weight: 500; line-height: 1.4; letter-spacing: -0.012em; color: var(--fg-2); transition: color 0.16s var(--ease-ui); text-wrap: pretty; }
+.q:hover .qt, .qItem[open] .qt { color: var(--fg); }
+.pm { display: inline-grid; place-items: center; width: 24px; height: 24px; color: var(--fg-3); transition: color 0.16s var(--ease-ui), transform 0.24s var(--ease-ui); }
+.pm svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+.q:hover .pm, .qItem[open] .pm { color: var(--fg); }
+.qItem[open] .pm { transform: rotate(45deg); }
+.answer { padding: 0 48px 26px 0; }
+.a { max-width: 62ch; font-size: 16px; line-height: 1.65; color: var(--fg-2); text-wrap: pretty; }
+
+.link {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--line-3);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.16s var(--ease-ui);
+}
+.link:hover { text-decoration-color: currentColor; }
+
+/* ── Closing ────────────────────────────────────────── */
+.close { display: flex; flex-direction: column; justify-content: center; min-height: max(600px, 88svh); }
+.closeIn { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.closeIn .closeTitle {
+  max-width: 100%;
+  font-size: clamp(2.75rem, 1.2rem + 4.2vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.closeLine { display: block; }
+.closeLead { margin-top: 28px; max-width: 32em; text-wrap: balance; }
+.closeActions { margin-top: 36px; justify-content: center; gap: 12px; }
+
+@media (max-width: 1023px) {
+  .qGrid { grid-template-columns: minmax(0, 1fr); row-gap: 32px; }
+  .qSticky { position: static; }
+  .qSticky :global(.t-h2) { max-width: 16ch; }
+  .close { display: block; min-height: 0; }
+  .closeIn { align-items: flex-start; text-align: left; }
+  .closeActions { justify-content: flex-start; }
+}
+@media (max-width: 640px) {
+  .head { padding-top: calc(var(--nav-h) + 48px); }
+  .lead { margin-top: 20px; }
+  .actions { margin-top: 28px; flex-direction: column; align-items: stretch; }
+  .actions :global(.btn) { width: 100%; height: 48px; }
+  .q { min-height: 56px; gap: 16px; }
+  .qt { font-size: 16px; }
+  .answer { padding-right: 0; }
+  .a { font-size: 15.5px; }
+  .closeIn .closeTitle { max-width: none; }
+  .closeLead { margin-top: 20px; }
+  .closeActions { margin-top: 28px; width: 100%; flex-direction: column; align-items: stretch; }
+  .closeActions :global(.btn) { width: 100%; height: 48px; }
+}

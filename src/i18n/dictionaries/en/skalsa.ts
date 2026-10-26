@@ -21,7 +21,7 @@ export const skalsaEn: SkalsaCopy = {
 
   units: {
     hours: (hours) => `${hours} h`,
-    specs: (hours, grams) => `${hours} h · ${grams} g`,
+    specs: (hours, grams) => `${hours}\u00a0h · ${grams}\u00a0g`,
   },
 
   header: {
@@ -39,6 +39,7 @@ export const skalsaEn: SkalsaCopy = {
   },
 
   hero: {
+    line: "Evenings that smell of *home*.",
     eyebrow: "Handmade candles · poured in Vilnius",
     title: ["Evenings that", "smell of home."],
     lead: "Soy wax, a cotton wick and recycled glass. We pour in small batches, so each candle burns slowly and evenly, with no harsh smoke.",
@@ -46,12 +47,21 @@ export const skalsaEn: SkalsaCopy = {
     how: "How we pour",
     facts: ["Soy wax", "45-hour burn", "Poured in Vilnius"],
     imageAlt: "Three lit soy wax candles on a wooden table",
+    stillAlt: "Two candles in macramé holders on a wooden table by a white wall",
   },
+
+  intro: {
+    close: "This is *Skalsa*.",
+  },
+
+  discover: "Discover",
 
   catalog: {
     eyebrow: "Catalogue",
-    title: "Six scents. One wax.",
+    title: "Six scents. One *wax*.",
     lead: "We blend each scent to draw the evening out, not to take over the room. Every candle is poured into recyclable glass, so you can wash the jar and use it again.",
+    prev: "Prev",
+    next: "Next",
   },
 
   products: {
@@ -97,6 +107,7 @@ export const skalsaEn: SkalsaCopy = {
   bundles: {
     eyebrow: "Gift sets",
     title: "When you need a gift, not just a product.",
+    blockLine: "Two ready sets: one for evenings at home, one to give, packed in the workshop.",
     imageAlt: "Candles, matches and a linen bag, seen from above",
     items: {
       "b-1": {
@@ -129,17 +140,17 @@ export const skalsaEn: SkalsaCopy = {
     steps: [
       {
         title: "Melting",
-        body: "Pure soy wax is melted to 65 °C. No paraffin and no dyes, so the wax stays the colour of milk rather than bleached white.",
+        body: "Pure soy wax is melted to 65\u00a0°C. No paraffin and no dyes, so the wax stays the colour of milk rather than bleached white.",
         alt: "Melted wax being poured into a glass jar in the workshop",
       },
       {
         title: "Mixing by hand",
-        body: "We stir in the fragrance oil once the wax cools to 52 °C. Two minutes by hand is enough, and the scent does not burn off on the first evening.",
+        body: "We stir in the fragrance oil once the wax cools to 52\u00a0°C. Two minutes by hand is enough, and the scent does not burn off on the first evening.",
         alt: "Two pairs of hands making candles in the workshop",
       },
       {
         title: "Curing",
-        body: "Once set, a candle rests for ten days, then is labelled and its wick trimmed to 5 mm. The first time, burn it for two hours so the wax melts to the edges.",
+        body: "Once set, a candle rests for ten days, then is labelled and its wick trimmed to 5\u00a0mm. The first time, burn it for two hours so the wax melts to the edges.",
         alt: "A match lighting a candle's cotton wick",
       },
     ],
@@ -157,8 +168,8 @@ export const skalsaEn: SkalsaCopy = {
     title: "Four things worth knowing.",
     facts: [
       {
-        title: "Dispatched in 1–2 working days",
-        body: "Orders are packed in the morning. Our courier delivers anywhere in Lithuania within 2–4 working days.",
+        title: "Dispatched in 1-2 working days",
+        body: "Orders are packed in the morning. Our courier delivers anywhere in Lithuania within 2-4 working days.",
       },
       {
         title: "Free delivery from €40",
@@ -267,7 +278,7 @@ export const skalsaEn: SkalsaCopy = {
     },
     contacts: "Sample contact details",
     workshop: "Workshop in Vilnius",
-    hours: "Mon–Fri 10:00–17:00",
+    hours: "Mon-Fri 10:00-17:00",
     legal: "© 2026 Skalsa · Soy wax, cotton wick, recyclable glass",
     toTop: "Back to top",
   },

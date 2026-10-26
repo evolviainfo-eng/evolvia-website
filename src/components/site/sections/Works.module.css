@@ -1,0 +1,188 @@
+/* Darbai: a centred chapter, then one calm 2 x 2 lineup of browser windows
+   (1240 max, 24 px gap). Each window's screen is 16:10 and shows its demo's
+   real first screen, then one quiet link to the work page. Hover on fine pointers: the window lifts 3 px
+   and its hairline brightens. Phone: one column, 40 px apart. */
+
+.sec {
+  overflow: clip;
+}
+
+/* ── Chapter: fully centred ─────────────────────────── */
+.head {
+  display: grid;
+  justify-items: center;
+  gap: 28px;
+  margin-bottom: clamp(56px, 7vw, 104px);
+  text-align: center;
+}
+.h2 {
+  max-width: 18ch;
+}
+.statement {
+  max-width: 30ch;
+  margin-inline: auto;
+}
+
+/* ── The lineup ─────────────────────────────────────── */
+.grid {
+  display: grid;
+  gap: 24px;
+  max-width: 1240px;
+  margin-inline: auto;
+  min-width: 0;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  min-width: 0;
+}
+
+.card {
+  display: grid;
+  align-content: start;
+  gap: 20px;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 14px;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.card > * {
+  min-width: 0;
+}
+
+.win {
+  transition:
+    transform 0.4s var(--ease-ui),
+    box-shadow 0.4s var(--ease-ui);
+}
+.win :global(.win-bar) {
+  grid-template-columns: 1fr minmax(0, auto) 1fr;
+  gap: 12px;
+}
+.win :global(.win-addr) {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+.win :global(.win-addr-t) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.win :global(.win-addr .glyph-lock) {
+  flex: none;
+}
+.win :global(.win-body) {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+/* The screenshot fills the screen from its top left corner. */
+.media {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
+}
+
+/* The line under the window: two-tone at the left, the label at the right. */
+.meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  min-width: 0;
+}
+.line {
+  margin: 0;
+  min-width: 0;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.012em;
+  color: var(--fg);
+  text-wrap: pretty;
+}
+.tag {
+  flex: none;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--fg-3);
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .win {
+    transform: translateY(-3px);
+    box-shadow:
+      inset 0 0 0 1px var(--line-3),
+      0 36px 90px -30px rgba(0, 0, 0, 0.85);
+  }
+}
+.card:focus-visible .win {
+  box-shadow:
+    inset 0 0 0 1px var(--line-3),
+    0 0 0 2px var(--ink),
+    0 0 0 4px var(--fg-2);
+}
+
+/* The quiet link to the work page: plain text, centred under the lineup. */
+.more {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(48px, 5vw, 72px);
+}
+.moreLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  color: var(--fg-2);
+  text-decoration: none;
+  transition: color 0.12s var(--ease-ui);
+}
+.moreLink :global(.glyph) { transition: transform 0.25s var(--ease-ui); }
+.moreLink:hover { color: var(--fg); }
+.moreLink:hover :global(.glyph) { transform: translateX(3px); }
+
+/* Two narrower columns: the label lives under the window only. */
+@media (max-width: 1023px) {
+  .win :global(.win-addr .chip) {
+    display: none;
+  }
+}
+
+/* Phone: one column, the line under each window. */
+@media (max-width: 767px) {
+  .grid,
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+  .card {
+    gap: 16px;
+  }
+  .meta {
+    gap: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .win {
+    transition: none;
+  }
+  .card:hover .win {
+    transform: none;
+  }
+}

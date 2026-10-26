@@ -3,37 +3,62 @@
 import { useEffect, useState } from "react";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { getFumeCopy } from "./copy";
-import { HAIRLINE } from "./Type";
+import { DISPLAY, HAIRLINE, RULE } from "./Type";
 
-/** `key` picks the link's word from the copy. */
+/** `key` picks the link's word from the copy, `id` is the section that
+ *  underlines it. "Meniu" opens the menu card (CardPanel catches every
+ *  href="#kortele"); without JS it jumps to the same card in the page. */
 const LINKS = [
-  { href: "#meniu", key: "menu" },
-  { href: "#vynas", key: "wine" },
-  { href: "#erdve", key: "space" },
-  { href: "#kontaktai", key: "contact" },
+  { href: "#kortele", id: "meniu", key: "menu" },
+  { href: "#vynas", id: "vynas", key: "wine" },
+  { href: "#erdve", id: "erdve", key: "space" },
+  { href: "#kontaktai", id: "kontaktai", key: "contact" },
 ] as const;
 
-const IDS = LINKS.map((l) => l.href.slice(1));
+const IDS = LINKS.map((l) => l.id);
 
-/** Sticky, but offset below Evolvia's honesty bar (--demo-bar-h) so the two
- *  never overlap. No hamburger: on small screens the links collapse to the one
- *  action that matters.
+/** Zimmerl's bar: a monogram in a thin copper ring on the left, the four
+ *  links in small spaced capitals in the middle, the copper booking button
+ *  on the right. Fixed under Evolvia's honesty bar (--demo-bar-h).
  *
- *  Two pieces of state, both cheap. Over the hero the bar is nothing but its
- *  own type — the photograph is dark enough to carry it — and it only takes on
- *  a surface once the page has actually moved. The blur is applied with it,
- *  never before: `backdrop-filter` over a transparent bar would smear a band
- *  across the top of the hero photograph.
+ *  Over the hero it is only its own type; once the page has moved it takes
+ *  the charcoal ground and a copper hairline (no backdrop blur). It slides
+ *  away on the way down and comes back after 30px on the way up
+ *  (Studenterkilden: out in 1s, back in 0.35s), and never hides near the top,
+ *  under reduced motion, or while a link inside it has focus.
  *
- *  The current section is read from a 4%-tall band across the middle of the
- *  viewport, so the underline changes over exactly when the eye does. */
+ *  On a phone the four links collapse to the one that matters there, the
+ *  menu card, beside the booking button. */
 export function Nav() {
   const copy = getFumeCopy(useLocale()).nav;
   const [lifted, setLifted] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
-    const onScroll = () => setLifted(window.scrollY > 24);
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    let last = window.scrollY;
+    let up = 0;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const dy = y - last;
+      last = y;
+      setLifted(y > 24);
+      if (reduce || y < 160) {
+        up = 0;
+        setHidden(false);
+        return;
+      }
+      if (dy > 0) {
+        up = 0;
+        setHidden(true);
+      } else if (dy < 0) {
+        up -= dy;
+        if (up > 30) setHidden(false);
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -63,31 +88,37 @@ export function Nav() {
   return (
     <nav
       aria-label={copy.label}
-      /* The material arrives on lift, same as the site header: at the top of
-         a demo there is nothing behind the bar worth blurring. */
-      className={`sticky z-50 transition-opacity duration-[var(--d-ui)] ease-[var(--e-out)] ${
-        lifted ? "chrome" : "bg-transparent"
+      data-hidden={hidden || undefined}
+      className={`fume-nav fixed inset-x-0 z-50 border-b ${
+        lifted ? "bg-[#1b1714]" : "bg-transparent"
       }`}
-      style={{ top: "var(--demo-bar-h)" }}
+      style={{
+        top: "var(--demo-bar-h)",
+        borderColor: lifted ? HAIRLINE : "transparent",
+      }}
     >
-      <div className="mx-auto flex h-[58px] max-w-[1240px] items-center gap-4 px-5 sm:h-[66px] sm:px-8">
+      <div className="mx-auto grid h-[64px] max-w-[1240px] grid-cols-[auto_1fr_auto] items-center gap-4 px-4 sm:h-[76px] sm:px-8">
         <a
           href="#top"
-          className="shrink-0 font-[family-name:var(--font-fume-display)] text-[1.25rem] font-light leading-none tracking-[0.02em] text-[#ede6da] transition-opacity duration-[var(--d-tap)] ease-[var(--e-out)] hover:opacity-70 active:opacity-100"
+          aria-label="Fumé"
+          className={`${DISPLAY} grid h-11 w-11 place-items-center rounded-full border text-[1.375rem] font-light leading-none text-[#efe7dc] transition-opacity duration-300 hover:opacity-75`}
+          style={{ borderColor: RULE }}
         >
-          Fumé
+          <span aria-hidden className="translate-y-[-1px]">
+            F
+          </span>
         </a>
 
-        <ul className="ml-auto hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center justify-center gap-[clamp(28px,3vw,48px)] lg:flex">
           {LINKS.map((l) => {
-            const on = active === l.href.slice(1);
+            const on = active === l.id;
             return (
-              <li key={l.href}>
+              <li key={l.key}>
                 <a
                   href={l.href}
                   aria-current={on ? "location" : undefined}
-                  className={`fume-navlink font-[family-name:var(--font-fume-ui)] text-[0.8125rem] tracking-[0.04em] transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] hover:text-[#ede6da] ${
-                    on ? "text-[#ede6da]" : "text-[#9c948a]"
+                  className={`fume-navlink fume-label fume-link transition-colors duration-300 ${
+                    on ? "text-[#efe7dc]" : ""
                   }`}
                 >
                   {copy.links[l.key]}
@@ -97,13 +128,17 @@ export function Nav() {
           })}
         </ul>
 
-        <a
-          href="#rezervacija"
-          className="ml-auto inline-flex h-9 shrink-0 items-center rounded-[2px] border px-4 font-[family-name:var(--font-fume-ui)] text-[0.8125rem] tracking-[0.06em] text-[#ede6da] transition-[border-color,background-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[#ede6da] hover:bg-[rgba(237,230,218,0.06)] active:translate-y-0 md:ml-8"
-          style={{ borderColor: HAIRLINE }}
-        >
-          {copy.book}
-        </a>
+        <div className="col-start-3 flex items-center gap-4 sm:gap-6">
+          <a
+            href="#kortele"
+            className="fume-label fume-link inline-flex h-11 items-center transition-colors duration-300 lg:hidden"
+          >
+            {copy.links.menu}
+          </a>
+          <a href="#rezervacija" className="fume-btn fume-btn--cu fume-btn--sm">
+            <span>{copy.book}</span>
+          </a>
+        </div>
       </div>
     </nav>
   );

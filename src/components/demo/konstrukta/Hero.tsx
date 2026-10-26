@@ -1,100 +1,93 @@
 import type { Locale } from "@/i18n/config";
 import { getKonstruktaCopy } from "./copy";
-import { CONTAINER, T_MICRO } from "./ui";
+import { Square, T_META, WRAP } from "./ui";
 
+/** The opening, after Haven: no photograph above the fold and no buttons.
+ *  The company's name is the hero, set in blueprint blue from gutter to
+ *  gutter and standing on the bottom of the first screen (Motion.tsx fits
+ *  it to the exact width once the font is in). Above it, in the right
+ *  columns, the promise with its square bullet; under it, four plain facts
+ *  spread across the width.
+ *
+ *  Directly below, the site photograph already peeks in at the gutters.
+ *  As it rises it opens to full bleed (clip-path scrubbed by Motion.tsx,
+ *  no pin): the one image the brand rests on. */
 export function Hero({ locale }: { locale: Locale }) {
   const c = getKonstruktaCopy(locale).hero;
   return (
-    <section id="top" className="relative isolate overflow-hidden">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/demo/konstrukta/hero.webp"
-        width={1800}
-        height={1199}
-        alt={c.alt}
-        decoding="async"
-        loading="eager"
-        fetchPriority="high"
-        data-settle
-        className="absolute inset-0 -z-10 h-full w-full object-cover object-center"
-      />
+    <section id="top" className="relative overflow-x-clip">
       <div
-        aria-hidden
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(180deg,rgba(18,19,22,0.84) 0%,rgba(18,19,22,0.44) 34%,rgba(18,19,22,0.72) 72%,rgba(18,19,22,0.96) 100%)",
-        }}
-      />
-
-      <div
-        className={`${CONTAINER} flex min-h-[clamp(540px,78vh,840px)] flex-col justify-end pb-[clamp(36px,5vw,60px)] pt-[clamp(96px,16vw,180px)]`}
+        className={`${WRAP} flex flex-col pb-6 pt-[112px] md:min-h-[max(600px,calc(100svh_-_var(--demo-bar-h)_-_44px))] md:pb-5 md:pt-[136px]`}
       >
-        {/* No max-width here. `24ch` used to sit on this wrapper, where the
-            `ch` unit resolves against the DIV's 16px font — 220px — which
-            crushed a 70px headline into four short lines. The <br/> below
-            already sets the break; the measure needs no help. */}
-        <div data-rise>
-          <p className={`${T_MICRO} tracking-[0.22em] text-[#9A9791]`}>
-            {c.eyebrow}
-          </p>
-          <h1 className="mt-6 text-[clamp(2.5rem,6vw,4.625rem)] font-semibold leading-[0.98] text-[#E7E5E1]">
-            {c.title[0]}
-            <br />
-            {c.title[1]}
-          </h1>
+        {/* The promise stands directly on the wordmark (right columns on
+            a laptop), so the first screen reads as one block: no stray
+            paragraph floating at the top. */}
+        <div className="grid md:mt-auto md:grid-cols-12 md:gap-x-6">
+          <div className="min-w-0 max-w-[440px] md:col-span-6 md:col-start-7 lg:col-span-4 lg:col-start-9">
+            <p
+              data-k-lines
+              className="flex gap-3 text-[1.125rem] font-medium leading-[1.3] tracking-[-0.01em] text-[#111111] lg:text-[1.25rem]"
+            >
+              <Square />
+              <span>
+                <span data-k-line className="block">
+                  {c.title[0]}
+                </span>
+                <span data-k-line className="block">
+                  {c.title[1]}
+                </span>
+              </span>
+            </p>
+            <p
+              data-k-lines
+              className="mt-3 text-pretty pl-[21px] text-[1rem] leading-[1.55] text-[#5E5E5E]"
+            >
+              {c.lead}
+            </p>
+            <p className="mt-4 pl-[21px]">
+              <a href="#objektai" className="k-link text-[1rem]">
+                {c.secondary}
+              </a>
+            </p>
+          </div>
         </div>
 
-        <p
-          data-rise
-          style={{ "--i": 1 } as React.CSSProperties}
-          className="mt-7 max-w-[54ch] text-pretty text-[1.0625rem] leading-[1.62] text-[rgba(231,229,225,0.78)] sm:text-[1.0625rem]"
-        >
-          {c.lead}
-        </p>
-
-        <div
-          data-rise
-          style={{ "--i": 2 } as React.CSSProperties}
-          className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
-        >
-          <a
-            href="#samata"
-            className="inline-flex h-12 items-center justify-center bg-[#E8B14C] px-7 text-[0.9375rem] font-semibold tracking-[0.005em] text-[#121316] transition-[translate,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:bg-[#F2BE5F] active:translate-y-0 active:bg-[#D9A343]"
+        <div className="pt-[clamp(48px,6vh,64px)]">
+          <h1 className="min-w-0">
+            <span data-k-fit className="k-wordmark">
+              Konstrukta
+            </span>
+          </h1>
+          <ul
+            className={`mt-[clamp(14px,2.2vh,22px)] grid grid-cols-2 gap-x-6 gap-y-1.5 md:flex md:justify-between ${T_META} text-[#111111]`}
           >
-            {c.primary}
-          </a>
-          <a
-            href="#objektai"
-            className="inline-flex h-12 items-center justify-center border border-white/[0.22] px-7 text-[0.9375rem] text-[#E7E5E1] transition-[translate,border-color,background-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-white/[0.5] hover:bg-white/[0.04] active:translate-y-0 active:bg-white/[0.08]"
-          >
-            {c.secondary}
-          </a>
+            {c.facts.map((f, i) => (
+              <li
+                key={f}
+                className={`min-w-0 ${i % 2 === 1 ? "text-right md:text-left" : ""}`}
+              >
+                {f}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
       <div
-        data-rise
-        style={{ "--i": 3 } as React.CSSProperties}
-        className="border-t border-white/[0.11]"
+        data-k-expand
+        className="relative h-[58svh] min-h-[340px] overflow-hidden bg-[#F5F5F5] md:h-[calc(100svh_-_var(--demo-bar-h))] md:max-h-[1100px] md:min-h-[520px]"
       >
-        <ul
-          className={`${CONTAINER} flex flex-wrap items-center gap-x-5 gap-y-1.5 py-4 sm:gap-x-8`}
-        >
-          {c.facts.map((f, i) => (
-            <li
-              key={f}
-              className={`${T_MICRO} flex items-center gap-5 text-[#9A9791] sm:gap-8`}
-            >
-              {i > 0 ? (
-                <span aria-hidden className="hidden text-white/20 sm:inline">
-                  ·
-                </span>
-              ) : null}
-              {f}
-            </li>
-          ))}
-        </ul>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/demo/konstrukta/hero.webp"
+          width={2400}
+          height={1800}
+          alt={c.alt}
+          decoding="async"
+          loading="eager"
+          data-k-expand-img
+          className="absolute inset-0 h-full w-full object-cover object-[50%_55%]"
+        />
       </div>
     </section>
   );

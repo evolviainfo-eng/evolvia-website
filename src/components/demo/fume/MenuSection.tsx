@@ -1,154 +1,124 @@
 import type { Locale } from "@/i18n/config";
-import type { FumeCopy } from "@/i18n/dictionaries/lt/fume";
+import { CardPanel } from "./CardPanel";
 import { getFumeCopy } from "./copy";
-import { Body, Eyebrow, H2, HAIRLINE, Note, Shot } from "./Type";
+import { Arrow, Body, DISPLAY, Frame, H2, HAIRLINE, Label, Note } from "./Type";
 
-type CourseCopy = FumeCopy["menu"]["courses"][number];
+/* Without JS the menu panel cannot open, so the whole card is set inline
+   under the short one, as an ordinary printed card in the page. */
+const noscriptCss = `
+.fc{position:static;max-width:720px;margin:clamp(56px,7vw,96px) auto 0}
+.fc[data-phase]{visibility:visible}
+.fc-scrim,.fc-close{display:none}
+.fc-panel{position:static;width:auto;overflow:visible;clip-path:none}
+.fc-l,.fc-r{transform:none}
+`;
 
-/** Layout only. Each plate's alt text is the entry at the same position in
- *  the copy's `plateAlts`. */
-const PLATES = [
-  {
-    src: "/demo/fume/dish-1.webp",
-    w: 1100,
-    h: 732,
-    cls: "sm:col-start-1 sm:col-span-7",
-  },
-  {
-    src: "/demo/fume/dish-5.webp",
-    w: 1100,
-    h: 733,
-    cls: "max-sm:w-[82%] max-sm:ml-auto sm:col-start-9 sm:col-span-4 sm:mt-[clamp(32px,6vw,84px)]",
-  },
-  {
-    src: "/demo/fume/dish-3.webp",
-    w: 1100,
-    h: 732,
-    cls: "sm:col-start-2 sm:col-span-5",
-  },
-  {
-    src: "/demo/fume/dish-7.webp",
-    w: 1100,
-    h: 729,
-    cls: "max-sm:w-[82%] sm:col-start-8 sm:col-span-4 sm:mt-[clamp(24px,4vw,60px)]",
-  },
-  {
-    src: "/demo/fume/dish-6.webp",
-    w: 1100,
-    h: 735,
-    cls: "sm:col-start-3 sm:col-span-8",
-  },
-];
-
-/** A course, set the way a printed card sets one: name and price on the same
- *  baseline with leaders between them, the description dropped underneath, and
- *  every price landing in the same 3.4rem column so the figures form a line of
- *  their own down the page.
+/** The menu, after Zimmerl's photo pairs and Da Maria's printed card.
  *
- *  The leaders are hidden below 640px — at that width a name needs the whole
- *  measure, and dots would be filling a gap of two characters. */
-function Course({
-  title,
-  note,
-  items,
-  price,
-}: CourseCopy & { price: FumeCopy["price"] }) {
-  return (
-    <div>
-      <div
-        className="flex flex-col gap-1 border-b pb-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
-        style={{ borderColor: HAIRLINE }}
-      >
-        <h3 className="font-[family-name:var(--font-fume-display)] text-[clamp(1.25rem,3vw,1.875rem)] font-light italic leading-none text-[#ede6da]">
-          {title}
-        </h3>
-        <p className="min-w-0 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.18em] text-[#9c948a] sm:text-right">
-          {note}
-        </p>
-      </div>
-
-      <ul>
-        {items.map((it) => (
-          <li
-            key={it.n}
-            style={{ borderColor: HAIRLINE }}
-            className="fume-row -mx-2 border-b px-2 py-4 last:border-b-0"
-          >
-            <p className="flex items-baseline gap-x-3">
-              <span className="min-w-0 flex-1 font-[family-name:var(--font-fume-display)] text-[1.0625rem] leading-[1.3] text-[#ede6da] sm:flex-initial">
-                {it.n}
-              </span>
-              <span
-                aria-hidden
-                className="fume-leader hidden min-w-[2rem] flex-1 sm:block"
-              />
-              <span className="w-[3.4rem] shrink-0 text-right font-[family-name:var(--font-fume-display)] text-[1.0625rem] leading-[1.3] tabular-nums text-[rgba(237,230,218,0.9)]">
-                {price(it.p)}
-              </span>
-            </p>
-            <p className="mt-1.5 max-w-[46ch] font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[#9c948a]">
-              {it.d}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
+ *  A centred heading block, then one plate beside a short ruled card: a
+ *  thin double copper frame, each course with a dot leader to its lowest
+ *  price, the footnote, and "Visa kortelė", which opens the full card from
+ *  the right (CardPanel.tsx, the page's signature). The hero's "Vakaro
+ *  meniu" and the nav's "Meniu" open the same panel. */
 export function MenuSection({ locale }: { locale: Locale }) {
-  const { menu: copy, price } = getFumeCopy(locale);
+  const { menu: copy, card, price } = getFumeCopy(locale);
 
   return (
-    <section id="meniu" className="bg-[#141210] py-[var(--sec)]">
-      <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
-        <div data-rise className="mx-auto max-w-[760px]">
-          {/* accent 2 of 4 — the one warm mark on the printed page */}
-          <span aria-hidden className="block h-px w-9 bg-[#C0703A]" />
-          <div className="mt-5">
-            <Eyebrow>{copy.eyebrow}</Eyebrow>
-          </div>
-          <H2 className="mt-5">{copy.title}</H2>
-          <Body className="mt-5 max-w-[52ch]">{copy.lead}</Body>
+    <section id="meniu" className="px-4 pt-[var(--sec)] sm:px-8">
+      <div
+        data-group
+        className="mx-auto flex max-w-[720px] flex-col items-center text-center"
+      >
+        <Label>{copy.eyebrow}</Label>
+        <H2 className="mt-6">{copy.title}</H2>
+        <Body lines className="mt-7 max-w-[52ch]">
+          {copy.lead}
+        </Body>
+      </div>
+
+      <div className="mx-auto mt-[var(--gap)] grid max-w-[1180px] items-stretch gap-x-[clamp(32px,5vw,80px)] gap-y-10 md:grid-cols-12">
+        {/* Two plates stacked to the card's height: the beef above, the fish
+            below, so the column beside the card is never a lone square in a
+            dark field. On a phone they sit side by side over the card. */}
+        <div
+          data-group
+          className="grid min-w-0 grid-cols-2 gap-3 md:col-span-5 md:grid-cols-1 md:grid-rows-[3fr_2fr] md:gap-4"
+        >
+          <Frame
+            src="/demo/fume/dish-1.webp"
+            w={1100}
+            h={732}
+            alt={copy.plateAlts[0]}
+            ratio="4 / 5"
+            position="45% 50%"
+            fill
+          />
+          <Frame
+            src="/demo/fume/dish-3.webp"
+            w={1100}
+            h={732}
+            alt={copy.plateAlts[2]}
+            ratio="4 / 5"
+            position="50% 55%"
+            fill
+          />
         </div>
 
-        <div className="mx-auto mt-[clamp(40px,6vw,72px)] max-w-[760px] space-y-[clamp(40px,5vw,64px)]">
-          {copy.courses.map((c, i) => (
-            <div
-              key={c.title}
-              data-rise
-              style={{ "--i": i } as React.CSSProperties}
-            >
-              <Course {...c} price={price} />
+        <div data-group className="min-w-0 md:col-span-7">
+          <div className="fume-frame bg-[#231e1a] px-5 py-12 sm:px-[clamp(32px,4vw,56px)] sm:py-14">
+            <p className="fume-label text-center">{card.title}</p>
+
+            <ul className="mt-9">
+              {copy.courses.map((c) => {
+                const lowest = Math.min(...c.items.map((it) => it.p));
+                return (
+                  <li
+                    key={c.title}
+                    className="border-t py-5 last:border-b"
+                    style={{ borderColor: HAIRLINE }}
+                  >
+                    <p className="flex items-baseline gap-x-3">
+                      <span className="fume-label min-w-0 text-[0.9375rem] text-[#efe7dc]">
+                        {c.title}
+                      </span>
+                      <span
+                        aria-hidden
+                        className="fume-leader min-w-[1.5rem] flex-1"
+                      />
+                      <span
+                        className={`${DISPLAY} shrink-0 text-[1.1875rem] font-medium leading-none tabular-nums text-[#efe7dc]`}
+                      >
+                        {card.from(price(lowest))}
+                      </span>
+                    </p>
+                    <p
+                      className={`${DISPLAY} mt-1.5 text-[1.125rem] italic leading-[1.4] text-[#c4b8a9]`}
+                    >
+                      {c.note}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <Note className="mx-auto mt-8 max-w-[46ch] text-center">
+              {copy.footnote}
+            </Note>
+
+            <div className="mt-8 flex justify-center">
+              <a href="#kortele" className="fume-btn">
+                <span>{card.open}</span>
+                <Arrow />
+              </a>
             </div>
-          ))}
-        </div>
-
-        <div
-          style={{ borderColor: HAIRLINE }}
-          className="mx-auto mt-8 max-w-[760px] border-t pt-5"
-        >
-          <Note>{copy.footnote}</Note>
-        </div>
-
-        {/* Photography sits apart from the list: not cards, no captions —
-            just plates arranged the way they would fall on a table. */}
-        <div
-          data-rise
-          className="mt-[clamp(56px,8vw,112px)] grid grid-cols-1 gap-[clamp(16px,2.5vw,28px)] sm:grid-cols-12"
-        >
-          {PLATES.map((p, i) => (
-            <Shot
-              key={p.src}
-              src={p.src}
-              w={p.w}
-              h={p.h}
-              alt={copy.plateAlts[i]}
-              className={p.cls}
-            />
-          ))}
+          </div>
         </div>
       </div>
+
+      <CardPanel />
+      <noscript>
+        <style>{noscriptCss}</style>
+      </noscript>
     </section>
   );
 }

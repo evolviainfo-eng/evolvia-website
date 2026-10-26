@@ -1,0 +1,230 @@
+/* Minerda: a full-width band on the ink-2 ground. The chapter stays in the
+   wrap; the story (minerda/Story.tsx) runs wider: its captions start on the
+   wrap's left edge, the devices reach to the right gutter. The block is
+   still: it enters once with the shared panel rise (data-scrub). */
+
+.band {
+  background: var(--ink-2);
+  padding-block: 160px;
+}
+
+/* ── Stage: captions left, devices right ───────────── */
+.story {
+  position: relative;
+}
+.stage {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  column-gap: 48px;
+  align-items: center;
+  padding-left: max(var(--gutter), calc((100% - 1240px) / 2 + var(--gutter)));
+  padding-right: var(--gutter);
+}
+.side {
+  min-width: 0;
+}
+
+/* Captions: a stacked list by default. */
+.caps {
+  display: grid;
+  gap: 28px;
+}
+.cap {
+  min-width: 0;
+  max-width: 22em;
+  font-size: 17px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  text-wrap: pretty;
+}
+
+/* ── Devices ───────────────────────────────────────── */
+/* The frame holds the window plus the phone's overhang. Its width is the
+   smallest of: the column, 1120 px (window 1040), and what the screen
+   height allows (frame height is 0.623 x width + 40 px). Everything inside
+   is sized in cqw of the frame, so window and phone keep their proportions:
+   window 92.85cqw (1040 of 1120), phone 21.07cqw (236), bezel 0.714cqw (8),
+   radius 3.21cqw (36). */
+.frame {
+  container-type: inline-size;
+  justify-self: center;
+  width: min(100%, 1120px);
+  min-width: 0;
+}
+.device {
+  position: relative;
+  padding-bottom: 4.3cqw;
+}
+.winBox {
+  width: 92.85cqw;
+  transform-origin: 50% 100%;
+}
+.win {
+  width: 100%;
+}
+.screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: clip;
+  background: #0b0b0b;
+}
+.page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+
+/* The phone: drawn, not a photo. A near-black body with a hairline edge,
+   two side keys, the screen inset by the bezel and a camera island. */
+.phone {
+  --pr: 3.21cqw;
+  --pb: max(5px, 0.714cqw);
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 21.07cqw;
+  aspect-ratio: 9 / 19.5;
+  padding: var(--pb);
+  border-radius: var(--pr);
+  background: #050505;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.13),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    -30px 30px 80px -20px rgba(0, 0, 0, 0.85),
+    0 50px 90px -30px rgba(0, 0, 0, 0.9);
+}
+.phone::before,
+.phone::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  border-radius: 2px;
+  background: #1c1c1c;
+}
+.phone::before {
+  left: -3px;
+  top: 21%;
+  height: 7%;
+}
+.phone::after {
+  right: -3px;
+  top: 26%;
+  height: 11%;
+}
+.phScreen {
+  position: relative;
+  height: 100%;
+  border-radius: calc(var(--pr) - var(--pb));
+  overflow: clip;
+  background: #0b0b0b;
+}
+.island {
+  position: absolute;
+  z-index: 1;
+  top: 2.2%;
+  left: 50%;
+  width: 33%;
+  aspect-ratio: 3.4 / 1;
+  border-radius: 999px;
+  background: #000;
+  transform: translateX(-50%);
+}
+
+/* ── After the story: caption, case link, live site ── */
+.after {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 32px;
+  margin-top: 56px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.client {
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--fg-2);
+}
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  color: var(--fg);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 32px;
+}
+.quiet { color: var(--fg-2); font-weight: 400; transition: color 0.12s var(--ease-ui); }
+.quiet:hover { color: var(--fg); }
+.link.quiet:hover :global(.glyph-arrow) { transform: translateX(3px); }
+.link :global(.glyph) { color: var(--fg-2); transition: transform 0.25s var(--ease-ui), color 0.12s var(--ease-ui); }
+.link:hover :global(.glyph) { color: var(--fg); transform: translate(1px, -1px); }
+
+/* ── Breakpoints ───────────────────────────────────── */
+@media (max-width: 1239px) {
+  .band { padding-block: 128px; }
+  .stage { grid-template-columns: 232px minmax(0, 1fr); column-gap: 40px; }
+  .cap { font-size: 16px; }
+}
+
+/* Phone and tablet: the phone stands centred (260 wide) above the
+   captions, which follow as paragraphs. */
+@media (max-width: 1023px) {
+  .band { padding-block: 112px; }
+  .stage {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 56px;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+  .frame {
+    order: -1;
+    width: 100%;
+    container-type: normal;
+  }
+  .device { padding-bottom: 0; }
+  .winBox { display: none; }
+  .phone {
+    --pr: 38px;
+    --pb: 8px;
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 260px;
+    margin-inline: auto;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.13),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+      0 40px 80px -30px rgba(0, 0, 0, 0.9);
+  }
+  .cap { font-size: 17px; max-width: 30em; }
+  .after { margin-top: 64px; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .caps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 48px; }
+}
+
+@media (max-width: 860px) {
+  .band { padding-block: 80px; }
+  .stage { row-gap: 48px; }
+  .caps { gap: 22px; }
+  .after { margin-top: 48px; }
+}

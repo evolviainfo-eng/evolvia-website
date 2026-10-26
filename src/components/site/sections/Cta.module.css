@@ -1,0 +1,73 @@
+/* Kontaktai: one screen, one sentence. The section fills the viewport on
+   desktop (min 640 px) and centres its content; the headline is the only
+   large element and its words brighten with the scroll (the shared
+   [data-words] hook owns the opacity of each .wd). No slab, no light. */
+
+.sec {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: max(640px, 100svh);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Hero-sized, Geist 400, tight: fills the screen at 1440 and still fits
+   three lines above the buttons in a 700 px laptop view. */
+.inner .title {
+  max-width: 14ch;
+  font-weight: 400;
+  font-size: clamp(3rem, 1.2rem + 5.4vw, 6rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.line { display: block; }
+
+.actions { margin-top: 44px; justify-content: center; }
+.tel { letter-spacing: 0; }
+
+.meta {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 0;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: -0.006em;
+  color: var(--fg-2);
+}
+.meta a { color: inherit; text-decoration: none; transition: color 0.12s var(--ease-ui); }
+.meta a:hover { color: var(--fg); }
+.dot { padding: 0 10px; color: var(--fg-3); }
+
+@media (max-height: 760px) and (min-width: 1024px) {
+  .actions { margin-top: 36px; }
+  .meta { margin-top: 22px; }
+}
+
+/* Phone and tablet: a normal section, left-aligned, buttons full width. */
+@media (max-width: 1023px) {
+  .sec { display: block; min-height: 0; }
+  .inner { align-items: flex-start; text-align: left; }
+  .inner .title { max-width: 12ch; }
+  .actions { justify-content: flex-start; }
+  .meta { justify-content: flex-start; }
+}
+@media (max-width: 640px) {
+  .inner .title { max-width: none; }
+  .actions { margin-top: 32px; width: 100%; flex-direction: column; gap: 10px; }
+  .actions :global(.btn) { width: 100%; height: 48px; }
+  .meta { margin-top: 24px; flex-direction: column; align-items: flex-start; gap: 2px; }
+  .meta a { display: inline-flex; align-items: center; min-height: 32px; }
+  .dot { display: none; }
+}

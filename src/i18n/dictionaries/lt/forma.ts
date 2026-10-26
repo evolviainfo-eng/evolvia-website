@@ -19,7 +19,7 @@ type CardFacts = {
 
 export const formaLt = {
   meta: {
-    title: "Forma — interjero architektūros studija",
+    title: "Forma · interjero architektūros studija",
     description:
       "Demonstracinė svetainė: interjero architektūros studijos portfolio su filtruojamu projektų indeksu ir pilno ekrano galerija.",
   },
@@ -28,15 +28,15 @@ export const formaLt = {
    *  links that lead to it. */
   sections: {
     approach: "Požiūris",
+    studio: "Studija",
     projects: "Projektai",
     services: "Paslaugos",
     process: "Procesas",
-    mood: "Nuotaika",
     contact: "Kontaktai",
   },
 
   nav: {
-    home: "Forma — į puslapio viršų",
+    home: "Forma, į puslapio viršų",
     tagline: "Interjero architektūra",
     label: "Puslapio skyriai",
   },
@@ -47,17 +47,25 @@ export const formaLt = {
      *  from 375px to 1440px. A translation keeps three lines, none longer
      *  than the longest one here. */
     lines: ["Erdvė, kurioje", "viskas savo", "vietoje."],
-    lead: "Dvi architektės. Butai, privatūs namai ir nedidelės komercinės erdvės — nuo pirmo plano iki paskutinės rankenos, be tarpininkų.",
+    lead: "Dvi architektės. Butai, privatūs namai ir nedidelės komercinės erdvės, nuo pirmo plano iki paskutinės rankenos, be tarpininkų.",
     imageAlt: "Šviesi svetainė su panoraminiu langu į medžius",
-    caption: "Dienos zona · privatus namas",
-    captionPlace: "Vilniaus r., 2025",
+    /** The hero shows the day zone of project p-4; this link leads to it. */
+    view: "Žiūrėti projektą",
+  },
+
+  /** The studio section: its split title, its link and the three kinds of
+   *  work standing on hairlines. */
+  studio: {
+    split: ["Apie", "studiją"],
+    link: "Kaip dirbame",
+    kinds: ["Butai", "Namai", "Komercinės erdvės"],
   },
 
   approach: {
     items: [
       {
         title: "Pradedame nuo dienos, ne nuo nuotraukos.",
-        body: "Pirmas pokalbis — apie tai, kaip praeina jūsų rytas, kiek žmonių sėda vakarieniauti ir kur vakare padedate raktus. Planas gimsta iš atsakymų, ne iš katalogo.",
+        body: "Pirmas pokalbis, apie tai, kaip praeina jūsų rytas, kiek žmonių sėda vakarieniauti ir kur vakare padedate raktus. Planas gimsta iš atsakymų, ne iš katalogo.",
       },
       {
         title: "Mažiau medžiagų, tiksliau parinktų.",
@@ -65,14 +73,18 @@ export const formaLt = {
       },
       {
         title: "Brėžinys dar nėra interjeras.",
-        body: "Todėl liekame objekte iki galo. Jei kažkas nesueina vietoje — o taip nutinka kiekvienoje statyboje — sprendžiame ten pat, o ne susirašinėdamos.",
+        body: "Todėl liekame objekte iki galo. Jei kažkas nesueina vietoje, o taip nutinka kiekvienoje statyboje, sprendžiame ten pat, o ne susirašinėdamos.",
       },
     ],
   },
 
   projects: {
+    /** Section title, split to the two page margins. */
+    split: ["Atrinkti", "projektai"],
+    /** Fills the empty ( ) in a card's header row under the pointer. */
+    view: "Žiūrėti",
     title: "Šeši darbai, kuriuos parodome pirmiausia.",
-    lead: "Butai, namai ir nedidelės komercinės erdvės Vilniuje bei aplinkui. Atverkite projektą — atsivers didelė nuotrauka ir trumpas sprendimo paaiškinimas.",
+    lead: "Butai, namai ir nedidelės komercinės erdvės Vilniuje bei aplinkui. Atverkite projektą, atsivers didelė nuotrauka ir trumpas sprendimo paaiškinimas.",
     filterLabel: "Filtruoti projektus pagal tipą",
     /** Filter chips, by filter id. */
     filters: {
@@ -88,7 +100,7 @@ export const formaLt = {
       `Rodoma ${shown} iš ${total} projektų.`,
     emptyTitle: "Šios rūšies darbų viešai kol kas nerodome.",
     emptyBody:
-      "Archyve jų yra — parašykite ir atsiųsime tinkamiausius jūsų erdvei.",
+      "Archyve jų yra, parašykite ir atsiųsime tinkamiausius jūsų erdvei.",
     showAll: "Rodyti visus darbus",
     /** A card's aria-label. It replaces the name a browser would compute
      *  from the button's contents, and every piece of card information lives
@@ -96,7 +108,7 @@ export const formaLt = {
      *  screen-reader user hears the title alone and loses the whole point of
      *  an index. */
     cardLabel: (p: CardFacts) =>
-      `Atverti projektą ${p.title} — ${p.kindLabel}, ${p.area}, ${p.place}, ${p.year}. ${p.scope}`,
+      `Atverti projektą ${p.title}, ${p.kindLabel}, ${p.area}, ${p.place}, ${p.year}. ${p.scope}`,
     /** A single project's type, by kind id. */
     kinds: {
       butas: "Butas",
@@ -109,28 +121,28 @@ export const formaLt = {
         title: "Butas Žvėryne",
         place: "Vilnius",
         scope: "Pilnas projektas · autorinė priežiūra",
-        note: "Trijų kambarių butas tarpukario name. Nugriovėme vieną pertvarą ir atsirado ilga dienos zona su vaizdu į kiemo medžius. Baldai — pagal projektą, kad tilptų į nelygias sienas.",
+        note: "Trijų kambarių butas tarpukario name. Nugriovėme vieną pertvarą ir atsirado ilga dienos zona su vaizdu į kiemo medžius. Baldai, pagal projektą, kad tilptų į nelygias sienas.",
         alt: "Neutralių tonų svetainė su sofa ir dienos šviesa",
       },
       "p-5": {
         title: "Namas Sudervėje",
         place: "Vilniaus r.",
         scope: "Pilnas projektas · autorinė priežiūra",
-        note: "Namas šeimai su dviem vaikais. Židinys — vienintelė sunki masė šviesioje erdvėje; visa kita atitraukta nuo sienų, kad grindys liktų vientisos.",
+        note: "Namas šeimai su dviem vaikais. Židinys, vienintelė sunki masė šviesioje erdvėje; visa kita atitraukta nuo sienų, kad grindys liktų vientisos.",
         alt: "Šviesi svetainė su židiniu ir minkštais baldais",
       },
       "p-2": {
         title: "Grožio studija Naujamiestyje",
         place: "Vilnius",
         scope: "Pilnas projektas",
-        note: "Studija pirmame gyvenamojo namo aukšte. Uosio grindys ir viena nišų linija palei sieną — kad įranga ir priemonės nekristų į akis, o klientė matytų tik šviesą ir save.",
+        note: "Studija pirmame gyvenamojo namo aukšte. Uosio grindys ir viena nišų linija palei sieną, kad įranga ir priemonės nekristų į akis, o klientė matytų tik šviesą ir save.",
         alt: "Šviesi erdvė medinėmis grindimis ir dideliais langais",
       },
       "p-3": {
         title: "Butas Šnipiškėse",
         place: "Vilnius",
         scope: "Pilnas projektas · baldų projektavimas",
-        note: "Butas naujos statybos name, kur virtuvė ir svetainė yra viena erdvė. Sala projektuota pagal šeimos ūgį ir galiausiai tapo pagrindiniu namų stalu — valgomojo taip ir neprireikė.",
+        note: "Butas naujos statybos name, kur virtuvė ir svetainė yra viena erdvė. Sala projektuota pagal šeimos ūgį ir galiausiai tapo pagrindiniu namų stalu, valgomojo taip ir neprireikė.",
         alt: "Virtuvė su sala ir aukštomis spintelėmis",
       },
       "p-6": {
@@ -144,7 +156,7 @@ export const formaLt = {
         title: "Namas Balsiuose",
         place: "Vilnius",
         scope: "Konsultacija · pilnas projektas",
-        note: "Miegamasis su dviem langais į skirtingas puses — rytinį ir vakarinį. Spinta paslėpta už tos pačios sienos plokštumos, todėl kambaryje matosi tik lova ir šviesa.",
+        note: "Miegamasis su dviem langais į skirtingas puses, rytinį ir vakarinį. Spinta paslėpta už tos pačios sienos plokštumos, todėl kambaryje matosi tik lova ir šviesa.",
         alt: "Miegamasis su dviem langais ir ramia lovos zona",
       },
     },
@@ -160,15 +172,16 @@ export const formaLt = {
   },
 
   services: {
+    split: ["Mūsų", "paslaugos"],
     title: "Trys būdai dirbti kartu.",
-    lead: "Dažniausiai renkamasi pilnas projektas su priežiūra. Bet jei erdvė nedidelė arba sprendimas vienas — užtenka ir mažesnio žingsnio.",
+    lead: "Dažniausiai renkamasi pilnas projektas su priežiūra. Bet jei erdvė nedidelė arba sprendimas vienas, užtenka ir mažesnio žingsnio.",
     items: [
       {
         title: "Pilnas interjero projektas",
         price: "nuo 45 €/m²",
         body: "Išplanavimas, vizualizacijos, darbo brėžiniai bei medžiagų ir baldų specifikacijos. Meistrai gauna dokumentą, pagal kurį galima dirbti be papildomų klausimų.",
         points: [
-          "Du–trys išplanavimo variantai",
+          "Du-trys išplanavimo variantai",
           "Baldų projektavimas ir brėžiniai",
           "Medžiagų sąrašas su kainomis ir tiekėjais",
         ],
@@ -194,10 +207,13 @@ export const formaLt = {
         ],
       },
     ],
-    note: "Kainos orientacinės ir priklauso nuo erdvės sudėtingumo. Tikslią sumą pateikiame raštu po pirmo susitikimo — vėliau ji nesikeičia.",
+    note: "Kainos orientacinės ir priklauso nuo erdvės sudėtingumo. Tikslią sumą pateikiame raštu po pirmo susitikimo, vėliau ji nesikeičia.",
   },
 
   process: {
+    split: ["Mūsų", "procesas"],
+    /** The steps track's accessible name. */
+    label: "Darbo eiga, keturi žingsniai",
     title: "Nuo pirmo matavimo iki paskutinės rankenos.",
     steps: [
       {
@@ -207,13 +223,13 @@ export const formaLt = {
       },
       {
         title: "Išplanavimas",
-        body: "Du–trys variantai popieriuje. Renkamės kartu, kol vienas tampa akivaizdus — tik tada judame toliau.",
-        when: "2–3 savaitės",
+        body: "Du-trys variantai popieriuje. Renkamės kartu, kol vienas tampa akivaizdus, tik tada judame toliau.",
+        when: "2-3 savaitės",
       },
       {
         title: "Projektas ir medžiagos",
         body: "Vizualizacijos, darbo brėžiniai, specifikacijos. Į salonus einame kartu ir viską paliečiame rankomis.",
-        when: "4–6 savaitės",
+        when: "4-6 savaitės",
       },
       {
         title: "Autorinė priežiūra",
@@ -224,7 +240,9 @@ export const formaLt = {
   },
 
   mood: {
-    /** Same order as MOOD in FormaPage. */
+    /** By photo: mood-1, mood-3, mood-4, mood-2. The studio photograph,
+     *  the process steps and the projects' second views pick theirs by
+     *  index. */
     alts: [
       "Svetainė prieblandoje, minkšta šviesa",
       "Medinių sukamųjų laiptų detalė",
@@ -241,12 +259,12 @@ export const formaLt = {
       { label: "El. paštas", value: "labas@forma.demo" },
       { label: "Telefonas", value: "+370 600 00000" },
       { label: "Studija", value: "Vilnius, Naujamiestis" },
-      { label: "Darbo laikas", value: "I–V 9:00–18:00" },
+      { label: "Darbo laikas", value: "I-V 9:00-18:00" },
     ],
   },
 
   form: {
-    sentTitle: "Ačiū — bet nieko neišsiuntėme.",
+    sentTitle: "Ačiū, bet nieko neišsiuntėme.",
     sentBody:
       "Tai demonstracinė svetainė, todėl užklausa niekur nekeliavo. Tikroje svetainėje ši forma per kelias sekundes atsidurtų studijos pašte, o jūs gautumėte patvirtinimą.",
     again: "Pildyti iš naujo",
@@ -268,7 +286,7 @@ export const formaLt = {
     messagePlaceholder:
       "Kada planuojate pradėti, kas erdvėje netinka, ko norėtumėte.",
     submit: "Siųsti užklausą",
-    note: "Atsakome per vieną darbo dieną. Pirmas pokalbis — nemokamas.",
+    note: "Atsakome per vieną darbo dieną. Pirmas pokalbis, nemokamas.",
   },
 
   footer: {

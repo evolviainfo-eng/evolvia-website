@@ -1,123 +1,56 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useLocale } from "@/i18n/LocaleProvider";
+import type { Locale } from "@/i18n/config";
 import { getKonstruktaCopy } from "./copy";
-import { BAND, CONTAINER, SectionHead, T_BODY, T_MICRO } from "./ui";
+import { BAND, Photo, SectionHead, T_H3, T_TEXT, WRAP } from "./ui";
 
-const HEAD = 7; // px — the travelling marker's edge
-
-export function Phases() {
-  const c = getKonstruktaCopy(useLocale()).phases;
-  const scopeRef = useRef<HTMLDivElement>(null);
-  const fillRef = useRef<HTMLSpanElement>(null);
-  const headRef = useRef<HTMLSpanElement>(null);
-
-  /* The page's one scroll moment: the schedule draws itself. A marker walks
-     the rail while the amber trail fills in behind it — the same thing a
-     build programme does on paper, at the speed the visitor reads. Nothing
-     is pinned and nothing is hidden, so 1366×768 and reduced motion both
-     get the finished state rather than a broken one. */
-  useEffect(() => {
-    const scope = scopeRef.current;
-    const fill = fillRef.current;
-    const head = headRef.current;
-    if (!scope || !fill || !head) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      fill.style.transform = "scaleY(1)";
-      head.style.top = `calc(100% - ${HEAD}px)`;
-      return;
-    }
-
-    gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: scope,
-          start: "top 74%",
-          end: "bottom 78%",
-          scrub: true,
-          invalidateOnRefresh: true,
-        },
-      });
-      tl.fromTo(fill, { scaleY: 0 }, { scaleY: 1, ease: "none" }, 0).fromTo(
-        head,
-        { y: 0 },
-        { y: () => scope.clientHeight - HEAD, ease: "none" },
-        0,
-      );
-    }, scopeRef);
-
-    return () => ctx.revert();
-  }, []);
-
+/** How a build runs: Haven's section head, then one upright photograph in
+ *  the left third (it stays while the list passes) beside the five stages
+ *  as a hairline table (stage, what happens, how long). Phone: the
+ *  photograph above the list. Nothing moves here except the rows arriving
+ *  and the photograph settling. */
+export function Phases({ locale }: { locale: Locale }) {
+  const copy = getKonstruktaCopy(locale);
+  const c = copy.phases;
   return (
-    <section id="eiga" className="border-t border-white/[0.11]">
-      <div className="border-b border-white/[0.11]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/demo/konstrukta/aerial.webp"
-          width={1400}
-          height={1050}
-          alt={c.alt}
-          decoding="async"
-          loading="lazy"
-          className="h-[clamp(200px,30vw,400px)] w-full object-cover object-center"
-        />
-      </div>
+    <section id="eiga" className={BAND}>
+      <div className={WRAP}>
+        <SectionHead label={c.label} title={c.title} lead={c.lead} />
 
-      <div className={`${CONTAINER} ${BAND}`}>
-        <SectionHead
-          index="04"
-          label={c.label}
-          title={c.title}
-          lead={c.lead}
-        />
+        <div className="mt-[clamp(48px,6vw,96px)] grid gap-y-10 lg:grid-cols-12 lg:items-start lg:gap-x-6">
+          <div className="min-w-0 lg:sticky lg:top-[calc(var(--demo-bar-h)+112px)] lg:col-span-4">
+            <Photo
+              src="/demo/konstrukta/phases.webp"
+              width={1400}
+              height={1400}
+              ratio="1 / 1"
+              alt={copy.photos.phases}
+              settle
+              position="42% 50%"
+              className="max-w-[400px]"
+            />
+          </div>
 
-        <div
-          ref={scopeRef}
-          className="relative mt-[clamp(40px,6vw,72px)] pl-6 sm:pl-9"
-        >
-          <span
-            aria-hidden
-            className="absolute bottom-0 left-0 top-0 w-px bg-white/[0.14]"
-          />
-          <span
-            ref={fillRef}
-            aria-hidden
-            className="absolute bottom-0 left-0 top-0 w-px origin-top bg-[#E8B14C]"
-            style={{ transform: "scaleY(0)" }}
-          />
-          <span
-            ref={headRef}
-            aria-hidden
-            className="absolute left-[-3px] top-0 block bg-[#E8B14C]"
-            style={{ width: HEAD, height: HEAD }}
-          />
-
-          <ol data-rise className="border-t border-white/[0.11]">
-            {c.items.map((p) => (
+          <ol className="min-w-0 border-t border-[#E2E2E2] lg:col-span-8">
+            {c.items.map((p, i) => (
               <li
                 key={p.no}
-                className="grid gap-x-8 gap-y-3 border-b border-white/[0.11] py-7 md:grid-cols-[48px_minmax(0,0.9fr)_minmax(0,1.4fr)_auto] md:items-baseline md:py-8"
+                data-rise
+                style={{ "--i": i } as React.CSSProperties}
+                className="grid gap-y-3 border-b border-[#E2E2E2] py-7 lg:grid-cols-8 lg:items-baseline lg:gap-x-6 lg:py-8"
               >
-                <span className={`${T_MICRO} tracking-[0.2em] text-[#9A9791]`}>
-                  {p.no}
-                </span>
-                <h3 className="min-w-0 text-balance text-[1.0625rem] font-semibold leading-[1.22] tracking-[-0.015em] text-[#E7E5E1] md:text-[1.0625rem]">
-                  {p.title}
+                <h3
+                  className={`flex min-w-0 items-baseline gap-4 ${T_H3} text-[#111111] lg:col-span-3`}
+                >
+                  <span className="k-num w-7 shrink-0 text-[1rem] font-normal text-[#5E5E5E]">
+                    {p.no}
+                  </span>
+                  <span className="min-w-0 text-balance">{p.title}</span>
                 </h3>
-                <p className={`min-w-0 text-pretty ${T_BODY} text-[#9A9791]`}>
+                <p className={`min-w-0 max-w-[60ch] text-pretty pl-11 ${T_TEXT} text-[#5E5E5E] lg:col-span-4 lg:pl-0`}>
                   {p.body}
                 </p>
-                <span
-                  className={`${T_MICRO} shrink-0 whitespace-nowrap tracking-[0.12em] text-[#E7E5E1] md:text-right`}
-                >
+                <p className="k-num min-w-0 whitespace-nowrap pl-11 text-[1rem] text-[#111111] lg:col-span-1 lg:pl-0 lg:text-right">
                   {p.time}
-                </span>
+                </p>
               </li>
             ))}
           </ol>

@@ -4,10 +4,13 @@ import { useMemo, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { getKonstruktaCopy } from "./copy";
-import { BAND, CONTAINER, SectionHead, T_MICRO, T_SM } from "./ui";
+import { BAND, BTN_PRIMARY, SectionHead, T_SM, WRAP } from "./ui";
+
+/** Small sentence-case label: the field names, the legends, the notes. */
+const LBL = "text-[0.875rem] leading-[1.4]";
 
 /* ── Model ──────────────────────────────────────────────────────────────
-   Every group carries a €/m² band, not a single rate — the output has to
+   Every group carries a €/m² band, not a single rate: the output has to
    be a range, because a real quote is. Multipliers are shown next to the
    options so the visitor can see what the calculator is doing to them.
    Only numbers live here: every label and note comes from the dictionary,
@@ -80,22 +83,23 @@ const round100 = (n: number) => Math.round(n / 100) * 100;
 
 const RANGE_CSS = `
 .knst-range{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;cursor:pointer;display:block}
-.knst-range::-webkit-slider-runnable-track{height:2px;border-radius:0;background:linear-gradient(90deg,#E7E5E1 0,#E7E5E1 var(--knst-p,0%),rgba(255,255,255,0.16) var(--knst-p,0%),rgba(255,255,255,0.16) 100%)}
-.knst-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;margin-top:-7px;border:0;border-radius:0;background:#E7E5E1;transition:transform var(--d-tap) var(--e-out)}
+.knst-range::-webkit-slider-runnable-track{height:2px;border-radius:0;background:linear-gradient(90deg,#0C388D 0,#0C388D var(--knst-p,0%),#E2E2E2 var(--knst-p,0%),#E2E2E2 100%)}
+.knst-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;margin-top:-7px;border:0;border-radius:0;background:#0C388D;transition:transform var(--d-tap) var(--e-out)}
 .knst-range:hover::-webkit-slider-thumb{transform:scale(1.2)}
 .knst-range:active::-webkit-slider-thumb{transform:scale(.9)}
-.knst-range::-moz-range-track{height:2px;border-radius:0;background:rgba(255,255,255,0.16)}
-.knst-range::-moz-range-progress{height:2px;background:#E7E5E1}
-.knst-range::-moz-range-thumb{width:16px;height:16px;border:0;border-radius:0;background:#E7E5E1;transition:transform var(--d-tap) var(--e-out)}
+.knst-range::-moz-range-track{height:2px;border-radius:0;background:#E2E2E2}
+.knst-range::-moz-range-progress{height:2px;background:#0C388D}
+.knst-range::-moz-range-thumb{width:16px;height:16px;border:0;border-radius:0;background:#0C388D;transition:transform var(--d-tap) var(--e-out)}
 .knst-range:hover::-moz-range-thumb{transform:scale(1.2)}
 .knst-range:active::-moz-range-thumb{transform:scale(.9)}
 .knst-range:focus-visible{outline:none}
-.knst-range:focus-visible::-webkit-slider-thumb{outline:2px solid #E7E5E1;outline-offset:3px}
-.knst-range:focus-visible::-moz-range-thumb{outline:2px solid #E7E5E1;outline-offset:3px}
+.knst-range:focus-visible::-webkit-slider-thumb{outline:2px solid #0C388D;outline-offset:3px}
+.knst-range:focus-visible::-moz-range-thumb{outline:2px solid #0C388D;outline-offset:3px}
 .knst-numfield{appearance:textfield;-moz-appearance:textfield}
 .knst-numfield::-webkit-outer-spin-button,.knst-numfield::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 @keyframes knst-pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
 .knst-pop{animation:knst-pop var(--d-tap) var(--e-out)}
+@media (prefers-reduced-motion:reduce){.knst-pop{animation:none}.knst-range::-webkit-slider-thumb,.knst-range::-moz-range-thumb{transition:none}}
 `;
 
 export function Estimator() {
@@ -103,9 +107,10 @@ export function Estimator() {
   const copy = getKonstruktaCopy(locale);
   const c = copy.estimator;
   const workCopy = c.works;
-  /** "180–260" in the page's number format. */
+  /** "180-260" in the page's number format (a plain hyphen, the same
+   *  range mark the dictionaries use). */
   const range = (lo: number, hi: number) =>
-    `${fmt(lo, locale)}–${fmt(hi, locale)}`;
+    `${fmt(lo, locale)}-${fmt(hi, locale)}`;
 
   const [type, setType] = useState<TypeId>("namas");
   const [finish, setFinish] = useState<FinishId>("standartine");
@@ -148,7 +153,7 @@ export function Estimator() {
        foundation cost 60 % more. Structural groups stay on typeMul alone.
 
        Each group is rounded FIRST and the totals are the exact sum of those
-       rounded lines — so a visitor who adds the breakdown up on paper gets
+       rounded lines, so a visitor who adds the breakdown up on paper gets
        the number printed at the top, to the euro. */
     const chosen = WORKS.filter((w) => works[w.id]).map((w) => {
       const f = FINISH_SCOPED.has(w.id) ? finishMul : 1;
@@ -178,7 +183,7 @@ export function Estimator() {
   const finishLabel = c.finishes[finish];
 
   /* The level is only ever part of the quote if one of the groups it prices
-     is actually ticked — otherwise the honest answer is "not included". */
+     is actually ticked; otherwise the honest answer is "not included". */
   const finishApplies = WORKS.some(
     (w) => works[w.id] && FINISH_SCOPED.has(w.id),
   );
@@ -204,13 +209,12 @@ export function Estimator() {
   return (
     <section
       id="samata"
-      className={`${BAND} border-t border-white/[0.11] bg-[#1A1C20]`}
+      className={BAND}
     >
       <style>{RANGE_CSS}</style>
 
-      <div className={CONTAINER}>
+      <div className={WRAP}>
         <SectionHead
-          index="05"
           label={c.label}
           title={c.title}
           lead={c.lead}
@@ -243,7 +247,7 @@ export function Estimator() {
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <label
                   htmlFor="knst-area"
-                  className={`${T_MICRO} text-[#9A9791]`}
+                  className={`${LBL} text-[#5E5E5E]`}
                 >
                   {c.areaLabel}
                 </label>
@@ -258,9 +262,9 @@ export function Estimator() {
                     value={areaText}
                     onChange={(e) => onAreaText(e.target.value)}
                     onBlur={onAreaBlur}
-                    className="knst-mono knst-numfield w-[86px] border border-white/[0.22] bg-transparent px-3 py-2 text-right text-[0.9375rem] text-[#E7E5E1] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-white/[0.5] focus:border-white/[0.5]"
+                    className="k-num knst-numfield w-[92px] rounded-[4px] border border-[#D6D6D6] bg-[#FFFFFF] px-3 py-2 text-right text-[1rem] text-[#111111] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[#9A9A9A] focus:border-[#0C388D]"
                   />
-                  <span className="knst-mono text-[0.8125rem] text-[#9A9791]">
+                  <span className="text-[0.875rem] text-[#5E5E5E]">
                     m²
                   </span>
                 </div>
@@ -278,7 +282,7 @@ export function Estimator() {
                 style={{ "--knst-p": `${pct}%` } as React.CSSProperties}
               />
               <div
-                className={`${T_MICRO} mt-1 flex justify-between tracking-[0.12em] text-[#9A9791]`}
+                className="k-num mt-1 flex justify-between text-[0.875rem] text-[#5E5E5E]"
               >
                 <span>{MIN_AREA} m²</span>
                 <span>{MAX_AREA} m²</span>
@@ -287,7 +291,7 @@ export function Estimator() {
 
             {/* Darbų apimtis */}
             <fieldset className="min-w-0">
-              <legend className={`${T_MICRO} text-[#9A9791]`}>
+              <legend className={`${LBL} text-[#5E5E5E]`}>
                 {c.worksLegend}
               </legend>
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -297,11 +301,11 @@ export function Estimator() {
                   return (
                     <label
                       key={w.id}
-                      className={`knst-opt flex min-w-0 cursor-pointer items-start gap-3 border p-3.5 transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] ${
+                      className={`knst-opt flex min-w-0 cursor-pointer items-start gap-3 rounded-[4px] border p-3.5 transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] ${
                         on
-                          ? "border-white/[0.3] bg-[#121316] hover:border-white/[0.5]"
-                          : "border-white/[0.11] hover:border-white/[0.3] hover:bg-white/[0.02]"
-                      } active:border-white/[0.7]`}
+                          ? "border-[#0C388D]"
+                          : "border-[#E2E2E2] hover:border-[#9A9A9A]"
+                      } active:border-[#0C388D]`}
                     >
                       <input
                         type="checkbox"
@@ -315,8 +319,8 @@ export function Estimator() {
                         aria-hidden
                         className={`mt-[3px] flex h-[15px] w-[15px] shrink-0 items-center justify-center border transition-colors duration-[var(--d-tap)] ease-[var(--e-out)] ${
                           on
-                            ? "border-[#E8B14C] bg-[#E8B14C]"
-                            : "border-white/[0.28]"
+                            ? "border-[#0C388D] bg-[#0C388D]"
+                            : "border-[#9A9A9A]"
                         }`}
                       >
                         {on ? (
@@ -330,21 +334,21 @@ export function Estimator() {
                           >
                             <path
                               d="M1 3.4 3.3 5.7 8 1"
-                              stroke="#121316"
+                              stroke="#FFFFFF"
                               strokeWidth="1.8"
                             />
                           </svg>
                         ) : null}
                       </span>
                       <span className="min-w-0">
-                        <span className="block text-[0.9375rem] leading-[1.35] text-[#E7E5E1]">
+                        <span className="block text-[1rem] leading-[1.35] text-[#111111]">
                           {t.label}
                         </span>
-                        <span className="mt-1 block text-[0.8125rem] leading-[1.4] text-[#9A9791]">
+                        <span className="mt-1 block text-[0.875rem] leading-[1.4] text-[#5E5E5E]">
                           {t.note}
                         </span>
                         <span
-                          className={`${T_MICRO} mt-2 block tracking-[0.1em] text-[#9A9791]`}
+                          className="k-num mt-2 block text-[0.875rem] text-[#5E5E5E]"
                         >
                           {c.pricePerM2(range(w.lo, w.hi))}
                         </span>
@@ -372,74 +376,70 @@ export function Estimator() {
           {/* ── Result ─────────────────────────────────────────────────
               The one thing on this page a visitor has to trust. It reads
               like a quotation sheet: a ruled header, the range, then the
-              lines it is made of — which add up to exactly the number
+              lines it is made of, which add up to exactly the number
               printed above them.
               Sticky only where there is genuinely room for it: a 1366×768
               laptop must not get a card taller than the space it is pinned
               into. ─────────────────────────────────────────────────── */}
           <div className="min-w-0 lg:top-[calc(var(--demo-bar-h)+72px)] [@media(min-width:1024px)_and_(min-height:720px)]:sticky">
-            <div className="border border-white/[0.11] bg-[#121316]">
-              <span aria-hidden className="block h-[2px] w-full bg-[#E8B14C]" />
-
+            <div className="rounded-[4px] border border-[#E2E2E2] bg-[#FFFFFF]">
               <div className="p-5 sm:p-7">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <p className={`${T_MICRO} tracking-[0.2em] text-[#9A9791]`}>
+                  <p className="text-[1.125rem] font-medium leading-[1.3] tracking-[-0.01em] text-[#111111]">
                     {c.resultTitle}
                   </p>
-                  <p className={`${T_MICRO} tracking-[0.12em] text-[#9A9791]`}>
+                  <p className={`k-num ${LBL} text-[#5E5E5E]`}>
                     {typeLabel} · {area} m²
                   </p>
                 </div>
 
                 <div aria-live="polite" aria-atomic="true" className="mt-6">
                   {result.empty ? (
-                    <p className="knst-mono text-[clamp(1.5rem,4.6vw,1.875rem)] leading-none text-[#9A9791]">
+                    <p className="k-num text-[clamp(1.75rem,4.6vw,2.25rem)] font-medium leading-none text-[#5E5E5E]">
                       {c.emptyTotal}
                     </p>
                   ) : (
-                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <span
-                        className={`${T_MICRO} tracking-[0.16em] text-[#9A9791]`}
-                      >
-                        {c.from}
+                    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+                      {/* "nuo X" and "iki Y" wrap as pairs, never a word
+                          left alone at a line end. */}
+                      <span className="inline-flex items-baseline gap-x-2.5 whitespace-nowrap">
+                        <span className={`${LBL} text-[#5E5E5E]`}>{c.from}</span>
+                        <span className="k-num text-[clamp(1.75rem,4.6vw,2.25rem)] font-medium leading-none tracking-[-0.025em] text-[#0C388D]">
+                          {c.price(fmt(result.totalLo, locale))}
+                        </span>
                       </span>
-                      <span className="knst-mono text-[clamp(1.5rem,4.6vw,1.875rem)] leading-none tracking-[-0.01em] text-[#E7E5E1]">
-                        {c.price(fmt(result.totalLo, locale))}
-                      </span>
-                      <span
-                        className={`${T_MICRO} tracking-[0.16em] text-[#9A9791]`}
-                      >
-                        {c.to}
-                      </span>
-                      <span className="knst-mono text-[clamp(1.5rem,4.6vw,1.875rem)] leading-none tracking-[-0.01em] text-[#E7E5E1]">
-                        {c.price(fmt(result.totalHi, locale))}
+                      <span className="inline-flex items-baseline gap-x-2.5 whitespace-nowrap">
+                        <span className={`${LBL} text-[#5E5E5E]`}>{c.to}</span>
+                        <span className="k-num text-[clamp(1.75rem,4.6vw,2.25rem)] font-medium leading-none tracking-[-0.025em] text-[#0C388D]">
+                          {c.price(fmt(result.totalHi, locale))}
+                        </span>
                       </span>
                     </div>
                   )}
 
-                  <p className="knst-mono mt-4 text-[0.8125rem] leading-[1.5] text-[#9A9791]">
+                  <p className="k-num mt-4 text-[0.875rem] leading-[1.5] text-[#5E5E5E]">
                     {result.empty
                       ? c.emptyPrompt
                       : `${c.pricePerM2(range(result.perLo, result.perHi))} · ${c.groups(result.chosen.length)}`}
                   </p>
                 </div>
 
-                {/* Sudėtis — the lines the range is made of. The bars are
+                {/* Sudėtis: the lines the range is made of. The bars are
                     proportional to each group's share of the range, so the
                     weight of a decision is visible before the number is
                     even read. */}
-                <div className="mt-7 border-t border-white/[0.11] pt-5">
+                <div className="mt-7 border-t border-[#E2E2E2] pt-5">
                   <div className="flex items-baseline justify-between gap-4">
-                    <p className={`${T_MICRO} text-[#9A9791]`}>{c.breakdown}</p>
+                    <p className={`${LBL} text-[#5E5E5E]`}>{c.breakdown}</p>
                     <p
-                      className={`${T_MICRO} shrink-0 tracking-[0.12em] text-[#9A9791]`}
+                      className={`${LBL} shrink-0 text-[#5E5E5E]`}
                     >
                       {c.breakdownUnit}
                     </p>
                   </div>
 
                   {result.empty ? (
-                    <p className={`mt-4 max-w-[46ch] ${T_SM} text-[#9A9791]`}>
+                    <p className={`mt-4 max-w-[46ch] ${T_SM} text-[#5E5E5E]`}>
                       {c.breakdownEmpty}
                     </p>
                   ) : (
@@ -447,21 +447,23 @@ export function Estimator() {
                       {result.chosen.map((w) => (
                         <li key={w.id} className="min-w-0">
                           <div className="flex items-baseline justify-between gap-4">
-                            <span className="min-w-0 text-[0.8125rem] leading-[1.45] text-[#E7E5E1]">
+                            <span className="min-w-0 text-[0.9375rem] leading-[1.45] text-[#111111]">
                               {workCopy[w.id].label}
                             </span>
-                            <span className="knst-mono shrink-0 text-[0.6875rem] leading-[1.45] text-[#9A9791]">
+                            <span className="k-num shrink-0 text-[0.9375rem] leading-[1.45] text-[#5E5E5E]">
                               {range(w.lo, w.hi)}
                             </span>
                           </div>
+                          {/* Share bar: a full-width line scaled on X, so
+                              only transform ever animates. */}
                           <span
                             aria-hidden
-                            className="mt-2 block h-[2px] w-full bg-white/[0.09]"
+                            className="mt-2 block h-[2px] w-full overflow-hidden bg-[#EFEFEF]"
                           >
                             <span
-                              className="block h-[2px] bg-white/[0.5] transition-[width] duration-[var(--d-el)] ease-[var(--e-out)]"
+                              className="block h-[2px] w-full origin-left bg-[#111111] transition-transform duration-[var(--d-el)] ease-[var(--e-out)] motion-reduce:transition-none"
                               style={{
-                                width: `${result.span ? ((w.lo + w.hi) / result.span) * 100 : 0}%`,
+                                transform: `scaleX(${result.span ? (w.lo + w.hi) / result.span : 0})`,
                               }}
                             />
                           </span>
@@ -471,17 +473,17 @@ export function Estimator() {
                   )}
                 </div>
 
-                <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-white/[0.11] pt-4">
-                  <span className={`${T_MICRO} text-[#9A9791]`}>
+                <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-[#E2E2E2] pt-4">
+                  <span className={`${LBL} text-[#5E5E5E]`}>
                     {c.finishLevel}
                   </span>
-                  <span className="shrink-0 text-[0.8125rem] leading-[1.45] text-[#E7E5E1]">
+                  <span className="shrink-0 text-[0.9375rem] leading-[1.45] text-[#111111]">
                     {result.empty ? c.finishNone : finishSummary}
                   </span>
                 </div>
 
                 <p
-                  className={`mt-6 border-t border-white/[0.11] pt-4 text-pretty ${T_SM} text-[#9A9791]`}
+                  className={`mt-6 border-t border-[#E2E2E2] pt-4 text-pretty ${T_SM} text-[#5E5E5E]`}
                 >
                   {c.disclaimer}
                 </p>
@@ -491,12 +493,12 @@ export function Estimator() {
                     <button
                       type="button"
                       disabled
-                      className="mt-6 inline-flex h-12 w-full cursor-not-allowed items-center justify-center border border-white/[0.11] bg-white/[0.02] px-6 text-[0.9375rem] font-semibold text-[#9A9791] opacity-70"
+                      className="mt-6 inline-flex h-12 w-full cursor-not-allowed items-center justify-center rounded-[4px] border border-[#E2E2E2] bg-[#F5F5F5] px-6 text-[0.9375rem] font-medium text-[#5E5E5E]"
                     >
                       {c.cta}
                     </button>
                     <p
-                      className={`${T_MICRO} mt-3 tracking-[0.12em] text-[#9A9791]`}
+                      className={`${LBL} mt-3 text-[#5E5E5E]`}
                     >
                       {c.ctaDisabledNote}
                     </p>
@@ -506,12 +508,15 @@ export function Estimator() {
                     <a
                       href="#kontaktai"
                       onClick={handOff}
-                      className="mt-6 inline-flex h-12 w-full items-center justify-center bg-[#E7E5E1] px-6 text-[0.9375rem] font-semibold text-[#121316] transition-[translate,opacity] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:opacity-90 active:translate-y-0 active:opacity-80"
+                      className={`${BTN_PRIMARY} mt-6 w-full`}
                     >
                       {c.cta}
+                      <span aria-hidden className="k-arrow">
+                        →
+                      </span>
                     </a>
                     <p
-                      className={`${T_MICRO} mt-3 tracking-[0.12em] text-[#9A9791]`}
+                      className={`${LBL} mt-3 text-[#5E5E5E]`}
                     >
                       {c.ctaNote}
                     </p>
@@ -547,8 +552,8 @@ function Segmented({
 }) {
   return (
     <fieldset className="min-w-0">
-      <legend className={`${T_MICRO} text-[#9A9791]`}>{legend}</legend>
-      <div className="mt-4 grid grid-cols-3 gap-px border border-white/[0.11] bg-white/[0.11]">
+      <legend className={`${LBL} text-[#5E5E5E]`}>{legend}</legend>
+      <div className="mt-4 grid grid-cols-3 gap-px overflow-hidden rounded-[4px] border border-[#E2E2E2] bg-[#E2E2E2]">
         {options.map((o) => {
           const on = o.id === value;
           return (
@@ -556,8 +561,8 @@ function Segmented({
               key={o.id}
               className={`knst-opt flex min-w-0 cursor-pointer flex-col items-center justify-center gap-1 px-2 py-3 text-center transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] ${
                 on
-                  ? "bg-[#E7E5E1] text-[#121316]"
-                  : "bg-[#1A1C20] text-[#9A9791] hover:bg-[#212329] hover:text-[#E7E5E1] active:bg-[#121316]"
+                  ? "bg-[#0C388D] text-[#FFFFFF]"
+                  : "bg-[#FFFFFF] text-[#111111] hover:bg-[#F5F5F5] active:bg-[#EDEDED]"
               }`}
             >
               <input
@@ -568,12 +573,12 @@ function Segmented({
                 onChange={() => onChange(o.id)}
               />
               <span
-                className={`text-balance text-[0.6875rem] leading-[1.25] sm:text-[0.8125rem] ${on ? "font-semibold" : ""}`}
+                className={`text-balance text-[0.875rem] leading-[1.25] sm:text-[0.9375rem] ${on ? "font-medium" : ""}`}
               >
                 {o.label}
               </span>
               <span
-                className={`knst-mono text-[0.6875rem] tracking-[0.08em] ${on ? "text-[#121316]" : "text-[#9A9791]"}`}
+                className={`k-num text-[0.8125rem] ${on ? "text-[rgba(255,255,255,0.78)]" : "text-[#5E5E5E]"}`}
               >
                 {o.note}
               </span>
@@ -582,7 +587,7 @@ function Segmented({
         })}
       </div>
       {hint ? (
-        <p className={`mt-3 max-w-[56ch] text-pretty ${T_SM} text-[#9A9791]`}>
+        <p className={`mt-3 max-w-[56ch] text-pretty ${T_SM} text-[#5E5E5E]`}>
           {hint}
         </p>
       ) : null}

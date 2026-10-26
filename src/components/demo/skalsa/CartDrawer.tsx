@@ -52,7 +52,7 @@ export function CartDrawer() {
   const copy = getSkalsaCopy(locale);
   const t = copy.basket;
   const catalog = useMemo(() => getCatalog(locale), [locale]);
-  /* Tuščias krepšelis irgi turi ką pasiūlyti — du katalogo įrašai, tos pačios
+  /* Tuščias krepšelis irgi turi ką pasiūlyti, du katalogo įrašai, tos pačios
      kainos, tas pats „pridėti“. Jokių „populiariausių“: tai būtų prasimanytas
      faktas apie neegzistuojančią parduotuvę. */
   const suggested = useMemo(() => {
@@ -60,7 +60,7 @@ export function CartDrawer() {
     return [products[0], products[2]];
   }, [locale]);
 
-  /* Vieninteliai uždarymo vartai — kad kitas atidarymas visada prasidėtų
+  /* Vieninteliai uždarymo vartai, kad kitas atidarymas visada prasidėtų
      nuo krepšelio, o ne nuo pusiau užpildytos užsakymo formos. */
   const close = useCallback(() => {
     closeCart();
@@ -80,7 +80,7 @@ export function CartDrawer() {
     const prevPadding = root.style.paddingRight;
     // Locks the native scroller. Lenis is what actually scrolls this page, and
     // `overflow: hidden` does not stop it (it moves the page programmatically)
-    // — but SmoothScroll watches the root for exactly this lock and calls
+    // but SmoothScroll watches the root for exactly this lock and calls
     // lenis.stop() itself, so setting it here is enough. Hand-adding a
     // `lenis-stopped` class, as this used to, achieved nothing: Lenis derives
     // that class from its own state and strips it on the next change.
@@ -137,7 +137,7 @@ export function CartDrawer() {
     setStep("done");
   };
 
-  /* The panel is grabbable, so its motion cannot be a CSS transition — those
+  /* The panel is grabbable, so its motion cannot be a CSS transition, those
      finish what they started. See useSheetGesture for the projection maths. */
   const sheet = useSheetGesture(open, close);
   /* The scrim tracks the drag 1:1 the whole way, not just at the ends: the
@@ -163,7 +163,7 @@ export function CartDrawer() {
         onClick={close}
         aria-hidden="true"
         style={sheet.reduce ? undefined : { opacity: scrim }}
-        className={`absolute inset-0 bg-[rgba(36,30,25,0.42)] backdrop-blur-[3px] ${
+        className={`absolute inset-0 bg-[rgba(42,20,16,0.42)] ${
           sheet.reduce
             ? `transition-opacity duration-[var(--d-el)] ease-[var(--e-out)] ${open ? "opacity-100" : "opacity-0"}`
             : ""
@@ -180,7 +180,7 @@ export function CartDrawer() {
         aria-label={title}
         aria-hidden={!open}
         inert={!open}
-        /* Drag right to dismiss — the same path it arrived along. Dragging the
+        /* Drag right to dismiss, the same path it arrived along. Dragging the
            other way finds nothing, so it rubber-bands instead of stopping dead.
            dragDirectionLock keeps a horizontal throw from stealing the
            vertical scroll of the item list. */
@@ -191,23 +191,19 @@ export function CartDrawer() {
         dragMomentum={false}
         onDragEnd={(_, info) => sheet.onDragEnd(info.velocity.x)}
         style={sheet.reduce ? undefined : { x: sheet.x, touchAction: "pan-y" }}
-        className={`absolute inset-y-0 right-0 flex w-[calc(100%-2.5rem)] max-w-[27rem] flex-col border-l border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] shadow-[-24px_0_60px_-30px_rgba(36,30,25,0.55)] sm:w-full ${
+        className={`absolute inset-y-0 right-0 flex w-[calc(100%-2.5rem)] max-w-[27rem] flex-col border-l border-[rgba(90,42,30,0.14)] bg-[#F2EFEA] sm:w-full ${open ? "shadow-[-24px_0_60px_-30px_rgba(42,20,16,0.5)]" : ""} ${
           sheet.reduce
             ? `transition-transform duration-[var(--d-el)] ease-[var(--e-out)] ${open ? "translate-x-0" : "translate-x-full"}`
             : ""
         }`}
       >
         {/* antraštė */}
-        <div className="shrink-0 border-b border-[rgba(36,30,25,0.13)] px-5 pb-4 pt-4 sm:px-6">
+        <div className="shrink-0 border-b border-[rgba(90,42,30,0.14)] px-5 pb-4 pt-4 sm:px-6">
           <div className="flex items-center justify-between gap-4">
             <h2
               ref={headingRef}
               tabIndex={-1}
               className="min-w-0 truncate text-[1.0625rem] tracking-[-0.01em] outline-none"
-              style={{
-                fontFamily: "var(--font-skalsa-display)",
-                fontWeight: 500,
-              }}
             >
               {step === "cart" && t.heading.cart(count)}
               {step === "checkout" && t.heading.checkout}
@@ -218,7 +214,7 @@ export function CartDrawer() {
               type="button"
               onClick={close}
               aria-label={t.close}
-              className="press inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[#241E19] transition-[background-color,border-color,rotate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:rotate-90 hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
+              className="press inline-flex h-9 w-9 shrink-0 items-center justify-center border border-[rgba(90,42,30,0.14)] text-[#5A2A1E] transition-[background-color,border-color,rotate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:rotate-90 hover:border-[rgba(90,42,30,0.36)] hover:bg-[#ECE3DA]"
             >
               <svg
                 width="11"
@@ -251,7 +247,7 @@ export function CartDrawer() {
                     <span
                       aria-current={state === "now" ? "step" : undefined}
                       className={`shrink-0 text-[0.6875rem] uppercase tracking-[0.1em] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] sm:text-[0.6875rem] sm:tracking-[0.12em] ${
-                        state === "next" ? "text-[#A79C90]" : "text-[#241E19]"
+                        state === "next" ? "text-[#B39A91]" : "text-[#5A2A1E]"
                       }`}
                     >
                       {t.steps[s]}
@@ -259,10 +255,10 @@ export function CartDrawer() {
                     {i < STEPS.length - 1 && (
                       <span
                         aria-hidden="true"
-                        className="h-px min-w-0 flex-1 overflow-hidden bg-[rgba(36,30,25,0.13)]"
+                        className="h-px min-w-0 flex-1 overflow-hidden bg-[rgba(90,42,30,0.14)]"
                       >
                         <span
-                          className={`block h-full w-full origin-left bg-[#B4562F] transition-transform duration-[var(--d-el)] ease-[var(--e-out)] ${
+                          className={`block h-full w-full origin-left bg-[#5A2A1E] transition-transform duration-[var(--d-el)] ease-[var(--e-out)] ${
                             i < stepIndex ? "scale-x-100" : "scale-x-0"
                           }`}
                         />
@@ -282,25 +278,21 @@ export function CartDrawer() {
         >
           {step === "cart" && count === 0 && (
             <div className="flex flex-col py-12">
-              <span aria-hidden="true" className="text-[#B4562F]">
+              <span aria-hidden="true" className="text-[#5A2A1E]">
                 <Candle />
               </span>
               <p
                 className="mt-6 text-[1.25rem] leading-[1.2] tracking-[-0.02em]"
-                style={{
-                  fontFamily: "var(--font-skalsa-display)",
-                  fontWeight: 500,
-                }}
               >
                 {t.empty.title}
               </p>
-              <p className="mt-3 max-w-[32ch] text-[0.9375rem] leading-[1.6] text-pretty text-[#6E6257]">
+              <p className="mt-3 max-w-[32ch] text-[0.9375rem] leading-[1.6] text-pretty text-[#7E5A50]">
                 {t.empty.body(FREE_SHIPPING_FROM)}
               </p>
               <a
                 href="#katalogas"
                 onClick={close}
-                className="group mt-7 press inline-flex h-11 w-fit items-center gap-2.5 rounded-full bg-[#241E19] pl-6 pr-5 text-[0.8125rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-0"
+                className="group mt-7 press inline-flex h-11 w-fit items-center gap-2.5 bg-[#5A2A1E] pl-6 pr-5 text-[0.8125rem] text-[#F2EFEA] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#47201A] active:translate-y-0"
               >
                 {t.empty.browse}
                 <svg
@@ -322,7 +314,7 @@ export function CartDrawer() {
                 </svg>
               </a>
 
-              <p className="mt-10 border-t border-[rgba(36,30,25,0.13)] pt-6 text-[0.6875rem] uppercase tracking-[0.14em] text-[#6E6257]">
+              <p className="mt-10 border-t border-[rgba(90,42,30,0.14)] pt-6 text-[0.6875rem] uppercase tracking-[0.14em] text-[#7E5A50]">
                 {t.empty.suggest}
               </p>
               <ul className="mt-4 grid gap-3">
@@ -332,7 +324,7 @@ export function CartDrawer() {
                       type="button"
                       onClick={() => add(p.id)}
                       aria-label={copy.addToBasket.addLabel(p.name)}
-                      className="group flex w-full items-center gap-3.5 rounded-[10px] border border-[rgba(36,30,25,0.13)] bg-[#F1EAE0] p-2.5 text-left transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#EDE4D8]"
+                      className="group flex w-full items-center gap-3.5 border border-[rgba(90,42,30,0.14)] bg-[#ECE3DA] p-2.5 text-left transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(90,42,30,0.36)] hover:bg-[#E6DACF]"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -342,20 +334,20 @@ export function CartDrawer() {
                         height={p.h}
                         decoding="async"
                         loading="lazy"
-                        className="h-12 w-12 shrink-0 rounded-[6px] object-cover"
+                        className="h-12 w-12 shrink-0 object-cover"
                       />
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-[0.9375rem] leading-tight">
                           {p.name}
                         </span>
-                        <span className="mt-1 block text-[0.8125rem] tabular-nums text-[#6E6257]">
+                        <span className="mt-1 block text-[0.8125rem] tabular-nums text-[#7E5A50]">
                           {eur(p.price, locale)} ·{" "}
                           {copy.units.hours(p.burn)}
                         </span>
                       </span>
                       <span
                         aria-hidden="true"
-                        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] text-[0.9375rem] leading-none transition-[background-color,color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:border-[#241E19] group-hover:bg-[#241E19] group-hover:text-[#FAF6F0]"
+                        className="inline-flex h-8 w-8 shrink-0 items-center justify-center border border-[rgba(90,42,30,0.14)] bg-[#F2EFEA] text-[0.9375rem] leading-none transition-[background-color,color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:border-[#5A2A1E] group-hover:bg-[#5A2A1E] group-hover:text-[#F2EFEA]"
                       >
                         +
                       </span>
@@ -367,7 +359,7 @@ export function CartDrawer() {
           )}
 
           {step === "cart" && count > 0 && (
-            <ul className="divide-y divide-[rgba(36,30,25,0.13)]">
+            <ul className="divide-y divide-[rgba(90,42,30,0.14)]">
               {lines.map((line, i) => {
                 const item = catalog[line.id];
                 if (!item) return null;
@@ -375,9 +367,9 @@ export function CartDrawer() {
                   <li
                     key={line.id}
                     /* Pakopa įsijungia tik atidarytam stalčiui: uždarius klasė
-                       nukrenta, todėl kitą kartą animacija paleidžiama iš naujo
-                       — ir būtent tada, kai eilutės iš tikrųjų matomos. */
-                    className={`flex gap-4 py-5 ${open ? "sk-row" : ""}`}
+                       nukrenta, todėl kitą kartą animacija paleidžiama iš naujo,
+                       ir būtent tada, kai eilutės iš tikrųjų matomos. */
+                    className={`flex gap-4 py-5 ${open ? "sk-row-in" : ""}`}
                     style={{ "--i": i } as React.CSSProperties}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -388,7 +380,7 @@ export function CartDrawer() {
                       height={item.h}
                       decoding="async"
                       loading="lazy"
-                      className="h-[68px] w-[68px] shrink-0 rounded-[6px] object-cover"
+                      className="h-[68px] w-[68px] shrink-0 object-cover"
                     />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-3">
@@ -399,7 +391,7 @@ export function CartDrawer() {
                           type="button"
                           onClick={() => remove(line.id)}
                           aria-label={t.remove(item.name)}
-                          className="-mr-1 -mt-1 press inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[#6E6257] transition-[background-color,color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:bg-[#F1EAE0] hover:text-[#B4562F]"
+                          className="-mr-1 -mt-1 press inline-flex h-7 w-7 shrink-0 items-center justify-center text-[#7E5A50] transition-[background-color,color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:bg-[#ECE3DA] hover:text-[#5A2A1E]"
                         >
                           <svg
                             width="9"
@@ -418,14 +410,14 @@ export function CartDrawer() {
                           </svg>
                         </button>
                       </div>
-                      <p className="mt-1 text-[0.8125rem] text-[#6E6257]">
+                      <p className="mt-1 text-[0.8125rem] text-[#7E5A50]">
                         {item.meta}
                       </p>
 
                       <div className="mt-3 flex items-center justify-between gap-3">
                         <div
                           aria-live="polite"
-                          className="inline-flex items-center rounded-full border border-[rgba(36,30,25,0.13)]"
+                          className="inline-flex items-center border border-[rgba(90,42,30,0.14)]"
                         >
                           <QtyButton
                             onClick={() => bump(line.id, -1)}
@@ -466,7 +458,7 @@ export function CartDrawer() {
 
           {step === "checkout" && (
             <form id="skalsa-order" onSubmit={onSubmit} className="py-5">
-              <ul className="divide-y divide-[rgba(36,30,25,0.13)] border-y border-[rgba(36,30,25,0.13)]">
+              <ul className="divide-y divide-[rgba(90,42,30,0.14)] border-y border-[rgba(90,42,30,0.14)]">
                 {lines.map((line) => {
                   const item = catalog[line.id];
                   if (!item) return null;
@@ -477,7 +469,7 @@ export function CartDrawer() {
                     >
                       <span className="min-w-0 text-[0.9375rem] break-words">
                         {item.name}
-                        <span className="text-[#6E6257]"> × {line.qty}</span>
+                        <span className="text-[#7E5A50]"> × {line.qty}</span>
                       </span>
                       <span className="shrink-0 text-[0.9375rem] tabular-nums">
                         {eur(item.price * line.qty, locale)}
@@ -512,7 +504,7 @@ export function CartDrawer() {
                 />
               </div>
 
-              <p className="mt-7 border-l-2 border-[#B4562F] pl-4 text-[0.8125rem] leading-[1.6] text-pretty text-[#6E6257]">
+              <p className="mt-7 border-l-2 border-[#5A2A1E] pl-4 text-[0.8125rem] leading-[1.6] text-pretty text-[#7E5A50]">
                 {t.demoNote}
               </p>
             </form>
@@ -522,29 +514,25 @@ export function CartDrawer() {
             <div className="py-10">
               <span
                 aria-hidden="true"
-                className="sk-stamp press inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#B4562F] text-[#FAF6F0]"
+                className="sk-stamp press inline-flex h-12 w-12 items-center justify-center bg-[#5A2A1E] text-[#F2EFEA]"
               >
                 <Check size={18} />
               </span>
               <p
                 className="mt-5 text-[1.25rem] leading-[1.2] tracking-[-0.02em]"
-                style={{
-                  fontFamily: "var(--font-skalsa-display)",
-                  fontWeight: 500,
-                }}
               >
                 {t.done.title}
               </p>
-              <p className="mt-3 text-[0.9375rem] leading-[1.65] text-pretty text-[#6E6257]">
+              <p className="mt-3 text-[0.9375rem] leading-[1.65] text-pretty text-[#7E5A50]">
                 {t.done.body}
               </p>
-              <dl className="mt-7 border-t border-[rgba(36,30,25,0.13)] pt-5 text-[0.8125rem]">
+              <dl className="mt-7 border-t border-[rgba(90,42,30,0.14)] pt-5 text-[0.8125rem]">
                 <div className="flex items-baseline justify-between gap-3 py-1">
-                  <dt className="text-[#6E6257]">{t.done.items}</dt>
+                  <dt className="text-[#7E5A50]">{t.done.items}</dt>
                   <dd className="tabular-nums">{t.done.count(count)}</dd>
                 </div>
                 <div className="flex items-baseline justify-between gap-3 py-1">
-                  <dt className="text-[#6E6257]">{t.done.total}</dt>
+                  <dt className="text-[#7E5A50]">{t.done.total}</dt>
                   <dd className="tabular-nums">{eur(total, locale)}</dd>
                 </div>
               </dl>
@@ -554,9 +542,9 @@ export function CartDrawer() {
 
         {/* apačia */}
         {step === "cart" && count > 0 && (
-          <div className="shrink-0 border-t border-[rgba(36,30,25,0.13)] px-5 pb-6 pt-5 sm:px-6">
+          <div className="shrink-0 border-t border-[rgba(90,42,30,0.14)] px-5 pb-6 pt-5 sm:px-6">
             <div
-              className="h-[3px] w-full overflow-hidden rounded-full bg-[#F1EAE0]"
+              className="h-[3px] w-full overflow-hidden bg-[#ECE3DA]"
               role="progressbar"
               aria-valuemin={0}
               aria-valuemax={FREE_SHIPPING_FROM}
@@ -565,17 +553,17 @@ export function CartDrawer() {
             >
               <span
                 aria-hidden="true"
-                className="block h-full w-full origin-left rounded-full bg-[#B4562F] transition-transform duration-[var(--d-el)] ease-[var(--e-out)]"
+                className="block h-full w-full origin-left bg-[#5A2A1E] transition-transform duration-[var(--d-el)] ease-[var(--e-out)]"
                 style={{ transform: `scaleX(${progress})` }}
               />
             </div>
             <p
               aria-live="polite"
-              className="mt-3 flex items-center gap-2 text-[0.8125rem] text-[#6E6257]"
+              className="mt-3 flex items-center gap-2 text-[0.8125rem] text-[#7E5A50]"
             >
               {freeShipping ? (
                 <>
-                  <span aria-hidden="true" className="text-[#B4562F]">
+                  <span aria-hidden="true" className="text-[#5A2A1E]">
                     <Check size={11} />
                   </span>
                   {t.freeNow}
@@ -587,16 +575,16 @@ export function CartDrawer() {
 
             <dl className="mt-5 text-[0.9375rem]">
               <div className="flex items-baseline justify-between gap-3 py-1">
-                <dt className="text-[#6E6257]">{t.subtotal}</dt>
+                <dt className="text-[#7E5A50]">{t.subtotal}</dt>
                 <dd className="tabular-nums">{eur(subtotal, locale)}</dd>
               </div>
               <div className="flex items-baseline justify-between gap-3 py-1">
-                <dt className="text-[#6E6257]">{t.delivery}</dt>
+                <dt className="text-[#7E5A50]">{t.delivery}</dt>
                 <dd className="tabular-nums">
                   {freeShipping ? t.deliveryFree : eur(shipping, locale)}
                 </dd>
               </div>
-              <div className="mt-2 flex items-baseline justify-between gap-3 border-t border-[rgba(36,30,25,0.13)] pt-3">
+              <div className="mt-2 flex items-baseline justify-between gap-3 border-t border-[rgba(90,42,30,0.14)] pt-3">
                 <dt className="text-[0.9375rem]">{t.total}</dt>
                 <dd className="text-[1.0625rem] tabular-nums">
                   {eur(total, locale)}
@@ -607,7 +595,7 @@ export function CartDrawer() {
             <button
               type="button"
               onClick={() => setStep("checkout")}
-              className="group mt-5 press inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
+              className="group mt-5 press inline-flex h-12 w-full items-center justify-center gap-2.5 bg-[#5A2A1E] text-[0.9375rem] text-[#F2EFEA] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#47201A] active:translate-y-[1px]"
             >
               {t.toCheckout}
               <svg
@@ -632,14 +620,14 @@ export function CartDrawer() {
         )}
 
         {step === "checkout" && (
-          <div className="shrink-0 border-t border-[rgba(36,30,25,0.13)] px-5 pb-6 pt-5 sm:px-6">
+          <div className="shrink-0 border-t border-[rgba(90,42,30,0.14)] px-5 pb-6 pt-5 sm:px-6">
             <div className="flex items-baseline justify-between gap-3">
               <span className="text-[0.9375rem]">{t.total}</span>
               <span className="text-[1.0625rem] tabular-nums">
                 {eur(total, locale)}
               </span>
             </div>
-            <p className="mt-1 text-[0.8125rem] text-[#6E6257]">
+            <p className="mt-1 text-[0.8125rem] text-[#7E5A50]">
               {t.includesDelivery(
                 freeShipping ? t.includesFree : eur(shipping, locale),
               )}
@@ -647,14 +635,14 @@ export function CartDrawer() {
             <button
               type="submit"
               form="skalsa-order"
-              className="mt-4 press inline-flex h-12 w-full items-center justify-center rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
+              className="mt-4 press inline-flex h-12 w-full items-center justify-center bg-[#5A2A1E] text-[0.9375rem] text-[#F2EFEA] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#47201A] active:translate-y-[1px]"
             >
               {t.placeOrder}
             </button>
             <button
               type="button"
               onClick={() => setStep("cart")}
-              className="mt-2.5 press inline-flex h-11 w-full items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[0.8125rem] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
+              className="mt-2.5 press inline-flex h-11 w-full items-center justify-center border border-[rgba(90,42,30,0.14)] text-[0.8125rem] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(90,42,30,0.36)] hover:bg-[#ECE3DA]"
             >
               {t.back}
             </button>
@@ -662,18 +650,18 @@ export function CartDrawer() {
         )}
 
         {step === "done" && (
-          <div className="shrink-0 border-t border-[rgba(36,30,25,0.13)] px-5 pb-6 pt-5 sm:px-6">
+          <div className="shrink-0 border-t border-[rgba(90,42,30,0.14)] px-5 pb-6 pt-5 sm:px-6">
             <button
               type="button"
               onClick={() => setStep("cart")}
-              className="press inline-flex h-12 w-full items-center justify-center rounded-full bg-[#241E19] text-[0.9375rem] text-[#FAF6F0] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#3A3129] active:translate-y-[1px]"
+              className="press inline-flex h-12 w-full items-center justify-center bg-[#5A2A1E] text-[0.9375rem] text-[#F2EFEA] transition-[background-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:bg-[#47201A] active:translate-y-[1px]"
             >
               {t.back}
             </button>
             <button
               type="button"
               onClick={close}
-              className="mt-2.5 press inline-flex h-11 w-full items-center justify-center rounded-full border border-[rgba(36,30,25,0.13)] text-[0.8125rem] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0]"
+              className="mt-2.5 press inline-flex h-11 w-full items-center justify-center border border-[rgba(90,42,30,0.14)] text-[0.8125rem] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(90,42,30,0.36)] hover:bg-[#ECE3DA]"
             >
               {t.keepShopping}
             </button>
@@ -684,7 +672,7 @@ export function CartDrawer() {
   );
 }
 
-/** Kiekio mygtukas — kairė arba dešinė segmento pusė. */
+/** Kiekio mygtukas, kairė arba dešinė segmento pusė (kampai statūs, kaip visame puslapyje). */
 function QtyButton({
   onClick,
   label,
@@ -704,9 +692,8 @@ function QtyButton({
       onClick={onClick}
       aria-label={label}
       disabled={disabled}
-      className={`inline-flex h-8 w-8 items-center justify-center text-[0.9375rem] leading-none transition-[background-color,color] duration-[var(--d-tap)] ease-[var(--e-out)] hover:bg-[#F1EAE0] active:bg-[#E7DCCD] disabled:pointer-events-none disabled:text-[#BDB2A5] ${
-        side === "left" ? "rounded-l-full" : "rounded-r-full"
-      }`}
+      data-side={side}
+      className="inline-flex h-8 w-8 items-center justify-center text-[0.9375rem] leading-none transition-[background-color,color] duration-[var(--d-tap)] ease-[var(--e-out)] hover:bg-[#ECE3DA] active:bg-[#E3D6CB] disabled:pointer-events-none disabled:text-[#C4AFA6]"
     >
       {children}
     </button>
@@ -731,7 +718,7 @@ function Field({
     <div>
       <label
         htmlFor={id}
-        className="block text-[0.6875rem] uppercase tracking-[0.14em] text-[#6E6257]"
+        className="block text-[0.6875rem] uppercase tracking-[0.14em] text-[#7E5A50]"
       >
         {label}
       </label>
@@ -742,13 +729,13 @@ function Field({
         required
         autoComplete={autoComplete}
         {...validityProps(messages)}
-        className="mt-2 h-11 w-full rounded-[6px] border border-[rgba(36,30,25,0.13)] bg-[#F1EAE0] px-3.5 text-[0.9375rem] text-[#241E19] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(36,30,25,0.34)] focus:border-[rgba(36,30,25,0.4)] focus:bg-[#FAF6F0]"
+        className="mt-2 h-11 w-full border border-[rgba(90,42,30,0.14)] bg-[#ECE3DA] px-3.5 text-[0.9375rem] text-[#5A2A1E] transition-[background-color,border-color] duration-[var(--d-ui)] ease-[var(--e-out)] hover:border-[rgba(90,42,30,0.36)] focus:border-[rgba(90,42,30,0.42)] focus:bg-[#F2EFEA]"
       />
     </div>
   );
 }
 
-/** Žvakė — tuščio krepšelio ženklas. Piešiama, o ne emoji. */
+/** Žvakė, tuščio krepšelio ženklas. Piešiama, o ne emoji. */
 function Candle() {
   return (
     <svg

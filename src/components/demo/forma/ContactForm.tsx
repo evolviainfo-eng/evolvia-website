@@ -1,26 +1,57 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent, type Ref } from "react";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { getFormaCopy } from "@/components/demo/forma/copy";
 import {
-  MUTED,
-  SERIF,
+  HAIR_DARK,
+  SAND,
+  SAND_MUTED,
   T_BODY,
-  T_META,
   T_SMALL,
 } from "@/components/demo/forma/tokens";
 
 /* No `outline-none` here on purpose: it compiles into Tailwind's utilities
    layer as `outline-style:none` and would leave every control with nothing but
    a 1px border tint to mark focus. The demo-scoped `.forma :focus-visible`
-   ring in page.tsx is the visible indicator; the border shift is the accent,
-   and it now has three states — resting, under the pointer, focused — so no
-   field is ever dead. */
+   ring in FormaPage (sand on this dark ground) is the visible indicator; the
+   underline has three states, resting, under the pointer, focused, so no
+   field is ever dead. Underlined inputs on the dark contact ground, labels
+   14px sand, as TARQ's footer. Placeholders 5.2:1 on #171717. */
 const FIELD =
-  "mt-2 h-12 w-full min-w-0 rounded-none border-0 border-b border-[rgba(26,25,23,0.24)] bg-transparent px-0 text-[0.9375rem] text-[#1A1917] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] placeholder:text-[#8A857C] hover:border-[rgba(26,25,23,0.5)] focus:border-[#1A1917]";
+  "mt-2 h-12 w-full min-w-0 rounded-none border-0 border-b border-[rgba(217,212,194,0.3)] bg-transparent px-0 text-[1rem] font-light text-[#D9D4C2] placeholder:text-[#8E897F] hover:border-[rgba(217,212,194,0.55)] focus:border-[#D9D4C2]";
 
-const LABEL = `block ${T_META}`;
+const LABEL = `block ${T_SMALL}`;
+
+/** The one button on the dark ground: a sand outline whose sand fill wipes
+ *  in from the left by clip-path, carrying its own ink copy of the label, so
+ *  no colour is ever transitioned. `.f-btn` lives in FormaPage's stylesheet. */
+function WipeButton({
+  label,
+  type,
+  onClick,
+  btnRef,
+}: {
+  label: string;
+  type: "submit" | "button";
+  onClick?: () => void;
+  btnRef?: Ref<HTMLButtonElement>;
+}) {
+  return (
+    <button
+      ref={btnRef}
+      type={type}
+      onClick={onClick}
+      className={`f-btn h-12 shrink-0 px-8 ${T_SMALL}`}
+      style={{ color: SAND }}
+    >
+      <span>{label}</span>
+      <span aria-hidden="true" className="f-btn-fill px-8">
+        {label}
+      </span>
+    </button>
+  );
+}
 
 export function ContactForm() {
   const locale = useLocale();
@@ -40,27 +71,22 @@ export function ContactForm() {
 
   if (sent) {
     return (
-      <div className="border-t border-[rgba(26,25,23,0.24)] pt-8">
-        <p
-          style={SERIF}
-          className="max-w-[20ch] text-[clamp(1.5rem,3vw,1.875rem)] leading-[1.15] tracking-[-0.015em] text-balance"
-        >
+      <div className="border-t pt-8" style={{ borderColor: HAIR_DARK }}>
+        <p className="max-w-[24ch] text-[clamp(1.375rem,2vw,1.75rem)] font-light leading-[1.25] text-balance">
           {t.sentTitle}
         </p>
-        <p className={`mt-4 max-w-[46ch] ${T_BODY}`} style={{ color: MUTED }}>
-          {t.sentBody}
-        </p>
-        <button
-          ref={resetRef}
-          type="button"
-          onClick={() => {
-            setSent(false);
-            formRef.current?.reset();
-          }}
-          className="mt-7 press inline-flex h-12 items-center rounded-full border border-[rgba(26,25,23,0.24)] px-6 text-[0.9375rem] transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-0 active:opacity-80"
-        >
-          {t.again}
-        </button>
+        <p className={`mt-4 max-w-[46ch] ${T_BODY}`}>{t.sentBody}</p>
+        <div className="mt-7">
+          <WipeButton
+            btnRef={resetRef}
+            type="button"
+            label={t.again}
+            onClick={() => {
+              setSent(false);
+              formRef.current?.reset();
+            }}
+          />
+        </div>
       </div>
     );
   }
@@ -70,14 +96,15 @@ export function ContactForm() {
       ref={formRef}
       onSubmit={handleSubmit}
       noValidate
-      className="border-t border-[rgba(26,25,23,0.24)] pt-8"
+      className="border-t pt-8"
+      style={{ borderColor: HAIR_DARK }}
     >
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="min-w-0">
           <label
             className={LABEL}
             htmlFor="forma-vardas"
-            style={{ color: MUTED }}
+            style={{ color: SAND }}
           >
             {t.name}
           </label>
@@ -95,7 +122,7 @@ export function ContactForm() {
           <label
             className={LABEL}
             htmlFor="forma-pastas"
-            style={{ color: MUTED }}
+            style={{ color: SAND }}
           >
             {t.email}
           </label>
@@ -113,12 +140,12 @@ export function ContactForm() {
           <label
             className={LABEL}
             htmlFor="forma-tipas"
-            style={{ color: MUTED }}
+            style={{ color: SAND }}
           >
             {t.type}
           </label>
           {/* `appearance-none` strips the native arrow along with the native
-              styling, so the affordance has to be drawn back — without it the
+              styling, so the affordance has to be drawn back, without it the
               select is indistinguishable from a text field. */}
           <div className="relative">
             <select
@@ -135,7 +162,7 @@ export function ContactForm() {
             <span
               aria-hidden="true"
               className="pointer-events-none absolute bottom-[20px] right-[3px] h-[7px] w-[7px] rotate-45 border-b border-r"
-              style={{ borderColor: MUTED }}
+              style={{ borderColor: SAND_MUTED }}
             />
           </div>
         </div>
@@ -143,7 +170,7 @@ export function ContactForm() {
           <label
             className={LABEL}
             htmlFor="forma-plotas"
-            style={{ color: MUTED }}
+            style={{ color: SAND }}
           >
             {t.area}
           </label>
@@ -162,7 +189,7 @@ export function ContactForm() {
         <label
           className={LABEL}
           htmlFor="forma-zinute"
-          style={{ color: MUTED }}
+          style={{ color: SAND }}
         >
           {t.message}
         </label>
@@ -176,15 +203,10 @@ export function ContactForm() {
       </div>
 
       <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <button
-          type="submit"
-          className="press inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-[#1A1917] px-7 text-[0.9375rem] text-[#F4F1EC] transition-[translate,opacity] duration-[var(--d-tap)] ease-[var(--e-out)] hover:-translate-y-px hover:opacity-90 active:translate-y-0 active:opacity-75"
-        >
-          {t.submit}
-        </button>
+        <WipeButton type="submit" label={t.submit} />
         <p
           className={`min-w-0 max-w-[34ch] ${T_SMALL}`}
-          style={{ color: MUTED }}
+          style={{ color: SAND_MUTED }}
         >
           {t.note}
         </p>

@@ -1,15 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { getSkalsaCopy } from "./copy";
 import { useShop } from "./ShopProvider";
-
-/* Aktyvi ir užvesta nuoroda naudoja tą patį brūkšnį — būsena atrodo kaip
-   gestas, kurį pelė ką tik padarė. Mastelis nurodomas iškviečiant, kad
-   dvi taisyklės tam pačiam `after:scale-x` niekada nesivaržytų. */
-const NAV =
-  "relative inline-block py-1 text-[0.8125rem] transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:bg-[#241E19] after:transition-transform after:duration-[var(--d-ui)] after:ease-[var(--e-out)] hover:text-[#241E19] hover:after:scale-x-100";
 
 /* Nuorodų tekstai žodyne, po tuo pačiu `id`. */
 const LINKS = [
@@ -19,78 +13,70 @@ const LINKS = [
   { href: "#pristatymas", id: "pristatymas" },
 ] as const;
 
-/** Lipni mini-antraštė. Sėdi tiksliai po Evolvia sąžiningumo juosta.
+const NAV =
+  "sk-nav inline-flex h-11 items-center px-2 underline-offset-[.3em] decoration-1 transition-opacity duration-150 hover:underline xl:px-3";
+
+/** The shop's header: a real bar on the ground colour, never a strip
+ *  floating over photographs. Left: the four section links (only
+ *  "Katalogas" below 1280 px). Centre: the wordmark in the serif, always
+ *  brown on the ground. Right: the basket, the one solid brown button,
+ *  with its count.
  *
- *  Du dalykai seka slinkimą viename klausytojuje: ar antraštė jau atsiplėšusi
- *  nuo puslapio viršaus (tada gauna šešėlį) ir kuri sekcija šiuo metu po ja.
- *  Aktyvi nuoroda pasižymi ta pačia linija, kurią hover'is nubrėžia — būsena
- *  ir gestas sutampa, todėl nieko naujo mokytis nereikia.
- */
+ *  It takes its own height (--sk-head) so nothing ever sits under it, and
+ *  it gets out of the way while reading: it slides up on scroll down and
+ *  comes back on any scroll up, near the top, or when focus enters it.
+ *  One passive scroll listener (rAF-throttled), removed on unmount; the
+ *  slide is a transform, and under reduced motion it simply jumps. */
 export function SiteHeader() {
   const { count, openCart } = useShop();
   const locale = useLocale();
   const t = getSkalsaCopy(locale).header;
-  const [stuck, setStuck] = useState(false);
-  const [active, setActive] = useState("");
+  const [hidden, setHidden] = useState(false);
+  const bar = useRef<HTMLElement>(null);
 
   useEffect(() => {
     let frame = 0;
+    let last = window.scrollY;
     const read = () => {
       frame = 0;
-      setStuck(window.scrollY > 8);
-      const mid = window.innerHeight * 0.34;
-      let current = "";
-      document.querySelectorAll<HTMLElement>("[data-sk-sec]").forEach((el) => {
-        if (el.getBoundingClientRect().top <= mid)
-          current = el.dataset.skSec ?? "";
-      });
-      setActive(current);
+      const y = window.scrollY;
+      const dy = y - last;
+      if (Math.abs(dy) < 6) return;
+      const focused = bar.current?.contains(document.activeElement) ?? false;
+      setHidden(dy > 0 && y > 240 && !focused);
+      last = y;
     };
     const onScroll = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(read);
+      if (!frame) frame = window.requestAnimationFrame(read);
     };
-    read();
+    const onFocus = () => setHidden(false);
+    const header = bar.current;
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    header?.addEventListener("focusin", onFocus);
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      header?.removeEventListener("focusin", onFocus);
     };
   }, []);
 
   return (
     <header
-      /* The separation is the scroll edge and a shadow, not a rule — the
-         `.chrome` fade does the work the border used to do. */
-      className={`chrome sticky z-[90] transition-[box-shadow] duration-[var(--d-ui)] ease-[var(--e-out)] ${
-        stuck ? "shadow-[0_10px_30px_-24px_rgba(36,30,25,0.7)]" : "shadow-none"
+      ref={bar}
+      className={`sticky z-[90] h-[var(--sk-head)] border-b border-[rgba(90,42,30,0.12)] bg-[#F2EFEA] text-[#5A2A1E] transition-transform duration-500 ease-[cubic-bezier(.4,0,.2,1)] motion-reduce:transition-none ${
+        hidden ? "-translate-y-[calc(100%+var(--demo-bar-h))]" : "translate-y-0"
       }`}
       style={{ top: "var(--demo-bar-h)" }}
     >
-      <div className="mx-auto flex h-[58px] max-w-[1180px] items-center gap-4 px-5 sm:h-[66px] sm:gap-8 sm:px-8">
-        <a
-          href="#virsus"
-          className="shrink-0 text-[1.25rem] leading-none tracking-[-0.01em] text-[#241E19] sm:text-[1.25rem]"
-          style={{ fontFamily: "var(--font-skalsa-display)", fontWeight: 500 }}
-        >
-          Skalsa
-        </a>
-
-        <nav aria-label={t.navLabel} className="hidden min-w-0 flex-1 md:block">
-          <ul className="flex items-center gap-7">
+      <div className="relative flex h-full items-center justify-between gap-4 px-[30px] lg:px-[60px]">
+        <nav aria-label={t.navLabel} className="-ml-2 flex min-w-0 items-center">
+          <a href="#katalogas" className={`${NAV} xl:hidden`}>
+            {t.links.katalogas}
+          </a>
+          <ul className="hidden items-center xl:flex">
             {LINKS.map((l) => (
               <li key={l.href}>
-                <a
-                  href={l.href}
-                  aria-current={active === l.id ? "true" : undefined}
-                  className={`${NAV} ${
-                    active === l.id
-                      ? "text-[#241E19] after:scale-x-100"
-                      : "text-[#6E6257] after:scale-x-0"
-                  }`}
-                >
+                <a href={l.href} className={NAV}>
                   {t.links[l.id]}
                 </a>
               </li>
@@ -98,39 +84,40 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <div className="ml-auto flex shrink-0 items-center gap-3">
-          <span className="hidden text-[0.8125rem] text-[#6E6257] lg:inline">
-            {t.freeDelivery}
-          </span>
-          <button
-            type="button"
-            onClick={openCart}
-            aria-label={t.openBasket(count)}
-            className="group press inline-flex h-10 items-center gap-2.5 rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] pl-3.5 pr-2.5 text-[0.8125rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[rgba(36,30,25,0.34)] hover:bg-[#F1EAE0] active:translate-y-0"
-          >
+        <a
+          href="#virsus"
+          aria-label="Skalsa"
+          className="sk-serif absolute left-1/2 top-1/2 inline-flex h-11 -translate-x-1/2 -translate-y-1/2 items-center px-2 text-[1.625rem] leading-none transition-opacity duration-150 hover:opacity-70 lg:text-[1.875rem]"
+        >
+          Skalsa
+        </a>
+
+        <button
+          type="button"
+          onClick={openCart}
+          aria-label={t.openBasket(count)}
+          className="sk-solid h-11 gap-2.5 px-4"
+        >
+          <span className="sm:hidden">
             <Bag />
-            <span className="hidden sm:inline">{t.basket}</span>
-            {/* `key` pririštas prie skaičiaus: pasikeitus jam ženkliukas
-                persimontuoja ir krūpteli. Jokios būsenos tam nereikia. */}
-            <span
-              key={count}
-              aria-hidden="true"
-              className={`inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-[0.8125rem] tabular-nums transition-colors duration-[var(--d-ui)] ease-[var(--e-out)] ${
-                count > 0
-                  ? "sk-pop bg-[#B4562F] text-[#FAF6F0]"
-                  : "bg-[#F1EAE0] text-[#6E6257]"
-              }`}
-            >
-              {count}
-            </span>
-          </button>
-        </div>
+          </span>
+          <span className="hidden sm:inline">{t.basket}</span>
+          {/* `key` pririštas prie skaičiaus: pasikeitus jam skaičius
+              persimontuoja ir krūpteli. Jokios būsenos tam nereikia. */}
+          <span
+            key={count}
+            aria-hidden="true"
+            className={`inline-block min-w-[1ch] text-center tabular-nums ${count > 0 ? "sk-pop" : ""}`}
+          >
+            {count}
+          </span>
+        </button>
       </div>
     </header>
   );
 }
 
-/** Krepšelio ženklas — piešiamas, nes šriftuose tokio rašmens nėra. */
+/** Krepšelio ženklas, piešiamas, nes šriftuose tokio rašmens nėra. */
 function Bag() {
   return (
     <svg
@@ -140,7 +127,7 @@ function Bag() {
       fill="none"
       aria-hidden="true"
       focusable="false"
-      className="shrink-0 opacity-70 transition-opacity duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:opacity-100"
+      className="block shrink-0"
     >
       <path
         d="M1.6 5.2h11.8l-.9 9.2H2.5L1.6 5.2Z"

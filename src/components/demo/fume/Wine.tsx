@@ -1,111 +1,98 @@
 import type { Locale } from "@/i18n/config";
 import { getFumeCopy } from "./copy";
-import { Body, Eyebrow, H2, HAIRLINE, Note, Shot } from "./Type";
+import { Body, DISPLAY, Frame, H2, HAIRLINE, Label, Note, RULE, UI } from "./Type";
 
-const PRICE_COL =
-  "w-[3.4rem] shrink-0 text-right font-[family-name:var(--font-fume-display)] text-[1.0625rem] leading-[1.3] tabular-nums";
+const PRICE_COL = `${DISPLAY} w-[4rem] shrink-0 text-right text-[1.1875rem] font-medium leading-[1.3] tabular-nums text-[#efe7dc]`;
 
+/** The wine list, set like a sommelier's card.
+ *
+ *  A centred heading block, then the pour, still and running the full height
+ *  of the list beside it (a 1200 px photograph: drifting it would enlarge it
+ *  past its pixels): five wines in italic, where they come from
+ *  in small capitals under each, glass and bottle in two figure columns
+ *  between copper hairlines. */
 export function Wine({ locale }: { locale: Locale }) {
   const { wine: copy, price } = getFumeCopy(locale);
 
   return (
-    <section
-      id="vynas"
-      className="mx-auto max-w-[1240px] px-5 py-[var(--sec)] sm:px-8"
-    >
-      <div className="grid items-start gap-[clamp(36px,5vw,72px)] lg:grid-cols-12">
-        <div className="min-w-0 lg:col-span-6">
-          <div data-rise>
-            <Eyebrow>{copy.eyebrow}</Eyebrow>
-            <H2 className="mt-6">
-              {copy.title[0]}
-              <br />
-              {copy.title[1]}
-            </H2>
-            <Body className="mt-5 max-w-[46ch]">{copy.lead}</Body>
-          </div>
+    <section id="vynas" className="px-4 pt-[var(--sec)] sm:px-8">
+      <div
+        data-group
+        className="mx-auto flex max-w-[760px] flex-col items-center text-center"
+      >
+        <Label>{copy.eyebrow}</Label>
+        <H2 className="mt-6">
+          {/* the space keeps the two lines apart in the heading's
+              accessible name, which SplitText builds from its text */}
+          {copy.title[0]} <br />
+          {copy.title[1]}
+        </H2>
+        <Body lines className="mt-7 max-w-[52ch]">
+          {copy.lead}
+        </Body>
+      </div>
 
-          <div
-            data-rise
-            style={{ "--i": 1 } as React.CSSProperties}
-            className="mt-10"
-          >
-            <div
-              className="flex items-baseline gap-x-3 border-b pb-2.5 font-[family-name:var(--font-fume-ui)] text-[0.6875rem] uppercase tracking-[0.18em] text-[#9c948a]"
-              style={{ borderColor: HAIRLINE }}
-            >
-              <span className="min-w-0 flex-1">{copy.columns.wines}</span>
-              <span className="w-[3.4rem] shrink-0 text-right">
-                {copy.columns.glass}
-              </span>
-              <span className="w-[3.4rem] shrink-0 text-right">
-                {copy.columns.bottle}
-              </span>
-            </div>
-
-            <ul>
-              {copy.list.map((w) => (
-                <li
-                  key={w.n}
-                  style={{ borderColor: HAIRLINE }}
-                  className="fume-row -mx-2 border-b px-2 py-4 last:border-b-0"
-                >
-                  <p className="flex items-baseline gap-x-3">
-                    <span className="min-w-0 flex-1 font-[family-name:var(--font-fume-display)] text-[1.0625rem] italic leading-[1.3] text-[#ede6da]">
-                      {w.n}
-                    </span>
-                    {/* The column headings above are visual only — a screen
-                        reader would otherwise read the two figures back to back
-                        with no way to tell the glass price from the bottle. */}
-                    <span
-                      className={`${PRICE_COL} text-[rgba(237,230,218,0.9)]`}
-                    >
-                      <span className="sr-only">{copy.srGlass}</span>
-                      {price(w.g)}
-                    </span>
-                    <span
-                      className={`${PRICE_COL} text-[rgba(237,230,218,0.9)]`}
-                    >
-                      <span className="sr-only">{copy.srBottle}</span>
-                      {price(w.b)}
-                    </span>
-                  </p>
-                  <p className="mt-1.5 max-w-[46ch] font-[family-name:var(--font-fume-ui)] text-[0.8125rem] leading-[1.6] text-[#9c948a]">
-                    {w.r}
-                  </p>
-                </li>
-              ))}
-            </ul>
-
-            <div
-              style={{ borderColor: HAIRLINE }}
-              className="mt-6 border-t pt-5"
-            >
-              <Note>{copy.note}</Note>
-            </div>
-          </div>
-        </div>
-
-        <div
-          data-rise
-          style={{ "--i": 1 } as React.CSSProperties}
-          className="min-w-0 lg:col-span-5 lg:col-start-8"
-        >
-          <Shot
+      <div className="mx-auto mt-[var(--gap)] grid max-w-[1180px] items-stretch gap-x-[clamp(32px,5vw,80px)] gap-y-12 md:grid-cols-12">
+        {/* The pour runs the full height of the list beside it. */}
+        <div data-group className="min-w-0 md:col-span-5">
+          <Frame
             src="/demo/fume/wine.webp"
             w={1200}
             h={800}
             alt={copy.pourAlt}
-            settle
+            ratio="4 / 3"
+            position="62% 50%"
+            fill
           />
-          <Shot
-            className="ml-auto mt-[clamp(16px,2.5vw,28px)] w-[68%]"
-            src="/demo/fume/wine-studio.webp"
-            w={1100}
-            h={893}
-            ratio="5 / 4"
-            alt={copy.studioAlt}
-          />
+        </div>
+
+        <div data-group className="min-w-0 md:col-span-7">
+          <div
+            className="fume-label flex items-baseline gap-x-3 border-b pb-3"
+            style={{ borderColor: RULE }}
+          >
+            <span className="min-w-0 flex-1">{copy.columns.wines}</span>
+            <span className="w-[4rem] shrink-0 text-right tracking-[0.08em]">
+              {copy.columns.glass}
+            </span>
+            <span className="w-[4rem] shrink-0 text-right tracking-[0.08em]">
+              {copy.columns.bottle}
+            </span>
+          </div>
+
+          <ul>
+            {copy.list.map((w) => (
+              <li
+                key={w.n}
+                style={{ borderColor: HAIRLINE }}
+                className="border-b py-[clamp(16px,2vw,24px)]"
+              >
+                <p className="flex items-baseline gap-x-3">
+                  <span
+                    className={`${DISPLAY} min-w-0 flex-1 text-[clamp(1.375rem,2.2vw,1.875rem)] italic leading-[1.15] text-[#efe7dc]`}
+                  >
+                    {w.n}
+                  </span>
+                  {/* The column headings above are visual only: a screen
+                      reader would otherwise read the two figures back to back
+                      with no way to tell the glass price from the bottle. */}
+                  <span className={PRICE_COL}>
+                    <span className="sr-only">{copy.srGlass}</span>
+                    {price(w.g)}
+                  </span>
+                  <span className={PRICE_COL}>
+                    <span className="sr-only">{copy.srBottle}</span>
+                    {price(w.b)}
+                  </span>
+                </p>
+                <p className="fume-label mt-2 text-[0.8125rem] tracking-[0.18em] text-[#c4b8a9]">
+                  {w.r}
+                </p>
+              </li>
+            ))}
+          </ul>
+
+          <Note className={`${UI} mt-6 max-w-[56ch]`}>{copy.note}</Note>
         </div>
       </div>
     </section>

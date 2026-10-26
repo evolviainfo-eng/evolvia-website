@@ -5,10 +5,10 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import { getSkalsaCopy } from "./copy";
 import { useShop } from "./ShopProvider";
 
-/** „Į krepšelį“ — trumpam pereina į patvirtinimo būseną.
+/** „Į krepšelį“, trumpam pereina į patvirtinimo būseną.
  *
  *  Vienintelis grįžtamasis ryšys, kurio čia reikia: mygtukas pasikeičia,
- *  antraštės skaitiklis pasislenka. Stalčius savaime neatsidaro — pirkėjas
+ *  antraštės skaitiklis pasislenka. Stalčius savaime neatsidaro, pirkėjas
  *  pats sprendžia, kada eiti prie užsakymo.
  *
  *  Abu užrašai guli tame pačiame tinklelio langelyje, todėl mygtuko plotis
@@ -43,14 +43,11 @@ export function AddToCart({
     timer.current = window.setTimeout(() => setAdded(false), 1500);
   };
 
-  const base =
-    "inline-flex h-11 items-center justify-center rounded-full px-5 text-[0.8125rem] transition-[background-color,color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] active:translate-y-[1px]";
-
-  const skin = added
-    ? "border border-[#B4562F] bg-[#B4562F] text-[#FAF6F0]"
-    : variant === "solid"
-      ? "border border-[#241E19] bg-[#241E19] text-[#FAF6F0] hover:bg-[#3A3129] hover:border-[#3A3129] hover:-translate-y-[1px]"
-      : "border border-[rgba(36,30,25,0.13)] bg-transparent text-[#241E19] hover:border-[#241E19] hover:bg-[#241E19] hover:text-[#FAF6F0]";
+  /* "quiet" is the reference's underlined text action (sk-act, in
+     SkalsaPage); it takes the colour of whatever it sits on, so the same
+     button works in a ground row and on a photo. "solid" is the one brand
+     block button. Both swap their label by opacity and a 7 px shift. */
+  const skin = variant === "solid" ? "sk-solid" : "sk-act";
 
   const label =
     "transition-[opacity,translate] duration-[var(--d-ui)] ease-[var(--e-out)] col-start-1 row-start-1";
@@ -60,9 +57,10 @@ export function AddToCart({
       type="button"
       onClick={onClick}
       aria-label={added ? t.addedLabel(name) : t.addLabel(name)}
-      className={`${base} ${skin}`}
+      data-added={added ? "" : undefined}
+      className={`${skin} active:translate-y-[1px]`}
     >
-      <span aria-hidden="true" className="grid place-items-center">
+      <span aria-hidden="true" className="grid place-items-end">
         <span
           className={`${label} whitespace-nowrap ${
             added ? "-translate-y-[7px] opacity-0" : "opacity-100"
@@ -83,7 +81,7 @@ export function AddToCart({
   );
 }
 
-/** Varnelė piešiama SVG — nei „Bricolage Grotesque“, nei „Outfit“ neturi ✓. */
+/** Varnelė piešiama SVG: nei „Host Grotesk“, nei „Gloock“ neturi ✓. */
 export function Check({ size = 12 }: { size?: number }) {
   return (
     <svg

@@ -1,0 +1,266 @@
+/* /darbai. Type scale used here (site.css tokens plus two local sizes):
+   page h1 64 px desktop / 40 px phone (between .t-h2 and .t-hero), .t-h2,
+   .t-h3 for demo names, .t-lead 20/17, body 16, small labels 14 in --fg-2
+   (contrast 7:1 on the ground). Rhythm: page head 96 px under the nav,
+   sections on the shared --sec, demo rows 72 px apart with one hairline. */
+
+/* ── Page head ─────────────────────────────────────── */
+.head {
+  position: relative;
+  padding-top: calc(var(--nav-h) + clamp(64px, 7vw, 104px));
+  padding-bottom: clamp(48px, 5vw, 72px);
+}
+.chapterHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  margin-bottom: 0;
+}
+.h1 {
+  max-width: 21ch;
+  font-size: clamp(2.5rem, 1.35rem + 3vw, 4rem);
+  line-height: 1.04;
+}
+.lead {
+  max-width: 38em;
+  padding-top: 0;
+}
+
+/* ── Minerda ───────────────────────────────────────── */
+.case {
+  padding-top: 0;
+  padding-bottom: clamp(96px, 8vw, 128px);
+}
+.shot {
+  display: block;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.shot :global(.win) {
+  transition:
+    transform 0.4s var(--ease-ui),
+    box-shadow 0.4s var(--ease-ui);
+}
+@media (hover: hover) and (pointer: fine) {
+  .shot:hover :global(.win) {
+    transform: translateY(-3px);
+    box-shadow:
+      inset 0 0 0 1px var(--line-3),
+      0 36px 90px -30px rgba(0, 0, 0, 0.85);
+  }
+}
+
+.caseMeta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px 64px;
+  align-items: start;
+  margin-top: clamp(40px, 4.5vw, 64px);
+}
+.caseName :global(.t-h2) {
+  max-width: 14ch;
+}
+.label {
+  margin-bottom: 14px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--fg-2);
+}
+.caseSide {
+  padding-top: 34px;
+  max-width: 34em;
+}
+.caseActions {
+  margin-top: 28px;
+  gap: 12px 24px;
+}
+.caseActions :global(.btn .glyph) {
+  transition: transform 0.25s var(--ease-ui);
+}
+.caseActions :global(.btn:hover .glyph) {
+  transform: translateX(2px);
+}
+.ext {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+  color: var(--fg);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.ext :global(.glyph) {
+  color: var(--fg-2);
+  transition:
+    transform 0.25s var(--ease-ui),
+    color 0.12s var(--ease-ui);
+}
+.ext:hover :global(.glyph) {
+  color: var(--fg);
+  transform: translate(1px, -1px);
+}
+.ext:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px 32px;
+  margin-top: clamp(56px, 6vw, 88px);
+}
+.fact {
+  min-width: 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-2);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  text-wrap: pretty;
+}
+
+/* ── Demo rows ─────────────────────────────────────── */
+.rows {
+  display: grid;
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  gap: 32px 72px;
+  align-items: center;
+  padding-block: clamp(56px, 6vw, 88px);
+  border-top: 1px solid var(--line);
+}
+.row:last-child {
+  padding-bottom: 0;
+}
+.text {
+  min-width: 0;
+}
+.demoName {
+  margin: 0;
+}
+.tagline {
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+.try {
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--fg);
+}
+.scope {
+  margin-top: 20px;
+}
+.scope li {
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--fg-2);
+}
+.scope li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.open {
+  margin-top: 28px;
+  height: 44px;
+}
+.open :global(.glyph) {
+  transition: transform 0.25s var(--ease-ui);
+}
+.open:hover :global(.glyph) {
+  transform: translateX(2px);
+}
+.openName {
+  margin-left: -4px;
+}
+
+/* ── Closing: fully centred ────────────────────────── */
+.close {
+  text-align: center;
+}
+.closeH {
+  max-width: 24ch;
+  margin-inline: auto;
+}
+.closeSub {
+  max-width: 34em;
+  margin: 24px auto 0;
+}
+.closeActions {
+  justify-content: center;
+  margin-top: 36px;
+}
+
+@media (max-width: 1023px) {
+  .caseMeta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .caseSide {
+    padding-top: 0;
+  }
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .row .shot {
+    order: -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .h1 {
+    max-width: none;
+  }
+  .lead {
+    font-size: 17px;
+  }
+  .label {
+    margin-bottom: 10px;
+  }
+  .facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .fact {
+    padding-block: 14px;
+  }
+  .row {
+    gap: 24px;
+    padding-block: 48px;
+  }
+  .caseActions :global(.btn) {
+    width: 100%;
+  }
+  .closeActions :global(.btn) {
+    flex: 1 1 100%;
+  }
+  .shot :global(.win) {
+    border-radius: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shot :global(.win) {
+    transition: none;
+  }
+  .shot:hover :global(.win) {
+    transform: none;
+  }
+}

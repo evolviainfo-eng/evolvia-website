@@ -1,97 +1,49 @@
 import type { Locale } from "@/i18n/config";
 import { getSkalsaCopy } from "./copy";
+import { SectionHead, Tile } from "./Tile";
 
-/* Žingsnių pavadinimai, tekstai ir alt — žodyne, ta pačia tvarka. */
+/* Step titles, texts and alts live in the dictionary, in the same order. */
 const STEPS = [
-  {
-    n: "01",
-    img: "/demo/skalsa/studio-1.webp",
-    w: 1300,
-    h: 968,
-  },
-  {
-    n: "02",
-    img: "/demo/skalsa/studio-2.webp",
-    w: 1300,
-    h: 965,
-  },
-  {
-    n: "03",
-    img: "/demo/skalsa/match.webp",
-    w: 1200,
-    h: 803,
-  },
+  { img: "/demo/skalsa/studio-1.webp", w: 1300, h: 968, position: "70% 50%" },
+  { img: "/demo/skalsa/studio-2.webp", w: 1300, h: 965, position: "40% 50%" },
+  { img: "/demo/skalsa/match.webp", w: 1200, h: 803, position: "80% 50%" },
 ];
 
+/** The workshop: three tall photographs in thirds, edge to edge, each
+ *  carrying its step's name as a sticky caption, so on a desktop the three
+ *  names ride across one line together, a shop window of the process. What
+ *  happens in each step is a short paragraph on the ground under its photo.
+ *  On a phone the steps stack: photo, caption, paragraph, next step. */
 export function Studio({ locale }: { locale: Locale }) {
   const t = getSkalsaCopy(locale).studio;
-  const steps = STEPS.map((s, i) => ({ ...s, ...t.steps[i] }));
 
   return (
-    <section data-sk-sec="dirbtuve" className="relative">
-      <span id="dirbtuve" aria-hidden="true" className="absolute -top-[30px]" />
-      <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
-        <div data-rise className="max-w-[54ch]">
-          <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
-            {t.eyebrow}
-          </p>
-          <h2
-            className="mt-4 text-[clamp(1.875rem,3.4vw,2.5rem)] leading-[1.08] text-balance"
-            style={{
-              fontFamily: "var(--font-skalsa-display)",
-              fontWeight: 500,
-            }}
-          >
-            {t.title}
-          </h2>
-          <p className="mt-5 max-w-[52ch] text-[1.0625rem] leading-[1.65] text-pretty text-[#6E6257]">
-            {t.lead}
-          </p>
-        </div>
+    <section id="dirbtuve" data-sk-tone="light">
+      <SectionHead label={t.eyebrow} line={t.title} sub={t.lead} />
 
-        <ol className="mt-[clamp(40px,6vw,72px)] grid gap-x-6 gap-y-[clamp(40px,5vw,64px)] md:grid-cols-3">
-          {steps.map((s, i) => (
-            <li
-              key={s.n}
+      <ol className="grid lg:grid-cols-3 lg:pb-[clamp(80px,8vw,120px)]">
+        {STEPS.map((s, i) => (
+          <li key={s.img} className="flex min-w-0 flex-col">
+            <Tile
+              src={s.img}
+              w={s.w}
+              h={s.h}
+              alt={t.steps[i].alt}
+              tone="dark"
+              position={s.position}
+              className="h-[75svh] lg:h-[clamp(600px,92svh,900px)]"
+              label={<h3 className="sk-cap">{t.steps[i].title}</h3>}
+            />
+            <p
               data-rise
               style={{ "--i": i } as React.CSSProperties}
-              className="group min-w-0"
+              className="max-w-[calc(44ch+120px)] px-[30px] pb-[56px] pt-[24px] text-[1rem] leading-[1.55] text-pretty lg:px-[60px] lg:pb-0 lg:pt-[32px]"
             >
-              <div className="overflow-hidden rounded-[10px] bg-[#F1EAE0]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={s.img}
-                  alt={s.alt}
-                  width={s.w}
-                  height={s.h}
-                  decoding="async"
-                  loading="lazy"
-                  className="aspect-[4/3] h-auto w-full object-cover transition-[scale] duration-[var(--d-el)] ease-[var(--e-out)] group-hover:scale-[1.04]"
-                />
-              </div>
-
-              <div className="mt-5 flex items-baseline gap-3 border-t border-[rgba(36,30,25,0.13)] pt-4">
-                <span className="text-[0.8125rem] tabular-nums tracking-[0.14em] text-[#6E6257]">
-                  {s.n}
-                </span>
-                <h3
-                  className="text-[1.0625rem] leading-tight tracking-[-0.015em]"
-                  style={{
-                    fontFamily: "var(--font-skalsa-display)",
-                    fontWeight: 500,
-                  }}
-                >
-                  {s.title}
-                </h3>
-              </div>
-
-              <p className="mt-3 max-w-[46ch] text-[0.9375rem] leading-[1.6] text-pretty text-[#6E6257]">
-                {s.body}
-              </p>
-            </li>
-          ))}
-        </ol>
-      </div>
+              {t.steps[i].body}
+            </p>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }

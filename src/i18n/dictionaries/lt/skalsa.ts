@@ -11,7 +11,7 @@
 
 export const skalsaLt = {
   meta: {
-    title: "Skalsa — rankų darbo žvakių el. parduotuvė",
+    title: "Skalsa · rankų darbo žvakių el. parduotuvė",
     description:
       "Demonstracinė el. parduotuvė: rankomis liejamos sojų vaško žvakės, veikiantis krepšelis ir užsakymo eiga. Išgalvota įmonė, tikra svetainė.",
   },
@@ -19,7 +19,7 @@ export const skalsaLt = {
   /** Burn time and weight, as the catalogue and the basket print them. */
   units: {
     hours: (hours: number) => `${hours} val.`,
-    specs: (hours: number, grams: number) => `${hours} val. · ${grams} g`,
+    specs: (hours: number, grams: number) => `${hours}\u00a0val. · ${grams}\u00a0g`,
   },
 
   header: {
@@ -31,15 +31,20 @@ export const skalsaLt = {
       dirbtuve: "Dirbtuvė",
       pristatymas: "Pristatymas",
     },
-    freeDelivery: "Nemokamas pristatymas nuo 40 €",
+    freeDelivery: "Nemokamas pristatymas nuo 40\u00a0€",
     basket: "Krepšelis",
     openBasket: (count: number) =>
       count > 0
-        ? `Atidaryti krepšelį — prekių: ${count}`
-        : "Atidaryti krepšelį — tuščias",
+        ? `Atidaryti krepšelį, prekių: ${count}`
+        : "Atidaryti krepšelį, tuščias",
   },
 
+  /** The serif swap word: one word inside a sans line, marked with
+   *  asterisks and set in the display serif by <Swap> (Swap.tsx). Same size,
+   *  same baseline, never italic. One marked word per string at most. */
   hero: {
+    /** The hero's only line, bottom left. */
+    line: "Vakaras, kuris kvepia *namais*.",
     eyebrow: "Rankų darbo žvakės · liejame Vilniuje",
     /** The headline, split by hand into its two lines. */
     title: ["Vakaras, kuris", "kvepia namais."] as [string, string],
@@ -48,12 +53,24 @@ export const skalsaLt = {
     how: "Kaip liejame",
     facts: ["Sojų vaškas", "45 val. degimo", "Liejama Vilniuje"],
     imageAlt: "Trys degančios sojų vaško žvakės ant medinio stalo",
+    stillAlt: "Dvi žvakės makrame laikikliuose ant medinio stalo prie baltos sienos",
   },
+
+  /** The paragraph under the hero: hero.lead, then this closing sentence. */
+  intro: {
+    close: "Tai *Skalsa*.",
+  },
+
+  /** The plain text link that leads into a section ("Discover"). */
+  discover: "Atrasti",
 
   catalog: {
     eyebrow: "Katalogas",
-    title: "Šeši kvapai. Vienas vaškas.",
-    lead: "Kvapą deriname taip, kad jis neužgožtų kambario, o tik pailgintų vakarą. Visos žvakės pilamos į perdirbamą stiklą — indą galima išplauti ir naudoti toliau.",
+    title: "Šeši kvapai. Vienas *vaškas*.",
+    lead: "Kvapą deriname taip, kad jis neužgožtų kambario, o tik pailgintų vakarą. Visos žvakės pilamos į perdirbamą stiklą, indą galima išplauti ir naudoti toliau.",
+    /** The product row's text buttons. */
+    prev: "Atgal",
+    next: "Toliau",
   },
 
   /** The candles' words, keyed by the product ids in data.tsx. */
@@ -95,27 +112,29 @@ export const skalsaLt = {
     label: "Į krepšelį",
     added: "Pridėta",
     addLabel: (name: string) => `Įdėti „${name}“ į krepšelį`,
-    addedLabel: (name: string) => `${name} — pridėta į krepšelį`,
+    addedLabel: (name: string) => `${name}, pridėta į krepšelį`,
   },
 
   bundles: {
     eyebrow: "Rinkiniai",
     title: "Kai reikia dovanos, o ne prekės.",
+    /** The brand block's line under "Rinkiniai" (BrandBlock.tsx). */
+    blockLine: "Du paruošti rinkiniai: vienas vakarams namie, kitas dovanai, supakuotas dirbtuvėje.",
     imageAlt: "Žvakių asortimentas, degtukai ir lininis maišelis iš viršaus",
     /** Keyed by the bundle ids in data.tsx. `meta` and `alt` are what the
      *  basket shows for the bundle; `note` is the line under the price. */
     items: {
       "b-1": {
         name: "Vakaro trio",
-        lead: "Trys kvapai vienai savaitei — nuo šiltos pradžios iki ramaus galo.",
+        lead: "Trys kvapai vienai savaitei, nuo šiltos pradžios iki ramaus galo.",
         contains: ["Gintaras ir kedras", "Pievų šienas", "Levandos ir vanilė"],
-        note: "Atskirai 68,00 €",
+        note: "Atskirai 68,00\u00a0€",
         meta: "Rinkinys · 3 žvakės",
         alt: "Žvakių asortimentas iš viršaus",
       },
       "b-2": {
         name: "Dovanų dėžutė",
-        lead: "Supakuota taip, kad nieko nebereikėtų daryti — tik įteikti.",
+        lead: "Supakuota taip, kad nieko nebereikėtų daryti, tik įteikti.",
         contains: [
           "Sakai ir dūmas",
           "Rytinė kava",
@@ -132,21 +151,21 @@ export const skalsaLt = {
     eyebrow: "Dirbtuvė",
     title: "Trys žingsniai, jokių skubotų partijų.",
     lead: "Vienu kartu išliejame apie keturiasdešimt žvakių. Tiek telpa ant stalo, tiek spėjame patikrinti rankomis.",
-    /** In order; the numbers and photos are in Studio.tsx. */
+    /** In order; the photos are in Studio.tsx. */
     steps: [
       {
         title: "Lydome",
-        body: "Grynas sojų vaškas lydomas iki 65 °C. Be parafino, be dažiklių — todėl vaškas lieka pieno spalvos, o ne balintai baltas.",
+        body: "Grynas sojų vaškas lydomas iki 65\u00a0°C. Be parafino, be dažiklių, todėl vaškas lieka pieno spalvos, o ne balintai baltas.",
         alt: "Dirbtuvėje liejamas išlydytas vaškas į stiklinį indą",
       },
       {
         title: "Maišome ranka",
-        body: "Kvapiąjį aliejų įmaišome, kai vaškas atvėsta iki 52 °C. Dvi minutės ranka — mišiniui to užtenka, ir kvapas neišgaruoja pirmą vakarą.",
+        body: "Kvapiąjį aliejų įmaišome, kai vaškas atvėsta iki 52\u00a0°C. Dvi minutės ranka, mišiniui to užtenka, ir kvapas neišgaruoja pirmą vakarą.",
         alt: "Dvi poros rankų dirbtuvėje ruošia žvakes",
       },
       {
         title: "Brandiname",
-        body: "Sustingusi žvakė ilsisi dešimt dienų, tik tada gauna etiketę ir 5 mm dagtį. Pirmą kartą uždekite dviem valandoms — vaškas turi ištirpti iki kraštų.",
+        body: "Sustingusi žvakė ilsisi dešimt dienų, tik tada gauna etiketę ir 5\u00a0mm dagtį. Pirmą kartą uždekite dviem valandoms, vaškas turi ištirpti iki kraštų.",
         alt: "Degtukas uždega medvilninį žvakės dagtį",
       },
     ],
@@ -154,7 +173,7 @@ export const skalsaLt = {
 
   mood: {
     eyebrow: "Vakaras",
-    quote: "Viena žvakė vakarui — ne dekoras, o ženklas, kad diena baigėsi.",
+    quote: "Viena žvakė vakarui, ne dekoras, o ženklas, kad diena baigėsi.",
     rowAlt: "Žvakių eilė ant lygaus paviršiaus su atspindžiu",
     groupAlt: "Žvakių grupė tamsiame kambaryje",
   },
@@ -164,12 +183,12 @@ export const skalsaLt = {
     title: "Keturi dalykai, kuriuos verta žinoti.",
     facts: [
       {
-        title: "Išsiunčiame per 1–2 d. d.",
-        body: "Užsakymai renkami rytais. Kurjeris pristato per 2–4 darbo dienas visoje Lietuvoje.",
+        title: "Išsiunčiame per 1-2 d. d.",
+        body: "Užsakymai renkami rytais. Kurjeris pristato per 2-4 darbo dienas visoje Lietuvoje.",
       },
       {
-        title: "Nemokamai nuo 40 €",
-        body: "Mažesniems užsakymams pristatymas kainuoja 3,50 €. Atsiimti dirbtuvėje — nemokama.",
+        title: "Nemokamai nuo 40\u00a0€",
+        body: "Mažesniems užsakymams pristatymas kainuoja 3,50\u00a0€. Atsiimti dirbtuvėje, nemokama.",
       },
       {
         title: "14 dienų grąžinimas",
@@ -177,19 +196,19 @@ export const skalsaLt = {
       },
       {
         title: "Supakuota dovanai",
-        body: "Perdirbtas kartonas, medžio drožlės ir ranka rašyta kortelė — be plastiko.",
+        body: "Perdirbtas kartonas, medžio drožlės ir ranka rašyta kortelė, be plastiko.",
       },
     ],
   },
 
   /** The free-delivery progress bar's accessible name. The same bar
    *  appears in the delivery section and at the foot of the basket. */
-  progressLabel: (from: number) => `Iki nemokamo pristatymo — riba ${from} €`,
+  progressLabel: (from: number) => `Iki nemokamo pristatymo, riba ${from}\u00a0€`,
 
   /** The live basket panel in the delivery section. */
   meter: {
     eyebrow: "Jūsų krepšelis",
-    empty: (from: number) => `Nemokamas pristatymas prasideda nuo ${from} €.`,
+    empty: (from: number) => `Nemokamas pristatymas prasideda nuo ${from}\u00a0€.`,
     covered: "Pristatymą jau padengėme mes.",
     missing: (amount: string) => `Iki nemokamo pristatymo trūksta ${amount}.`,
     open: "Atidaryti krepšelį",
@@ -221,7 +240,7 @@ export const skalsaLt = {
     empty: {
       title: "Krepšelis kol kas tuščias.",
       body: (from: number) =>
-        `Kiekviena žvakė liejama rankomis, todėl partijos nedidelės. Nemokamas pristatymas nuo ${from} €.`,
+        `Kiekviena žvakė liejama rankomis, todėl partijos nedidelės. Nemokamas pristatymas nuo ${from}\u00a0€.`,
       browse: "Žiūrėti katalogą",
       suggest: "Galima pradėti nuo šių",
     },
@@ -232,7 +251,7 @@ export const skalsaLt = {
 
     freeNow: "Pristatymas nemokamas.",
     freeFrom: (from: number, missing: string) =>
-      `Nemokamas pristatymas nuo ${from} € — trūksta ${missing}.`,
+      `Nemokamas pristatymas nuo ${from}\u00a0€, trūksta ${missing}.`,
     subtotal: "Tarpinė suma",
     delivery: "Pristatymas",
     deliveryFree: "Nemokamas",
@@ -253,7 +272,7 @@ export const skalsaLt = {
     },
     /** Names the order button; keep it in step with `placeOrder`. */
     demoNote:
-      "Tai demonstracinė parduotuvė. Paspaudus „Patvirtinti užsakymą“ niekas nebus pateikta, apmokėta ar išsiųsta — nei prekės, nei jūsų duomenys niekur nekeliauja.",
+      "Tai demonstracinė parduotuvė. Paspaudus „Patvirtinti užsakymą“ niekas nebus pateikta, apmokėta ar išsiųsta, nei prekės, nei jūsų duomenys niekur nekeliauja.",
     includesDelivery: (delivery: string) => `Įskaitant pristatymą: ${delivery}`,
     includesFree: "nemokamas",
     placeOrder: "Patvirtinti užsakymą",
@@ -261,7 +280,7 @@ export const skalsaLt = {
 
     done: {
       title: "Taip atrodytų patvirtinimas.",
-      body: "Čia baigiasi demonstracija: užsakymas nebuvo pateiktas, mokėjimas neįvyko ir jokie duomenys nebuvo išsiųsti. Tikroje parduotuvėje šioje vietoje pirkėjas gautų užsakymo numerį ir laišką, o jūs — pranešimą apie naują užsakymą.",
+      body: "Čia baigiasi demonstracija: užsakymas nebuvo pateiktas, mokėjimas neįvyko ir jokie duomenys nebuvo išsiųsti. Tikroje parduotuvėje šioje vietoje pirkėjas gautų užsakymo numerį ir laišką, o jūs, pranešimą apie naują užsakymą.",
       items: "Prekės",
       count: (count: number) => `${count} vnt.`,
       total: "Suma",
@@ -283,7 +302,7 @@ export const skalsaLt = {
     },
     contacts: "Pavyzdiniai kontaktai",
     workshop: "Dirbtuvė Vilniuje",
-    hours: "I–V 10:00–17:00",
+    hours: "I-V 10:00-17:00",
     legal: "© 2026 Skalsa · Sojų vaškas, medvilninis dagtis, perdirbamas stiklas",
     toTop: "Į viršų",
   },

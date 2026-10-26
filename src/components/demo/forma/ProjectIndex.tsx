@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState, type CSSProperties } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { useLocale } from "@/i18n/LocaleProvider";
 import type { FormaCopy } from "@/i18n/dictionaries/lt/forma";
@@ -10,17 +10,14 @@ import {
   type FormaProject,
   type FormaProjectKind,
 } from "@/components/demo/forma/ProjectLightbox";
+import { SplitTitle } from "@/components/demo/forma/SplitTitle";
 import {
   HAIR,
-  INK,
   MUTED,
-  SECTION,
-  SERIF,
   T_BODY,
-  T_EYEBROW,
-  T_H2,
-  T_META,
-  T_NUM,
+  T_BODY_STRONG,
+  T_ITALIC,
+  T_ROW,
   T_SMALL,
   WRAP,
 } from "@/components/demo/forma/tokens";
@@ -28,9 +25,17 @@ import {
 type ProjectId = keyof FormaCopy["projects"]["items"];
 
 /* Display order is deliberately mixed, so filtering visibly re-orders the
-   grid rather than just hiding rows. Only the facts that need no words live
+   list rather than just hiding rows. Only the facts that need no words live
    here; each project's title, place, scope, note and alt text are in the
-   dictionary under the same id. */
+   dictionary under the same id.
+
+   `second` is the project's second view, the photograph that opens inside
+   the passe-partout under the pointer. Each one is a different real
+   photograph chosen to read as another room or hour of the same place
+   (the old-town flat's deep window reveals, the new-build flat at dusk,
+   the house's stair, the attic room in Užupis, the Balsiai day zone that
+   is also the hero). The beauty studio has no second photograph, so its
+   card has no reveal: a crop of the cover would be a fake second view. */
 const PROJECTS: {
   id: ProjectId;
   kind: FormaProjectKind;
@@ -39,6 +44,7 @@ const PROJECTS: {
   src: string;
   w: number;
   h: number;
+  second?: { src: string; w: number; h: number };
 }[] = [
   {
     id: "p-1",
@@ -48,6 +54,7 @@ const PROJECTS: {
     src: "/demo/forma/p-1.webp",
     w: 1400,
     h: 1050,
+    second: { src: "/demo/forma/mood-4.webp", w: 1200, h: 828 },
   },
   {
     id: "p-5",
@@ -57,6 +64,7 @@ const PROJECTS: {
     src: "/demo/forma/p-5.webp",
     w: 1400,
     h: 788,
+    second: { src: "/demo/forma/mood-3.webp", w: 1200, h: 800 },
   },
   {
     id: "p-2",
@@ -75,6 +83,7 @@ const PROJECTS: {
     src: "/demo/forma/p-3.webp",
     w: 1400,
     h: 933,
+    second: { src: "/demo/forma/mood-1.webp", w: 1200, h: 801 },
   },
   {
     id: "p-6",
@@ -84,6 +93,7 @@ const PROJECTS: {
     src: "/demo/forma/p-6.webp",
     w: 1400,
     h: 933,
+    second: { src: "/demo/forma/mood-2.webp", w: 1200, h: 800 },
   },
   {
     id: "p-4",
@@ -93,6 +103,7 @@ const PROJECTS: {
     src: "/demo/forma/p-4.webp",
     w: 1400,
     h: 933,
+    second: { src: "/demo/forma/hero.webp", w: 1800, h: 1125 },
   },
 ];
 
@@ -112,7 +123,7 @@ const PROJECTS_BY_LOCALE: Record<Locale, FormaProject[]> = {
   en: projectsIn("en"),
 };
 
-/* Chip labels are in the dictionary under the same ids. */
+/* Filter words are in the dictionary under the same ids. */
 const FILTERS = ["visi", "butas", "namas", "komercine"] as const;
 
 type FilterId = (typeof FILTERS)[number];
@@ -123,6 +134,11 @@ const countOf = (id: FilterId) =>
     : PROJECTS.filter((p) => p.kind === (id as FormaProjectKind)).length;
 
 const pad = (n: number) => String(n).padStart(2, "0");
+
+/* TARQ's rhythm: two half-width items, the right one pushed down, then one
+   item set in from the left; repeat. Assigned from the position in the
+   VISIBLE list, so a filtered list rebuilds its own pairs. */
+const SLOT = ["f-slot-a", "f-slot-b", "f-slot-c"] as const;
 
 export function ProjectIndex() {
   const locale = useLocale();
@@ -152,64 +168,52 @@ export function ProjectIndex() {
 
   return (
     <>
-      <section id="projektai" className={SECTION}>
+      <section id="projektai" className="f-sec">
         <div className={WRAP}>
-          <div data-rise className="min-w-0">
-            <p className={T_EYEBROW} style={{ color: MUTED }}>
-              {t.sections.projects}
-            </p>
-            <div className="mt-5 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <h2 style={SERIF} className={`${T_H2} max-w-[18ch]`}>
-                {t.projects.title}
-              </h2>
-              <p
-                className={`min-w-0 max-w-[40ch] ${T_BODY}`}
-                style={{ color: MUTED }}
-              >
-                {t.projects.lead}
-              </p>
+          <div aria-hidden="true" className="f-rule" />
+          <SplitTitle words={t.projects.split} layout="spread" />
+
+          <div className="mt-[clamp(28px,4vw,56px)] grid gap-8 lg:grid-cols-12 lg:gap-6">
+            {/* AS's text index: plain words, a tiny count, inactive words
+                grey. The pressed word is ink. */}
+            <div
+              role="group"
+              aria-label={t.projects.filterLabel}
+              className="f-filters min-w-0 items-baseline gap-y-1 lg:col-span-7"
+            >
+              {FILTERS.map((f) => {
+                const on = f === filter;
+                return (
+                  <button
+                    key={f}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => setFilter(f)}
+                    className="f-filter group inline-flex min-h-11 items-baseline gap-1.5 text-left"
+                  >
+                    <span className="f-filter-word text-[clamp(1.375rem,2.5vw,2.25rem)] leading-[1.1]">
+                      {t.projects.filters[f]}
+                    </span>
+                    <span
+                      className="text-[0.75rem] tabular-nums leading-none"
+                      style={{ color: MUTED }}
+                    >
+                      ({countOf(f)})
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
-            <div className="mt-[clamp(30px,4vw,46px)] flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
-              <div
-                role="group"
-                aria-label={t.projects.filterLabel}
-                className="flex min-w-0 flex-wrap gap-2"
-              >
-                {FILTERS.map((f) => {
-                  const on = f === filter;
-                  return (
-                    <button
-                      key={f}
-                      type="button"
-                      aria-pressed={on}
-                      onClick={() => setFilter(f)}
-                      className={[
-                        "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[0.8125rem] leading-none transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] active:translate-y-px",
-                        on
-                          ? "border-[#1A1917] bg-[#1A1917] text-[#F4F1EC]"
-                          : "border-[rgba(26,25,23,0.18)] hover:border-[#1A1917] hover:bg-[rgba(26,25,23,0.05)]",
-                      ].join(" ")}
-                    >
-                      {t.projects.filters[f]}
-                      <span
-                        className={`tabular-nums text-[0.6875rem] ${
-                          on ? "text-[#F4F1EC]/65" : "text-[#5E5952]"
-                        }`}
-                      >
-                        {countOf(f)}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* the same fact the live region announces, said out loud in the
-                  layout — so a sighted visitor sees the filter took effect even
-                  when the grid is below the fold */}
-              <p className={`shrink-0 ${T_NUM}`} style={{ color: MUTED }}>
-                {t.projects.showing} {pad(visible.length)} /{" "}
-                {pad(PROJECTS.length)}
+            <div className="min-w-0 lg:col-span-4 lg:col-start-9">
+              <p className={T_BODY}>
+                <span className={T_BODY_STRONG}>{t.projects.title}</span>{" "}
+                {t.projects.lead}
+              </p>
+              {/* the same fact the live region announces, said out loud in
+                  the layout */}
+              <p className={`mt-4 tabular-nums ${T_SMALL}`} style={{ color: MUTED }}>
+                {t.projects.showing} {pad(visible.length)} / {pad(PROJECTS.length)}
               </p>
             </div>
           </div>
@@ -220,40 +224,31 @@ export function ProjectIndex() {
 
           {visible.length === 0 ? (
             <div
-              className="mt-[clamp(30px,4.5vw,52px)] border-t pt-8"
+              className="mt-[clamp(40px,6vw,96px)] border-t pt-8"
               style={{ borderColor: HAIR }}
             >
-              <p
-                style={SERIF}
-                className="max-w-[24ch] text-[clamp(1.25rem,2.6vw,1.875rem)] leading-[1.16] text-pretty"
-              >
-                {t.projects.emptyTitle}
-              </p>
-              <p
-                className={`mt-3 max-w-[46ch] ${T_BODY}`}
-                style={{ color: MUTED }}
-              >
+              <p className={T_ROW}>{t.projects.emptyTitle}</p>
+              <p className={`mt-3 max-w-[46ch] ${T_BODY}`}>
                 {t.projects.emptyBody}
               </p>
               <button
                 type="button"
                 onClick={() => setFilter("visi")}
-                className="mt-6 press inline-flex h-11 items-center rounded-full border border-[rgba(26,25,23,0.18)] px-5 text-[0.8125rem] leading-none transition-[background-color,color,border-color,translate] duration-[var(--d-tap)] ease-[var(--e-out)] hover:border-[#1A1917] hover:bg-[#1A1917] hover:text-[#F4F1EC] active:translate-y-px"
+                className={`f-arrow mt-6 inline-flex min-h-11 items-center gap-1.5 ${T_ROW}`}
               >
                 {t.projects.showAll}
+                <span aria-hidden="true">↘</span>
               </button>
             </div>
           ) : (
-            <ul className="mt-[clamp(30px,4.5vw,52px)] grid grid-cols-1 gap-x-6 gap-y-[clamp(34px,4.5vw,64px)] sm:grid-cols-2">
+            <ul className="f-list mt-[clamp(48px,7vw,104px)]">
               {visible.map((p, i) => (
                 /* key carries the filter on purpose: every remaining card
-                   re-mounts, so the whole grid re-enters as ONE choreography
-                   with --i set from its new position — not card by card. */
+                   re-mounts, so the list re-enters as one gesture. */
                 <li
                   key={`${filter}:${p.id}`}
-                  data-rise
-                  style={{ "--i": i } as CSSProperties}
-                  className="min-w-0 sm:even:mt-[clamp(28px,4vw,64px)]"
+                  id={`projektas-${p.id}`}
+                  className={`f-item ${SLOT[i % 3]} min-w-0`}
                 >
                   <button
                     type="button"
@@ -262,68 +257,81 @@ export function ProjectIndex() {
                       setOpenIndex(i);
                     }}
                     aria-label={t.projects.cardLabel(p)}
-                    className="group block w-full min-w-0 text-left"
+                    className={`f-card block w-full min-w-0 text-left${p.second ? "" : " f-plain"}`}
                   >
-                    <span className="block overflow-hidden bg-[rgba(26,25,23,0.06)]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={p.src}
-                        width={p.w}
-                        height={p.h}
-                        alt={p.alt}
-                        loading="lazy"
-                        decoding="async"
-                        className="aspect-[4/3] h-full w-full object-cover transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:scale-[1.035] group-focus-visible:scale-[1.035] group-active:scale-[1.015]"
-                      />
+                    {/* header row: name, ( kind ) that turns into
+                        ( Žiūrėti ) under the pointer, year */}
+                    <span className={`f-card-head ${T_ROW}`}>
+                      <span className="min-w-0">{p.title}</span>
+                      <span
+                        aria-hidden="true"
+                        className={`f-parens ${T_ITALIC} text-[1.375rem] leading-none`}
+                      >
+                        <span>(</span>
+                        <span className="f-parens-stack">
+                          <span className="f-parens-rest">{p.kindLabel}</span>
+                          <span className="f-parens-word">{t.projects.view}</span>
+                        </span>
+                        <span>)</span>
+                      </span>
+                      <span className="tabular-nums">{p.year}</span>
                     </span>
 
-                    {/* the card's own hairline, and the ink rule that draws
-                        across it under the pointer — the page's one hover
-                        signature, repeated from the header links */}
-                    <span className="relative mt-4 block pt-3">
-                      <span
-                        aria-hidden="true"
-                        className="absolute inset-x-0 top-0 h-px"
-                        style={{ background: HAIR }}
-                      />
-                      <span
-                        aria-hidden="true"
-                        className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:scale-x-100 group-focus-visible:scale-x-100"
-                        style={{ background: INK }}
-                      />
+                    {/* The figure. The outer span is what the reveal
+                        observer watches; the clip and the settle are on its
+                        children, never on the observed box. */}
+                    <span data-rise="img" className="mt-4 block">
+                      <span className="f-clip relative block overflow-hidden bg-[rgba(23,23,23,0.08)]">
+                        <span className="f-zoom block">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={p.src}
+                            width={p.w}
+                            height={p.h}
+                            alt={p.alt}
+                            loading="lazy"
+                            decoding="async"
+                            className="f-ph"
+                          />
+                        </span>
 
-                      <span className="flex items-baseline justify-between gap-4">
-                        <span
-                          style={SERIF}
-                          className="min-w-0 text-[clamp(1.0625rem,2.2vw,1.5rem)] leading-[1.15] text-pretty"
-                        >
-                          {p.title}
-                        </span>
-                        <span
-                          className={`shrink-0 ${T_NUM}`}
-                          style={{ color: MUTED }}
-                        >
-                          {pad(i + 1)}
-                        </span>
+                        {/* THE SIGNATURE: the second view in a passe-partout.
+                            The mat darkens the cover (opacity, no filter),
+                            the second photograph opens from a small centred
+                            window to an inset frame, the category and place
+                            sit in the mat's top and bottom margins. */}
+                        {p.second && (
+                          <>
+                            <span aria-hidden="true" className="f-mat" />
+                            <span aria-hidden="true" className="f-view">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={p.second.src}
+                                width={p.second.w}
+                                height={p.second.h}
+                                alt=""
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </span>
+                            <span aria-hidden="true" className="f-lab f-lab-t">
+                              {p.kindLabel}
+                            </span>
+                            <span aria-hidden="true" className="f-lab f-lab-b">
+                              {p.place}
+                            </span>
+                          </>
+                        )}
                       </span>
-                      <span
-                        className={`mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1 ${T_META}`}
-                        style={{ color: MUTED }}
-                      >
-                        <span>{p.kindLabel}</span>
-                        <span aria-hidden="true">·</span>
-                        <span>{p.area}</span>
-                        <span aria-hidden="true">·</span>
-                        <span>{p.place}</span>
-                        <span aria-hidden="true">·</span>
-                        <span>{p.year}</span>
-                      </span>
-                      <span
-                        className={`mt-2 block ${T_SMALL}`}
-                        style={{ color: MUTED }}
-                      >
-                        {p.scope}
-                      </span>
+                    </span>
+
+                    {/* touch screens have no hover: the mat's two words
+                        are said here instead, under the photograph */}
+                    <span
+                      className={`f-touch-meta mt-3 ${T_SMALL}`}
+                      style={{ color: MUTED }}
+                    >
+                      {p.kindLabel}, {p.area}, {p.place}
                     </span>
                   </button>
                 </li>

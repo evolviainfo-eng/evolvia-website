@@ -6,9 +6,13 @@ import { Check } from "./AddToCart";
 import { getSkalsaCopy } from "./copy";
 import { useShop } from "./ShopProvider";
 
-/** Gyva nemokamo pristatymo juosta puslapyje — tas pats matas, kaip
+/** Gyva nemokamo pristatymo juosta puslapyje, tas pats matas, kaip
  *  krepšelio stalčiuje, tik čia jis matomas neatidarius stalčiaus.
- *  Tuščias krepšelis irgi turi savo būseną: juosta lieka, tik tuščia. */
+ *  Tuščias krepšelis irgi turi savo būseną: juosta lieka, tik tuščia.
+ *
+ *  Drawn as a solid brand block across the full width: a caption row
+ *  (the basket's name left, the open action right), the state in one 28 px
+ *  sentence, and a 1 px line that fills with the subtotal (scaleX only). */
 export function FreeShippingMeter() {
   const { count, subtotal, missing, freeShipping, openCart } = useShop();
   const locale = useLocale();
@@ -20,55 +24,31 @@ export function FreeShippingMeter() {
     : Math.max(0.015, Math.min(subtotal / FREE_SHIPPING_FROM, 1));
 
   return (
-    <div className="mt-[clamp(40px,5vw,64px)] rounded-[10px] border border-[rgba(36,30,25,0.13)] bg-[#F1EAE0] p-6 sm:p-8">
-      <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
-        <div className="min-w-0">
-          <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
-            {t.eyebrow}
-          </p>
-          <p
-            className="mt-3 max-w-[34ch] text-[1.0625rem] leading-[1.3] tracking-[-0.015em] text-pretty"
-            style={{
-              fontFamily: "var(--font-skalsa-display)",
-              fontWeight: 500,
-            }}
-          >
-            {count === 0
-              ? t.empty(FREE_SHIPPING_FROM)
-              : freeShipping
-                ? t.covered
-                : t.missing(eur(missing, locale))}
-          </p>
-        </div>
-
+    <div
+      data-sk-tone="dark"
+      className="bg-[#5A2A1E] px-[30px] py-[48px] text-[#F2EFEA] lg:px-[60px] lg:py-[60px]"
+    >
+      <div className="flex items-baseline justify-between gap-6">
+        <p className="sk-cap sk-up min-w-0">{t.eyebrow}</p>
         <button
           type="button"
           onClick={openCart}
-          className="group press inline-flex h-11 shrink-0 items-center gap-2.5 rounded-full border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] pl-6 pr-5 text-[0.8125rem] text-[#241E19] transition-[background-color,border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[1px] hover:border-[#241E19] hover:bg-[#241E19] hover:text-[#FAF6F0] active:translate-y-0"
+          className="sk-link shrink-0"
         >
           {count === 0 ? t.open : t.view}
-          <svg
-            width="14"
-            height="10"
-            viewBox="0 0 14 10"
-            fill="none"
-            aria-hidden="true"
-            focusable="false"
-            className="transition-transform duration-[var(--d-ui)] ease-[var(--e-out)] group-hover:translate-x-[3px]"
-          >
-            <path
-              d="M1 5h11.4M8.7 1.2 12.5 5 8.7 8.8"
-              stroke="currentColor"
-              strokeWidth="1.3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
         </button>
       </div>
 
+      <p className="mt-[clamp(40px,5vw,72px)] max-w-[30ch] text-[1.375rem] leading-[1.27] text-balance lg:text-[1.75rem] lg:leading-[1.25]">
+        {count === 0
+          ? t.empty(FREE_SHIPPING_FROM)
+          : freeShipping
+            ? t.covered
+            : t.missing(eur(missing, locale))}
+      </p>
+
       <div
-        className="mt-7 h-[3px] w-full overflow-hidden rounded-full bg-[rgba(36,30,25,0.13)]"
+        className="mt-8 h-px w-full overflow-hidden bg-[rgba(242,239,234,0.24)]"
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={FREE_SHIPPING_FROM}
@@ -77,14 +57,14 @@ export function FreeShippingMeter() {
       >
         <span
           aria-hidden="true"
-          className="block h-full w-full origin-left rounded-full bg-[#B4562F] transition-transform duration-[var(--d-el)] ease-[var(--e-out)]"
+          className="block h-full w-full origin-left bg-[#F2EFEA] transition-transform duration-[var(--d-el)] ease-[var(--e-out)]"
           style={{ transform: `scaleX(${count === 0 ? 0 : progress})` }}
         />
       </div>
 
-      <p className="mt-3 flex items-center gap-2 text-[0.8125rem] tabular-nums text-[#6E6257]">
+      <p className="mt-3 flex items-center gap-2 text-[0.875rem] tabular-nums text-[rgba(242,239,234,0.78)]">
         {freeShipping && (
-          <span aria-hidden="true" className="text-[#B4562F]">
+          <span aria-hidden="true">
             <Check size={11} />
           </span>
         )}

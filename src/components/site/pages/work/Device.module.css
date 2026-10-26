@@ -1,0 +1,156 @@
+/* Device: window plus phone. The frame is a size container; inside it the
+   window is 90cqw wide and the phone 19cqw, standing 4cqw below the
+   window's bottom edge on the right. Phone bezel 0.7cqw (min 5 px), radius
+   3cqw. Hover lift belongs to the caller (it owns the link). */
+
+.frame {
+  container-type: inline-size;
+  width: 100%;
+  min-width: 0;
+}
+.device {
+  position: relative;
+}
+.withPhone .device {
+  padding-bottom: 4cqw;
+}
+.winBox {
+  width: 100%;
+}
+.withPhone .winBox {
+  width: 90cqw;
+}
+.win {
+  width: 100%;
+}
+.win :global(.win-bar) {
+  grid-template-columns: 1fr minmax(0, auto) 1fr;
+  gap: 12px;
+}
+.win :global(.win-addr) {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+.win :global(.win-addr-t) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.win :global(.win-addr .glyph-lock) {
+  flex: none;
+}
+.screen {
+  position: relative;
+  width: 100%;
+  overflow: clip;
+  background: #0b0b0b;
+}
+.img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
+}
+
+/* The phone: drawn, not a photo. */
+.phone {
+  --pr: 3cqw;
+  --pb: max(5px, 0.7cqw);
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 19cqw;
+  aspect-ratio: 9 / 19.5;
+  padding: var(--pb);
+  border-radius: var(--pr);
+  background: #050505;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.13),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    -24px 24px 64px -20px rgba(0, 0, 0, 0.85);
+}
+.phScreen {
+  position: relative;
+  height: 100%;
+  border-radius: calc(var(--pr) - var(--pb));
+  overflow: clip;
+  background: #0b0b0b;
+}
+.phImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.island {
+  position: absolute;
+  z-index: 1;
+  top: 2.2%;
+  left: 50%;
+  width: 32%;
+  aspect-ratio: 3.4 / 1;
+  border-radius: 999px;
+  background: #000;
+  transform: translateX(-50%);
+}
+
+/* Narrow windows: the address chip only. */
+@media (max-width: 1023px) {
+  .win :global(.win-addr) {
+    min-width: 0;
+  }
+}
+
+/* Phone: one device, never both squeezed together. */
+@media (max-width: 767px) {
+  .withPhone .device {
+    padding-bottom: 0;
+  }
+  .winFirst .winBox {
+    width: 100%;
+  }
+  .winFirst .phone {
+    display: none;
+  }
+  .phoneFirst .winBox {
+    display: none;
+  }
+  .phoneFirst .phone {
+    --pr: 36px;
+    --pb: 7px;
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: min(250px, 68vw);
+    margin-inline: auto;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.13),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+      0 40px 80px -30px rgba(0, 0, 0, 0.9);
+  }
+  .zoom .img {
+    width: 175%;
+    height: auto;
+    right: auto;
+    bottom: auto;
+  }
+  .win :global(.win-bar) {
+    height: 34px;
+    padding: 0 10px;
+  }
+  .win :global(.win-dots i) {
+    width: 8px;
+    height: 8px;
+  }
+  .win :global(.win-addr) {
+    height: 22px;
+    font-size: 11px;
+    padding: 0 10px;
+  }
+}

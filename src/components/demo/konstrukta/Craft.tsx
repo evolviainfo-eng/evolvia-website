@@ -1,79 +1,36 @@
 import type { Locale } from "@/i18n/config";
 import { getKonstruktaCopy } from "./copy";
-import { BAND, CONTAINER, Plate, SectionHead, T_MICRO, T_SM } from "./ui";
+import { BAND, SectionHead, T_TEXT, WRAP } from "./ui";
 
-/** Plate code and photo per shot. The alt text and caption live in the
- *  dictionary under the same id. */
-const SHOTS = [
-  {
-    id: "cut",
-    code: "A/01",
-    src: "/demo/konstrukta/detail-cut.webp",
-    w: 1200,
-    h: 800,
-  },
-  {
-    id: "worker",
-    code: "A/02",
-    src: "/demo/konstrukta/worker.webp",
-    w: 1200,
-    h: 800,
-  },
-  {
-    id: "truss",
-    code: "A/03",
-    src: "/demo/konstrukta/truss.webp",
-    w: 1400,
-    h: 933,
-  },
-  {
-    id: "scaffold",
-    code: "A/04",
-    src: "/demo/konstrukta/scaffold.webp",
-    w: 1400,
-    h: 933,
-  },
-] as const;
-
+/** The quiet page after the calculator, in Haven's section grammar: the
+ *  sentence as the heading, hairline, label left and the lead right, then
+ *  four site details as a two-column hairline list across the full grid,
+ *  numbered like the stages. No photographs: the page breathes. */
 export function Craft({ locale }: { locale: Locale }) {
   const c = getKonstruktaCopy(locale).craft;
+  const shots = [c.shots.cut, c.shots.worker, c.shots.truss, c.shots.scaffold];
   return (
-    <section id="amatas" className={`${BAND} border-t border-white/[0.11]`}>
-      <div className={CONTAINER}>
-        <SectionHead
-          index="06"
-          label={c.label}
-          title={c.title}
-          lead={c.lead}
-        />
+    <section id="amatas" className={BAND}>
+      <div className={WRAP}>
+        <SectionHead label={c.label} title={c.title} lead={c.lead} />
 
-        <div className="mt-[clamp(40px,5vw,64px)] grid gap-x-[clamp(20px,3vw,36px)] gap-y-[clamp(32px,4vw,52px)] sm:grid-cols-2">
-          {SHOTS.map((s, i) => (
-            <figure
-              key={s.code}
+        <ul className="mt-[clamp(48px,6vw,88px)] grid border-t border-[#E2E2E2] lg:grid-cols-2 lg:gap-x-6">
+          {shots.map((s, i) => (
+            <li
+              key={s.caption}
               data-rise
-              style={{ "--i": i + 1 } as React.CSSProperties}
-              className="min-w-0"
+              style={{ "--i": i } as React.CSSProperties}
+              className="flex min-w-0 items-baseline gap-4 border-b border-[#E2E2E2] py-6 lg:py-7"
             >
-              <Plate
-                src={s.src}
-                width={s.w}
-                height={s.h}
-                alt={c.shots[s.id].alt}
-              />
-              <figcaption className="mt-4 border-t border-white/[0.11] pt-3">
-                <span className={`${T_MICRO} block text-[#9A9791]`}>
-                  {s.code}
-                </span>
-                <span
-                  className={`mt-2 block max-w-[46ch] text-pretty ${T_SM} text-[#E7E5E1]`}
-                >
-                  {c.shots[s.id].caption}
-                </span>
-              </figcaption>
-            </figure>
+              <span className="k-num w-7 shrink-0 text-[1rem] text-[#5E5E5E]">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <p className={`min-w-0 max-w-[52ch] text-pretty ${T_TEXT} text-[#111111]`}>
+                {s.caption}
+              </p>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

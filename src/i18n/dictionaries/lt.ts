@@ -376,7 +376,7 @@ export const lt = {
     rows: [
       {
         term: "Kokie duomenys ir kam",
-        body: "Vardas, el. pašto adresas ir jūsų žinutės tekstas. Tik tai, ką patys įrašote. Naudojame atsakyti į užklausą ir, jei to prašote, paruošti pasiūlymą.",
+        body: "Vardas, el. pašto adresas, telefonas (jei jį nurodote), įmonės pavadinimas, esamos svetainės adresas (jei turite) ir jūsų žinutės tekstas. Tik tai, ką patys įrašote. Naudojame atsakyti į užklausą ir, jei to prašote, paruošti pasiūlymą.",
       },
       {
         term: "Kokiu pagrindu",
@@ -400,10 +400,9 @@ export const lt = {
       },
       {
         term: "Slapukai",
-        /* The language switch now remembers a choice too, so this names
-           both things the browser keeps. Still no banner: both are stored
-           only when the visitor asks for them. */
-        body: "Nenaudojame nei reklamos, nei stebėjimo slapukų. Į naršyklę įrašome tik du jūsų pasirinkimus: šviesią ar tamsią temą ir svetainės kalbą, ir tik tada, kai patys juos perjungiate. Todėl ir sutikimo juostos čia nėra: nėra ko sutikti.",
+        /* The language switch is the only thing the browser keeps, and
+           only when the visitor uses it. No banner needed. */
+        body: "Nenaudojame nei reklamos, nei stebėjimo slapukų. Į naršyklę įrašome tik vieną jūsų pasirinkimą, svetainės kalbą, ir tik tada, kai patys ją perjungiate. Todėl ir sutikimo juostos čia nėra: nėra ko sutikti.",
       },
     ],
   },
@@ -581,13 +580,13 @@ export const lt = {
     badge: "Demo",
     barShort: "Išgalvota įmonė · pavyzdinė svetainė",
     barLong:
-      "Demonstracinė svetainė. „{name}“ — išgalvota įmonė; pavadinimas, kontaktai, kainos ir projektai yra pavyzdiniai.",
+      "Demonstracinė svetainė. „{name}“ yra išgalvota įmonė: pavadinimas, kontaktai, kainos ir projektai yra pavyzdiniai.",
     backShort: "Evolvia",
     backLong: "Grįžti į Evolvia",
     footerEyebrow: "Demonstracinė svetainė",
     footerTitle: "„{name}“ neegzistuoja. Tai pavyzdinis darbas.",
     footerBody:
-      "Įmonė, jos projektai, kainos ir kontaktai yra sugalvoti. Viskas kita — dizainas, tekstų struktūra, {feature}, greitis ir elgsena telefone — veikia lygiai taip, kaip veiktų jūsų svetainėje. Tokią ir gaunate.",
+      "Įmonė, jos projektai, kainos ir kontaktai yra sugalvoti. Visa kita, dizainas, tekstų struktūra, {feature}, greitis ir elgsena telefone, veikia lygiai taip, kaip veiktų jūsų svetainėje. Tokią ir gaunate.",
     wantOne: "Noriu tokios svetainės",
     allExamples: "Visi pavyzdžiai",
     others: "Kitos demonstracinės svetainės",

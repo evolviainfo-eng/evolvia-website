@@ -2,53 +2,75 @@ import type { CSSProperties, ReactNode } from "react";
 
 /** Shared typographic and photographic primitives for the Fumé demo.
  *
- *  Everything here is hard-coded to Fumé's palette on purpose — the demo must
- *  not follow the surrounding site's light/dark toggle.
+ *  Composition and type after Restaurant Zimmerl (Awwwards HM, Nov 2025):
+ *  a widely spaced capitals wordmark, small spaced capitals for headings and
+ *  labels, fine copper hairlines and thin ruled frames, calm centred rhythm.
+ *  The palette is hard-coded on purpose: the demo must not follow the
+ *  surrounding site's light/dark toggle.
  *
- *    ink      #0C0B0A   page
- *    surface  #141210   raised panels / bands
- *    cream    #EDE6DA   text
- *    ash      #9C948A   muted text (6.3:1 on ink — passes AA)
- *    hairline rgba(237,230,218,0.14) — the ONE border colour on the page
- *    ember    #C0703A   the single accent — four uses on the whole page
+ *    ground   #1B1714   page (smoked charcoal)
+ *    raised   #231E1A   ruled card, booking widget, footer card, menu panel
+ *    paper    #EFE7DC   text (14.5:1 on ground)
+ *    muted    #B9AD9F   secondary text (8.1:1 on ground, 7.5:1 on raised)
+ *    label    #D6CABA   spaced capitals (10.9:1 on ground)
+ *    copper   #B8794A   hairlines, ruled frames and the reservation button,
+ *                       nothing else (no copper text anywhere)
  *
- *  Type scale, in rem. Nothing on the page sits between these steps:
- *    0.66  micro  — eyebrows, legends, column headings (uppercase, tracked)
- *    0.76  small  — captions, footnotes, helper text
- *    0.86  ui     — nav, chips, controls
- *    0.95  body
- *    1.05  lead   — menu and wine entries (display face)
- *    h2    clamp(1.9rem, 3.4vw, 2.6rem)
- *    h1    clamp(3.4rem, 10vw, 4.5rem)  → 72px at 1440, the ceiling
+ *  Type: Cormorant Garamond for everything set in capitals and every price;
+ *  DM Sans for reading text and form controls. ONE scale, nothing outside it:
+ *    wordmark  clamp(4rem, 12.5vw, 11rem), weight 300, tracking 0.3em
+ *    h2        clamp(1.75rem, 3.2vw, 3rem), caps, tracking 0.12em
+ *    lead      clamp(1.375rem, 1.9vw, 1.625rem) serif, upright (hero only)
+ *    body      1rem phone / 1.0625rem desktop, line-height 1.75
+ *    label     0.875rem (14px), weight 600, caps, tracking 0.24em, #D6CABA
+ *    note      0.875rem DM Sans, #B9AD9F (captions, footnotes, helpers)
+ *  Rhythm: --sec between sections, --gap from a heading block to its
+ *  content (FumePage's scope CSS).
+ *
+ *  Motion hooks are data attributes, read by Motion.tsx:
+ *    data-group      its direct children arrive one after another, 100 ms
+ *                    apart, once, when the group reaches 82% of the viewport
+ *    data-lines      (a child of a group) split into masked lines that rise
+ *    data-parallax   a photo frame whose [data-parallax-img] layer drifts
+ *                    ±15% of the frame height with the scroll
  */
 
-export const HAIRLINE = "rgba(237,230,218,0.14)";
-export const EMBER = "#C0703A";
+export const PAPER = "#EFE7DC";
+export const MUTED = "#B9AD9F";
+export const COPPER = "#B8794A";
+/** The page's hairline: copper, thin. */
+export const RULE = "rgba(184,121,74,0.5)";
+/** A quieter copper rule, for rows inside a list. */
+export const HAIRLINE = "rgba(184,121,74,0.3)";
 
-const UI = "font-[family-name:var(--font-fume-ui)]";
-const DISPLAY = "font-[family-name:var(--font-fume-display)]";
+export const UI = "font-[family-name:var(--font-fume-ui)]";
+export const DISPLAY = "font-[family-name:var(--font-fume-display)]";
 
-export function Eyebrow({ children }: { children: ReactNode }) {
-  return (
-    <p
-      className={`${UI} text-[0.6875rem] uppercase leading-none tracking-[0.26em] text-[#9c948a]`}
-    >
-      {children}
-    </p>
-  );
-}
-
-export function H2({
+/** Small spaced capitals (`.fume-label` in FumePage's scope CSS). */
+export function Label({
   children,
   className = "",
+  as: Tag = "p",
 }: {
   children: ReactNode;
   className?: string;
+  as?: "p" | "span" | "h3";
+}) {
+  return <Tag className={`fume-label ${className}`}>{children}</Tag>;
+}
+
+/** A section heading in spaced capitals, split into rising lines. */
+export function H2({
+  children,
+  className = "",
+  id,
+}: {
+  children: ReactNode;
+  className?: string;
+  id?: string;
 }) {
   return (
-    <h2
-      className={`${DISPLAY} text-balance text-[clamp(1.875rem,3.4vw,2.5rem)] font-light leading-[1.12] text-[#ede6da] ${className}`}
-    >
+    <h2 id={id} data-lines className={`fume-h2 text-balance ${className}`}>
       {children}
     </h2>
   );
@@ -57,20 +79,24 @@ export function H2({
 export function Body({
   children,
   className = "",
+  lines = false,
 }: {
   children: ReactNode;
   className?: string;
+  /** Split into rising lines (only as a direct child of a data-group). */
+  lines?: boolean;
 }) {
   return (
     <p
-      className={`${UI} text-pretty text-[0.9375rem] leading-[1.75] text-[#9c948a] ${className}`}
+      {...(lines ? { "data-lines": "" } : {})}
+      className={`${UI} text-pretty text-[1rem] leading-[1.75] text-[#b9ad9f] sm:text-[1.0625rem] ${className}`}
     >
       {children}
     </p>
   );
 }
 
-/** Footnotes, captions, helper lines — one size for all of them. */
+/** Footnotes, captions, helper lines: one size for all of them. */
 export function Note({
   children,
   className = "",
@@ -80,28 +106,62 @@ export function Note({
 }) {
   return (
     <p
-      className={`${UI} text-pretty text-[0.8125rem] leading-[1.7] text-[#9c948a] ${className}`}
+      className={`${UI} text-pretty text-[0.875rem] leading-[1.65] text-[#b9ad9f] ${className}`}
     >
       {children}
     </p>
   );
 }
 
-/** A hairline that draws itself in from the left as the section arrives. */
-export function Rule({
+/** A short copper hairline, centred unless told otherwise. */
+export function Rule({ className = "" }: { className?: string }) {
+  return (
+    <span
+      aria-hidden
+      className={`block h-px w-12 ${className}`}
+      style={{ background: RULE }}
+    />
+  );
+}
+
+export function Arrow() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 20 10"
+      className="fume-arrow h-[10px] w-5 shrink-0"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1}
+    >
+      <path d="M0 5h19M14.5 0.5 19 5l-4.5 4.5" />
+    </svg>
+  );
+}
+
+/** Two buttons only: the copper one is for booking a table and nothing
+ *  else; the outlined one is everything else. */
+export function Btn({
+  href,
+  children,
+  copper = false,
+  arrow = false,
   className = "",
-  index = 0,
 }: {
+  href: string;
+  children: ReactNode;
+  copper?: boolean;
+  arrow?: boolean;
   className?: string;
-  index?: number;
 }) {
   return (
-    <div
-      aria-hidden
-      data-wipe
-      style={{ background: HAIRLINE, "--i": index } as CSSProperties}
-      className={`h-px w-full ${className}`}
-    />
+    <a
+      href={href}
+      className={`fume-btn ${copper ? "fume-btn--cu" : ""} ${className}`}
+    >
+      <span>{children}</span>
+      {arrow && <Arrow />}
+    </a>
   );
 }
 
@@ -114,6 +174,7 @@ export function Photo({
   alt,
   className = "",
   priority = false,
+  style,
 }: {
   src: string;
   w: number;
@@ -121,6 +182,7 @@ export function Photo({
   alt: string;
   className?: string;
   priority?: boolean;
+  style?: CSSProperties;
 }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
@@ -133,20 +195,21 @@ export function Photo({
       loading={priority ? "eager" : "lazy"}
       fetchPriority={priority ? "high" : undefined}
       className={className}
+      style={style}
     />
   );
 }
 
-/** Every photograph on the page goes through here, which is what keeps the
- *  crops honest: one ratio system (3:2 unless a shot asks for otherwise), one
- *  frame colour, one hover.
+/** A photograph in a fixed-ratio frame with square corners.
  *
- *  Three nested boxes, and each owns exactly one job — `.fume-shot` clips,
- *  the `data-settle` div carries the arrival scale, the <img> carries the
- *  hover scale. Sharing a box between the last two would mean two systems
- *  writing `transform` on one element, and the hover would inherit the
- *  arrival's 1.2s timing. */
-export function Shot({
+ *  `parallax`: the image sits on a layer 130% of the frame's height, which
+ *  Motion.tsx drifts ±15% of the frame with the scroll. Without JS (or under
+ *  reduced motion, or on a phone) that layer simply rests centred.
+ *
+ *  Frames are sized so no photograph is shown wider than half its pixel
+ *  width allows (2x screens); parallax frames are smaller still, since the
+ *  layer is enlarged by 1.3. */
+export function Frame({
   src,
   w,
   h,
@@ -154,9 +217,9 @@ export function Shot({
   ratio = "3 / 2",
   className = "",
   caption,
-  rise,
-  settle = false,
-  priority = false,
+  parallax = false,
+  position,
+  fill = false,
 }: {
   src: string;
   w: number;
@@ -165,11 +228,11 @@ export function Shot({
   ratio?: string;
   className?: string;
   caption?: string;
-  /** Reveal index inside the parent gesture. Omit when an ancestor already
-   *  carries the reveal — nesting two would double the travel. */
-  rise?: number;
-  settle?: boolean;
-  priority?: boolean;
+  parallax?: boolean;
+  position?: string;
+  /** From md up, drop the ratio and stretch to the grid row's height (the
+   *  figure must be a stretched grid item). */
+  fill?: boolean;
 }) {
   const img = (
     <Photo
@@ -177,23 +240,23 @@ export function Shot({
       w={w}
       h={h}
       alt={alt}
-      priority={priority}
-      className="h-full w-full object-cover"
+      className="absolute inset-0 h-full w-full object-cover"
+      style={position ? { objectPosition: position } : undefined}
     />
   );
-
   return (
     <figure
-      {...(rise === undefined ? {} : { "data-rise": "" })}
-      style={{ "--i": rise ?? 0 } as CSSProperties}
-      className={`min-w-0 ${className}`}
+      className={`m-0 min-w-0 ${fill ? "md:flex md:h-full md:flex-col" : ""} ${className}`}
     >
       <div
-        className="fume-shot relative overflow-hidden bg-[#141210]"
-        style={{ aspectRatio: ratio }}
+        {...(parallax ? { "data-parallax": "" } : {})}
+        className={`relative overflow-hidden bg-[#231e1a] aspect-[var(--ar)] ${
+          fill ? "md:aspect-auto md:min-h-0 md:flex-1" : ""
+        }`}
+        style={{ "--ar": ratio } as CSSProperties}
       >
-        {settle ? (
-          <div data-settle className="absolute inset-0">
+        {parallax ? (
+          <div data-parallax-img className="absolute inset-x-0 top-[-15%] h-[130%]">
             {img}
           </div>
         ) : (
@@ -202,7 +265,7 @@ export function Shot({
       </div>
       {caption && (
         <figcaption
-          className={`${UI} mt-3 max-w-[46ch] text-pretty text-[0.8125rem] leading-[1.7] text-[#9c948a]`}
+          className={`${UI} mt-4 max-w-[44ch] text-pretty text-[0.875rem] leading-[1.65] text-[#b9ad9f]`}
         >
           {caption}
         </figcaption>

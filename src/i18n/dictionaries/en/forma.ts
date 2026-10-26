@@ -17,10 +17,10 @@ export const formaEn: FormaCopy = {
 
   sections: {
     approach: "Approach",
+    studio: "Studio",
     projects: "Projects",
     services: "Services",
     process: "Process",
-    mood: "Mood",
     contact: "Contact",
   },
 
@@ -35,8 +35,13 @@ export const formaEn: FormaCopy = {
     lines: ["A space where", "everything is", "in its place."],
     lead: "Two architects. Flats, private houses and small commercial spaces, from the first plan to the last door handle, with no one in between.",
     imageAlt: "Bright living room with a panoramic window facing the trees",
-    caption: "Living area · private house",
-    captionPlace: "Near Vilnius, 2025",
+    view: "View project",
+  },
+
+  studio: {
+    split: ["The", "studio"],
+    link: "How we work",
+    kinds: ["Flats", "Houses", "Commercial spaces"],
   },
 
   approach: {
@@ -57,6 +62,8 @@ export const formaEn: FormaCopy = {
   },
 
   projects: {
+    split: ["Selected", "projects"],
+    view: "View",
     title: "The six projects we show first.",
     lead: "Flats, houses and small commercial spaces in and around Vilnius. Open a project to see a large photograph and a short explanation of the design.",
     filterLabel: "Filter projects by type",
@@ -136,6 +143,7 @@ export const formaEn: FormaCopy = {
   },
 
   services: {
+    split: ["Our", "services"],
     title: "Three ways to work together.",
     lead: "Most clients choose the full design with site supervision. But if the space is small or there is only one decision to make, a smaller step is enough.",
     items: [
@@ -174,6 +182,8 @@ export const formaEn: FormaCopy = {
   },
 
   process: {
+    split: ["Our", "process"],
+    label: "How a project runs, four steps",
     title: "From the first measurement to the last handle.",
     steps: [
       {
@@ -184,12 +194,12 @@ export const formaEn: FormaCopy = {
       {
         title: "Layout",
         body: "Two or three options on paper. We choose together until one is clearly right, and only then do we move on.",
-        when: "2–3 weeks",
+        when: "2-3 weeks",
       },
       {
         title: "Design and materials",
         body: "Visualisations, working drawings, specifications. We go to the showrooms together and feel every material by hand.",
-        when: "4–6 weeks",
+        when: "4-6 weeks",
       },
       {
         title: "Site supervision",
@@ -216,7 +226,7 @@ export const formaEn: FormaCopy = {
       { label: "Email", value: "labas@forma.demo" },
       { label: "Phone", value: "+370 600 00000" },
       { label: "Studio", value: "Naujamiestis, Vilnius" },
-      { label: "Office hours", value: "Mon–Fri 9:00–18:00" },
+      { label: "Office hours", value: "Mon-Fri 9:00-18:00" },
     ],
   },
 

@@ -54,12 +54,12 @@ function longDate(d: FumeDate) {
   return `${WD_LONG[d.wd]}, ${MONTH_GEN[d.month]} ${d.day} d.`;
 }
 
-/** Accusative — "laukiame jūsų penktadienį", not "…penktadienis". */
+/** Accusative, "laukiame jūsų penktadienį", not "…penktadienis". */
 function whenDate(d: FumeDate) {
   return `${WD_ACC[d.wd]}, ${MONTH_GEN[d.month]} ${d.day} d.`;
 }
 
-/** Lithuanian numeral agreement: 1 laikas · 2–9 laikai · 10–20 laikų. */
+/** Lithuanian numeral agreement: 1 laikas · 2-9 laikai · 10-20 laikų. */
 function freeLabel(n: number) {
   const last = n % 10;
   const tens = Math.floor(n / 10) % 10;
@@ -70,7 +70,7 @@ function freeLabel(n: number) {
 
 export const fumeLt = {
   meta: {
-    title: "Fumé — restoranas ir vyno baras, Užupis (demo)",
+    title: "Fumé · restoranas ir vyno baras, Užupis (demo)",
     description:
       "Demonstracinė svetainė: mažas atviros ugnies restoranas ir vyno baras Vilniaus Užupyje. Sezoninis meniu, vyno kortelė ir veikianti stalo rezervacija.",
   },
@@ -96,7 +96,7 @@ export const fumeLt = {
     book: "Rezervuoti stalą",
     menu: "Vakaro meniu",
     /** The three facts under the hairline at the foot of the hero. */
-    meta: ["Užupis, Vilnius", "Antradienis–Sekmadienis", "Durys nuo 17:00"],
+    meta: ["Užupis, Vilnius", "Antradienis-Sekmadienis", "Durys nuo 17:00"],
   },
 
   intro: {
@@ -104,8 +104,8 @@ export const fumeLt = {
     /** Set by hand, one entry per line. */
     title: ["Vakaras, kuris", "neskuba."],
     body: [
-      "Fumé — mažas restoranas su vyno baru senojoje Užupio kalvio dirbtuvėje. Trisdešimt keturios vietos, viena atviros ugnies virtuvė ir vienas serviravimas per vakarą: rezervuotas stalas lieka jūsų iki uždarymo.",
-      "Meniu keičiasi pagal sezoną ir pagal tai, ką tą savaitę atveža ūkininkai. Nerasite jo išspausdinto metams į priekį — tai ne kortelė, o pokalbis su tuo, kas šiuo metu geriausia.",
+      "Fumé, mažas restoranas su vyno baru senojoje Užupio kalvio dirbtuvėje. Trisdešimt keturios vietos, viena atviros ugnies virtuvė ir vienas serviravimas per vakarą: rezervuotas stalas lieka jūsų iki uždarymo.",
+      "Meniu keičiasi pagal sezoną ir pagal tai, ką tą savaitę atveža ūkininkai. Nerasite jo išspausdinto metams į priekį, tai ne kortelė, o pokalbis su tuo, kas šiuo metu geriausia.",
     ],
     facts: [
       { k: "34", v: "vietos salėje" },
@@ -116,7 +116,7 @@ export const fumeLt = {
   },
 
   fire: {
-    kitchenAlt: "Fumé virtuvė darbo metu — virėjai prie atviros ugnies",
+    kitchenAlt: "Fumé virtuvė darbo metu, virėjai prie atviros ugnies",
     eyebrow: "Virtuvė",
     /** Two lines: the first as is, the second with one word in italics. */
     title: {
@@ -126,7 +126,7 @@ export const fumeLt = {
       after: ".",
     },
     body: [
-      "Židinys užkuriamas antrą valandą dienos ir dega iki paskutinio užsakymo. Ąžuolas ir alksnis, jokių dujų. Iš čia ir pavadinimas: fumé — rūkyta.",
+      "Židinys užkuriamas antrą valandą dienos ir dega iki paskutinio užsakymo. Ąžuolas ir alksnis, jokių dujų. Iš čia ir pavadinimas: fumé, rūkyta.",
       "Anglių karštis per vakarą keičiasi, tad tas pats šonkaulis šeštą ir dešimtą valandą nebūna visiškai vienodas. Mums tai atrodo teisinga.",
     ],
     lambAlt: "Ėrienos petys dubenyje su baltosiomis pupelėmis",
@@ -136,7 +136,7 @@ export const fumeLt = {
   menu: {
     eyebrow: "Meniu",
     title: "Sezoninė kortelė",
-    lead: "Kortelę perrašome kas tris–keturias savaites. Jei turite alergijų ar nevalgote mėsos — pasakykite salės vadovui, pritaikysime beveik viską.",
+    lead: "Kortelę perrašome kas tris-keturias savaites. Jei turite alergijų ar nevalgote mėsos, pasakykite salės vadovui, pritaikysime beveik viską.",
     /** n = dish, d = what comes with it, p = price in euros. */
     courses: [
       {
@@ -172,7 +172,7 @@ export const fumeLt = {
       },
       {
         title: "Pagrindiniai",
-        note: "Visi — nuo atviros ugnies",
+        note: "Visi, nuo atviros ugnies",
         items: [
           {
             n: "Ugnyje keptas kopūstas",
@@ -219,7 +219,7 @@ export const fumeLt = {
       },
     ],
     footnote:
-      "Aptarnavimas į kainą neįskaičiuotas. Degustacinis vakaras — penki patiekalai, 58 € asmeniui — vyksta trečiadieniais, iš anksto.",
+      "Aptarnavimas į kainą neįskaičiuotas. Degustacinis vakaras, penki patiekalai, 58 € asmeniui, vyksta trečiadieniais, iš anksto.",
     /** The five plate photographs, in the order they are laid out. */
     plateAlts: [
       "Ant anglių kepta jautiena juodoje lėkštėje",
@@ -230,11 +230,22 @@ export const fumeLt = {
     ],
   },
 
+  /** The menu as a printed card: the short card on the page and the side
+   *  panel that opens from the hero, the nav and that card. */
+  card: {
+    title: "Šio vakaro kortelė",
+    open: "Visa kortelė",
+    close: "Uždaryti kortelę",
+    /** The lowest price of a course on the short card: "nuo 6 €". */
+    from: (price: string) => `nuo ${price}`,
+    book: "Rezervuoti stalą",
+  },
+
   wine: {
     eyebrow: "Vyno kortelė",
     /** Set by hand, one entry per line. */
     title: ["Apie 120 pozicijų.", "Štai penkios."],
-    lead: "Kortelė sukasi apie mažus šeimos vynuogynus ir mažas partijas. Visą sąrašą rasite prie stalo — arba tiesiog paklauskite, ką atidarėme šįvakar.",
+    lead: "Kortelė sukasi apie mažus šeimos vynuogynus ir mažas partijas. Visą sąrašą rasite prie stalo, arba tiesiog paklauskite, ką atidarėme šįvakar.",
     /** The visual column headings above the list. */
     columns: {
       wines: "Taurėmis ir buteliais",
@@ -262,7 +273,7 @@ export const fumeLt = {
       { n: "Blaufränkisch", r: "Burgenlandas · Austrija", g: 8, b: 42 },
       { n: "Tempranillo Reserva", r: "Rioja Alta · Ispanija", g: 9, b: 48 },
     ],
-    note: "Dešimt vietų prie baro laikome nerezervuotų — vien taurei vyno užeiti galima be išankstinio susitarimo.",
+    note: "Dešimt vietų prie baro laikome nerezervuotų, vien taurei vyno užeiti galima be išankstinio susitarimo.",
     pourAlt: "Raudonas vynas pilamas į taurę prieblandoje",
     studioAlt: "Vyno pylimas į taurę švariame fone",
   },
@@ -270,19 +281,26 @@ export const fumeLt = {
   space: {
     eyebrow: "Erdvė",
     title: "Viena salė, dešimt žvakių.",
-    body: "Plytų siena, ąžuolo stalai be staltiesių ir tiek šviesos, kad užtektų perskaityti kortelę. Muzika tyliai — kad girdėtųsi pokalbis prie savo stalo, o ne prie gretimo.",
+    body: "Plytų siena, ąžuolo stalai be staltiesių ir tiek šviesos, kad užtektų perskaityti kortelę. Muzika tyliai, kad girdėtųsi pokalbis prie savo stalo, o ne prie gretimo.",
     barAlt: "Fumé baras su degančiomis žvakėmis",
     barCaption:
-      "Baras — dešimt vietų prie prekystalio, be išankstinės rezervacijos.",
+      "Baras, dešimt vietų prie prekystalio, be išankstinės rezervacijos.",
     windowAlt: "Svytintis prekystalis matomas pro stiklą iš gatvės",
     lampsAlt: "Pakabinami šviestuvai virš salės stalų",
     lampsCaption: "Vakarui įsibėgėjus lieka žvakės ir šie šviestuvai.",
+    /** The three room photographs are a slider: its accessible names. */
+    slider: {
+      label: "Salės nuotraukos",
+      slide: "nuotrauka",
+      prev: "Ankstesnė nuotrauka",
+      next: "Kita nuotrauka",
+    },
   },
 
   reservation: {
     eyebrow: "Rezervacija",
     title: "Rezervuokite stalą",
-    lead: "Stalas lieka jūsų visam vakarui — antro serviravimo nedarome. Pasirinkite vakarą ir laiką, o likusia dalimi pasirūpinsime mes.",
+    lead: "Stalas lieka jūsų visam vakarui, antro serviravimo nedarome. Pasirinkite vakarą ir laiką, o likusia dalimi pasirūpinsime mes.",
     /** The three notes under the introduction. */
     facts: {
       closed: {
@@ -290,12 +308,12 @@ export const fumeLt = {
         dd: "Salė ilsisi, virtuvė ruošia naują kortelę.",
       },
       kitchen: {
-        dt: "Virtuvė iki 22:30, sekmadieniais — 21:30",
-        dd: "Paskutinį stalą sodiname 22:00, sekmadieniais — 21:00. Vynas pilamas ilgiau.",
+        dt: "Virtuvė iki 22:30, sekmadieniais, 21:30",
+        dd: "Paskutinį stalą sodiname 22:00, sekmadieniais, 21:00. Vynas pilamas ilgiau.",
       },
       groups: {
         dt: "Daugiau nei aštuoni?",
-        dd: "Parašykite mums — didesnes kompanijas deriname atskirai.",
+        dd: "Parašykite mums, didesnes kompanijas deriname atskirai.",
       },
     },
 
@@ -344,11 +362,11 @@ export const fumeLt = {
       late: "Jau vėlu",
     },
     /** An evening chip's accessible name: its date, then its status. */
-    dayAria: (date: string, status: string) => `${date} — ${status}`,
+    dayAria: (date: string, status: string) => `${date}, ${status}`,
     closedAria: "nedirbame",
     lateAria: "šiandien laikų nebeliko",
     /** A time chip that can no longer be booked. */
-    takenAria: (time: string) => `${time} — užimta`,
+    takenAria: (time: string) => `${time}, užimta`,
 
     guests: (n: number) => (n === 1 ? "1 svečias" : `${n} svečiai`),
 
@@ -356,13 +374,13 @@ export const fumeLt = {
     helper: {
       noDay: "Perbraukti laikai užimti.",
       full: "Laisvų laikų šiam vakarui nebeliko.",
-      free: (n: number) => `${freeLabel(n)} · perbraukti — užimti.`,
+      free: (n: number) => `${freeLabel(n)} · perbraukti, užimti.`,
     },
 
     /** An evening with nothing left. */
     full: {
       title: "Šis vakaras jau pilnas.",
-      note: "Vietos prie baro lieka nerezervuotos — arba rinkitės kitą vakarą.",
+      note: "Vietos prie baro lieka nerezervuotos, arba rinkitės kitą vakarą.",
       pick: (d: FumeDate) => `Rinktis ${whenDate(d)}`,
     },
 
@@ -378,7 +396,7 @@ export const fumeLt = {
     /** Next to the button until an hour is chosen. */
     summaryEmpty: "Pasirinkite laiką.",
     formNote:
-      "Demonstracinė forma — paspaudus nieko neišsiunčiame ir niekur neįrašome.",
+      "Demonstracinė forma, paspaudus nieko neišsiunčiame ir niekur neįrašome.",
 
     /** The confirmation. Its sentence is `lead` + date + `join` + time
      *  (in italics) + `end`. */
@@ -387,7 +405,7 @@ export const fumeLt = {
       lead: "Laukiame jūsų ",
       join: ", ",
       end: ".",
-      note: "Tai demonstracinė forma. Rezervacija nebuvo atlikta ir jokie duomenys niekur neišsiųsti — Fumé neegzistuoja.",
+      note: "Tai demonstracinė forma. Rezervacija nebuvo atlikta ir jokie duomenys niekur neišsiųsti, Fumé neegzistuoja.",
       again: "Rinktis iš naujo",
     },
   },
@@ -402,17 +420,17 @@ export const fumeLt = {
     /** d = days, h = hours. */
     hours: [
       { d: "Pirmadienis", h: "Nedirbame" },
-      { d: "Antradienis–Ketvirtadienis", h: "17:00–23:00" },
-      { d: "Penktadienis–Šeštadienis", h: "17:00–24:00" },
-      { d: "Sekmadienis", h: "17:00–22:00" },
+      { d: "Antradienis-Ketvirtadienis", h: "17:00-23:00" },
+      { d: "Penktadienis-Šeštadienis", h: "17:00-24:00" },
+      { d: "Sekmadienis", h: "17:00-22:00" },
     ],
     hoursNote:
-      "Virtuvė paskutinius užsakymus priima 22:30, sekmadieniais — 21:30. Baras dirba iki uždarymo.",
+      "Virtuvė paskutinius užsakymus priima 22:30, sekmadieniais, 21:30. Baras dirba iki uždarymo.",
     goodToKnowLabel: "Naudinga žinoti",
     goodToKnow: [
-      "Stalas — visam vakarui",
+      "Stalas, visam vakarui",
       "Prie baro rezervacijų nereikia",
-      "Vaikams — pusporcijos",
+      "Vaikams, pusporcijos",
       "Šuo prie baro laukiamas",
     ],
     tagline: "Restoranas ir vyno baras · Vilnius",

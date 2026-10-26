@@ -1,0 +1,148 @@
+/* /paslaugos. Type scale (site.css tokens): h1 .t-hero 44 to 76 px;
+   chapters .t-h2 32 to 50 px; row titles .t-h3 20 to 26 px; bodies 16 px
+   / 1.6; fits 20 to 24 px; panel UI 13 to 15 px; captions 14 px.
+   Rhythm: every section takes the shared --sec; inside "what we do" the
+   rows sit 120 px apart (80 px phone). */
+
+/* Chapter headings: the grey half on its own line. */
+.page :global(h2.t-h2 > .dim) { display: block; }
+.page :global(.chapter .t-h2) { max-width: 16ch; }
+
+/* ── 1. Head and the client's site ──────────────────── */
+.hero { padding-top: 0; }
+.shot { margin-top: clamp(56px, 6vw, 80px); }
+.shotWin { border-radius: 16px; }
+.shotImg { width: 100%; height: auto; aspect-ratio: 2240 / 1110; object-fit: cover; object-position: 50% 0; }
+.caption { margin-top: 18px; font-size: 14px; line-height: 1.5; color: var(--fg-2); text-wrap: pretty; }
+
+/* ── 2. What we do: alternating rows ────────────────── */
+.rows { display: grid; gap: clamp(96px, 9vw, 136px); }
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 32px clamp(40px, 6vw, 96px);
+  align-items: center;
+}
+.row.flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+.row.flip .text { order: 2; }
+.row.flip .visual { order: 1; }
+.text { display: grid; gap: 16px; align-content: center; max-width: 30em; }
+.rowTitle { text-wrap: balance; }
+.body { font-size: 16px; line-height: 1.6; color: var(--fg-2); text-wrap: pretty; }
+.more {
+  margin-top: 4px;
+  width: max-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-size: 15px;
+  color: var(--fg);
+  text-decoration: none;
+}
+.more:hover { color: var(--fg-2); }
+.visual { min-width: 0; will-change: transform, opacity; }
+
+/* Search: the result card and the phone side by side. */
+.search { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 20px; align-items: end; }
+.snip { padding: 24px 24px 22px; display: grid; gap: 0; align-content: start; }
+.snipLabel { font-size: 13px; color: var(--fg-2); margin-bottom: 18px; }
+.snipHead { display: flex; align-items: center; gap: 10px; }
+.fav { width: 26px; height: 26px; border-radius: 50%; background: var(--surface-3); box-shadow: inset 0 0 0 1px var(--line-2); flex: none; }
+.snipSite { display: grid; font-size: 14px; line-height: 1.3; color: var(--fg); }
+.snipUrl { font-size: 12.5px; color: var(--fg-2); }
+.snipTitle { margin-top: 12px; font-size: 19px; line-height: 1.3; letter-spacing: -0.01em; color: var(--fg); text-wrap: pretty; }
+.snipDesc { margin-top: 6px; font-size: 14px; line-height: 1.55; color: var(--fg-2); text-wrap: pretty; }
+.checks { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); display: grid; gap: 10px; }
+.checks li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--fg); }
+.checks :global(.glyph) { width: 13px; height: 13px; color: var(--fg-2); }
+.phone {
+  border-radius: 26px;
+  overflow: hidden;
+  background: #101010;
+  box-shadow: inset 0 0 0 1px var(--line-2), 0 30px 80px -30px rgba(0, 0, 0, 0.8);
+  padding: 6px;
+}
+.phone img { width: 100%; height: auto; border-radius: 20px; }
+
+/* Launch checklist and maintenance switches: one list style. */
+.list { padding: 22px 24px 10px; }
+.listTitle { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; color: #f5f5f4; margin-bottom: 8px; }
+.listRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 14px;
+  color: #e4e4e3;
+}
+.listRow:first-child { border-top: 0; }
+.listLabel { flex: 1; min-width: 0; }
+.listEnd { font-size: 13px; color: #8f8f8e; }
+.care { padding-bottom: 0; }
+.careFoot {
+  margin: 8px -24px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--line-2);
+}
+.careFoot div { padding: 16px 24px 18px; display: grid; gap: 4px; }
+.careFoot div + div { border-left: 1px solid var(--line-2); }
+.careFoot dt { font-size: 13px; color: var(--fg-2); }
+.careFoot dd { font-size: 17px; color: var(--fg); letter-spacing: -0.01em; }
+
+/* ── 3. Process: four columns on one hairline ───────── */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 32px; }
+.step { position: relative; padding-top: 28px; border-top: 1px solid var(--line-2); display: grid; gap: 10px; align-content: start; }
+.step[data-lead] { border-top-color: var(--fg); }
+.stepNo { font-size: 14px; color: var(--fg-2); }
+.step[data-lead] .stepNo { color: var(--fg); }
+.stepTitle { margin-top: 6px; font-size: 20px; font-weight: 400; line-height: 1.25; letter-spacing: -0.02em; color: var(--fg); text-wrap: balance; }
+.stepBody { font-size: 15px; line-height: 1.6; color: var(--fg-2); text-wrap: pretty; }
+.stepNote { margin-top: 6px; font-size: 14px; line-height: 1.5; color: var(--fg); }
+
+/* ── 4. Who it is for ───────────────────────────────── */
+.fits { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 64px; align-items: start; }
+.fitsSide { display: grid; gap: 24px; position: sticky; top: calc(var(--nav-h) + 40px); }
+.fitsSide :global(.t-h2) { max-width: 12ch; }
+.fitsLead { max-width: 30em; }
+.fitList { border-bottom: 1px solid var(--line); }
+.fit {
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+  font-size: clamp(1.25rem, 1.05rem + 0.5vw, 1.5rem);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  text-wrap: balance;
+}
+
+/* ── Breakpoints ────────────────────────────────────── */
+@media (max-width: 1023px) {
+  .row, .row.flip { grid-template-columns: minmax(0, 1fr); }
+  .row.flip .text, .row .text { order: 0; }
+  .row.flip .visual, .row .visual { order: 1; }
+  .text { max-width: 36em; }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 32px; }
+  .fits { grid-template-columns: minmax(0, 1fr); }
+  .fitsSide { position: static; }
+  .page :global(.chapter .t-h2), .fitsSide :global(.t-h2) { max-width: none; }
+}
+@media (max-width: 640px) {
+  .shot { margin-top: 48px; }
+  .shot :global(.win-addr), .visual :global(.win-addr) { min-width: 0; }
+  .shotImg { aspect-ratio: 4 / 3; object-position: 30% 0; }
+  .rows { gap: 80px; }
+  .search { grid-template-columns: minmax(0, 1fr); }
+  .phone { display: none; }
+  .snip { padding: 20px 18px 18px; }
+  .snipTitle { font-size: 17px; }
+  .list { padding: 18px 16px 6px; }
+  .careFoot { margin-inline: -16px; }
+  .careFoot div { padding: 14px 16px 16px; }
+  .careFoot dd { font-size: 15px; }
+  .steps { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .step { padding-top: 22px; }
+  .fit { padding: 20px 0; }
+}

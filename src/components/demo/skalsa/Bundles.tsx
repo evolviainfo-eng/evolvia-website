@@ -1,112 +1,83 @@
 import type { Locale } from "@/i18n/config";
-import { AddToCart, Check } from "./AddToCart";
+import { AddToCart } from "./AddToCart";
 import { getSkalsaCopy } from "./copy";
 import { eur, getBundles } from "./data";
+import { SectionHead, Tile, type Tone } from "./Tile";
 
+/* Each set's photograph, in the order of BUNDLES: the evening trio over the
+   group of lit candles, the gift box over the row of candles among dried
+   flowers. Both are dark, so both captions are set in the ground colour on
+   the same line (the light flat lay put a brown caption on a busy, light
+   surface). `position` keeps the calm part of each photo under the caption. */
+const PHOTOS: Array<{
+  src: string;
+  w: number;
+  h: number;
+  tone: Tone;
+  position: string;
+}> = [
+  { src: "/demo/skalsa/mood-2.webp", w: 1400, h: 1400, tone: "dark", position: "50% 55%" },
+  { src: "/demo/skalsa/mood-1.webp", w: 1400, h: 1120, tone: "dark", position: "50% 50%" },
+];
+
+/** Gift sets as the reference's split pair: two exact halves touching in
+ *  the middle, each a tall still photo with its own sticky caption row
+ *  (name left, add right), so on a desktop both captions ride side by side
+ *  on one line. The details a buyer needs (what is inside, the price) sit
+ *  on the ground right under each photo. On a phone the two stack, each
+ *  with its own details below it. */
 export function Bundles({ locale }: { locale: Locale }) {
-  const t = getSkalsaCopy(locale).bundles;
+  const copy = getSkalsaCopy(locale);
+  const t = copy.bundles;
+  const bundles = getBundles(locale);
+  const alts = [copy.mood.groupAlt, copy.mood.rowAlt];
 
   return (
-    <section data-sk-sec="rinkiniai" className="relative bg-[#F1EAE0]">
-      <span
-        id="rinkiniai"
-        aria-hidden="true"
-        className="absolute -top-[30px]"
-      />
-      <div className="mx-auto max-w-[1180px] px-5 py-[clamp(64px,9vw,120px)] sm:px-8">
-        <div data-rise className="max-w-[50ch]">
-          <p className="text-[0.8125rem] uppercase tracking-[0.16em] text-[#6E6257]">
-            {t.eyebrow}
-          </p>
-          <h2
-            className="mt-4 text-[clamp(1.875rem,3.4vw,2.5rem)] leading-[1.08] text-balance"
-            style={{
-              fontFamily: "var(--font-skalsa-display)",
-              fontWeight: 500,
-            }}
-          >
-            {t.title}
-          </h2>
-        </div>
+    <section id="rinkiniai" data-sk-tone="light">
+      <SectionHead label={t.eyebrow} line={t.title} />
 
-        <div className="mt-[clamp(40px,6vw,72px)] grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-12">
-          <div
-            data-rise
-            style={{ "--i": 1 } as React.CSSProperties}
-            className="min-w-0 overflow-hidden rounded-[10px] bg-[#FAF6F0]"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              data-settle
-              src="/demo/skalsa/flat.webp"
-              alt={t.imageAlt}
-              width={1300}
-              height={1242}
-              decoding="async"
-              loading="lazy"
-              className="aspect-[13/12] h-auto w-full object-cover"
-            />
-          </div>
+      <ul className="grid lg:grid-cols-2">
+        {bundles.map((b, i) => {
+          const photo = PHOTOS[i] ?? PHOTOS[0];
+          return (
+            <li key={b.id} className="flex min-w-0 flex-col">
+              <Tile
+                src={photo.src}
+                w={photo.w}
+                h={photo.h}
+                alt={alts[i] ?? t.imageAlt}
+                tone={photo.tone}
+                position={photo.position}
+                className="h-[90svh] lg:h-[clamp(640px,100svh,1100px)]"
+                label={<h3 className="sk-cap min-w-0 break-words">{b.name}</h3>}
+                action={<AddToCart id={b.id} name={b.name} variant="quiet" />}
+              />
 
-          <ul className="grid min-w-0 gap-6">
-            {getBundles(locale).map((b, i) => (
-              <li
-                key={b.id}
+              <div
                 data-rise
-                style={{ "--i": i + 2 } as React.CSSProperties}
-                className="min-w-0 rounded-[10px] border border-[rgba(36,30,25,0.13)] bg-[#FAF6F0] p-6 transition-[border-color,translate] duration-[var(--d-ui)] ease-[var(--e-out)] hover:-translate-y-[2px] hover:border-[rgba(36,30,25,0.34)] sm:p-8"
+                className="flex flex-1 flex-col px-[30px] pb-[56px] pt-[28px] lg:px-[60px] lg:pb-0 lg:pt-[36px]"
               >
-                <div className="flex items-baseline justify-between gap-4">
-                  <h3
-                    className="min-w-0 text-[1.5rem] leading-tight tracking-[-0.02em] break-words"
-                    style={{
-                      fontFamily: "var(--font-skalsa-display)",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {b.name}
-                  </h3>
-                  <div className="shrink-0 text-right">
-                    <span className="block text-[1.0625rem] tabular-nums">
-                      {eur(b.price, locale)}
-                    </span>
-                    {b.note && (
-                      <span className="mt-1 block text-[0.8125rem] tabular-nums text-[#6E6257]">
-                        {b.note}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <p className="mt-3 max-w-[44ch] text-[0.9375rem] leading-[1.6] text-pretty text-[#6E6257]">
-                  {b.lead}
-                </p>
-
-                <ul className="mt-6 border-t border-[rgba(36,30,25,0.13)] pt-4">
+                <p className="sk-cap max-w-[30ch] text-pretty">{b.lead}</p>
+                <ul className="mt-5 text-[1rem] leading-[1.5] text-[#7E5A50]">
                   {b.contains.map((c) => (
-                    <li
-                      key={c}
-                      className="flex items-baseline gap-3 py-1.5 text-[0.9375rem] text-[#241E19]"
-                    >
-                      <span
-                        aria-hidden="true"
-                        className="mt-[2px] text-[#B4562F]"
-                      >
-                        <Check size={11} />
-                      </span>
-                      <span className="min-w-0 break-words">{c}</span>
+                    <li key={c} className="min-w-0 break-words">
+                      {c}
                     </li>
                   ))}
                 </ul>
-
-                <div className="mt-7">
-                  <AddToCart id={b.id} name={b.name} />
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+                <p className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                  <span className="sk-cap tabular-nums">
+                    {eur(b.price, locale)}
+                  </span>
+                  <span className="text-[0.875rem] text-[#7E5A50]">
+                    {b.note ?? b.meta}
+                  </span>
+                </p>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }
