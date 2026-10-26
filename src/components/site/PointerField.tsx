@@ -4,11 +4,11 @@ import { useEffect, useRef } from "react";
 
 /* A code-like trace behind the pointer (after carterogunsola.com). The ground is an invisible 14 px grid; as the pointer moves,
    a few cells near it light up for a moment, most as a 1.5 px dot, some as
-   a mono glyph, and fade out in about 0.9 s. Nothing is drawn and no frame
+   a mono glyph, and fade out in about 0.75 s. Nothing is drawn and no frame
    loop runs while the pointer is still, so it costs nothing at rest.
    Off for touch screens and for reduced motion. Sits behind the content. */
 const CELL = 14;
-const LIFE = 900;
+const LIFE = 760;
 const GLYPHS = ["0", "1", "+", "/", ":", "_", "{", "}", "<", ">", "=", "*", ";", "."];
 type Spark = { x: number; y: number; t0: number; g: string | null; a: number };
 
@@ -34,7 +34,7 @@ export function PointerField() {
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const plex = getComputedStyle(document.documentElement).getPropertyValue("--font-plex").trim();
-      ctx.font = `12px ${plex || "ui-monospace"}, ui-monospace, monospace`;
+      ctx.font = `11px ${plex || "ui-monospace"}, ui-monospace, monospace`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
     };
@@ -44,6 +44,7 @@ export function PointerField() {
     let raf = 0;
     let lx = -1;
     let ly = -1;
+    let last = 0;
 
     const draw = (now: number) => {
       ctx.clearRect(0, 0, w, h);
@@ -53,13 +54,13 @@ export function PointerField() {
           sparks.delete(k);
           continue;
         }
-        const alpha = s.a * Math.pow(1 - p, 1.5);
+        const alpha = s.a * (1 - p) * (1 - p);
         if (s.g) {
-          ctx.fillStyle = `rgba(245,245,244,${alpha})`;
+          ctx.fillStyle = `rgba(200,200,198,${alpha})`;
           ctx.fillText(s.g, s.x, s.y);
         } else {
-          ctx.fillStyle = `rgba(245,245,244,${alpha})`;
-          ctx.fillRect(s.x - 1.25, s.y - 1.25, 2.5, 2.5);
+          ctx.fillStyle = `rgba(200,200,198,${alpha})`;
+          ctx.fillRect(s.x - 1, s.y - 1, 2, 2);
         }
       }
       raf = sparks.size ? requestAnimationFrame(draw) : 0;
@@ -72,20 +73,22 @@ export function PointerField() {
       const speed = lx < 0 ? 0 : Math.hypot(x - lx, y - ly);
       lx = x;
       ly = y;
-      if (speed < 2) return;
+      if (speed < 3) return;
       const now = performance.now();
-      const n = Math.min(8, 2 + Math.floor(speed / 10));
+      if (now - last < 24) return;
+      last = now;
+      const n = Math.min(6, 2 + Math.floor(speed / 12));
       for (let i = 0; i < n; i++) {
-        const r = 8 + Math.random() * 72;
+        const r = 6 + Math.random() * 48;
         const a = Math.random() * Math.PI * 2;
         const cx = Math.round((x + Math.cos(a) * r) / CELL) * CELL;
         const cy = Math.round((y + Math.sin(a) * r) / CELL) * CELL;
         const key = cx + ":" + cy;
         if (sparks.has(key)) continue;
-        const glyph = Math.random() < 0.5 ? GLYPHS[(Math.random() * GLYPHS.length) | 0] : null;
-        sparks.set(key, { x: cx, y: cy, t0: now, g: glyph, a: 0.4 + Math.random() * 0.25 });
+        const glyph = Math.random() < 0.3 ? GLYPHS[(Math.random() * GLYPHS.length) | 0] : null;
+        sparks.set(key, { x: cx, y: cy, t0: now, g: glyph, a: 0.34 + Math.random() * 0.18 });
       }
-      if (sparks.size > 220) {
+      if (sparks.size > 140) {
         const first = sparks.keys().next().value;
         if (first) sparks.delete(first);
       }
